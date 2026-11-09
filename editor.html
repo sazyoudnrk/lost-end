@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>RPGエディタ</title>
+<style>
+:root{--bg:#16171d;--bg2:#1f2129;--bg3:#2a2d38;--fg:#e8e8ef;--mut:#9a9cab;--ac:#5b8cff;--dg:#ff5b6b;--bd:#343846}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:15px/1.4 system-ui,-apple-system,"Hiragino Sans",sans-serif;-webkit-text-size-adjust:100%}
+body{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+header{display:flex;align-items:center;gap:6px;padding:6px 8px;padding-top:calc(6px + env(safe-area-inset-top));background:var(--bg2);border-bottom:1px solid var(--bd);flex:none}
+header .ttl{flex:1;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+main{flex:1;min-height:0;position:relative}
+.tab{position:absolute;inset:0;display:none;flex-direction:column;overflow:auto;-webkit-overflow-scrolling:touch}
+.tab.on{display:flex}
+nav{display:flex;background:var(--bg2);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom);flex:none}
+nav button{flex:1;background:none;border:0;color:var(--mut);padding:10px 0;font-size:13px}
+nav button.on{color:var(--ac)}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer}
+.btn{background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:7px 11px;white-space:nowrap;flex:none}
+.btn.on,.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn.dg{color:var(--dg)}
+.btn.sm{padding:5px 9px;font-size:13px}
+.badge.has{background:#e2a84a;color:#000;border-color:#e2a84a;font-weight:700}
+.bar{display:flex;gap:6px;padding:6px 8px;overflow-x:auto;align-items:center;flex:none;background:var(--bg2)}
+.bar::-webkit-scrollbar{display:none}
+select,input[type=text],input[type=number],input[type=password],textarea{font:inherit;font-size:16px;color:var(--fg);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:7px 9px;width:100%;min-width:0}
+textarea{resize:vertical;line-height:1.5}
+.fld{display:flex;flex-direction:column;gap:3px;margin:6px 0;flex:1;min-width:0}
+.fld>span{font-size:12px;color:var(--mut)}
+.fld small{color:var(--mut);font-size:11px}
+.row{display:flex;gap:8px;align-items:flex-end}
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin:10px}
+.card-t{font-weight:700;margin-bottom:4px}
+.chk{display:flex;align-items:center;gap:8px;margin:8px 0}
+.chk input{width:20px;height:20px}
+.hint{color:var(--mut);font-size:12px;margin:4px 0;line-height:1.5}
+.sheet{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .2s}
+.sheet.in{transform:none}
+.sh-head{display:flex;align-items:center;gap:6px;padding:8px;padding-top:calc(8px + env(safe-area-inset-top));background:var(--bg2);border-bottom:1px solid var(--bd);flex:none}
+.sh-title{flex:1;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sh-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:flex-end}
+.menu{background:var(--bg2);width:100%;border-radius:14px 14px 0 0;padding:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom));max-height:85vh;overflow:auto}
+.menu-t{color:var(--mut);font-size:13px;padding:6px 10px}
+.mi{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--bd);padding:13px 12px;font-size:16px}
+.mi.danger{color:var(--dg)}
+.mi.cancel{text-align:center;color:var(--mut);border:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px}
+.grid .mi{border:1px solid var(--bd);border-radius:10px;text-align:center;padding:12px 4px;font-size:14px;background:var(--bg3)}
+.cmds{border:1px solid var(--bd);border-radius:8px;overflow:hidden;background:var(--bg)}
+.cmd{padding:8px;border-bottom:1px solid var(--bd);font-size:14px;display:flex;gap:6px;align-items:flex-start;min-height:36px}
+.cmd .tg{flex:none;font-size:11px;padding:1px 6px;border-radius:4px;color:#fff;margin-top:2px}
+.cmd .sm{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap;word-break:break-all}
+.cmd.br{color:var(--mut);font-size:13px;min-height:0;padding-top:5px;padding-bottom:5px}
+.cmd.add{color:var(--ac)}
+.cmd:active{background:var(--bg3)}
+#mapWrap{flex:1;min-height:150px;position:relative;overflow:hidden}
+#mapCv{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#palWrap{height:30vh;overflow:auto;background:#0c0c10;flex:none;-webkit-overflow-scrolling:touch}
+#palWrap.range{touch-action:none}
+#palCv{display:block;-webkit-touch-callout:none}
+.toast{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top));transform:translateX(-50%);background:#000d;color:#fff;padding:9px 16px;border-radius:20px;z-index:200;font-size:14px;max-width:92vw;pointer-events:none;text-align:center}
+.thumb{width:52px;height:52px;object-fit:contain;background:repeating-conic-gradient(#333 0 25%,#222 0 50%) 0 0/12px 12px;border-radius:6px;image-rendering:pixelated;flex:none}
+.list-row{display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd)}
+.seg{display:flex;border:1px solid var(--bd);border-radius:8px;overflow:hidden;flex:none}
+.seg button{background:var(--bg3);border:0;padding:7px 10px}
+.seg button.on{background:var(--ac);color:#fff}
+.ptabs{display:flex;gap:6px;overflow-x:auto;padding:4px 10px}
+canvas{image-rendering:pixelated}
+</style>
+</head>
+<body>
+<script>
+'use strict';
+const NS='rpgmk:'+location.pathname.replace(/[^/]*$/,'');
+const $=s=>document.querySelector(s);
+const uid=()=>Math.random().toString(36).slice(2,9);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const mod=(a,n)=>((a%n)+n)%n;
+const pad=n=>String(n).padStart(4,'0'),pad3=n=>String(n).padStart(3,'0');
+const DIRN=['下','左','右','上'];
+const stamp=()=>{const d=new Date(),z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}`};
+
+/* ===== DOMヘルパ ===== */
+function h(t,a,...ch){
+  const e=document.createElement(t);
+  for(const c of ch.flat(9)){if(c==null||c===false)continue;e.append(c instanceof Node?c:document.createTextNode(String(c)))}
+  if(a)for(const k in a){const v=a[k];if(v==null||v===false)continue;
+    if(k==='class')e.className=v;else if(k==='style')e.style.cssText=v;
+    else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);
+    else if(k==='value'||k==='checked')e[k]=v;else e.setAttribute(k,v===true?'':v)}
+  return e;
+}
+const btn=(l,fn,cls)=>h('button',{class:'btn '+(cls||''),onclick:fn},l);
+const card=(t,...ch)=>h('div',{class:'card'},t?h('div',{class:'card-t'},t):null,...ch);
+let toastEl=null,toastT=null;
+function toast(msg,ms=2200){if(!toastEl)toastEl=h('div',{class:'toast'});if(!toastEl.isConnected)document.body.append(toastEl);toastEl.textContent=msg;toastEl.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>toastEl.style.display='none',ms)}
+function field(label,input,hint){return h('label',{class:'fld'},label?h('span',null,label):null,input,hint?h('small',null,hint):null)}
+function fText(label,o,k,opt={}){const i=h('input',{type:'text',value:o[k]??'',placeholder:opt.ph||'',oninput:()=>{o[k]=i.value;changed();opt.on&&opt.on()}});return field(label,i,opt.hint)}
+function fNum(label,o,k,opt={}){const i=h('input',{type:'number',inputmode:'numeric',value:o[k]??0,oninput:()=>{let v=parseInt(i.value,10);if(isNaN(v))return;if(opt.min!=null)v=Math.max(opt.min,v);if(opt.max!=null)v=Math.min(opt.max,v);o[k]=v;changed();opt.on&&opt.on()}});return field(label,i,opt.hint)}
+function fArea(label,o,k,opt={}){const i=h('textarea',{rows:opt.rows||4,oninput:()=>{o[k]=i.value;changed()}});i.value=o[k]??'';const f=field(label,i,opt.hint);f._input=i;return f}
+function fSel(label,o,k,opts,opt={}){const s=h('select',{onchange:()=>{const v=s.value;o[k]=opt.num?+v:opt.bool?v==='true':v;changed();opt.on&&opt.on()}},opts.map(([v,l])=>h('option',{value:String(v)},l)));s.value=String(o[k]??'');return field(label,s,opt.hint)}
+function fChk(label,o,k,opt={}){const i=h('input',{type:'checkbox',checked:!!o[k],onchange:()=>{o[k]=i.checked;changed();opt.on&&opt.on()}});return h('label',{class:'chk'},i,label)}
+function insertAt(ta,s){const a=ta.selectionStart??ta.value.length,b=ta.selectionEnd??a;ta.value=ta.value.slice(0,a)+s+ta.value.slice(b);ta.selectionStart=ta.selectionEnd=a+s.length;ta.dispatchEvent(new Event('input'));ta.focus()}
+function sheet(title,render,opts={}){
+  const el=h('div',{class:'sheet'}),body=h('div',{class:'sh-body'});
+  const api={el,body,close,rerender(){const st=body.scrollTop;body.innerHTML='';render(body,api);body.scrollTop=st}};
+  const head=h('div',{class:'sh-head'},h('button',{class:'btn sm',onclick:()=>close()},opts.back||'‹ 戻る'),h('div',{class:'sh-title'},title),...(opts.actions||[]).map(([l,fn,cls])=>btn(l,()=>fn(api),'sm '+(cls||'pri'))));
+  el.append(head,body);document.body.append(el);requestAnimationFrame(()=>el.classList.add('in'));
+  let closed=false;
+  function close(){if(closed)return;closed=true;el.classList.remove('in');setTimeout(()=>el.remove(),220);opts.onClose&&opts.onClose()}
+  render(body,api);return api;
+}
+function actionMenu(items,title){
+  const ov=h('div',{class:'ov',onclick:e=>{if(e.target===ov)ov.remove()}});
+  ov.append(h('div',{class:'menu'},title?h('div',{class:'menu-t'},title):null,
+    items.filter(Boolean).map(([l,fn,cls])=>h('button',{class:'mi '+(cls||''),onclick:()=>{ov.remove();fn()}},l)),
+    h('button',{class:'mi cancel',onclick:()=>ov.remove()},'キャンセル')));
+  document.body.append(ov);
+}
+function pickFiles(multiple,cb){const i=h('input',{type:'file',accept:'image/*',multiple,style:'display:none'});i.onchange=()=>{const fs=[...i.files];i.remove();if(fs.length)cb(fs)};document.body.append(i);i.click()}
+
+/* ===== 保存 ===== */
+function lsGet(k,d){try{const v=localStorage.getItem(NS+k);return v==null?d:JSON.parse(v)}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(NS+k,JSON.stringify(v))}catch(e){toast('端末の保存容量が不足しています',4000)}}
+let _db=null;
+function db(){return _db||(_db=new Promise((res,rej)=>{const r=indexedDB.open(NS,1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))}
+function idbReq(mode,fn){return db().then(d=>new Promise((res,rej)=>{const tx=d.transaction('files',mode);const rq=fn(tx.objectStore('files'));tx.oncomplete=()=>res(rq.result);tx.onerror=()=>rej(tx.error)}))}
+const idbGet=k=>idbReq('readonly',s=>s.get(k)).catch(()=>null);
+const idbPut=(k,v)=>idbReq('readwrite',s=>s.put(v,k));
+const idbDel=k=>idbReq('readwrite',s=>s.delete(k)).catch(()=>{});
+const idbClear=()=>idbReq('readwrite',s=>s.clear()).catch(()=>{});
+
+let G=null,base={h:null,sha:null},pending=new Set(),deleted=new Set(),CLIP=null,curTab='map';
+function pretty(o){return JSON.stringify(o,null,1).replace(/\[[-\d,\s]*\]/g,m=>m.includes('\n')?m.replace(/\s+/g,''):m)}
+function hash(s){let a=0xdeadbeef,b=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return(4294967296*(2097151&b)+(a>>>0)).toString(36)}
+let saveT=null;
+function changed(){clearTimeout(saveT);saveT=setTimeout(()=>{saveDraft();updateBadge()},500)}
+function saveDraft(){clearTimeout(saveT);if(!G)return;lsSet('draft',G);lsSet('base',base);lsSet('pending',[...pending]);lsSet('deleted',[...deleted])}
+const jsonDirty=()=>hash(pretty(G))!==base.h;
+const changeCount=()=>(jsonDirty()?1:0)+pending.size+deleted.size;
+function updateBadge(){const b=$('#badge');if(!b||!G)return;const n=changeCount();b.textContent=n?'☁ '+n:'☁';b.classList.toggle('has',n>0)}
+addEventListener('pagehide',saveDraft);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)saveDraft()});
+
+/* ===== 画像 ===== */
+const imgs={};
+function imgFrom(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=u})}
+async function loadImgAsync(path){
+  const f=await idbGet(path);
+  if(f)return imgFrom(URL.createObjectURL(new Blob([f.buf],{type:f.type||'image/png'})));
+  let im=await imgFrom(path+'?t='+Date.now());
+  if(!im&&gitReady()){try{const r=await api('/contents/'+encPath(repoPath(path))+'?ref='+encodeURIComponent(gitCfg().branch),{accept:'application/vnd.github.raw+json',raw:true});im=await imgFrom(URL.createObjectURL(await r.blob()))}catch(e){}}
+  return im;
+}
+function getImg(path){if(!path)return null;const e=imgs[path];if(e)return e.img;const ent=imgs[path]={img:null,p:null};ent.p=loadImgAsync(path).then(im=>{ent.img=im;reqDraw();drawPalette();return im});return null}
+function imgAsync(path){if(!path)return Promise.resolve(null);getImg(path);return imgs[path].p}
+function thumb(path){const im=h('img',{class:'thumb'});imgAsync(path).then(i=>{if(i)im.src=i.src});return im}
+async function storeFile(f,p){const buf=await f.arrayBuffer();await idbPut(p,{buf,type:f.type||'image/png'});pending.add(p);deleted.delete(p);delete imgs[p];saveDraft();updateBadge()}
+function canvasBlob(c){return new Promise(r=>c.toBlob(r,'image/png'))}
+async function putCanvas(c,p){const b=await canvasBlob(c);await idbPut(p,{buf:await b.arrayBuffer(),type:'image/png'});pending.add(p);delete imgs[p]}
+const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces].map(a=>a.image);
+function uniquePath(dir,f){
+  const ext=((f.name.match(/\.([a-z0-9]+)$/i)||[])[1]||'png').toLowerCase();
+  let b=f.name.replace(/\.[^.]+$/,'').replace(/[^\w\-]+/g,'_').replace(/^_+|_+$/g,'');if(!b)b=uid();
+  const used=new Set(allAssetPaths());let p=`assets/${dir}/${b}.${ext}`,n=2;
+  while(used.has(p))p=`assets/${dir}/${b}_${n++}.${ext}`;return p;
+}
+
+/* ===== GitHub ===== */
+function gitCfg(){return Object.assign({owner:'',repo:'',branch:'main',dir:'',token:''},lsGet('git',{}))}
+function gitReady(){const g=gitCfg();return !!(g.owner&&g.repo&&g.token)}
+function guessGit(){const g=gitCfg();if(g.owner)return;const m=location.hostname.match(/^([^.]+)\.github\.io$/i);if(!m)return;const seg=location.pathname.split('/').filter(Boolean);g.owner=m[1];g.repo=seg.length>1?seg[0]:m[1]+'.github.io';lsSet('git',g)}
+function repoPath(p){const d=(gitCfg().dir||'').replace(/^\/+|\/+$/g,'');return d?d+'/'+p:p}
+const encPath=p=>p.split('/').map(encodeURIComponent).join('/');
+async function api(path,opt={}){
+  const g=gitCfg();
+  const r=await fetch(`https://api.github.com/repos/${g.owner}/${g.repo}${path}`,{method:opt.method||'GET',cache:'no-store',
+    headers:Object.assign({Authorization:'Bearer '+g.token,Accept:opt.accept||'application/vnd.github+json'},opt.body?{'Content-Type':'application/json'}:{}),
+    body:opt.body?JSON.stringify(opt.body):undefined});
+  if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}const e=new Error(r.status+' '+m);e.status=r.status;throw e}
+  return opt.raw?r:r.json();
+}
+function errMsg(e){const s=e.status;
+  if(s===401)return'トークンが無効です';
+  if(s===403)return'権限がありません（トークンの Contents 権限を確認）';
+  if(s===404)return'リポジトリ/ブランチが見つかりません（名前・トークンの対象リポジトリを確認）';
+  if(s===409)return'リポジトリが空です。GitHubで「Add a README」付きで作り直してください';
+  if(s===422)return'競合しました。もう一度試してください';
+  return e.message||String(e)}
+function b64(buf){const u=new Uint8Array(buf);let s='';for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
+async function headInfo(){
+  const g=gitCfg();const ref=await api('/git/ref/heads/'+g.branch);
+  const head=await api('/git/commits/'+ref.object.sha);
+  const tr=await api('/git/trees/'+head.tree.sha+'?recursive=1');
+  return{headSha:ref.object.sha,treeSha:head.tree.sha,files:new Map(tr.tree.filter(e=>e.type==='blob').map(e=>[e.path,e.sha]))};
+}
+async function pull(){
+  const hi=await headInfo();const sha=hi.files.get(repoPath('data/game.json'));if(!sha)return false;
+  const r=await api('/git/blobs/'+sha,{accept:'application/vnd.github.raw+json',raw:true});
+  G=normalize(JSON.parse(await r.text()));base={h:hash(pretty(G)),sha};
+  pending.clear();deleted.clear();await idbClear();for(const k in imgs)delete imgs[k];
+  saveDraft();return true;
+}
+let gitBusy=false;
+async function commitPush(msg){
+  if(gitBusy)throw new Error('処理中です');gitBusy=true;
+  try{
+    const hi=await headInfo(),jp=repoPath('data/game.json'),remote=hi.files.get(jp)||null;
+    if(remote&&remote!==base.sha&&!confirm('GitHub上の game.json が他の場所で更新されています。\nこの端末の内容で上書きしますか？\n（キャンセル → Gitタブの「読み込み」で最新を取得）'))return null;
+    const text=pretty(G),items=[];let newSha=base.sha;
+    if(hash(text)!==base.h||remote!==base.sha||!remote){
+      const b=await api('/git/blobs',{method:'POST',body:{content:text,encoding:'utf-8'}});newSha=b.sha;
+      if(b.sha!==remote)items.push({path:jp,mode:'100644',type:'blob',sha:b.sha});
+    }
+    for(const p of pending){const f=await idbGet(p);if(!f)continue;
+      const b=await api('/git/blobs',{method:'POST',body:{content:b64(f.buf),encoding:'base64'}});
+      if(hi.files.get(repoPath(p))!==b.sha)items.push({path:repoPath(p),mode:'100644',type:'blob',sha:b.sha})}
+    for(const p of deleted)if(!pending.has(p)&&hi.files.has(repoPath(p)))items.push({path:repoPath(p),mode:'100644',type:'blob',sha:null});
+    if(items.length){
+      const t=await api('/git/trees',{method:'POST',body:{base_tree:hi.treeSha,tree:items}});
+      const c=await api('/git/commits',{method:'POST',body:{message:msg,tree:t.sha,parents:[hi.headSha]}});
+      await api('/git/refs/heads/'+gitCfg().branch,{method:'PATCH',body:{sha:c.sha,force:false}});
+    }
+    base={h:hash(text),sha:newSha};pending.clear();deleted.clear();saveDraft();return items.length;
+  }finally{gitBusy=false;updateBadge()}
+}
+async function runPush(msg){
+  if(!gitReady()){toast('Gitタブで接続設定をしてください');showTab('git');return}
+  toast('プッシュ中…',60000);
+  try{const n=await commitPush(msg||('更新 '+stamp()));toast(n===null?'中止しました':n?`プッシュ完了（${n}ファイル）`:'変更はありません')}
+  catch(e){toast('失敗: '+errMsg(e),5000)}
+  if(curTab==='git')renderGit();
+}
+async function runPull(){
+  if(!gitReady()){toast('接続設定をしてください');return}
+  if(changeCount()>0&&!confirm('未プッシュの変更は破棄されます。読み込みますか？'))return;
+  toast('読み込み中…',60000);
+  try{const ok=await pull();if(!ok){toast('data/game.json がまだありません。今の内容をプッシュすると作成されます',4500);return}afterLoad();toast('読み込みました')}
+  catch(e){toast('失敗: '+errMsg(e),5000)}
+}
+function testPlay(mapId,x,y){saveDraft();const q=mapId!=null?`&map=${mapId}&x=${x}&y=${y}`:'';window.open('index.html?preview=1'+q,'_blank')}
+
+/* ===== データ構造 ===== */
+const newPage=()=>({cond:[],image:null,trigger:'action',priority:'below',through:false,cmds:[]});
+function layersFor(w,h){return[new Array(w*h).fill(0),new Array(w*h).fill(-1),new Array(w*h).fill(-1)]}
+function normalize(g){
+  g.version=g.version||1;g.title=g.title??'ゲーム';g.tileSize=g.tileSize||32;
+  for(const k of['tilesets','charsets','faces','items','maps','switches','variables'])g[k]=g[k]||[];
+  while(g.switches.length<20)g.switches.push('');while(g.variables.length<20)g.variables.push('');
+  for(const t of g.tilesets)t.blocked=t.blocked||[];
+  if(!g.maps.length)g.maps.push({id:1,name:'MAP001',w:20,h:15,tileset:g.tilesets[0]?.id||'',layers:layersFor(20,15),events:[]});
+  for(const m of g.maps){
+    const n=m.w*m.h;m.layers=m.layers||[];
+    for(let l=0;l<3;l++){const L=m.layers[l]||[];if(L.length!==n){const a=new Array(n).fill(l===0?0:-1);for(let i=0;i<Math.min(n,L.length);i++)a[i]=L[i];m.layers[l]=a}}
+    m.events=m.events||[];
+    for(const e of m.events){e.pages=e.pages&&e.pages.length?e.pages:[newPage()];
+      for(const p of e.pages){p.cond=p.cond||[];p.cmds=p.cmds||[];p.trigger=p.trigger||'action';p.priority=p.priority||'same'}}
+  }
+  g.player=Object.assign({charset:g.charsets[0]?.id||'',map:g.maps[0].id,x:0,y:0,dir:0},g.player||{});
+  return g;
+}
+function charSheet(body,skin,hair){
+  const c=document.createElement('canvas');c.width=96;c.height=128;const x=c.getContext('2d');
+  for(let d=0;d<4;d++)for(let f=0;f<3;f++){
+    const ox=f*32,oy=d*32,st=f===0?-2:f===2?2:0;
+    x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(ox+16,oy+30,8,2.5,0,0,7);x.fill();
+    x.fillStyle='#333';
+    if(d===0||d===3){x.fillRect(ox+11,oy+22+(st<0?-1:0),4,7);x.fillRect(ox+17,oy+22+(st>0?-1:0),4,7)}
+    else{x.fillRect(ox+14+st,oy+22,4,7);x.fillRect(ox+14-st,oy+22,4,7)}
+    x.fillStyle=body;x.fillRect(ox+9,oy+14,14,10);
+    x.fillStyle=skin;x.fillRect(ox+9,oy+3,14,12);
+    x.fillStyle=hair;x.fillRect(ox+8,oy+1,16,5);
+    if(d===3)x.fillRect(ox+8,oy+1,16,12);if(d===1)x.fillRect(ox+18,oy+1,6,10);if(d===2)x.fillRect(ox+8,oy+1,6,10);
+    x.fillStyle='#222';
+    if(d===0){x.fillRect(ox+12,oy+9,2,3);x.fillRect(ox+18,oy+9,2,3)}if(d===1)x.fillRect(ox+11,oy+9,2,3);if(d===2)x.fillRect(ox+19,oy+9,2,3);
+  }
+  return c;
+}
+async function genDefaults(){
+  const ts=32,c=document.createElement('canvas');c.width=ts*8;c.height=ts*2;const x=c.getContext('2d');
+  const R=i=>[(i%8)*ts,Math.floor(i/8)*ts];
+  const rect=(i,col)=>{const[a,b]=R(i);x.fillStyle=col;x.fillRect(a,b,ts,ts)};
+  const dots=(i,col,n,seed,sz=2)=>{const[a,b]=R(i);x.fillStyle=col;let s=seed*977;for(let k=0;k<n;k++){s=(s*9301+49297)%233280;const px=s%(ts-sz);s=(s*9301+49297)%233280;x.fillRect(a+px,b+s%(ts-sz),sz,sz)}};
+  const at=(i,fn)=>{const[a,b]=R(i);fn(a,b)};
+  rect(0,'#5fa84a');dots(0,'#4b8f3a',18,1);
+  rect(1,'#5fa84a');dots(1,'#4b8f3a',10,2);dots(1,'#f6e05e',5,3,3);dots(1,'#f687b3',5,4,3);
+  rect(2,'#c2a36b');dots(2,'#a88a55',16,5);
+  rect(3,'#3b82c4');at(3,(a,b)=>{x.fillStyle='#7fb8e8';for(let k=0;k<3;k++)x.fillRect(a+3+k*9,b+7+k*8,10,2)});
+  rect(4,'#7a7a85');at(4,(a,b)=>{x.fillStyle='#5c5c66';for(let r=0;r<4;r++){x.fillRect(a,b+r*8+7,ts,1);for(let k=0;k<2;k++)x.fillRect(a+(r%2)*8+k*16,b+r*8,1,8)}});
+  rect(5,'#b07a45');at(5,(a,b)=>{x.fillStyle='#8f5f33';for(let r=0;r<4;r++)x.fillRect(a,b+r*8+7,ts,1)});
+  at(6,(a,b)=>{x.fillStyle='#6b4423';x.fillRect(a+13,b+20,6,12);x.fillStyle='#2f7a35';x.beginPath();x.arc(a+16,b+13,12,0,7);x.fill();x.fillStyle='#3f9a45';x.beginPath();x.arc(a+12,b+10,5,0,7);x.fill()});
+  at(7,(a,b)=>{x.fillStyle='#3f8f3a';x.beginPath();x.arc(a+10,b+21,8,0,7);x.arc(a+22,b+21,8,0,7);x.fill();x.beginPath();x.arc(a+16,b+15,8,0,7);x.fill()});
+  at(8,(a,b)=>{x.fillStyle='#8a8a8a';x.beginPath();x.ellipse(a+16,b+20,12,9,0,0,7);x.fill();x.fillStyle='#a5a5a5';x.beginPath();x.ellipse(a+12,b+16,5,3,0,0,7);x.fill()});
+  rect(9,'#e6d29a');dots(9,'#cdb87d',14,6);
+  at(10,(a,b)=>{x.fillStyle='#8f5a2a';x.fillRect(a+5,b+10,22,16);x.fillStyle='#d6a23a';x.fillRect(a+5,b+15,22,2);x.fillRect(a+14,b+15,4,6)});
+  at(11,(a,b)=>{x.fillStyle='#5a3515';x.fillRect(a+5,b+6,22,8);x.fillStyle='#8f5a2a';x.fillRect(a+5,b+14,22,12);x.fillStyle='#d6a23a';x.fillRect(a+5,b+14,22,2)});
+  at(12,(a,b)=>{x.fillStyle='#7a7a85';x.fillRect(a,b,ts,ts);x.fillStyle='#6b4423';x.fillRect(a+6,b+4,20,28);x.fillStyle='#d6a23a';x.fillRect(a+21,b+18,3,3)});
+  rect(13,'#3b82c4');at(13,(a,b)=>{x.fillStyle='#a0703f';x.fillRect(a,b+4,ts,24);x.fillStyle='#7a5530';for(let k=0;k<4;k++)x.fillRect(a+k*8+7,b+4,1,24)});
+  rect(14,'#b04a3a');at(14,(a,b)=>{x.fillStyle='#8a3528';for(let r=0;r<4;r++)x.fillRect(a,b+r*8+6,ts,2)});
+  at(15,(a,b)=>{x.fillStyle='#6b4423';x.fillRect(a+14,b+16,4,14);x.fillStyle='#c2925a';x.fillRect(a+5,b+6,22,12);x.fillStyle='#6b4423';x.fillRect(a+8,b+10,16,1);x.fillRect(a+8,b+13,12,1)});
+  await putCanvas(c,'assets/tilesets/default.png');
+  await putCanvas(charSheet('#3a6fd8','#f2c9a0','#3b2a1a'),'assets/characters/hero.png');
+  await putCanvas(charSheet('#c84a4a','#f2c9a0','#d9b25a'),'assets/characters/npc.png');
+}
+function defaultGame(){
+  const w=20,hh=15,L=layersFor(w,hh),set=(l,x,y,v)=>{L[l][y*w+x]=v};
+  for(let x=0;x<w;x++){set(1,x,0,6);set(1,x,hh-1,6)}for(let y=0;y<hh;y++){set(1,0,y,6);set(1,w-1,y,6)}
+  for(let x=1;x<w-1;x++)set(0,x,7,2);
+  for(let y=2;y<5;y++)for(let x=13;x<17;x++)set(0,x,y,3);
+  set(0,4,3,1);set(0,5,4,1);set(0,9,11,1);set(1,8,3,7);set(1,3,11,8);
+  const T=(name,text)=>({t:'text',face:'',name,text});
+  return normalize({version:1,title:'新しいゲーム',tileSize:32,
+    tilesets:[{id:'default',name:'デフォルト',image:'assets/tilesets/default.png',blocked:[3,4,6,7,8,14,15]}],
+    charsets:[{id:'hero',name:'主人公',image:'assets/characters/hero.png'},{id:'npc',name:'村人',image:'assets/characters/npc.png'}],
+    faces:[],items:[{id:1,name:'古い鍵',desc:'どこかの扉の鍵'}],
+    switches:['宝箱の場所を聞いた'],variables:['話した回数'],
+    player:{charset:'hero',map:1,x:4,y:7,dir:0},
+    maps:[{id:1,name:'はじまりの村',w,h:hh,tileset:'default',layers:L,events:[
+      {id:1,name:'村人',x:9,y:5,pages:[
+        {cond:[],image:{charset:'npc',dir:0},trigger:'action',priority:'same',through:false,cmds:[
+          {t:'var',id:0,op:'add',val:1},
+          T('村人','やあ、旅の人！[w=300]\nここは はじまりの村だよ。'),
+          T('村人','話しかけてくれたのは [v=1] 回目だね。'),
+          {t:'choice',options:[{label:'宝箱はどこ？',cmds:[T('村人','池のそばにあるよ。'),{t:'sw',id:0,val:true}]},{label:'さようなら',cmds:[T('村人','[shake]気をつけてね！')]}]}]},
+        {cond:[{type:'sw',id:0,val:true}],image:{charset:'npc',dir:0},trigger:'action',priority:'same',through:false,cmds:[T('村人','宝箱は池のそばだよ。')]}]},
+      {id:2,name:'宝箱',x:12,y:3,pages:[
+        {cond:[],image:{tile:10},trigger:'action',priority:'same',through:false,cmds:[T('','宝箱を開けた！\n古い鍵を手に入れた。'),{t:'item',id:1,n:1},{t:'self',key:'A',val:true}]},
+        {cond:[{type:'self',key:'A',val:true}],image:{tile:11},trigger:'action',priority:'same',through:false,cmds:[T('','からっぽだ。')]}]}
+    ]}]});
+}
+async function newProject(){pending.clear();deleted.clear();await idbClear();for(const k in imgs)delete imgs[k];await genDefaults();G=defaultGame();base={h:null,sha:null};saveDraft()}
+
+/* ===== 名前 ===== */
+const swName=i=>`[${pad(i+1)}]${G.switches[i]||''}`,varName=i=>`[${pad(i+1)}]${G.variables[i]||''}`;
+const itemName=id=>(G.items.find(i=>i.id===id)||{name:'?'}).name,mapName=id=>(G.maps.find(m=>m.id===id)||{name:'?'}).name;
+const swOpts=()=>G.switches.map((n,i)=>[i,pad(i+1)+' '+(n||'')]),varOpts=()=>G.variables.map((n,i)=>[i,pad(i+1)+' '+(n||'')]);
+const itemOpts=()=>G.items.map(i=>[i.id,pad3(i.id)+' '+i.name]),mapOpts=()=>G.maps.map(m=>[m.id,pad3(m.id)+' '+m.name]);
+const BOOL=[[true,'ON'],[false,'OFF']];
+
+/* ===== マップエディタ ===== */
+const ME={mapId:null,tool:'pen',layer:0,brush:{x:0,y:0,w:1,h:1},zoom:1,ox:0,oy:0,grid:true,range:false,undo:[],redo:[],needFit:true};
+let mapCv=null,palCv=null,stroke=null,gest=null,drawQ=false;
+const ptrs=new Map();
+const curMap=()=>G.maps.find(m=>m.id===ME.mapId)||G.maps[0];
+const tilesetOf=m=>G.tilesets.find(t=>t.id===m.tileset)||G.tilesets[0]||null;
+function tsCols(m){const t=tilesetOf(m),im=t&&getImg(t.image);return im?Math.floor(im.width/G.tileSize):0}
+const inMap=(m,t)=>t.x>=0&&t.y>=0&&t.x<m.w&&t.y<m.h;
+const evAt=(m,x,y)=>m.events.find(e=>e.x===x&&e.y===y);
+const palS=()=>G.tileSize*Math.max(1,Math.round(40/G.tileSize));
+function reqDraw(){if(drawQ)return;drawQ=true;requestAnimationFrame(()=>{drawQ=false;drawMap()})}
+function drawTile(c,im,v,x,y){const ts=G.tileSize,cols=Math.floor(im.width/ts);if(cols)c.drawImage(im,(v%cols)*ts,Math.floor(v/cols)*ts,ts,ts,x,y,ts,ts)}
+function drawEvMarker(c,e,tim){
+  const ts=G.tileSize,x=e.x*ts,y=e.y*ts,im0=e.pages[0]&&e.pages[0].image;let drawn=false;
+  if(im0){if(im0.tile!=null&&tim){drawTile(c,tim,im0.tile,x,y);drawn=true}
+    else if(im0.charset){const cs=G.charsets.find(q=>q.id===im0.charset),ci=cs&&getImg(cs.image);
+      if(ci){const fw=ci.width/3,fh=ci.height/4;c.drawImage(ci,fw,(im0.dir||0)*fh,fw,fh,x+ts/2-fw/2,y+ts-fh,fw,fh);drawn=true}}}
+  const lw=ts/16;c.fillStyle=drawn?'rgba(255,200,40,.12)':'rgba(255,200,40,.4)';c.fillRect(x,y,ts,ts);
+  c.strokeStyle='rgba(255,200,40,.95)';c.lineWidth=lw;c.strokeRect(x+lw/2,y+lw/2,ts-lw,ts-lw);
+}
+function drawMapContent(c,m,im,x0,y0,x1,y1,o={}){
+  const ts=G.tileSize;c.fillStyle='#000';c.fillRect(0,0,m.w*ts,m.h*ts);
+  if(im){for(let l=0;l<3;l++){const L=m.layers[l];c.globalAlpha=(o.dimAbove!=null&&l>o.dimAbove)?0.4:1;
+    for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const v=L[y*m.w+x];if(v>=0)drawTile(c,im,v,x*ts,y*ts)}}c.globalAlpha=1}
+  if(o.events)for(const e of m.events)drawEvMarker(c,e,im);
+  if(o.grid){c.strokeStyle='rgba(255,255,255,.15)';c.lineWidth=o.gridW;c.beginPath();
+    for(let x=x0;x<=x1;x++){c.moveTo(x*ts,y0*ts);c.lineTo(x*ts,y1*ts)}for(let y=y0;y<=y1;y++){c.moveTo(x0*ts,y*ts);c.lineTo(x1*ts,y*ts)}c.stroke()}
+}
+const rectOf=(a,b)=>({x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),w:Math.abs(a.x-b.x)+1,h:Math.abs(a.y-b.y)+1});
+function drawMap(){
+  if(!mapCv||curTab!=='map'||!G)return;
+  const dpr=devicePixelRatio||1,W=mapCv.clientWidth,H=mapCv.clientHeight;if(!W)return;
+  if(ME.needFit)fitMap();
+  if(mapCv.width!==Math.round(W*dpr)||mapCv.height!==Math.round(H*dpr)){mapCv.width=Math.round(W*dpr);mapCv.height=Math.round(H*dpr)}
+  const c=mapCv.getContext('2d');c.setTransform(1,0,0,1,0,0);c.fillStyle='#0b0b0f';c.fillRect(0,0,mapCv.width,mapCv.height);
+  const m=curMap();if(!m)return;
+  const ts=G.tileSize,z=ME.zoom;c.setTransform(dpr*z,0,0,dpr*z,dpr*ME.ox,dpr*ME.oy);c.imageSmoothingEnabled=false;
+  const t=tilesetOf(m),im=t&&getImg(t.image);
+  const x0=Math.max(0,Math.floor(-ME.ox/z/ts)),y0=Math.max(0,Math.floor(-ME.oy/z/ts)),x1=Math.min(m.w,Math.ceil((W-ME.ox)/z/ts)),y1=Math.min(m.h,Math.ceil((H-ME.oy)/z/ts));
+  drawMapContent(c,m,im,x0,y0,x1,y1,{events:true,grid:ME.grid,gridW:1/(z*dpr),dimAbove:ME.tool==='event'?null:ME.layer});
+  const P=G.player;
+  if(P.map===m.id){c.strokeStyle='#4af';c.lineWidth=ts/12;c.strokeRect(P.x*ts+2,P.y*ts+2,ts-4,ts-4);c.fillStyle='#4af';c.font=`bold ${ts*.45}px sans-serif`;c.fillText('S',P.x*ts+ts*.34,P.y*ts+ts*.66)}
+  if(stroke&&stroke.tool==='rect'){const r=rectOf(stroke.t0,stroke.t1);c.fillStyle='rgba(91,140,255,.35)';c.fillRect(r.x*ts,r.y*ts,r.w*ts,r.h*ts)}
+  if(stroke&&stroke.tool==='event'&&stroke.ev){c.strokeStyle='#fff';c.lineWidth=ts/10;c.strokeRect(stroke.t1.x*ts,stroke.t1.y*ts,ts,ts)}
+  c.strokeStyle='rgba(255,255,255,.5)';c.lineWidth=1/(z*dpr);c.strokeRect(0,0,m.w*ts,m.h*ts);
+}
+function fitMap(){
+  const m=curMap();if(!mapCv||!m)return;const W=mapCv.clientWidth,H=mapCv.clientHeight;if(!W||!H){ME.needFit=true;return}
+  const ts=G.tileSize;let z=Math.min(W/(m.w*ts),H/(m.h*ts))*.96;z=Math.max(z,Math.min(W,H)/(12*ts));ME.zoom=clamp(z,.15,4);
+  ME.ox=Math.min(8,(W-m.w*ts*ME.zoom)/2);ME.oy=Math.min(8,(H-m.h*ts*ME.zoom)/2);ME.needFit=false;
+}
+function drawTileset(cv,im,S,overlay){
+  const ts=G.tileSize,cols=Math.floor(im.width/ts),rows=Math.floor(im.height/ts),dpr=devicePixelRatio||1;
+  cv.width=cols*S*dpr;cv.height=rows*S*dpr;cv.style.width=cols*S+'px';cv.style.height=rows*S+'px';
+  const c=cv.getContext('2d');c.setTransform(1,0,0,1,0,0);
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){c.fillStyle=(x+y)%2?'#2a2a32':'#1e1e24';c.fillRect(x*S*dpr,y*S*dpr,S*dpr,S*dpr)}
+  c.imageSmoothingEnabled=false;c.drawImage(im,0,0,cols*ts,rows*ts,0,0,cv.width,cv.height);
+  c.setTransform(dpr,0,0,dpr,0,0);overlay&&overlay(c,cols,rows);return{cols,rows};
+}
+function drawPalette(){
+  if(!palCv||!G)return;const t=tilesetOf(curMap()),im=t&&getImg(t.image);
+  if(!im){palCv.width=0;palCv.style.width='0';return}
+  const S=palS();
+  drawTileset(palCv,im,S,c=>{const b=ME.brush;c.strokeStyle='#fff';c.lineWidth=2;c.strokeRect(b.x*S+1,b.y*S+1,b.w*S-2,b.h*S-2);c.strokeStyle='#000';c.lineWidth=1;c.strokeRect(b.x*S+3,b.y*S+3,b.w*S-6,b.h*S-6)});
+}
+function brushVal(cols,dx,dy){const b=ME.brush;return(b.y+mod(dy,b.h))*cols+b.x+mod(dx,b.w)}
+function stampTiles(m,t,o){
+  const L=m.layers[ME.layer];if(ME.tool==='erase'){L[t.y*m.w+t.x]=-1;return}
+  const cols=tsCols(m);if(!cols)return;const b=ME.brush;
+  for(let by=0;by<b.h;by++)for(let bx=0;bx<b.w;bx++){const x=t.x+bx,y=t.y+by;if(x<m.w&&y<m.h)L[y*m.w+x]=brushVal(cols,x-o.x,y-o.y)}
+}
+function flood(m,t){
+  const cols=tsCols(m);if(!cols)return;const L=m.layers[ME.layer],tgt=L[t.y*m.w+t.x],seen=new Uint8Array(m.w*m.h),st=[[t.x,t.y]];
+  while(st.length){const[x,y]=st.pop();if(x<0||y<0||x>=m.w||y>=m.h)continue;const i=y*m.w+x;if(seen[i]||L[i]!==tgt)continue;seen[i]=1;L[i]=brushVal(cols,x-t.x,y-t.y);st.push([x+1,y],[x-1,y],[x,y+1],[x,y-1])}
+}
+function pushUndo(m){ME.undo.push({id:m.id,l:m.layers.map(a=>a.slice())});if(ME.undo.length>50)ME.undo.shift();ME.redo.length=0}
+function restoreSnap(s,to){const m=G.maps.find(x=>x.id===s.id);if(!m)return;if(to)to.push({id:m.id,l:m.layers.map(a=>a.slice())});m.layers=s.l;changed();reqDraw()}
+function undo(){const s=ME.undo.pop();if(s)restoreSnap(s,ME.redo)}
+function redo(){const s=ME.redo.pop();if(s)restoreSnap(s,ME.undo)}
+function mapPos(e){const r=mapCv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+function toTile(p){const s=G.tileSize*ME.zoom;return{x:Math.floor((p.x-ME.ox)/s),y:Math.floor((p.y-ME.oy)/s)}}
+function startGest(){const pts=[...ptrs.values()];const mx=pts.reduce((a,p)=>a+p.x,0)/pts.length,my=pts.reduce((a,p)=>a+p.y,0)/pts.length;
+  gest={n:pts.length,m:{x:mx,y:my},d:pts.length>1?Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)||1:1,ox:ME.ox,oy:ME.oy,z:ME.zoom}}
+function moveGest(){const pts=[...ptrs.values()];if(pts.length!==gest.n)return startGest();
+  const mx=pts.reduce((a,p)=>a+p.x,0)/pts.length,my=pts.reduce((a,p)=>a+p.y,0)/pts.length;
+  const d=pts.length>1?Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y):gest.d,z=clamp(gest.z*d/gest.d,.15,6);
+  const wx=(gest.m.x-gest.ox)/gest.z,wy=(gest.m.y-gest.oy)/gest.z;ME.zoom=z;ME.ox=mx-wx*z;ME.oy=my-wy*z;reqDraw()}
+function startStroke(t){
+  const m=curMap();if(!m)return;ME.last=t;const tool=ME.tool;
+  if(tool==='event'){stroke={tool,t0:t,t1:t,ev:evAt(m,t.x,t.y)};reqDraw();return}
+  if(!inMap(m,t))return;
+  if(tool==='pick'){const cols=tsCols(m);let v=-1,l=ME.layer;for(let k=2;k>=0&&v<0;k--){const q=m.layers[k][t.y*m.w+t.x];if(q>=0&&(k===ME.layer||m.layers[ME.layer][t.y*m.w+t.x]<0)){v=q;l=k}}
+    if(v>=0&&cols){ME.brush={x:v%cols,y:Math.floor(v/cols),w:1,h:1};ME.layer=l;ME.tool='pen';refreshTools();drawPalette()}return}
+  pushUndo(m);stroke={tool,t0:t,t1:t};
+  if(tool==='pen'||tool==='erase')stampTiles(m,t,t);
+  else if(tool==='fill'){flood(m,t);stroke=null;changed()}
+  reqDraw();
+}
+function moveStroke(t){if(!stroke||(t.x===stroke.t1.x&&t.y===stroke.t1.y))return;stroke.t1=t;const m=curMap();if((stroke.tool==='pen'||stroke.tool==='erase')&&inMap(m,t))stampTiles(m,t,stroke.t0);reqDraw()}
+function cancelStroke(){const s=stroke;stroke=null;if(s&&s.tool!=='event'){const u=ME.undo.pop();if(u)restoreSnap(u,null)}reqDraw()}
+function endStroke(){
+  const s=stroke;stroke=null;if(!s)return;const m=curMap();
+  if(s.tool==='rect'){const cols=tsCols(m),r=rectOf(s.t0,s.t1),L=m.layers[ME.layer];
+    if(cols)for(let y=Math.max(0,r.y);y<Math.min(m.h,r.y+r.h);y++)for(let x=Math.max(0,r.x);x<Math.min(m.w,r.x+r.w);x++)L[y*m.w+x]=brushVal(cols,x-r.x,y-r.y)}
+  if(s.tool==='event'){
+    const t=s.t1,same=t.x===s.t0.x&&t.y===s.t0.y;
+    if(s.ev){if(!same&&inMap(m,t)&&!evAt(m,t.x,t.y)){s.ev.x=t.x;s.ev.y=t.y;changed()}else if(same)openEvent(m,s.ev)}
+    else if(same&&inMap(m,t))actionMenu([
+      ['🎯 ここに新規イベント',()=>{const ev=newEvent(m,t.x,t.y);changed();reqDraw();openEvent(m,ev)}],
+      ['▶ ここからテストプレイ',()=>testPlay(m.id,t.x,t.y)],
+      ['🚩 ここをプレイヤー開始位置に',()=>{Object.assign(G.player,{map:m.id,x:t.x,y:t.y});changed();reqDraw()}]],`(${t.x}, ${t.y})`);
+    reqDraw();return;
+  }
+  changed();reqDraw();
+}
+function bindMap(){
+  mapCv.addEventListener('pointerdown',e=>{e.preventDefault();mapCv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,mapPos(e));
+    if(ptrs.size===2){if(stroke)cancelStroke();startGest();return}
+    if(ptrs.size>2)return;
+    if(ME.tool==='hand'){startGest();return}
+    startStroke(toTile(mapPos(e)))});
+  mapCv.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,mapPos(e));if(gest)moveGest();else if(stroke)moveStroke(toTile(mapPos(e)))});
+  const up=e=>{if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);
+    if(gest){if(ptrs.size===0)gest=null;else startGest()}
+    else if(stroke){if(e.type==='pointercancel')cancelStroke();else endStroke()}};
+  mapCv.addEventListener('pointerup',up);mapCv.addEventListener('pointercancel',up);
+}
+function bindPal(){
+  let st=null;
+  const pos=e=>{const r=palCv.getBoundingClientRect(),S=palS();return{x:Math.floor((e.clientX-r.left)/S),y:Math.floor((e.clientY-r.top)/S),cx:e.clientX,cy:e.clientY}};
+  palCv.addEventListener('pointerdown',e=>{st=pos(e);if(ME.range){e.preventDefault();palCv.setPointerCapture(e.pointerId);setBrush(st,st)}});
+  palCv.addEventListener('pointermove',e=>{if(st&&ME.range)setBrush(st,pos(e))});
+  palCv.addEventListener('pointerup',e=>{if(!st)return;const p=pos(e);if(!ME.range&&Math.hypot(p.cx-st.cx,p.cy-st.cy)<10)setBrush(p,p);st=null});
+  palCv.addEventListener('pointercancel',()=>st=null);
+}
+function setBrush(a,b){
+  const t=tilesetOf(curMap()),im=t&&getImg(t.image);if(!im)return;const ts=G.tileSize,cols=Math.floor(im.width/ts),rows=Math.floor(im.height/ts);
+  const x0=clamp(Math.min(a.x,b.x),0,cols-1),y0=clamp(Math.min(a.y,b.y),0,rows-1),x1=clamp(Math.max(a.x,b.x),0,cols-1),y1=clamp(Math.max(a.y,b.y),0,rows-1);
+  ME.brush={x:x0,y:y0,w:x1-x0+1,h:y1-y0+1};
+  if(!['pen','rect','fill'].includes(ME.tool)){ME.tool='pen';refreshTools()}drawPalette();
+}
+function newEvent(m,x,y){const id=Math.max(0,...m.events.map(e=>e.id))+1;const ev={id,name:'EV'+pad3(id),x,y,pages:[newPage()]};m.events.push(ev);return ev}
+function buildMapTab(){
+  const T=$('#tab-map');T.innerHTML='';T.style.overflow='hidden';
+  const sel=h('select',{id:'mapSel',style:'width:auto;flex:1;min-width:130px',onchange:()=>{ME.mapId=+sel.value;ME.undo=[];ME.redo=[];fitMap();reqDraw();drawPalette()}});
+  const tools=[['pen','✏️'],['rect','▭'],['fill','🪣'],['erase','🧽'],['pick','💧'],['event','🎯EV'],['hand','✋']];
+  T.append(
+    h('div',{class:'bar'},sel,btn('⚙',mapSettings),btn('＋',newMap),btn('イベント一覧',eventList)),
+    h('div',{id:'mapWrap'},h('canvas',{id:'mapCv'})),
+    h('div',{class:'bar'},...tools.map(([k,l])=>h('button',{class:'btn tool','data-t':k,onclick:()=>{ME.tool=k;refreshTools();reqDraw()}},l)),
+      h('div',{class:'seg',id:'laySeg'},...['下層','中層','上層'].map((l,i)=>h('button',{onclick:()=>{ME.layer=i;if(ME.tool==='event'||ME.tool==='hand')ME.tool='pen';refreshTools();reqDraw()}},l))),
+      btn('↶',undo),btn('↷',redo),h('button',{class:'btn',id:'gridBtn',onclick:()=>{ME.grid=!ME.grid;refreshTools();reqDraw()}},'#'),btn('⤢',()=>{fitMap();reqDraw()})),
+    h('div',{class:'bar',style:'padding:4px 8px;border-top:1px solid var(--bd)'},h('span',{style:'font-size:12px;color:var(--mut);flex:1'},'タイル（タップで選択／2本指でマップ拡大・移動）'),h('button',{class:'btn sm',id:'rangeBtn',onclick:()=>{ME.range=!ME.range;refreshTools()}},'範囲選択')),
+    h('div',{id:'palWrap'},h('canvas',{id:'palCv'})));
+  mapCv=$('#mapCv');palCv=$('#palCv');bindMap();bindPal();refreshMapSel();refreshTools();
+  new ResizeObserver(()=>reqDraw()).observe($('#mapWrap'));ME.needFit=true;
+}
+function refreshMapSel(){const s=$('#mapSel');if(!s)return;if(!G.maps.some(m=>m.id===ME.mapId))ME.mapId=G.maps[0].id;s.innerHTML='';for(const[v,l]of mapOpts())s.append(h('option',{value:String(v)},l));s.value=String(ME.mapId)}
+function refreshTools(){
+  document.querySelectorAll('.tool').forEach(b=>b.classList.toggle('on',b.dataset.t===ME.tool));
+  document.querySelectorAll('#laySeg button').forEach((b,i)=>b.classList.toggle('on',i===ME.layer));
+  $('#gridBtn')?.classList.toggle('on',ME.grid);$('#rangeBtn')?.classList.toggle('on',ME.range);$('#palWrap')?.classList.toggle('range',ME.range);
+}
+function newMap(){
+  const id=Math.max(0,...G.maps.map(m=>m.id))+1;
+  G.maps.push({id,name:'MAP'+pad3(id),w:20,h:15,tileset:G.tilesets[0]?.id||'',layers:layersFor(20,15),events:[]});
+  ME.mapId=id;ME.undo=[];ME.redo=[];changed();refreshMapSel();fitMap();reqDraw();drawPalette();mapSettings();
+}
+function resizeMap(m,w,hh){
+  const old=m.layers,ow=m.w,oh=m.h;
+  m.layers=old.map((L,l)=>{const a=new Array(w*hh).fill(l===0?0:-1);for(let y=0;y<Math.min(oh,hh);y++)for(let x=0;x<Math.min(ow,w);x++)a[y*w+x]=L[y*ow+x];return a});
+  m.w=w;m.h=hh;for(const e of m.events){e.x=Math.min(e.x,w-1);e.y=Math.min(e.y,hh-1)}
+}
+function mapSettings(){
+  const m=curMap(),d={name:m.name,w:m.w,h:m.h,tileset:m.tileset};
+  sheet('マップ設定',(b,api)=>{
+    b.append(card(null,fText('名前',d,'name'),h('div',{class:'row'},fNum('幅',d,'w',{min:1,max:256}),fNum('高さ',d,'h',{min:1,max:256})),
+      fSel('タイルセット',d,'tileset',G.tilesets.map(t=>[t.id,t.name])),h('div',{class:'hint'},'マップID: '+m.id)),
+      card(null,btn('このマップを複製',()=>{const n=clone(m);n.id=Math.max(...G.maps.map(x=>x.id))+1;n.name=m.name+' コピー';G.maps.push(n);ME.mapId=n.id;changed();refreshMapSel();fitMap();reqDraw();api.close()},'sm'),' ',
+        btn('このマップを削除',()=>{if(G.maps.length<=1){toast('最後のマップは削除できません');return}if(!confirm(`「${m.name}」を削除しますか？`))return;G.maps.splice(G.maps.indexOf(m),1);ME.mapId=G.maps[0].id;changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()},'sm dg')));
+  },{actions:[['保存',api=>{m.name=d.name;m.tileset=d.tileset;if(d.w!==m.w||d.h!==m.h){resizeMap(m,d.w,d.h);ME.undo=[];ME.redo=[]}changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()}]]});
+}
+function eventList(){
+  const m=curMap();
+  sheet('イベント一覧: '+m.name,(b,api)=>{
+    const c=card(null);if(!m.events.length)c.append(h('div',{class:'hint'},'まだありません。🎯EVツールでマップをタップすると作成できます。'));
+    for(const e of m.events)c.append(h('div',{class:'list-row',onclick:()=>openEvent(m,e,api.rerender)},h('div',{style:'flex:1'},`${pad3(e.id)}  ${e.name}`),h('span',{class:'hint'},`(${e.x},${e.y})  ${e.pages.length}ページ`)));
+    b.append(c);
+  });
+}
+
+/* ===== 位置・タイル選択 ===== */
+async function renderMapStatic(cv,m,px){
+  const ts=G.tileSize,dpr=devicePixelRatio||1;cv.width=m.w*px*dpr;cv.height=m.h*px*dpr;cv.style.width=m.w*px+'px';cv.style.height=m.h*px+'px';
+  const t=tilesetOf(m),im=t?await imgAsync(t.image):null;
+  for(const e of m.events){const ci=e.pages[0]&&e.pages[0].image;if(ci&&ci.charset){const cs=G.charsets.find(x=>x.id===ci.charset);if(cs)await imgAsync(cs.image)}}
+  const c=cv.getContext('2d'),s=px*dpr/ts;c.setTransform(s,0,0,s,0,0);c.imageSmoothingEnabled=false;
+  drawMapContent(c,m,im,0,0,m.w,m.h,{events:true,grid:true,gridW:1/s});
+}
+function mapPicker(mapId,cb){
+  const m=G.maps.find(x=>x.id===mapId);if(!m){toast('マップがありません');return}
+  const px=Math.max(16,Math.min(40,Math.floor((innerWidth-8)/m.w)));
+  const api=sheet('位置を指定: '+m.name,b=>{
+    const cv=h('canvas',{style:'display:block'});
+    b.append(h('div',{class:'hint',style:'padding:8px 12px'},'タップした位置を指定します'),h('div',{style:'overflow:auto'},cv));
+    renderMapStatic(cv,m,px);
+    cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/px),y=Math.floor((e.clientY-r.top)/px);if(x<0||y<0||x>=m.w||y>=m.h)return;api.close();cb(x,y)};
+  });
+}
+function tilePicker(m,cb){
+  const t=tilesetOf(m);if(!t){toast('タイルセットがありません');return}
+  const api=sheet('タイルを選ぶ',b=>{
+    const cv=h('canvas');b.append(h('div',{style:'overflow:auto;padding:8px'},cv));const S=palS();
+    imgAsync(t.image).then(im=>{if(!im)return;const{cols}=drawTileset(cv,im,S);
+      cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/S),y=Math.floor((e.clientY-r.top)/S);api.close();cb(y*cols+x)}});
+  });
+}
+function charPreview(im0){
+  const cv=h('canvas',{width:64,height:64,style:'width:64px;height:64px;background:#0004;border-radius:6px;flex:none'});
+  const cs=G.charsets.find(c=>c.id===im0.charset);
+  if(cs)imgAsync(cs.image).then(im=>{if(!im)return;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;const fw=im.width/3,fh=im.height/4,s=Math.min(64/fw,64/fh);x.drawImage(im,fw,(im0.dir||0)*fh,fw,fh,(64-fw*s)/2,(64-fh*s)/2,fw*s,fh*s)});
+  return cv;
+}
+function tilePreview(m,v){
+  const cv=h('canvas',{width:48,height:48,style:'width:48px;height:48px;background:#0004;border-radius:6px;flex:none'});const t=tilesetOf(m);
+  if(t)imgAsync(t.image).then(im=>{if(!im)return;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;const ts=G.tileSize,cols=Math.floor(im.width/ts);x.drawImage(im,(v%cols)*ts,Math.floor(v/cols)*ts,ts,ts,0,0,48,48)});
+  return cv;
+}
+
+/* ===== イベントエディタ ===== */
+const CT={
+  text:{n:'文章',c:'#4a7fd0',make:()=>({t:'text',face:'',name:'',text:''})},
+  choice:{n:'選択肢',c:'#c98a2a',make:()=>({t:'choice',options:[{label:'はい',cmds:[]},{label:'いいえ',cmds:[]}]})},
+  if:{n:'条件分岐',c:'#c98a2a',make:()=>({t:'if',cond:{type:'sw',id:0,val:true},then:[],else:[],hasElse:false})},
+  sw:{n:'スイッチ',c:'#c84a5a',make:()=>({t:'sw',id:0,val:true})},
+  var:{n:'変数',c:'#c84a5a',make:()=>({t:'var',id:0,op:'set',val:0})},
+  self:{n:'セルフスイッチ',c:'#c84a5a',make:()=>({t:'self',key:'A',val:true})},
+  item:{n:'アイテム増減',c:'#3f9a55',make:()=>({t:'item',id:G.items[0]?G.items[0].id:0,n:1})},
+  move:{n:'場所移動',c:'#8a5ad0',make:()=>({t:'move',map:curMap().id,x:0,y:0,dir:-1})},
+  wait:{n:'ウェイト',c:'#777',make:()=>({t:'wait',ms:500})},
+  erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
+  end:{n:'処理を中断',c:'#777',make:()=>({t:'end'})},
+  comment:{n:'注釈',c:'#4a7a4a',make:()=>({t:'comment',text:''})},
+};
+function condSummary(c){
+  if(c.type==='sw')return `${swName(c.id)} が ${c.val?'ON':'OFF'}`;
+  if(c.type==='var')return `${varName(c.id)} ${c.op} ${c.val}`;
+  if(c.type==='item')return `${itemName(c.id)} を${c.has?'持っている':'持っていない'}`;
+  if(c.type==='self')return `セルフ${c.key} が ${c.val?'ON':'OFF'}`;
+  return '?';
+}
+function cmdSummary(c){
+  switch(c.t){
+    case'text':{const f=G.faces.find(x=>x.id===c.face);return(c.name?`【${c.name}】`:'')+(f?`(${f.name}) `:'')+(c.text||'')}
+    case'choice':return c.options.map(o=>o.label).join(' / ');
+    case'if':return condSummary(c.cond);
+    case'sw':return `${swName(c.id)} = ${c.val?'ON':'OFF'}`;
+    case'var':return `${varName(c.id)} ${{set:'=',add:'+=',sub:'-=',rand:'= 乱数0〜'}[c.op]} ${c.val}`;
+    case'self':return `${c.key} = ${c.val?'ON':'OFF'}`;
+    case'item':return `${itemName(c.id)} ${c.n>=0?'+':''}${c.n}`;
+    case'move':return `${mapName(c.map)} (${c.x}, ${c.y})`;
+    case'wait':return c.ms+'ms';
+    case'comment':return c.text||'';
+  }return '';
+}
+function condForm(c,rr){
+  const out=[fSel('種類',c,'type',[['sw','スイッチ'],['var','変数'],['item','アイテム'],['self','セルフスイッチ']],{on:()=>{
+    const t=c.type;for(const k of Object.keys(c))if(k!=='type')delete c[k];
+    Object.assign(c,t==='sw'?{id:0,val:true}:t==='var'?{id:0,op:'>=',val:0}:t==='item'?{id:G.items[0]?G.items[0].id:0,has:true}:{key:'A',val:true});rr()}})];
+  if(c.type==='sw')out.push(h('div',{class:'row'},fSel('スイッチ',c,'id',swOpts(),{num:true}),fSel('状態',c,'val',BOOL,{bool:true})));
+  if(c.type==='var')out.push(fSel('変数',c,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum('値',c,'val')));
+  if(c.type==='item')out.push(h('div',{class:'row'},fSel('アイテム',c,'id',itemOpts(),{num:true}),fSel('',c,'has',[[true,'持っている'],[false,'持っていない']],{bool:true})));
+  if(c.type==='self')out.push(h('div',{class:'row'},fSel('キー',c,'key',['A','B','C','D'].map(k=>[k,k])),fSel('状態',c,'val',BOOL,{bool:true})));
+  return out;
+}
+function editCond(c,onSave){const d=clone(c);sheet('条件',(b,api)=>b.append(card(null,condForm(d,api.rerender))),{back:'キャンセル',actions:[['保存',api=>{onSave(d);api.close()}]]})}
+function condList(arr,rr){
+  const w=h('div');if(!arr.length)w.append(h('div',{class:'hint'},'条件なし（常に出現）'));
+  arr.forEach((c,i)=>w.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},condSummary(c)),btn('編集',()=>editCond(c,n=>{arr[i]=n;changed();rr()}),'sm'),btn('✕',()=>{arr.splice(i,1);changed();rr()},'sm dg'))));
+  w.append(h('div',{style:'margin-top:6px'},btn('＋ 条件を追加',()=>editCond({type:'sw',id:0,val:true},n=>{arr.push(n);changed();rr()}),'sm')));
+  return w;
+}
+function imageField(pg,rr,m){
+  const k={v:pg.image?(pg.image.tile!=null?'tile':'char'):'none'};
+  const out=[fSel('種類',k,'v',[['none','なし（見えない）'],['char','歩行キャラ'],['tile','タイル']],{on:()=>{
+    if(k.v==='none')pg.image=null;
+    else{pg.image=k.v==='char'?{charset:G.charsets[0]?G.charsets[0].id:'',dir:0}:{tile:0};pg.priority='same'}
+    changed();rr()}})];
+  if(k.v==='char'){
+    if(!G.charsets.length)out.push(h('div',{class:'hint'},'「素材」タブで歩行キャラを追加してください'));
+    out.push(h('div',{class:'row',style:'align-items:center'},charPreview(pg.image),fSel('キャラ',pg.image,'charset',G.charsets.map(c=>[c.id,c.name]),{on:rr}),fSel('向き',pg.image,'dir',DIRN.map((n,i)=>[i,n]),{num:true,on:rr})));
+  }
+  if(k.v==='tile')out.push(h('div',{class:'row',style:'align-items:center'},tilePreview(m,pg.image.tile),btn('タイルを選ぶ',()=>tilePicker(m,i=>{pg.image.tile=i;changed();rr()}))));
+  return out;
+}
+function lastTextBefore(arr,idx){for(let i=idx-1;i>=0;i--)if(arr[i].t==='text')return arr[i];return null}
+function cmdTree(root,rr){
+  const wrap=h('div',{class:'cmds'});
+  const row=(depth,cls,content,onclick)=>h('div',{class:'cmd '+cls,style:`padding-left:${8+depth*14}px`,onclick},content);
+  const label=c=>{const ct=CT[c.t]||{n:c.t,c:'#666'};return[h('span',{class:'tg',style:'background:'+ct.c},ct.n),h('span',{class:'sm'},cmdSummary(c))]};
+  (function list(arr,depth){
+    arr.forEach((c,i)=>{
+      wrap.append(row(depth,'',label(c),()=>cmdMenu(arr,i,rr)));
+      if(c.t==='choice'){c.options.forEach(o=>{wrap.append(row(depth+1,'br','▸ 「'+o.label+'」のとき'));list(o.cmds,depth+2)});wrap.append(row(depth+1,'br','◆ 分岐終了'))}
+      if(c.t==='if'){wrap.append(row(depth+1,'br','▸ 条件を満たすとき'));list(c.then,depth+2);if(c.hasElse){wrap.append(row(depth+1,'br','▸ それ以外'));list(c.else,depth+2)}wrap.append(row(depth+1,'br','◆ 分岐終了'))}
+    });
+    wrap.append(row(depth,'add','＋',()=>addMenu(arr,arr.length,rr)));
+  })(root,0);
+  return wrap;
+}
+function cmdMenu(arr,i,rr){
+  const c=arr[i];
+  const edit=()=>{if(c.t==='erase'||c.t==='end'){toast('設定項目はありません');return}
+    editCmd(c,s=>{arr[i]=s;changed();rr()},c.t==='text'?{next:s=>{arr[i]=s;changed();rr();textChain(arr,i+1,rr,{t:'text',face:s.face,name:s.name,text:''})}}:{})};
+  actionMenu([
+    ['✏️ 編集',edit],
+    ['⬆ 上へ移動',()=>{if(i>0){arr.splice(i-1,0,arr.splice(i,1)[0]);changed();rr()}}],
+    ['⬇ 下へ移動',()=>{if(i<arr.length-1){arr.splice(i+1,0,arr.splice(i,1)[0]);changed();rr()}}],
+    ['➕ この上に追加',()=>addMenu(arr,i,rr)],
+    ['⧉ 複製',()=>{arr.splice(i+1,0,clone(c));changed();rr()}],
+    ['📋 コピー',()=>{CLIP=clone(c);toast('コピーしました（＋から貼り付け）')}],
+    ['🗑 削除',()=>{arr.splice(i,1);changed();rr()},'danger']],(CT[c.t]||{}).n);
+}
+function addMenu(arr,idx,rr){
+  const ov=h('div',{class:'ov',onclick:e=>{if(e.target===ov)ov.remove()}});
+  ov.append(h('div',{class:'menu'},h('div',{class:'menu-t'},'コマンドを追加'),
+    h('div',{class:'grid'},Object.entries(CT).map(([k,v])=>h('button',{class:'mi',style:`border-left:4px solid ${v.c}`,onclick:()=>{ov.remove();addCmd(arr,idx,rr,k)}},v.n))),
+    CLIP?h('button',{class:'mi',onclick:()=>{ov.remove();arr.splice(idx,0,clone(CLIP));changed();rr()}},'📋 貼り付け：'+(CT[CLIP.t]||{}).n):null,
+    h('button',{class:'mi cancel',onclick:()=>ov.remove()},'キャンセル')));
+  document.body.append(ov);
+}
+function addCmd(arr,idx,rr,t){
+  const c=CT[t].make();
+  if(t==='erase'||t==='end'){arr.splice(idx,0,c);changed();rr();return}
+  if(t==='text'){const p=lastTextBefore(arr,idx);if(p){c.face=p.face;c.name=p.name}return textChain(arr,idx,rr,c)}
+  editCmd(c,s=>{arr.splice(idx,0,s);changed();rr()});
+}
+function textChain(arr,idx,rr,c){editCmd(c,s=>{arr.splice(idx,0,s);changed();rr()},{next:s=>{arr.splice(idx,0,s);changed();rr();textChain(arr,idx+1,rr,{t:'text',face:s.face,name:s.name,text:''})}})}
+function editCmd(c,onSave,opts={}){
+  const d=clone(c),actions=[];
+  if(opts.next)actions.push(['保存＋次',api=>{api.close();opts.next(d)},'']);
+  actions.push(['保存',api=>{onSave(d);api.close()}]);
+  sheet(CT[d.t].n,(b,api)=>cmdForm(b,d,api.rerender),{back:'キャンセル',actions});
+}
+function cmdForm(b,d,rr){
+  const c=card(null);b.append(c);
+  switch(d.t){
+    case'text':{
+      const f=G.faces.find(x=>x.id===d.face);
+      c.append(h('div',{class:'row',style:'align-items:center'},f?thumb(f.image):null,fSel('顔グラフィック',d,'face',[['','なし'],...G.faces.map(x=>[x.id,x.name])],{on:rr})),fText('名前',d,'name',{ph:'空なら名前欄なし'}));
+      const a=fArea('本文',d,'text',{rows:5});
+      c.append(a,h('div',{class:'bar',style:'background:none;padding:4px 0'},...[['[w=300]','ウェイト'],['[shake]','揺れ'],['[v=1]','変数']].map(([s,l])=>h('button',{class:'btn sm',onpointerdown:e=>e.preventDefault(),onclick:()=>insertAt(a._input,s)},l))),
+        h('div',{class:'hint'},'[w=ミリ秒] 待つ ／ [shake] 枠を揺らす ／ [v=番号] 変数の値。1つの「文章」= 1ウィンドウで、表情は文章ごとに選べます。「保存＋次」で続けて入力できます。'));
+      if(!G.faces.length)c.append(h('div',{class:'hint'},'顔グラは「素材」タブで追加できます'));
+      break}
+    case'choice':
+      d.options.forEach((o,i)=>{const inp=h('input',{type:'text',value:o.label,oninput:()=>{o.label=inp.value}});
+        c.append(h('div',{class:'row',style:'align-items:center;margin:5px 0'},h('span',{style:'width:18px;color:var(--mut)'},i+1),inp,d.options.length>1?btn('✕',()=>{if(o.cmds.length&&!confirm('この選択肢の中身も消えます'))return;d.options.splice(i,1);rr()},'sm dg'):null))});
+      if(d.options.length<6)c.append(btn('＋ 選択肢を追加',()=>{d.options.push({label:'選択肢'+(d.options.length+1),cmds:[]});rr()},'sm'));
+      break;
+    case'if':c.append(...condForm(d.cond,rr),fChk('「それ以外のとき」を作る',d,'hasElse'));break;
+    case'sw':c.append(h('div',{class:'row'},fSel('スイッチ',d,'id',swOpts(),{num:true}),fSel('状態',d,'val',BOOL,{bool:true})));break;
+    case'var':c.append(fSel('変数',d,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('操作',d,'op',[['set','代入 ='],['add','加算 +'],['sub','減算 −'],['rand','乱数 0〜値']]),fNum('値',d,'val')));break;
+    case'self':c.append(h('div',{class:'row'},fSel('セルフスイッチ',d,'key',['A','B','C','D'].map(k=>[k,k])),fSel('状態',d,'val',BOOL,{bool:true})),h('div',{class:'hint'},'このイベントだけのスイッチ（宝箱を開けた、など）'));break;
+    case'item':if(!G.items.length)c.append(h('div',{class:'hint'},'「データ」タブでアイテムを作ってください'));c.append(h('div',{class:'row'},fSel('アイテム',d,'id',itemOpts(),{num:true}),fNum('増減',d,'n')));break;
+    case'move':c.append(fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
+    case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
+    case'comment':c.append(fArea('注釈（ゲームには影響しません）',d,'text'));break;
+  }
+}
+function openEvent(m,ev,onClose){
+  const st={pi:0};
+  sheet(`イベント ${pad3(ev.id)}`,(b,api)=>{
+    if(st.pi>=ev.pages.length)st.pi=ev.pages.length-1;const pg=ev.pages[st.pi];
+    b.append(card(null,fText('名前',ev,'name'),h('div',{class:'row'},fNum('X',ev,'x',{min:0,max:m.w-1,on:reqDraw}),fNum('Y',ev,'y',{min:0,max:m.h-1,on:reqDraw}))));
+    b.append(h('div',{class:'ptabs'},...ev.pages.map((p,i)=>h('button',{class:'btn sm'+(i===st.pi?' on':''),onclick:()=>{st.pi=i;api.rerender()}},'P'+(i+1))),
+      btn('＋',()=>{ev.pages.push(newPage());st.pi=ev.pages.length-1;changed();api.rerender()},'sm'),
+      btn('複製',()=>{ev.pages.splice(st.pi+1,0,clone(pg));st.pi++;changed();api.rerender()},'sm'),
+      ev.pages.length>1?btn('削除',()=>{if(confirm('ページ'+(st.pi+1)+'を削除しますか？')){ev.pages.splice(st.pi,1);st.pi=Math.max(0,st.pi-1);changed();api.rerender()}},'sm dg'):null));
+    b.append(card('出現条件',condList(pg.cond,api.rerender),h('div',{class:'hint'},'条件を満たすページのうち、番号が大きいものが使われます')));
+    b.append(card('画像',...imageField(pg,api.rerender,m)));
+    b.append(card('起動条件',h('div',{class:'row'},fSel('トリガー',pg,'trigger',[['action','調べる（A）'],['touch','プレイヤー接触'],['auto','自動実行']],{on:api.rerender}),fSel('重なり',pg,'priority',[['same','キャラと同じ'],['below','キャラの下']])),
+      fChk('すり抜け',pg,'through'),pg.trigger==='auto'?h('div',{class:'hint'},'自動実行は、スイッチ等で条件を外さないと繰り返し実行されます'):null));
+    b.append(card('実行内容',cmdTree(pg.cmds,api.rerender)));
+  },{actions:[['削除',api=>{if(confirm('このイベントを削除しますか？')){m.events.splice(m.events.indexOf(ev),1);changed();api.close()}},'dg']],onClose:()=>{reqDraw();onClose&&onClose()}});
+}
+
+/* ===== データタブ ===== */
+function nameListCard(title,arr){
+  const c=card(title);
+  arr.forEach((n,i)=>{const inp=h('input',{type:'text',value:n||'',placeholder:'(名前なし)',oninput:()=>{arr[i]=inp.value;changed()}});
+    c.append(h('div',{class:'row',style:'align-items:center;margin:3px 0'},h('span',{style:'width:40px;color:var(--mut);font-size:13px;flex:none'},pad(i+1)),inp))});
+  c.append(h('div',{style:'margin-top:6px'},btn('＋10個追加',()=>{for(let k=0;k<10;k++)arr.push('');changed();renderDB()},'sm')));
+  return c;
+}
+function renderDB(){
+  const T=$('#tab-db'),sc=T.scrollTop;T.innerHTML='';const P=G.player;
+  T.append(card('システム',fText('ゲームタイトル',G,'title',{on:updateTitle}),
+    fNum('タイルサイズ(px)',G,'tileSize',{min:8,max:96,hint:'タイルセット画像の1マスの大きさ。素材に合わせてください',on:()=>{ME.needFit=true}}),
+    fSel('主人公の歩行キャラ',P,'charset',G.charsets.map(c=>[c.id,c.name])),
+    h('div',{class:'row'},fSel('開始マップ',P,'map',mapOpts(),{num:true}),fNum('X',P,'x',{min:0}),fNum('Y',P,'y',{min:0})),
+    fSel('開始時の向き',P,'dir',DIRN.map((n,i)=>[i,n]),{num:true}),
+    btn('マップで開始位置を指定',()=>mapPicker(P.map,(x,y)=>{P.x=x;P.y=y;changed();renderDB();reqDraw()}),'sm')));
+  T.append(nameListCard('スイッチ',G.switches),nameListCard('変数',G.variables));
+  const ic=card('アイテム');
+  for(const it of G.items){const n=h('input',{type:'text',value:it.name,oninput:()=>{it.name=n.value;changed()}}),ds=h('input',{type:'text',value:it.desc||'',placeholder:'説明',oninput:()=>{it.desc=ds.value;changed()}});
+    ic.append(h('div',{class:'list-row'},h('span',{style:'width:30px;color:var(--mut);font-size:13px;flex:none'},pad3(it.id)),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
+  ic.append(h('div',{style:'margin-top:6px'},btn('＋ アイテム追加',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'アイテム'+id,desc:''});changed();renderDB()},'sm')));
+  T.append(ic);T.scrollTop=sc;
+}
+
+/* ===== 素材タブ ===== */
+const AK={tilesets:{n:'タイルセット',dir:'tilesets'},charsets:{n:'歩行キャラ',dir:'characters'},faces:{n:'顔グラフィック',dir:'faces'}};
+function delAsset(k,a){
+  if(!confirm(`「${a.name}」を削除しますか？\n（使っている箇所は表示されなくなります）`))return;
+  G[k].splice(G[k].indexOf(a),1);
+  if(!allAssetPaths().includes(a.image)){pending.delete(a.image);idbDel(a.image);deleted.add(a.image);delete imgs[a.image]}
+  changed();saveDraft();renderAssets();reqDraw();
+}
+function passageEditor(t){
+  sheet('通行設定: '+t.name,b=>{
+    const cv=h('canvas',{style:'display:block;touch-action:manipulation'}),S=palS();let im=null;
+    const draw=()=>{if(!im)return;const bl=new Set(t.blocked);drawTileset(cv,im,S,(c,cols,rows)=>{c.lineWidth=2.5;
+      for(let i=0;i<cols*rows;i++){const x=(i%cols)*S+S/2,y=Math.floor(i/cols)*S+S/2,r=S*.22;c.beginPath();
+        if(bl.has(i)){c.strokeStyle='#ff4d5e';c.moveTo(x-r,y-r);c.lineTo(x+r,y+r);c.moveTo(x+r,y-r);c.lineTo(x-r,y+r)}else{c.strokeStyle='#5bc0ff';c.arc(x,y,r,0,7)}
+        c.stroke()}})};
+    cv.onclick=e=>{if(!im)return;const r=cv.getBoundingClientRect(),cols=Math.floor(im.width/G.tileSize),i=Math.floor((e.clientY-r.top)/S)*cols+Math.floor((e.clientX-r.left)/S);
+      const s=new Set(t.blocked);s.has(i)?s.delete(i):s.add(i);t.blocked=[...s].sort((a,b)=>a-b);changed();draw()};
+    b.append(h('div',{class:'hint',style:'padding:8px 12px'},'タップで ○通れる／×通れない を切替。下層・中層のタイルで判定し、上層はキャラの上に描かれるだけで判定しません。'),
+      h('div',{style:'overflow:auto;padding:8px'},cv),
+      h('div',{class:'bar',style:'background:none'},btn('全部○',()=>{t.blocked=[];changed();draw()},'sm'),btn('全部×',()=>{if(!im)return;const n=Math.floor(im.width/G.tileSize)*Math.floor(im.height/G.tileSize);t.blocked=[...Array(n).keys()];changed();draw()},'sm')));
+    imgAsync(t.image).then(i=>{im=i;draw()});
+  },{onClose:()=>reqDraw()});
+}
+function renderAssets(){
+  const T=$('#tab-assets'),sc=T.scrollTop;T.innerHTML='';
+  for(const k of Object.keys(AK)){
+    const c=card(AK[k].n);
+    for(const a of G[k]){
+      const n=h('input',{type:'text',value:a.name,oninput:()=>{a.name=n.value;changed()}});
+      c.append(h('div',{class:'list-row'},thumb(a.image),
+        h('div',{style:'flex:1;min-width:0'},n,h('div',{class:'hint',style:'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'},a.image+(pending.has(a.image)?'  ●未プッシュ':''))),
+        h('div',{style:'display:flex;flex-direction:column;gap:4px'},k==='tilesets'?btn('通行',()=>passageEditor(a),'sm'):null,
+          btn('差替',()=>pickFiles(false,async fs=>{await storeFile(fs[0],a.image);renderAssets();reqDraw();drawPalette()}),'sm'),btn('削除',()=>delAsset(k,a),'sm dg'))));
+    }
+    c.append(h('div',{style:'margin-top:8px'},btn('＋ 画像を追加',()=>pickFiles(true,async fs=>{
+      for(const f of fs){const p=uniquePath(AK[k].dir,f);await storeFile(f,p);G[k].push(Object.assign({id:uid(),name:f.name.replace(/\.[^.]+$/,''),image:p},k==='tilesets'?{blocked:[]}:{}))}
+      changed();renderAssets()}),'sm')));
+    if(k==='tilesets')c.append(h('div',{class:'hint'},`1マス ${G.tileSize}px で区切って使います（「データ」→タイルサイズで変更）`));
+    if(k==='charsets')c.append(h('div',{class:'hint'},'横3×縦4コマ（行：下・左・右・上）の1キャラ分の画像'));
+    if(k==='faces')c.append(h('div',{class:'hint'},'表情1つにつき画像1枚。文章ごとに選べます'));
+    T.append(c);
+  }
+  T.scrollTop=sc;
+}
+
+/* ===== Gitタブ ===== */
+function statusText(){const L=['game.json：'+(jsonDirty()?'変更あり':'変更なし')];
+  if(pending.size)L.push('素材（追加・更新）：'+[...pending].map(p=>p.split('/').pop()).join(', '));
+  if(deleted.size)L.push('素材（削除）：'+[...deleted].map(p=>p.split('/').pop()).join(', '));return L.join('\n')}
+function renderGit(){
+  const T=$('#tab-git');T.innerHTML='';const g=gitCfg(),save=()=>lsSet('git',g);
+  const inp=(label,k,type='text',ph='')=>{const i=h('input',{type,value:g[k]||'',placeholder:ph,autocomplete:'off',autocapitalize:'off',spellcheck:'false',oninput:()=>{g[k]=i.value.trim();save()}});return field(label,i)};
+  T.append(card('GitHub 接続',h('div',{class:'row'},inp('オーナー','owner'),inp('リポジトリ','repo')),h('div',{class:'row'},inp('ブランチ','branch','text','main'),inp('フォルダ（任意）','dir','text','空でOK')),
+    inp('トークン','token','password','github_pat_...'),
+    h('div',{class:'hint'},'Fine-grained token 推奨：Repository access でこのリポジトリだけを選び、Permissions → Contents を「Read and write」に。トークンはこの端末のブラウザにだけ保存されます（同じ github.io の他ページからも読めるので、対象を絞ったトークンにしてください）。'),
+    btn('接続テスト',async()=>{try{const r=await api('');toast('接続OK: '+r.full_name)}catch(e){toast(errMsg(e),4500)}},'sm')));
+  const msg=h('input',{type:'text',placeholder:'空なら「更新 日時」'});
+  T.append(card('コミット＆プッシュ',h('div',{style:'white-space:pre-wrap;font-size:14px;margin-bottom:6px'},statusText()),field('コミットメッセージ',msg),btn('コミット＆プッシュ',()=>runPush(msg.value.trim()),'pri'),
+    h('div',{class:'hint'},'画面上部の ☁ ボタンでも、メッセージ省略でワンタップでプッシュできます。GitHub Pages への反映は1分ほどかかります。')));
+  T.append(card('読み込み・テスト',btn('GitHubから読み込み',runPull),' ',btn('テストプレイ',()=>testPlay()),
+    h('div',{class:'hint'},'テストプレイは未プッシュの内容（素材含む）でそのまま遊べます。')));
+  T.append(card('バックアップ',btn('JSON書き出し',exportJson,'sm'),' ',btn('JSON読み込み',importJson,'sm'),' ',
+    btn('新規プロジェクト',async()=>{if(!confirm('今の内容を破棄して、サンプル入りの新規プロジェクトにしますか？'))return;await newProject();afterLoad();toast('新規プロジェクトを作成しました')},'sm dg')));
+}
+function exportJson(){const a=h('a',{href:URL.createObjectURL(new Blob([pretty(G)],{type:'application/json'})),download:'game.json'});document.body.append(a);a.click();a.remove()}
+function importJson(){const i=h('input',{type:'file',accept:'.json,application/json',style:'display:none'});i.onchange=async()=>{const f=i.files[0];i.remove();if(!f)return;
+  try{G=normalize(JSON.parse(await f.text()));changed();saveDraft();afterLoad();toast('読み込みました')}catch(e){toast('JSONが読めません')}};document.body.append(i);i.click()}
+
+/* ===== 全体 ===== */
+function updateTitle(){const t=$('#ttl');if(t)t.textContent=(G.title||'無題')+' ・ エディタ'}
+function showTab(k){
+  curTab=k;for(const t of['map','db','assets','git']){$('#tab-'+t).classList.toggle('on',t===k);$('#nv-'+t).classList.toggle('on',t===k)}
+  if(k==='map'){refreshMapSel();reqDraw();drawPalette()}
+  if(k==='db')renderDB();if(k==='assets')renderAssets();if(k==='git')renderGit();
+}
+function buildUI(){
+  document.body.innerHTML='';
+  document.body.append(
+    h('header',null,h('div',{class:'ttl',id:'ttl'}),
+      h('button',{class:'btn',onclick:()=>actionMenu([['▶ 開始位置からテストプレイ',()=>testPlay()],['▶ 表示中マップの中央から',()=>{const m=curMap();testPlay(m.id,Math.floor(m.w/2),Math.floor(m.h/2))}]])},'▶'),
+      h('button',{class:'btn badge',id:'badge',onclick:()=>runPush()},'☁')),
+    h('main',null,...['map','db','assets','git'].map(k=>h('div',{class:'tab',id:'tab-'+k}))),
+    h('nav',null,...[['map','🗺 マップ'],['db','📚 データ'],['assets','🖼 素材'],['git','☁ Git']].map(([k,l])=>h('button',{id:'nv-'+k,onclick:()=>showTab(k)},l))));
+  buildMapTab();updateTitle();updateBadge();
+}
+function afterLoad(){ME.mapId=G.maps[0].id;ME.undo=[];ME.redo=[];ME.needFit=true;buildUI();showTab(curTab||'map')}
+(async()=>{
+  guessGit();
+  G=lsGet('draft',null);base=lsGet('base',{h:null,sha:null});pending=new Set(lsGet('pending',[]));deleted=new Set(lsGet('deleted',[]));
+  if(G)G=normalize(G);
+  if(!G&&gitReady()){try{await pull()}catch(e){toast('GitHubから読み込めませんでした: '+errMsg(e),4500)}}
+  if(!G)await newProject();
+  ME.mapId=G.maps[0].id;buildUI();showTab('map');
+})();
+</script>
+</body>
+</html>
