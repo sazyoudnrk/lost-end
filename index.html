@@ -253,9 +253,11 @@ function resize(){cv.width=Math.round(cv.clientWidth*(devicePixelRatio||1));cv.h
 addEventListener('resize',resize);
 function tileDraw(v,x,y){const ts=G.tileSize,cols=Math.floor(tsImg.width/ts);if(!cols)return;ctx.drawImage(tsImg,(v%cols)*ts,Math.floor(v/cols)*ts,ts,ts,x,y,ts,ts)}
 function layer(l,x0,y0,x1,y1){const L=map.layers[l];if(!L||!tsImg)return;const ts=G.tileSize;for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const v=L[y*map.w+x];if(v>=0)tileDraw(v,x*ts,y*ts)}}
-function drawChar(im,dir,frame,px,py){const ts=G.tileSize,fw=im.width/3,fh=im.height/4;ctx.drawImage(im,frame*fw,dir*fh,fw,fh,Math.round(px+ts/2-fw/2),Math.round(py+ts-fh),fw,fh)}
-function drawEv(e){const im=e.page.image,ts=G.tileSize;if(im.tile!=null){if(tsImg)tileDraw(im.tile,e.x*ts,e.y*ts)}else{const ci=charImg(im.charset);if(ci)drawChar(ci,e.dir,1,e.x*ts,e.y*ts)}}
-function drawPlayer(){const ci=charImg(G.player.charset);if(!ci)return;const f=P.anim?[1,2,1,0][Math.floor(P.anim/8)%4]:1;drawChar(ci,P.dir,f,P.px,P.py)}
+// 歩行グラ：縦長=1キャラ(3x4コマ)、横長=8キャラ並び(12x8コマ)。index で何人目かを指定
+function charRect(im,index,dir,frame){const m=im.width>im.height,fw=im.width/(m?12:3),fh=im.height/(m?8:4),i=m?(index||0):0;return[((i%4)*3+frame)*fw,(Math.floor(i/4)*4+dir)*fh,fw,fh]}
+function drawChar(cs,im,dir,frame,px,py){const ts=G.tileSize,[sx,sy,fw,fh]=charRect(im,cs.index,dir,frame);ctx.drawImage(im,sx,sy,fw,fh,Math.round(px+ts/2-fw/2),Math.round(py+ts-fh),fw,fh)}
+function drawEv(e){const im=e.page.image,ts=G.tileSize;if(im.tile!=null){if(tsImg)tileDraw(im.tile,e.x*ts,e.y*ts)}else{const ci=charImg(im.charset);if(ci)drawChar(charsetOf(im.charset),ci,e.dir,1,e.x*ts,e.y*ts)}}
+function drawPlayer(){const ci=charImg(G.player.charset);if(!ci)return;const f=P.anim?[1,2,1,0][Math.floor(P.anim/8)%4]:1;drawChar(charsetOf(G.player.charset),ci,P.dir,f,P.px,P.py)}
 function draw(){
   ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
   if(!map)return;

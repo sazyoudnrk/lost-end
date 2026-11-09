@@ -333,6 +333,11 @@ function defaultGame(){
         {cond:[{type:'self',key:'A',val:true}],image:{tile:11},trigger:'action',priority:'same',through:false,cmds:[T('','からっぽだ。')]}]}
     ]}]});
 }
+// 公開中サイトの data/game.json を初期値として読む（トークン未設定でも開ける）
+async function gitBlobSha(buf){const hd=new TextEncoder().encode('blob '+buf.byteLength+'\0'),all=new Uint8Array(hd.length+buf.byteLength);all.set(hd);all.set(new Uint8Array(buf),hd.length);
+  return[...new Uint8Array(await crypto.subtle.digest('SHA-1',all))].map(b=>b.toString(16).padStart(2,'0')).join('')}
+async function loadFromSite(){try{const r=await fetch('data/game.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return false;const buf=await r.arrayBuffer();
+  G=normalize(JSON.parse(new TextDecoder().decode(buf)));base={h:hash(pretty(G)),sha:await gitBlobSha(buf)};saveDraft();return true}catch(e){G=null;return false}}
 async function newProject(){pending.clear();deleted.clear();await idbClear();for(const k in imgs)delete imgs[k];await genDefaults();G=defaultGame();base={h:null,sha:null};saveDraft()}
 
 /* ===== 名前 ===== */
@@ -353,12 +358,21 @@ const inMap=(m,t)=>t.x>=0&&t.y>=0&&t.x<m.w&&t.y<m.h;
 const evAt=(m,x,y)=>m.events.find(e=>e.x===x&&e.y===y);
 const palS=()=>G.tileSize*Math.max(1,Math.round(40/G.tileSize));
 function reqDraw(){if(drawQ)return;drawQ=true;requestAnimationFrame(()=>{drawQ=false;drawMap()})}
+function charRect(im,index,dir,frame){const m=im.width>im.height,fw=im.width/(m?12:3),fh=im.height/(m?8:4),i=m?(index||0):0;return[((i%4)*3+frame)*fw,(Math.floor(i/4)*4+dir)*fh,fw,fh]}
+const isMultiSheet=im=>im.width>im.height;
+// 8キャラ並び画像のうち、絵が入っているブロック番号を返す
+function usedBlocks(im){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);
+  const d=x.getImageData(0,0,c.width,c.height).data,bw=c.width/4,bh=c.height/2,out=[];
+  for(let b=0;b<8;b++){const x0=Math.floor((b%4)*bw),y0=Math.floor(Math.floor(b/4)*bh);let hit=false;
+    for(let yy=y0;yy<y0+bh&&!hit;yy+=2)for(let xx=x0;xx<x0+bw;xx+=2){const k=(yy*c.width+xx)*4;if(d[k+3]>40&&(d[k]+d[k+1]+d[k+2])<600){hit=true;break}}
+    if(hit)out.push(b)}
+  return out}
 function drawTile(c,im,v,x,y){const ts=G.tileSize,cols=Math.floor(im.width/ts);if(cols)c.drawImage(im,(v%cols)*ts,Math.floor(v/cols)*ts,ts,ts,x,y,ts,ts)}
 function drawEvMarker(c,e,tim){
   const ts=G.tileSize,x=e.x*ts,y=e.y*ts,im0=e.pages[0]&&e.pages[0].image;let drawn=false;
   if(im0){if(im0.tile!=null&&tim){drawTile(c,tim,im0.tile,x,y);drawn=true}
     else if(im0.charset){const cs=G.charsets.find(q=>q.id===im0.charset),ci=cs&&getImg(cs.image);
-      if(ci){const fw=ci.width/3,fh=ci.height/4;c.drawImage(ci,fw,(im0.dir||0)*fh,fw,fh,x+ts/2-fw/2,y+ts-fh,fw,fh);drawn=true}}}
+      if(ci){const[sx,sy,fw,fh]=charRect(ci,cs.index,im0.dir||0,1);c.drawImage(ci,sx,sy,fw,fh,x+ts/2-fw/2,y+ts-fh,fw,fh);drawn=true}}}
   const lw=ts/16;c.fillStyle=drawn?'rgba(255,200,40,.12)':'rgba(255,200,40,.4)';c.fillRect(x,y,ts,ts);
   c.strokeStyle='rgba(255,200,40,.95)';c.lineWidth=lw;c.strokeRect(x+lw/2,y+lw/2,ts-lw,ts-lw);
 }
@@ -562,7 +576,7 @@ function tilePicker(m,cb){
 function charPreview(im0){
   const cv=h('canvas',{width:64,height:64,style:'width:64px;height:64px;background:#0004;border-radius:6px;flex:none'});
   const cs=G.charsets.find(c=>c.id===im0.charset);
-  if(cs)imgAsync(cs.image).then(im=>{if(!im)return;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;const fw=im.width/3,fh=im.height/4,s=Math.min(64/fw,64/fh);x.drawImage(im,fw,(im0.dir||0)*fh,fw,fh,(64-fw*s)/2,(64-fh*s)/2,fw*s,fh*s)});
+  if(cs)imgAsync(cs.image).then(im=>{if(!im)return;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;const[sx,sy,fw,fh]=charRect(im,cs.index,im0.dir||0,1),s=Math.min(64/fw,64/fh);x.drawImage(im,sx,sy,fw,fh,(64-fw*s)/2,(64-fh*s)/2,fw*s,fh*s)});
   return cv;
 }
 function tilePreview(m,v){
@@ -776,22 +790,27 @@ function passageEditor(t){
     imgAsync(t.image).then(i=>{im=i;draw()});
   },{onClose:()=>reqDraw()});
 }
+function charIndexSel(a){const wrap=h('div');imgAsync(a.image).then(im=>{if(!im||!isMultiSheet(im))return;
+  wrap.append(fSel('何人目',a,'index',[0,1,2,3,4,5,6,7].map(i=>[i,(i+1)+'人目']),{num:true,on:()=>{renderAssets();reqDraw()}}))});return wrap}
 function renderAssets(){
   const T=$('#tab-assets'),sc=T.scrollTop;T.innerHTML='';
   for(const k of Object.keys(AK)){
     const c=card(AK[k].n);
     for(const a of G[k]){
       const n=h('input',{type:'text',value:a.name,oninput:()=>{a.name=n.value;changed()}});
-      c.append(h('div',{class:'list-row'},thumb(a.image),
-        h('div',{style:'flex:1;min-width:0'},n,h('div',{class:'hint',style:'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'},a.image+(pending.has(a.image)?'  ●未プッシュ':''))),
+      c.append(h('div',{class:'list-row'},k==='charsets'?charPreview({charset:a.id,dir:0}):thumb(a.image),
+        h('div',{style:'flex:1;min-width:0'},n,k==='charsets'?charIndexSel(a):null,h('div',{class:'hint',style:'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'},a.image+(pending.has(a.image)?'  ●未プッシュ':''))),
         h('div',{style:'display:flex;flex-direction:column;gap:4px'},k==='tilesets'?btn('通行',()=>passageEditor(a),'sm'):null,
           btn('差替',()=>pickFiles(false,async fs=>{await storeFile(fs[0],a.image);renderAssets();reqDraw();drawPalette()}),'sm'),btn('削除',()=>delAsset(k,a),'sm dg'))));
     }
     c.append(h('div',{style:'margin-top:8px'},btn('＋ 画像を追加',()=>pickFiles(true,async fs=>{
-      for(const f of fs){const p=uniquePath(AK[k].dir,f);await storeFile(f,p);G[k].push(Object.assign({id:uid(),name:f.name.replace(/\.[^.]+$/,''),image:p},k==='tilesets'?{blocked:[]}:{}))}
+      for(const f of fs){const p=uniquePath(AK[k].dir,f);await storeFile(f,p);const nm=f.name.replace(/\.[^.]+$/,'');
+        const im=k==='charsets'?await imgAsync(p):null;
+        if(im&&isMultiSheet(im)){const bl=usedBlocks(im);for(const b of(bl.length?bl:[0]))G[k].push({id:uid(),name:nm+'_'+(b+1),image:p,index:b})}
+        else G[k].push(Object.assign({id:uid(),name:nm,image:p},k==='tilesets'?{blocked:[]}:{}))}
       changed();renderAssets()}),'sm')));
     if(k==='tilesets')c.append(h('div',{class:'hint'},`1マス ${G.tileSize}px で区切って使います（「データ」→タイルサイズで変更）`));
-    if(k==='charsets')c.append(h('div',{class:'hint'},'横3×縦4コマ（行：下・左・右・上）の1キャラ分の画像'));
+    if(k==='charsets')c.append(h('div',{class:'hint'},'縦長＝1キャラ（横3×縦4コマ）、横長＝8キャラ並び（ツクール形式 横12×縦8コマ）。8キャラ並びは絵のある分だけ自動で登録されます。行は 下・左・右・上 の順。'));
     if(k==='faces')c.append(h('div',{class:'hint'},'表情1つにつき画像1枚。文章ごとに選べます'));
     T.append(c);
   }
@@ -844,6 +863,7 @@ function afterLoad(){ME.mapId=G.maps[0].id;ME.undo=[];ME.redo=[];ME.needFit=true
   G=lsGet('draft',null);base=lsGet('base',{h:null,sha:null});pending=new Set(lsGet('pending',[]));deleted=new Set(lsGet('deleted',[]));
   if(G)G=normalize(G);
   if(!G&&gitReady()){try{await pull()}catch(e){toast('GitHubから読み込めませんでした: '+errMsg(e),4500)}}
+  if(!G)await loadFromSite();
   if(!G)await newProject();
   ME.mapId=G.maps[0].id;buildUI();showTab('map');
 })();
