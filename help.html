@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>エディタの使い方</title>
+<style>
+:root{--bg:#16171d;--bg2:#1f2129;--bg3:#2a2d38;--fg:#e8e8ef;--mut:#9a9cab;--ac:#5b8cff;--bd:#343846}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:56px}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.75 system-ui,-apple-system,"Hiragino Sans",sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top));background:var(--bg2);border-bottom:1px solid var(--bd)}
+header b{flex:1}
+a{color:var(--ac)}
+.btn{display:inline-block;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;padding:5px 11px;color:var(--fg);text-decoration:none;font-size:14px}
+main{max-width:720px;margin:0 auto;padding:8px 14px calc(40px + env(safe-area-inset-bottom))}
+nav.toc{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin:12px 0}
+nav.toc ol{margin:0;padding-left:1.4em}
+h2{font-size:19px;margin:30px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--bd)}
+h3{font-size:16px;margin:18px 0 4px;color:#c9d4ff}
+p{margin:6px 0}
+ul,ol{margin:6px 0;padding-left:1.3em}
+li{margin:3px 0}
+kbd,code{background:var(--bg3);border:1px solid var(--bd);border-radius:5px;padding:0 5px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.note{background:#2a2614;border:1px solid #5a4d1c;border-radius:10px;padding:8px 12px;margin:10px 0;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border:1px solid var(--bd);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:var(--bg2);white-space:nowrap}
+</style>
+</head>
+<body>
+<header><b>エディタの使い方</b><a class="btn" href="editor.html">エディタへ</a></header>
+<main>
+<nav class="toc"><ol>
+<li><a href="#setup">はじめの設定</a></li>
+<li><a href="#screen">画面の見かた</a></li>
+<li><a href="#map">マップを描く</a></li>
+<li><a href="#event">イベントを作る</a></li>
+<li><a href="#cmd">コマンド一覧</a></li>
+<li><a href="#data">データ（スイッチ・変数・アイテム）</a></li>
+<li><a href="#assets">素材</a></li>
+<li><a href="#pixel">ドット絵エディタ</a></li>
+<li><a href="#play">テストプレイと公開</a></li>
+<li><a href="#trouble">困ったとき</a></li>
+</ol></nav>
+
+<h2 id="setup">1. はじめの設定</h2>
+<ol>
+<li>GitHub で Fine-grained token を作る（Repository access：<b>このリポジトリだけ</b>、Permissions → Contents：<b>Read and write</b>）。</li>
+<li>エディタの <b>☁ Git</b> タブでトークンを貼り付けて「接続テスト」。オーナーとリポジトリ名は URL から自動で入ります。</li>
+<li>「GitHubから読み込み」で最新のデータを取り込みます。</li>
+</ol>
+<div class="note">トークンはこの端末のブラウザにだけ保存されます。編集中のデータも端末に自動保存されるので、途中で閉じても消えません。</div>
+
+<h2 id="screen">2. 画面の見かた</h2>
+<table>
+<tr><th>上部 ？</th><td>このページ</td></tr>
+<tr><th>上部 ▶</th><td>テストプレイ（未プッシュの内容で遊べる）</td></tr>
+<tr><th>上部 ☁</th><td>ワンタップでコミット＆プッシュ。数字は未プッシュの変更数</td></tr>
+<tr><th>🗺 マップ</th><td>マップの編集・イベントの配置</td></tr>
+<tr><th>📚 データ</th><td>タイトル、タイルサイズ、主人公、開始位置、スイッチ・変数・アイテム</td></tr>
+<tr><th>🖼 素材</th><td>タイルセット・歩行キャラ・顔グラの追加／差し替え／ドット絵編集</td></tr>
+<tr><th>☁ Git</th><td>接続設定、プッシュ、読み込み、バックアップ</td></tr>
+</table>
+
+<h2 id="map">3. マップを描く</h2>
+<h3>基本操作</h3>
+<ul>
+<li>下のパレットでタイルをタップ → マップをなぞって描く。</li>
+<li><b>2本指</b>で拡大・移動。<kbd>⤢</kbd> で全体表示に戻る。</li>
+<li>パレットの「範囲選択」をオンにすると、複数マスをまとめて選べます（大窓・テーブルなど）。</li>
+</ul>
+<h3>ツール</h3>
+<table>
+<tr><th>✏️</th><td>ペン</td></tr>
+<tr><th>▭</th><td>四角で塗る</td></tr>
+<tr><th>🪣</th><td>同じタイルの範囲を塗りつぶし</td></tr>
+<tr><th>🧽</th><td>消しゴム（今のレイヤーだけ）</td></tr>
+<tr><th>💧</th><td>マップ上のタイルを拾う</td></tr>
+<tr><th>🎯EV</th><td>イベントモード（下の「イベント」参照）</td></tr>
+<tr><th>✋</th><td>1本指でスクロール</td></tr>
+</table>
+<h3>レイヤー</h3>
+<ul>
+<li><b>下層</b>：床・壁など。<b>中層</b>：家具や小物（下層の上に重ねる）。<b>上層</b>：キャラより手前に描くもの（天井の梁など）。</li>
+<li>通れるかどうかは下層と中層のタイルで決まります（素材タブの「通行」で設定）。</li>
+</ul>
+<h3>マップの追加・設定</h3>
+<ul>
+<li>上の <kbd>＋</kbd> で新規マップ。<kbd>⚙</kbd> で名前・サイズ・タイルセットの変更、複製、削除。</li>
+<li>左上のプルダウンで編集するマップを切り替え。</li>
+</ul>
+
+<h2 id="event">4. イベントを作る</h2>
+<ul>
+<li><kbd>🎯EV</kbd> でマップの空きマスをタップ → 「新規イベント」。既存イベントはタップで編集、ドラッグで移動。</li>
+<li>空きマスのメニューから「ここからテストプレイ」「プレイヤー開始位置にする」もできます。</li>
+<li>「イベント一覧」でマップ内のイベントを一覧表示。</li>
+</ul>
+<h3>ページ</h3>
+<p>1つのイベントに複数のページ（P1, P2…）を持てます。<b>出現条件を満たすページのうち、番号が一番大きいもの</b>が使われます。</p>
+<p>例：宝箱 … P1「開ける→アイテム入手→セルフスイッチA=ON」、P2（条件：セルフスイッチA=ON）「からっぽだ」。</p>
+<h3>設定項目</h3>
+<table>
+<tr><th>画像</th><td>なし／歩行キャラ（向き指定）／タイル</td></tr>
+<tr><th>トリガー</th><td><b>調べる</b>：Aボタン。<b>プレイヤー接触</b>：踏む・ぶつかる。<b>自動実行</b>：条件を満たすとすぐ始まる（条件を外さないと繰り返すので注意）</td></tr>
+<tr><th>重なり</th><td><b>キャラと同じ</b>：壁のように通れない（NPC・宝箱）。<b>キャラの下</b>：上に乗れる（床のスイッチ・扉・階段）</td></tr>
+<tr><th>すり抜け</th><td>オンにすると通り抜けられる</td></tr>
+</table>
+<div class="note">扉や階段は「プレイヤー接触＋キャラの下」、壁にある扉は「プレイヤー接触＋キャラと同じ」（ぶつかると発動）にすると自然です。</div>
+
+<h2 id="cmd">5. コマンド一覧</h2>
+<p>「実行内容」の <kbd>＋</kbd> で追加。既存のコマンドをタップすると、編集・移動・複製・コピー・削除ができます。</p>
+<table>
+<tr><th>文章</th><td>顔グラ・名前・本文。「保存＋次」で同じ顔・名前のまま続けて書けます</td></tr>
+<tr><th>選択肢</th><td>最大6つ。選んだ項目の中のコマンドが実行されます</td></tr>
+<tr><th>条件分岐</th><td>スイッチ・変数・アイテム・セルフスイッチで分岐。「それ以外」も作れます</td></tr>
+<tr><th>スイッチ</th><td>ON/OFF（ゲーム全体で共通）</td></tr>
+<tr><th>変数</th><td>代入・加算・減算・乱数</td></tr>
+<tr><th>セルフスイッチ</th><td>そのイベント専用の A〜D</td></tr>
+<tr><th>アイテム増減</th><td>マイナスで減らす</td></tr>
+<tr><th>場所移動</th><td>マップと座標・向き。「マップで位置を指定」でタップ指定</td></tr>
+<tr><th>ウェイト</th><td>ミリ秒（1000＝1秒）</td></tr>
+<tr><th>一時消去</th><td>マップに入り直すまで消える</td></tr>
+<tr><th>処理を中断</th><td>ここでイベント終了</td></tr>
+<tr><th>注釈</th><td>メモ。ゲームには影響しない</td></tr>
+</table>
+<h3>文章の中で使えるタグ</h3>
+<table>
+<tr><th><code>[w=300]</code></th><td>300ミリ秒待つ</td></tr>
+<tr><th><code>[shake]</code></th><td>メッセージ枠を揺らす</td></tr>
+<tr><th><code>[v=1]</code></th><td>変数0001の値を表示</td></tr>
+</table>
+
+<h2 id="data">6. データ</h2>
+<ul>
+<li><b>タイルサイズ</b>：タイルセット画像の1マスのピクセル数（今は48）。</li>
+<li><b>主人公の歩行キャラ</b>・<b>開始マップと位置</b>・<b>開始時の向き</b>。</li>
+<li><b>スイッチ／変数</b>：名前を付けておくとイベント編集で選びやすくなります。足りなければ「＋10個追加」。</li>
+<li><b>アイテム</b>：名前と説明。ゲーム中はメニュー（☰）→アイテムで確認できます。</li>
+</ul>
+
+<h2 id="assets">7. 素材</h2>
+<table>
+<tr><th>タイルセット</th><td>1マス＝タイルサイズで区切って使う画像。「通行」で ○通れる／×通れない を設定</td></tr>
+<tr><th>歩行キャラ</th><td><b>縦長</b>＝1キャラ（横3×縦4コマ）／<b>横長</b>＝8キャラ並び（横12×縦8コマ、ツクール形式）。行は 下・左・右・上。8キャラ並びは絵がある分だけ自動登録され、「何人目」で切り替え</td></tr>
+<tr><th>顔グラフィック</th><td>表情1つにつき1枚。文章ごとに選べます</td></tr>
+</table>
+<ul>
+<li><b>描く</b>：ドット絵エディタで直接編集。</li>
+<li><b>差替</b>：同じファイル名のまま別の画像に置き換え（使っている場所はそのまま）。</li>
+<li><b>＋ 新規で描く</b>：空のキャンバスから作成。</li>
+<li><b>＋ 画像を追加</b>：写真アプリなどから読み込み。</li>
+</ul>
+
+<h2 id="pixel">8. ドット絵エディタ</h2>
+<h3>基本</h3>
+<ul>
+<li><b>1本指</b>で描く、<b>2本指</b>で拡大・移動。<kbd>⤢</kbd> で全体表示。</li>
+<li>青い線はタイル（歩行キャラならコマ）の区切り。拡大すると1ドットごとのグリッドも出ます。<kbd>#</kbd> で表示切替。</li>
+<li>歩行キャラを編集中は、右上に歩きアニメのプレビューが出ます。タップで向きを切り替え。</li>
+<li><b>保存</b>すると端末に保存され、☁ でプッシュされます。</li>
+</ul>
+<h3>ツール</h3>
+<table>
+<tr><th>✏️</th><td>ペン（太さ 1〜4）</td></tr>
+<tr><th>🧽</th><td>消しゴム（透明にする）</td></tr>
+<tr><th>🪣</th><td>同じ色の範囲を塗りつぶし</td></tr>
+<tr><th>／</th><td>直線</td></tr>
+<tr><th>💧</th><td>色を拾う（透明を拾うと消しゴムになる）</td></tr>
+<tr><th>⬚</th><td>範囲選択（下の「選択とコピー」）</td></tr>
+<tr><th>✋</th><td>1本指でスクロール</td></tr>
+</table>
+<h3>色</h3>
+<p>黒・白・グレー2色のほか、右の色ボックスで好きな色を選べます（使った色は一時的に並びます）。</p>
+<h3>選択とコピー</h3>
+<ul>
+<li>⬚ でドラッグすると範囲選択。<b>🧲吸着</b>がオンだと、マス（コマ）単位で選択・移動します。1マスタップでそのマスを選択。</li>
+<li>選択中：コピー／切り取り／貼り付け／左右反転／上下反転／塗る／消す／解除。</li>
+<li>選択した中をドラッグすると、その部分を持ち上げて移動できます。</li>
+<li>貼り付け中はドラッグで位置を決めて「確定」。</li>
+<li>例：歩行キャラの左向きを描いたら、コピー → 貼り付け → ⇋反転 → 右向きの位置へ移動 → 確定。</li>
+</ul>
+<h3>⋯ メニュー</h3>
+<ul>
+<li><b>画像を読み込んで貼り付け</b>：別のアプリで描いた絵を取り込んで、好きな位置に置く。</li>
+<li><b>キャンバスサイズ変更</b>：タイルセットは縦のマス数だけ変更できます（横を変えるとマップのタイル番号がずれるため）。</li>
+<li><b>全部消す</b></li>
+</ul>
+<p>↶ ↷ で元に戻す／やり直し（40回まで）。</p>
+
+<h2 id="play">9. テストプレイと公開</h2>
+<ul>
+<li><kbd>▶</kbd>：プッシュ前の内容（新しい素材も含む）で遊べます。マップの空きマスから「ここからテストプレイ」も可能。</li>
+<li><kbd>☁</kbd>：変更をまとめて1回のコミットでプッシュ。メッセージを付けたいときは Git タブから。</li>
+<li>公開ページへの反映は1分ほどかかります。</li>
+<li>ゲーム操作：十字キーで移動、A で調べる／文章送り、☰ でメニュー（アイテム・セーブ・ロード）。</li>
+</ul>
+
+<h2 id="trouble">10. 困ったとき</h2>
+<table>
+<tr><th>他の端末で編集した内容が出ない</th><td>Git タブの「GitHubから読み込み」（未プッシュの変更は消えるので先にプッシュ）</td></tr>
+<tr><th>プッシュ時に「他の場所で更新されています」</th><td>別の端末で先にプッシュされています。上書きするか、キャンセルして読み込み直してください</td></tr>
+<tr><th>401／403 エラー</th><td>トークンの期限切れ、または Contents 権限が足りない</td></tr>
+<tr><th>キャラが横を向くと消える</th><td>その歩行キャラ画像に横向きのコマが描かれていない</td></tr>
+<tr><th>通れない場所を通れる／通れる場所で止まる</th><td>素材 → タイルセット → 通行 を確認。イベントの「重なり」も確認</td></tr>
+<tr><th>念のため保存したい</th><td>Git タブ →「JSON書き出し」でデータをファイルに保存</td></tr>
+</table>
+</main>
+</body>
+</html>
