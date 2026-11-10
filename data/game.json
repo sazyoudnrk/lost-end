@@ -64,51 +64,69 @@
  "items": [
   {
    "id": 1,
-   "name": "缶詰",
-   "desc": "冷えたままの非常食",
-   "value": 3
+   "name": "生還ワープ装置Δ　#T67",
+   "desc": "何か機械、型番をちゃんとみなくては",
+   "value": 1500
   },
   {
    "id": 2,
-   "name": "工具セット",
-   "desc": "船の修理に使える",
-   "value": 10
+   "name": "生還ワープ装置Δ　#S52",
+   "desc": "何か機械、型番をちゃんとみなくては",
+   "value": 3000
   },
   {
    "id": 3,
-   "name": "絵の具",
-   "desc": "誰かが絵を描けるかもしれない",
-   "value": 4
+   "name": "生還ワープ装置Δ　#U93",
+   "desc": "何か機械、型番をちゃんとみなくては",
+   "value": 2000
   },
   {
    "id": 4,
-   "name": "石ころ",
-   "desc": "ただの石……？",
-   "value": 1
+   "name": "生還ワープ装置α　#U92",
+   "desc": "何か機械、型番をちゃんとみなくては",
+   "value": 1500
   },
   {
    "id": 5,
-   "name": "宝石の原石",
-   "desc": "目利きによれば本物",
-   "value": 40
+   "name": "生還ワープ装置Δ　#U21",
+   "desc": "何か機械、型番をちゃんとみなくては",
+   "value": 1500
   },
   {
    "id": 6,
-   "name": "謎のパーツ",
-   "desc": "何かの装置の部品らしい",
-   "value": 15
+   "name": "鉛筆",
+   "desc": "古代の筆記具",
+   "value": 1
   },
   {
    "id": 7,
-   "name": "変換器の説明書",
-   "desc": "冷却の仕組みが書いてある",
+   "name": "3色の絵の具",
+   "desc": "特段珍しくもない無機顔料の絵の具",
    "value": 5
   },
   {
    "id": 8,
-   "name": "ぬいぐるみ",
-   "desc": "意味はない。でも心が落ち着く",
-   "value": 2
+   "name": "キャンバス",
+   "desc": "古臭いキャンバス",
+   "value": 5
+  },
+  {
+   "id": 9,
+   "name": "携帯食料o-HRHL",
+   "desc": "クッキーのような携帯食料がいくつか入った缶詰",
+   "value": 3
+  },
+  {
+   "id": 10,
+   "name": "レーザーナイフ",
+   "desc": "不屈の切れ味でお馴染みのレーザーナイフ",
+   "value": 50
+  },
+  {
+   "id": 11,
+   "name": "パチリーナキャンディ",
+   "desc": "朧げな味のする食玩",
+   "value": 300
   }
  ],
  "switches": [
@@ -1048,38 +1066,8 @@
   "pool": [
    {
     "item": 1,
-    "price": 5,
-    "weight": 3,
-    "from": 1,
-    "to": "",
-    "sw": -1,
-    "once": false,
-    "limitUp": 0
-   },
-   {
-    "item": 3,
-    "price": 8,
-    "weight": 2,
-    "from": 1,
-    "to": "",
-    "sw": -1,
-    "once": false,
-    "limitUp": 0
-   },
-   {
-    "item": 4,
-    "price": 1,
-    "weight": 2,
-    "from": 1,
-    "to": "",
-    "sw": -1,
-    "once": false,
-    "limitUp": 0
-   },
-   {
-    "item": 8,
-    "price": 6,
-    "weight": 2,
+    "price": 1500,
+    "weight": 1,
     "from": 1,
     "to": "",
     "sw": -1,
@@ -1088,29 +1076,99 @@
    },
    {
     "item": 2,
-    "price": 25,
+    "price": 3000,
     "weight": 1,
-    "from": 3,
+    "from": 1,
     "to": "",
     "sw": -1,
-    "once": true,
+    "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 3,
+    "price": 2000,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 4,
+    "price": 1500,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 5,
+    "price": 1500,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 6,
+    "price": 1,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
     "limitUp": 0
    },
    {
     "item": 7,
-    "price": 20,
+    "price": 5,
     "weight": 1,
-    "from": 2,
+    "from": 1,
     "to": "",
     "sw": -1,
-    "once": true,
-    "limitUp": 1
+    "once": false,
+    "limitUp": 0
    },
    {
-    "item": 6,
-    "price": 30,
+    "item": 8,
+    "price": 5,
     "weight": 1,
-    "from": 4,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 9,
+    "price": 3,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 10,
+    "price": 50,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 11,
+    "price": 300,
+    "weight": 1,
+    "from": 1,
     "to": "",
     "sw": -1,
     "once": false,
