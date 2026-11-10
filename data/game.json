@@ -981,11 +981,34 @@
     {
      "id": 3,
      "name": "EV003",
-     "x": 7,
-     "y": 7,
+     "x": 11,
+     "y": 9,
      "pages": [
       {
        "cond": [],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "……騒がしい。\n[p]\nエントランスに行ってみよう。\n",
+         "pic": "",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "self",
+         "key": "A",
+         "val": true
+        }
+       ],
        "image": null,
        "trigger": "action",
        "priority": "below",
