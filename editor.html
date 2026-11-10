@@ -837,7 +837,7 @@ function renderAssets(){
 }
 
 /* ===== ドット絵エディタ ===== */
-const PE_SW=['#000000','#ffffff'];
+const PE_SW=['#000000','#ffffff','T'];
 // トーン（黒と白の2値パターン。座標基準なのでタイルをまたいでもつながる）
 const TONES=[
  ['6%',(x,y)=>x%4===0&&y%4===0],
@@ -931,7 +931,7 @@ async function openPixelEditor(o){
     c.fillStyle=checker;c.fillRect(st.ox,st.oy,W*z,H*z);
     c.imageSmoothingEnabled=false;c.drawImage(doc,st.ox,st.oy,W*z,H*z);
     const f=st.float;if(f){c.drawImage(fcv,st.ox+f.x*z,st.oy+f.y*z,f.d.width*z,f.d.height*z)}
-    if(st.line){const s=st.size,o2=Math.floor((s-1)/2),tf=st.tone!=null?TONES[st.tone][1]:null;c.fillStyle=st.col[3]?c2hex(st.col):'rgba(255,0,0,.5)';
+    if(st.line){const s=st.size,o2=Math.floor((s-1)/2),tf=st.tone!=null?TONES[st.tone][1]:null;c.fillStyle=st.col[3]?c2hex(st.col):'rgba(214,200,236,.9)';
       lineEach(st.line.a,st.line.b,(x,y)=>{if(!tf){c.fillRect(st.ox+(x-o2)*z,st.oy+(y-o2)*z,s*z,s*z);return}for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++){const X=x-o2+dx,Y=y-o2+dy;c.fillStyle=tf(X,Y)?'#000':'#fff';c.fillRect(st.ox+X*z,st.oy+Y*z,z,z)}})}
     const x0=Math.max(0,Math.floor(-st.ox/z)),y0=Math.max(0,Math.floor(-st.oy/z)),x1=Math.min(W,Math.ceil((cw-st.ox)/z)),y1=Math.min(H,Math.ceil((ch-st.oy)/z));
     if(st.grid){
@@ -963,7 +963,7 @@ async function openPixelEditor(o){
   function snapPt(p,ceil){const[gw,gh]=gridWH();if(!st.snap||!gw)return p;return{x:Math.round((ceil?Math.ceil:Math.floor)(p.x/gw)*gw),y:Math.round((ceil?Math.ceil:Math.floor)(p.y/gh)*gh)}}
   function begin(p){
     const t=st.tool;
-    if(t==='pick'){if(p.x<0||p.y<0||p.x>=W||p.y>=H)return;const c=u2c(A[p.y*W+p.x]);st.tone=null;if(!c[3]){st.tool='erase'}else{st.col=c;st.tool='pen'}refreshUI();return}
+    if(t==='pick'){if(p.x<0||p.y<0||p.x>=W||p.y>=H)return;const c=u2c(A[p.y*W+p.x]);st.tone=null;st.col=c[3]?c:[0,0,0,0];st.tool='pen';refreshUI();return}
     if(t==='select'){
       const f=st.float;
       if(f&&inR(p,{x:f.x,y:f.y,w:f.d.width,h:f.d.height})){stroke={t:'move',p0:p,fx:f.x,fy:f.y};return}
@@ -971,7 +971,7 @@ async function openPixelEditor(o){
       if(st.sel&&inR(p,st.sel)){const s=st.sel,before=snap(),d=selPixels(s);clearRect(s);st.dirty=true;st.sel=null;setFloat(d,s.x,s.y,before);stroke={t:'move',p0:p,fx:s.x,fy:s.y};return}
       stroke={t:'sel',a:p};updSel(p);return}
     if(t==='fill'){const b=snap();flood(p.x,p.y,cmap());pushPatch(b);req();return}
-    const u=t==='erase'?0:cmap();
+    const u=cmap();
     if(t==='line'){stroke={t:'line',b:snap(),u};st.line={a:p,b:p};req();return}
     stroke={t:'pen',b:snap(),u,last:p};brush(p.x,p.y,u);st.dirty=true;req();
   }
@@ -1041,7 +1041,7 @@ async function openPixelEditor(o){
     st.changed=false;delete imgs[st.path];reqDraw();drawPalette();if(curTab==='assets')renderAssets();toast('保存しました（☁でプッシュ）');
   }
   /* --- UI --- */
-  const TOOLS=[['pen','✏️'],['erase','🧽'],['fill','🪣'],['line','／'],['pick','💧'],['select','⬚'],['hand','✋']];
+  const TOOLS=[['pen','✏️'],['fill','🪣'],['line','／'],['pick','💧'],['select','⬚'],['hand','✋']];
   function refreshUI(){
     if(!area)return;
     area.querySelectorAll('[data-pt]').forEach(b=>b.classList.toggle('on',b.dataset.pt===st.tool));
@@ -1052,7 +1052,8 @@ async function openPixelEditor(o){
     TONES.forEach(([n,f],i)=>{const cv2=h('canvas',{width:30,height:30,style:'width:30px;height:30px;display:block;border-radius:4px'}),q=cv2.getContext('2d');
       for(let y=0;y<10;y++)for(let x=0;x<10;x++){q.fillStyle=f(x,y)?'#000':'#fff';q.fillRect(x*3,y*3,3,3)}
       toneBox.append(h('button',{class:'pe-sw'+(st.tool!=='erase'&&st.tone===i?' on':''),title:n,onclick:()=>{st.tone=i;toPen();refreshUI()}},cv2))});
-    for(const hx of[...PE_SW,...peRecent].reverse()){const b=h('button',{class:'pe-sw'+(st.tool!=='erase'&&st.tone==null&&st.col[3]&&cur===hx?' on':''),style:'background:'+hx,onclick:()=>{st.tone=null;st.col=hex2c(hx);if(st.tool==='erase'||st.tool==='pick'||st.tool==='select'||st.tool==='hand')st.tool='pen';refreshUI()}});swBox.prepend(b)}
+    for(const hx of[...PE_SW,...peRecent].reverse()){const isT=hx==='T',on=st.tone==null&&(isT?!st.col[3]:(st.col[3]&&cur===hx));
+      const b=h('button',{class:'pe-sw'+(on?' on':''),title:isT?'透明':hx,style:isT?'background:repeating-conic-gradient(#d6c8ec 0 25%,#f1ebf9 0 50%) 0 0/12px 12px':'background:'+hx,onclick:()=>{st.tone=null;st.col=isT?[0,0,0,0]:hex2c(hx);if(st.tool==='erase'||st.tool==='pick'||st.tool==='select'||st.tool==='hand')st.tool='pen';refreshUI()}});swBox.prepend(b)}
     colInp.value=cur;
     bar2.innerHTML='';const f=st.float,s=st.sel,B=(l,k,cls)=>btn(l,()=>selAct(k),'sm '+(cls||''));
     const add=(...a)=>bar2.append(...a.filter(Boolean));
