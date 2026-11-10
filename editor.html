@@ -80,7 +80,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-10d';
+const APP_VER='2026-11-10e';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -276,6 +276,8 @@ function normalize(g){
       for(const p of e.pages){p.cond=p.cond||[];p.cmds=p.cmds||[];p.trigger=p.trigger||'action';p.priority=p.priority||'same'}}
   }
   g.player=Object.assign({charset:g.charsets[0]?.id||'',map:g.maps[0].id,x:0,y:0,dir:0},g.player||{});
+  g.system=Object.assign({slots:['朝','昼','夜'],startDay:1,hud:true},g.system||{});
+  g.shop=Object.assign({count:3,limit:1,startMoney:0,pool:[]},g.shop||{});
   return g;
 }
 function charSheet(body,skin,hair){
@@ -399,7 +401,7 @@ function drawMapContent(c,m,im,x0,y0,x1,y1,o={}){
     if(o.layer!=null&&l===o.layer&&l>0){c.globalAlpha=1;c.fillStyle='rgba(255,255,255,.6)';c.fillRect(x0*ts,y0*ts,(x1-x0)*ts,(y1-y0)*ts)}
     c.globalAlpha=(o.layer!=null&&l>o.layer)?0.35:1;
     for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const v=L[y*m.w+x];if(v>=0)drawTile(c,im,v,x*ts,y*ts)}}c.globalAlpha=1}
-  if(o.events)for(const e of m.events)drawEvMarker(c,e,im);
+  if(o.events){for(const e of m.events)drawEvMarker(c,e,im);drawGhosts(c,m,im)}
   if(o.grid){c.strokeStyle='rgba(255,255,255,.15)';c.lineWidth=o.gridW;c.beginPath();
     for(let x=x0;x<=x1;x++){c.moveTo(x*ts,y0*ts);c.lineTo(x*ts,y1*ts)}for(let y=y0;y<=y1;y++){c.moveTo(x0*ts,y*ts);c.lineTo(x1*ts,y*ts)}c.stroke()}
 }
@@ -481,6 +483,8 @@ function endStroke(){
     if(cols)for(let y=Math.max(0,r.y);y<Math.min(m.h,r.y+r.h);y++)for(let x=Math.max(0,r.x);x<Math.min(m.w,r.x+r.w);x++)L[y*m.w+x]=brushVal(cols,x-r.x,y-r.y)}
   if(s.tool==='event'){
     const t=s.t1,same=t.x===s.t0.x&&t.y===s.t0.y;
+    const gh=!s.ev&&same&&ghostAt(m,t.x,t.y);
+    if(gh){openEvent(gh.home,gh.ev);reqDraw();return}
     if(s.ev){if(!same&&inMap(m,t)&&!evAt(m,t.x,t.y)){s.ev.x=t.x;s.ev.y=t.y;changed()}else if(same)openEvent(m,s.ev)}
     else if(same&&inMap(m,t))actionMenu([
       ['🎯 ここに新規イベント',()=>{const ev=newEvent(m,t.x,t.y);changed();reqDraw();openEvent(m,ev)}],
@@ -620,17 +624,26 @@ const CT={
   move:{n:'場所移動',c:'#8a5ad0',make:()=>({t:'move',map:curMap().id,x:0,y:0,dir:-1})},
   pic:{n:'立ち絵',c:'#c0508f',make:()=>({t:'pic',pos:'C',id:G.pictures[0]?G.pictures[0].id:''})},
   still:{n:'スチル',c:'#c0508f',make:()=>({t:'still',id:G.stills[0]?G.stills[0].id:'',fade:true})},
+  time:{n:'時間を進める',c:'#2a9a9a',make:()=>({t:'time',op:'next',n:1,slot:0})},
+  sleep:{n:'次の日へ',c:'#2a9a9a',make:()=>({t:'sleep'})},
+  money:{n:'価値の増減',c:'#2a9a9a',make:()=>({t:'money',op:'add',val:1})},
+  shop:{n:'等価交換機',c:'#2a9a9a',make:()=>({t:'shop'})},
+  buylimit:{n:'取り出し回数',c:'#2a9a9a',make:()=>({t:'buylimit',op:'add',val:1})},
   wait:{n:'ウェイト',c:'#777',make:()=>({t:'wait',ms:500})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
   end:{n:'処理を中断',c:'#777',make:()=>({t:'end'})},
   comment:{n:'注釈',c:'#4a7a4a',make:()=>({t:'comment',text:''})},
 };
 const POSN={L:'左',C:'中央',R:'右',A:'全部'};
+const slotN=i=>G.system.slots[i]??'?',slotOpts=()=>G.system.slots.map((n,i)=>[i,n]);
 function condSummary(c){
   if(c.type==='sw')return `${swName(c.id)} が ${c.val?'ON':'OFF'}`;
   if(c.type==='var')return `${varName(c.id)} ${c.op} ${c.val}`;
   if(c.type==='item')return `${itemName(c.id)} を${c.has?'持っている':'持っていない'}`;
   if(c.type==='self')return `セルフ${c.key} が ${c.val?'ON':'OFF'}`;
+  if(c.type==='day')return `日付 ${c.op} ${c.val}日目`;
+  if(c.type==='money')return `価値 ${c.op} ${c.val}`;
+  if(c.type==='slot')return `時間帯が${slotN(c.val)}${c.op==='!='?'ではない':''}`;
   return '?';
 }
 function cmdSummary(c){
@@ -646,17 +659,24 @@ function cmdSummary(c){
     case'item':return `${itemName(c.id)} ${c.n>=0?'+':''}${c.n}`;
     case'move':return `${mapName(c.map)} (${c.x}, ${c.y})`;
     case'wait':return c.ms+'ms';
+    case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
+    case'sleep':return '日付+1、朝に戻す';
+    case'money':return c.op==='set'?`= ${c.val}`:`${c.op==='sub'?'−':'+'} ${c.val}`;
+    case'shop':return '交換画面を開く';
+    case'buylimit':return c.op==='set'?`= ${c.val}`:`+ ${c.val}`;
     case'comment':return c.text||'';
   }return '';
 }
 function condForm(c,rr){
-  const out=[fSel('種類',c,'type',[['sw','スイッチ'],['var','変数'],['item','アイテム'],['self','セルフスイッチ']],{on:()=>{
+  const out=[fSel('種類',c,'type',[['sw','スイッチ'],['var','変数'],['item','アイテム'],['self','セルフスイッチ'],['day','日付'],['slot','時間帯'],['money','価値']],{on:()=>{
     const t=c.type;for(const k of Object.keys(c))if(k!=='type')delete c[k];
-    Object.assign(c,t==='sw'?{id:0,val:true}:t==='var'?{id:0,op:'>=',val:0}:t==='item'?{id:G.items[0]?G.items[0].id:0,has:true}:{key:'A',val:true});rr()}})];
+    Object.assign(c,t==='sw'?{id:0,val:true}:t==='var'?{id:0,op:'>=',val:0}:t==='item'?{id:G.items[0]?G.items[0].id:0,has:true}:t==='day'?{op:'==',val:1}:t==='slot'?{op:'==',val:0}:t==='money'?{op:'>=',val:0}:{key:'A',val:true});rr()}})];
   if(c.type==='sw')out.push(h('div',{class:'row'},fSel('スイッチ',c,'id',swOpts(),{num:true}),fSel('状態',c,'val',BOOL,{bool:true})));
   if(c.type==='var')out.push(fSel('変数',c,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum('値',c,'val')));
   if(c.type==='item')out.push(h('div',{class:'row'},fSel('アイテム',c,'id',itemOpts(),{num:true}),fSel('',c,'has',[[true,'持っている'],[false,'持っていない']],{bool:true})));
   if(c.type==='self')out.push(h('div',{class:'row'},fSel('キー',c,'key',['A','B','C','D'].map(k=>[k,k])),fSel('状態',c,'val',BOOL,{bool:true})));
+  if(c.type==='day'||c.type==='money')out.push(h('div',{class:'row'},fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum(c.type==='day'?'日目':'価値',c,'val')));
+  if(c.type==='slot')out.push(h('div',{class:'row'},fSel('',c,'op',[['==','が'],['!=','ではない']]),fSel('時間帯',c,'val',slotOpts(),{num:true})));
   return out;
 }
 function editCond(c,onSave){const d=clone(c);sheet('条件',(b,api)=>b.append(card(null,condForm(d,api.rerender))),{back:'キャンセル',actions:[['保存',api=>{onSave(d);api.close()}]]})}
@@ -696,7 +716,7 @@ function cmdTree(root,rr){
 }
 function cmdMenu(arr,i,rr){
   const c=arr[i];
-  const edit=()=>{if(c.t==='erase'||c.t==='end'){toast('設定項目はありません');return}
+  const edit=()=>{if(c.t==='erase'||c.t==='end'||c.t==='sleep'||c.t==='shop'){toast('設定項目はありません');return}
     editCmd(c,s=>{arr[i]=s;changed();rr()},c.t==='text'?{next:s=>{arr[i]=s;changed();rr();textChain(arr,i+1,rr,{t:'text',face:s.face,name:s.name,picPos:s.picPos,text:''})}}:{})};
   actionMenu([
     ['✏️ 編集',edit],
@@ -717,7 +737,7 @@ function addMenu(arr,idx,rr){
 }
 function addCmd(arr,idx,rr,t){
   const c=CT[t].make();
-  if(t==='erase'||t==='end'){arr.splice(idx,0,c);changed();rr();return}
+  if(t==='erase'||t==='end'||t==='sleep'||t==='shop'){arr.splice(idx,0,c);changed();rr();return}
   if(t==='text'){const p=lastTextBefore(arr,idx);if(p){c.face=p.face;c.name=p.name}return textChain(arr,idx,rr,c)}
   editCmd(c,s=>{arr.splice(idx,0,s);changed();rr()});
 }
@@ -735,8 +755,8 @@ function cmdForm(b,d,rr){
       const f=G.faces.find(x=>x.id===d.face);
       c.append(h('div',{class:'row',style:'align-items:center'},f?thumb(f.image):null,fSel('顔グラフィック',d,'face',[['','なし'],...G.faces.map(x=>[x.id,x.name])],{on:rr})),fText('名前',d,'name',{ph:'空なら名前欄なし'}));
       const a=fArea('本文',d,'text',{rows:5});
-      c.append(a,h('div',{class:'bar',style:'background:none;padding:4px 0'},...[['[w=300]','ウェイト'],['[shake]','揺れ'],['[v=1]','変数']].map(([s,l])=>h('button',{class:'btn sm',onpointerdown:e=>e.preventDefault(),onclick:()=>insertAt(a._input,s)},l))),
-        h('div',{class:'hint'},'[w=ミリ秒] 待つ ／ [shake] 枠を揺らす ／ [v=番号] 変数の値。1つの「文章」= 1ウィンドウで、表情は文章ごとに選べます。「保存＋次」で続けて入力できます。'));
+      c.append(a,h('div',{class:'bar',style:'background:none;padding:4px 0'},...[['[w=300]','ウェイト'],['[shake]','揺れ'],['[v=1]','変数'],['[day]','日付'],['[slot]','時間帯'],['[money]','価値']].map(([s,l])=>h('button',{class:'btn sm',onpointerdown:e=>e.preventDefault(),onclick:()=>insertAt(a._input,s)},l))),
+        h('div',{class:'hint'},'[w=ミリ秒] 待つ ／ [shake] 枠を揺らす ／ [v=番号] 変数の値 ／ [day] [slot] [money] 日付・時間帯・価値。1つの「文章」= 1ウィンドウで、表情は文章ごとに選べます。「保存＋次」で続けて入力できます。'));
       if(!G.faces.length)c.append(h('div',{class:'hint'},'顔グラは「素材」タブで追加できます'));
       d.pic=d.pic||'';d.picPos=d.picPos||'C';const pc=d.pic&&d.pic!=='-'&&G.pictures.find(x=>x.id===d.pic);
       c.append(h('div',{class:'row',style:'align-items:center;margin-top:6px'},pc?thumb(pc.image):null,
@@ -755,6 +775,10 @@ function cmdForm(b,d,rr){
     case'item':if(!G.items.length)c.append(h('div',{class:'hint'},'「データ」タブでアイテムを作ってください'));c.append(h('div',{class:'row'},fSel('アイテム',d,'id',itemOpts(),{num:true}),fNum('増減',d,'n')));break;
     case'move':c.append(fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
     case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
+    case'time':c.append(fSel('',d,'op',[['next','進める'],['set','指定する']],{on:rr}),d.op==='set'?fSel('時間帯',d,'slot',slotOpts(),{num:true}):fNum('いくつ進めるか',d,'n',{min:1}),
+      h('div',{class:'hint'},'最後の時間帯（夜）より先には進みません。日付を進めるのは「次の日へ」'));break;
+    case'money':c.append(h('div',{class:'row'},fSel('操作',d,'op',[['add','増やす'],['sub','減らす'],['set','にする']]),fNum('価値',d,'val',{min:0})));break;
+    case'buylimit':c.append(h('div',{class:'row'},fSel('操作',d,'op',[['add','増やす'],['set','にする']]),fNum('回数',d,'val',{min:0})),h('div',{class:'hint'},'等価交換機で1日に取り出せる回数（オーバーヒート対策のアップデートなど）'));break;
     case'pic':{const pc=d.id&&G.pictures.find(x=>x.id===d.id);c.append(fSel('位置',d,'pos',[['L','左'],['C','中央'],['R','右'],['A','全部消す']],{on:rr}));
       if(d.pos!=='A')c.append(h('div',{class:'row',style:'align-items:center'},pc?thumb(pc.image):null,fSel('立ち絵',d,'id',[['','消す'],...G.pictures.map(x=>[x.id,x.name])],{on:rr})));
       if(!G.pictures.length)c.append(h('div',{class:'hint'},'「素材」タブの「立ち絵」に画像を追加してください'));break}
@@ -769,6 +793,7 @@ function openEvent(m,ev,onClose){
   sheet(`イベント ${pad3(ev.id)}`,(b,api)=>{
     if(st.pi>=ev.pages.length)st.pi=ev.pages.length-1;const pg=ev.pages[st.pi];
     b.append(card(null,fText('名前',ev,'name'),h('div',{class:'row'},fNum('X',ev,'x',{min:0,max:m.w-1,on:reqDraw}),fNum('Y',ev,'y',{min:0,max:m.h-1,on:reqDraw}))));
+    b.append(scheduleCard(m,ev,api.rerender));
     b.append(h('div',{class:'ptabs'},...ev.pages.map((p,i)=>h('button',{class:'btn sm'+(i===st.pi?' on':''),onclick:()=>{st.pi=i;api.rerender()}},'P'+(i+1))),
       btn('＋',()=>{ev.pages.push(newPage());st.pi=ev.pages.length-1;changed();api.rerender()},'sm'),
       btn('複製',()=>{ev.pages.splice(st.pi+1,0,clone(pg));st.pi++;changed();api.rerender()},'sm'),
@@ -780,6 +805,59 @@ function openEvent(m,ev,onClose){
     b.append(card('実行内容',cmdTree(pg.cmds,api.rerender)));
   },{actions:[['削除',api=>{if(confirm('このイベントを削除しますか？')){m.events.splice(m.events.indexOf(ev),1);changed();api.close()}},'dg']],onClose:()=>{reqDraw();onClose&&onClose()}});
 }
+
+/* ===== 日ごとの配置 ===== */
+function schedSummary(r){const d=(r.to==null||r.to==='')?`${r.from||1}日目〜`:(r.from===r.to?`${r.from}日目`:`${r.from||1}〜${r.to}日目`);
+  return `${d}・${r.slot==null||r.slot<0?'いつでも':slotN(r.slot)}：${r.map?`${mapName(+r.map)} (${r.x},${r.y})`:'いない'}`}
+function editSched(r,home,onSave){const d=clone(r);d.where=d.map?'here':'none';if(!d.map){d.map=home.id;d.x=d.x||0;d.y=d.y||0}if(d.dir==null)d.dir=-1;if(d.to==='')d.to=0;
+  sheet('配置',(b,api)=>{b.append(card(null,h('div',{class:'row'},fNum('何日目から',d,'from',{min:1}),fNum('何日目まで',d,'to',{min:0,hint:'0＝ずっと'})),
+    fSel('時間帯',d,'slot',[[-1,'いつでも'],...slotOpts()],{num:true}),
+    fSel('居場所',d,'where',[['here','マップに置く'],['none','いない（どこにも出ない）']],{on:api.rerender}),
+    d.where==='here'?[fSel('マップ',d,'map',mapOpts(),{num:true,on:api.rerender}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'ページの設定'],...DIRN.map((n,i)=>[i,n])],{num:true})),
+      btn('マップで位置を指定',()=>mapPicker(+d.map,(x,y)=>{d.x=x;d.y=y;api.rerender()}),'sm')]:null))},
+    {back:'キャンセル',actions:[['保存',api=>{const o={from:d.from||1,to:d.to?d.to:'',slot:d.slot,map:d.where==='here'?+d.map:0,x:d.x,y:d.y,dir:d.dir};onSave(o);api.close()}]]})}
+function scheduleCard(m,ev,rr){
+  const L=ev.schedule||[],c=card('日ごとの配置');
+  if(!L.length)c.append(h('div',{class:'hint'},'なし：いつもこのマップのこの位置にいます'));
+  L.forEach((r,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1;font-size:14px'},schedSummary(r)),
+    btn('↑',()=>{if(i>0){L.splice(i-1,0,L.splice(i,1)[0]);changed();rr()}},'sm'),
+    btn('編集',()=>editSched(r,m,o=>{L[i]=o;changed();rr()}),'sm'),btn('✕',()=>{L.splice(i,1);if(!L.length)delete ev.schedule;changed();rr();reqDraw()},'sm dg'))));
+  c.append(h('div',{style:'margin-top:6px'},btn('＋ 配置を追加',()=>editSched({from:1,to:'',slot:-1,map:m.id,x:ev.x,y:ev.y,dir:-1},m,o=>{(ev.schedule=ev.schedule||[]).push(o);changed();rr();reqDraw()}),'sm')),
+    h('div',{class:'hint'},'配置があると、日付・時間帯に合う行の場所に出ます（下の行ほど優先）。どの行にも当てはまらない日はいません。会話の内容はページの出現条件（日付・時間帯）で変えます'));
+  return c;
+}
+function schedGhosts(m){const out=[];for(const hm of G.maps)for(const ev of hm.events)for(const r of ev.schedule||[])if(r.map&&+r.map===m.id)out.push({home:hm,ev,r});return out}
+function ghostAt(m,x,y){return schedGhosts(m).find(g=>g.r.x===x&&g.r.y===y)}
+function drawGhosts(c,m,tim){
+  const ts=G.tileSize;
+  for(const g of schedGhosts(m)){const x=g.r.x*ts,y=g.r.y*ts,im0=g.ev.pages[0]&&g.ev.pages[0].image;
+    c.globalAlpha=.55;
+    if(im0&&im0.charset){const cs=G.charsets.find(q=>q.id===im0.charset),ci=cs&&getImg(cs.image);if(ci){const[sx,sy,fw,fh]=charRect(ci,cs.index,g.r.dir>=0?g.r.dir:(im0.dir||0),1);c.drawImage(ci,sx,sy,fw,fh,x+ts/2-fw/2,y+ts-fh,fw,fh)}}
+    else if(im0&&im0.tile!=null&&tim)drawTile(c,tim,im0.tile,x,y);
+    c.globalAlpha=1;const lw=ts/16;c.setLineDash([ts/8,ts/10]);c.strokeStyle='rgba(60,200,220,.95)';c.lineWidth=lw;c.strokeRect(x+lw/2,y+lw/2,ts-lw,ts-lw);c.setLineDash([]);
+    const lab=(g.r.to==null||g.r.to===''?`${g.r.from||1}〜`:g.r.from===g.r.to?`${g.r.from}`:`${g.r.from||1}-${g.r.to}`)+(g.r.slot>=0?slotN(g.r.slot):'');
+    c.font=`bold ${ts*.24}px sans-serif`;const tw=c.measureText(lab).width;c.fillStyle='rgba(60,200,220,.95)';c.fillRect(x,y,tw+ts*.1,ts*.3);c.fillStyle='#000';c.fillText(lab,x+ts*.05,y+ts*.24)}
+}
+/* ===== 等価交換機（データ） ===== */
+function shopCard(){
+  const S0=G.shop,c=card('等価交換機');
+  c.append(h('div',{class:'row'},fNum('1日に並ぶ数',S0,'count',{min:1,max:12}),fNum('1日の取り出し回数',S0,'limit',{min:0}),fNum('最初の価値',S0,'startMoney',{min:0})));
+  c.append(h('div',{class:'card-t',style:'margin-top:8px'},'品ぞろえ表'),h('div',{class:'hint'},'毎朝この表から「1日に並ぶ数」だけ抽選されます。重みが大きいほど出やすい。出現する日やスイッチで絞れます'));
+  if(!S0.pool.length)c.append(h('div',{class:'hint'},'まだありません'));
+  S0.pool.forEach((r,i)=>{const it=G.items.find(x=>x.id===r.item);
+    c.append(h('div',{class:'list-row'},h('div',{style:'flex:1;font-size:14px'},h('b',null,it?it.name:'(アイテムなし)'),h('div',{class:'hint',style:'margin:0'},
+      `価値${r.price}・重み${r.weight??1}・${r.from||1}〜${r.to||''}日目`+(r.sw>=0?`・${swName(r.sw)}ON時`:'')+(r.once?'・一度きり':'')+(r.limitUp?`・取り出し+${r.limitUp}`:''))),
+      btn('編集',()=>editPool(r,o=>{S0.pool[i]=o;changed();renderDB()}),'sm'),btn('✕',()=>{S0.pool.splice(i,1);changed();renderDB()},'sm dg')))});
+  c.append(h('div',{style:'margin-top:6px'},btn('＋ 品を追加',()=>{if(!G.items.length){toast('先にアイテムを作ってください');return}editPool({item:G.items[0].id,price:10,weight:1,from:1,to:'',sw:-1,once:false,limitUp:0},o=>{S0.pool.push(o);changed();renderDB()})},'sm')));
+  return c;
+}
+function editPool(r,onSave){const d=clone(r);d.to=d.to||0;
+  sheet('品ぞろえ',b=>b.append(card(null,fSel('アイテム',d,'item',itemOpts(),{num:true}),h('div',{class:'row'},fNum('必要な価値',d,'price',{min:0}),fNum('重み',d,'weight',{min:0,hint:'0で出ない'})),
+    h('div',{class:'row'},fNum('何日目から',d,'from',{min:1}),fNum('何日目まで',d,'to',{min:0,hint:'0＝ずっと'})),
+    fSel('出現条件のスイッチ',d,'sw',[[-1,'なし'],...swOpts()],{num:true}),
+    fChk('一度取り出したら二度と並ばない',d,'once'),
+    fNum('取り出すと1日の取り出し回数が増える',d,'limitUp',{min:0,hint:'変換器のアップデートなど。0＝増えない'}))),
+    {back:'キャンセル',actions:[['保存',api=>{if(!d.to)d.to='';onSave(d);api.close()}]]})}
 
 /* ===== データタブ ===== */
 function nameListCard(title,arr){
@@ -797,10 +875,15 @@ function renderDB(){
     h('div',{class:'row'},fSel('開始マップ',P,'map',mapOpts(),{num:true}),fNum('X',P,'x',{min:0}),fNum('Y',P,'y',{min:0})),
     fSel('開始時の向き',P,'dir',DIRN.map((n,i)=>[i,n]),{num:true}),
     btn('マップで開始位置を指定',()=>mapPicker(P.map,(x,y)=>{P.x=x;P.y=y;changed();renderDB();reqDraw()}),'sm')));
+  const SY=G.system,slotsT={v:SY.slots.join('、')};
+  T.append(card('日付と時間帯',fText('時間帯（「、」区切り）',slotsT,'v',{on:()=>{const a=slotsT.v.split(/[、,，]/).map(x=>x.trim()).filter(Boolean);if(a.length)SY.slots=a}}),
+    fNum('開始日',SY,'startDay',{min:1}),fChk('ゲーム画面に日付・時間帯・価値を表示',SY,'hud'),
+    h('div',{class:'hint'},'「時間を進める」で時間帯が進み、「次の日へ」で日付+1・朝に戻ります（ベッドのイベントなどに入れる）。イベントの「日ごとの配置」でキャラの居場所を日・時間帯ごとに変えられます')));
+  T.append(shopCard());
   T.append(nameListCard('スイッチ',G.switches),nameListCard('変数',G.variables));
   const ic=card('アイテム');
-  for(const it of G.items){const n=h('input',{type:'text',value:it.name,oninput:()=>{it.name=n.value;changed()}}),ds=h('input',{type:'text',value:it.desc||'',placeholder:'説明',oninput:()=>{it.desc=ds.value;changed()}});
-    ic.append(h('div',{class:'list-row'},h('span',{style:'width:30px;color:var(--mut);font-size:13px;flex:none'},pad3(it.id)),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
+  for(const it of G.items){const n=h('input',{type:'text',value:it.name,oninput:()=>{it.name=n.value;changed()}}),ds=h('input',{type:'text',value:it.desc||'',placeholder:'説明',oninput:()=>{it.desc=ds.value;changed()}}),vl=h('input',{type:'number',inputmode:'numeric',value:it.value||0,style:'width:90px',oninput:()=>{it.value=Math.max(0,parseInt(vl.value,10)||0);changed()}});
+    ic.append(h('div',{class:'list-row'},h('span',{style:'width:30px;color:var(--mut);font-size:13px;flex:none'},pad3(it.id)),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
   ic.append(h('div',{style:'margin-top:6px'},btn('＋ アイテム追加',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'アイテム'+id,desc:''});changed();renderDB()},'sm')));
   T.append(ic);T.scrollTop=sc;
 }
