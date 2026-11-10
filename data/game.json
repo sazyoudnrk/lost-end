@@ -633,7 +633,9 @@
          "t": "text",
          "face": "",
          "name": "ムロ",
-         "text": "（ムロの会話をここに）"
+         "text": "（ムロの会話をここに）",
+         "pic": "muro_normal",
+         "picPos": "C"
         }
        ]
       }
@@ -894,5 +896,13 @@
    "name": "星空",
    "image": "assets/parallaxes/stars.png"
   }
- ]
+ ],
+ "pictures": [
+  {
+   "id": "muro_normal",
+   "name": "ムロ_通常",
+   "image": "assets/pictures/muro_normal.png"
+  }
+ ],
+ "stills": []
 }

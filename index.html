@@ -10,6 +10,14 @@
 html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;font-family:system-ui,-apple-system,"Hiragino Sans",sans-serif}
 #cv{position:fixed;left:0;top:0;width:100vw;height:100vh;height:100dvh;image-rendering:pixelated;display:block}
 #tap{position:fixed;inset:0;z-index:5;display:none}
+#pics{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+#pics img{position:absolute;bottom:0;height:min(78vh,78dvh);max-width:70vw;object-fit:contain;object-position:bottom;opacity:0;transition:opacity .25s,filter .25s;image-rendering:auto}
+#pics img.show{opacity:1}
+#pics img.dim{filter:brightness(.55)}
+#picL{left:-4vw}#picC{left:50%;transform:translateX(-50%)}#picR{right:-4vw}
+#still{position:fixed;inset:0;z-index:4;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+#still.show{opacity:1}
+#still img{width:100%;height:100%;object-fit:contain}
 #msg{position:fixed;left:8px;right:8px;bottom:calc(14px + env(safe-area-inset-bottom));min-height:118px;background:rgba(12,14,34,.9);border:2px solid #fff;border-radius:10px;padding:16px 12px 14px;display:none;gap:10px;z-index:6;pointer-events:none}
 #msg.show{display:flex}
 #face{width:96px;height:96px;flex:none;object-fit:contain;display:none;image-rendering:pixelated}
@@ -38,6 +46,8 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 </head>
 <body>
 <canvas id="cv"></canvas>
+<div id="pics"><img id="picL" alt=""><img id="picC" alt=""><img id="picR" alt=""></div>
+<div id="still"><img alt=""></div>
 <div id="tap"></div>
 <div id="msg"><div id="mname"></div><img id="face" alt=""><div id="mtext"></div><div id="arrow">▼</div></div>
 <div id="choices"></div>
@@ -87,7 +97,7 @@ async function loadData(){
 }
 function normalize(g){
   g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','parallaxes','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','items','maps','switches','variables'])g[k]=g[k]||[];
   g.player=g.player||{map:g.maps[0]&&g.maps[0].id,x:0,y:0,dir:0};
   for(const m of g.maps){m.events=m.events||[];for(const e of m.events){e.pages=e.pages||[];for(const p of e.pages){p.cond=p.cond||[];p.cmds=p.cmds||[]}}}
 }
@@ -173,7 +183,7 @@ async function runEvent(ev){
   busy=true;aPressed=false;setPad(null);held.length=0;showControls(false);tapEl.style.display='block';
   const cx={ev,mapId:map.id};
   try{await exec(ev.page.cmds,cx)}catch(e){if(e!==END)console.error(e)}
-  hideMsg();busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
+  hideMsg();clearPics();showStill(null,false);busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
 }
 async function exec(list,cx){for(const c of list||[])await cmd(c,cx)}
 async function cmd(c,cx){
@@ -187,6 +197,8 @@ async function cmd(c,cx){
     case'item':S.it[c.id]=Math.max(0,(S.it[c.id]||0)+(+c.n||0));refresh();break;
     case'move':hideMsg();await fade(1);await loadMap(c.map,c.x,c.y,c.dir);await fade(0);break;
     case'wait':await sleep(+c.ms||0);break;
+    case'pic':if(c.pos==='A')clearPics();else{await setPic(c.pos||'C',c.id||null);if(c.id)setActive(c.pos||'C')}break;
+    case'still':await showStill(c.id||null,c.fade!==false);break;
     case'erase':cx.ev.erased=true;break;
     case'end':throw END;
   }
@@ -201,7 +213,21 @@ function tokenize(s){
   push(s.slice(i));return out;
 }
 function waitMs(ms,skip){return new Promise(r=>{const t0=performance.now();(function f(){if(skip()||performance.now()-t0>=ms)r();else requestAnimationFrame(f)})()})}
+/* ---------- 立ち絵・スチル ---------- */
+const PIC={L:$('#picL'),C:$('#picC'),R:$('#picR')};
+async function setPic(pos,id){const el=PIC[pos];if(!el)return;const p=id&&G.pictures.find(x=>x.id===id);
+  if(!p){el.classList.remove('show');el.dataset.id='';return}
+  if(el.dataset.id===id&&el.classList.contains('show'))return;const im=await loadImg(p.image);if(!im)return;el.src=im.src;el.dataset.id=id;void el.offsetWidth;el.classList.add('show')}
+function setActive(pos){for(const k in PIC)PIC[k].classList.toggle('dim',k!==pos&&PIC[k].classList.contains('show'))}
+function clearPics(){for(const k in PIC){PIC[k].classList.remove('show','dim');PIC[k].dataset.id=''}}
+async function showStill(id,fade){const box=$('#still'),img=box.querySelector('img');const st=id&&G.stills.find(x=>x.id===id);
+  if(!st){if(box.classList.contains('show')){box.classList.remove('show');if(fade)await sleep(400)}return}
+  const im=await loadImg(st.image);if(!im)return;
+  if(box.classList.contains('show')&&fade){box.classList.remove('show');await sleep(400)}
+  img.src=im.src;box.style.transition=fade?'':'none';void box.offsetWidth;box.classList.add('show');if(fade)await sleep(400);box.style.transition=''}
 async function showText(c){
+  if(c.pic==='-')setPic(c.picPos||'C',null);
+  else if(c.pic){await setPic(c.picPos||'C',c.pic);setActive(c.picPos||'C')}
   msgEl.classList.add('show');
   const f=G.faces.find(x=>x.id===c.face);
   const fim=f?await loadImg(f.image):null;
