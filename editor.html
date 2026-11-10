@@ -70,7 +70,7 @@ textarea{resize:vertical;line-height:1.5}
 .seg button.on{background:var(--ac);color:#fff}
 .ptabs{display:flex;gap:6px;overflow-x:auto;padding:4px 10px}
 canvas{image-rendering:pixelated}
-.pe-sw{width:30px;height:30px;border-radius:6px;border:2px solid var(--bd);flex:none;padding:0}
+.pe-sw{width:34px;height:34px;border-radius:6px;border:2px solid var(--bd);flex:none;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff}
 .pe-sw.on{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac)}
 </style>
 </head>
@@ -837,7 +837,22 @@ function renderAssets(){
 }
 
 /* ===== ドット絵エディタ ===== */
-const PE_SW=['#000000','#ffffff','#555555','#aaaaaa'];
+const PE_SW=['#000000','#ffffff'];
+// トーン（黒と白の2値パターン。座標基準なのでタイルをまたいでもつながる）
+const TONES=[
+ ['6%',(x,y)=>x%4===0&&y%4===0],
+ ['12%',(x,y)=>(x%4===0&&y%4===0)||(x%4===2&&y%4===2)],
+ ['25%',(x,y)=>x%2===0&&y%2===0],
+ ['50%',(x,y)=>(x+y)%2===0],
+ ['75%',(x,y)=>!(x%2===0&&y%2===0)],
+ ['88%',(x,y)=>!((x%4===0&&y%4===0)||(x%4===2&&y%4===2))],
+ ['横線',(x,y)=>y%2===0],
+ ['縦線',(x,y)=>x%2===0],
+ ['斜線',(x,y)=>(x+y)%4===0],
+ ['逆斜線',(x,y)=>((x-y)%4+4)%4===0],
+ ['格子',(x,y)=>x%4===0||y%4===0],
+];
+const TONE_FG=0xff000000,TONE_BG=0xffffffff;
 let peRecent=[];
 const hex2c=hx=>[parseInt(hx.slice(1,3),16),parseInt(hx.slice(3,5),16),parseInt(hx.slice(5,7),16),255];
 const c2hex=c=>'#'+c.slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('');
@@ -870,9 +885,9 @@ async function openPixelEditor(o){
   let A=new Uint32Array(img.data.buffer);
   const doc=document.createElement('canvas');doc.width=W;doc.height=H;const dctx=doc.getContext('2d');
   const fcv=document.createElement('canvas'),fctx=fcv.getContext('2d');
-  const st={tool:'pen',size:1,col:[0,0,0,255],z:1,ox:0,oy:0,grid:true,snap:true,sel:null,float:null,clip:null,dirty:true,changed:false,undo:[],redo:[],line:null,pdir:0,path:o.path||null};
-  let cv,area,bar2,swBox,colInp,pvCv,raf=0,alive=true,pvT=0;
-  const cmap=()=>c2u(st.col);
+  const st={tool:'pen',tone:null,size:1,col:[0,0,0,255],z:1,ox:0,oy:0,grid:true,snap:true,sel:null,float:null,clip:null,dirty:true,changed:false,undo:[],redo:[],line:null,pdir:0,path:o.path||null};
+  let cv,area,bar2,swBox,toneBox,colInp,pvCv,raf=0,alive=true,pvT=0;
+  const cmap=()=>{if(st.tone!=null){const f=TONES[st.tone][1];return(x,y)=>f(x,y)?TONE_FG:TONE_BG}return c2u(st.col)};
   function gridWH(){if(o.kind==='tilesets')return[G.tileSize,G.tileSize];if(o.kind==='charsets'){const m=W>H;return[W/(m?12:3),H/(m?8:4)]}return[0,0]}
   function setImg(nw,nh,data){W=nw;H=nh;img=new ImageData(new Uint8ClampedArray(data.buffer.slice(0)),W,H);A=new Uint32Array(img.data.buffer);doc.width=W;doc.height=H;st.dirty=true}
   /* --- 履歴 --- */
@@ -888,13 +903,12 @@ async function openPixelEditor(o){
   function redo(){commitFloat();const p=st.redo.pop();if(!p)return;applyP(p,'a');st.undo.push(p);st.changed=true;req()}
   const snap=()=>img.data.slice();
   /* --- 描画処理 --- */
-  function setPx(x,y,u){if(x>=0&&y>=0&&x<W&&y<H)A[y*W+x]=u}
+  function setPx(x,y,u){if(x>=0&&y>=0&&x<W&&y<H)A[y*W+x]=typeof u==='function'?u(x,y):u}
   function brush(x,y,u){const s=st.size,o2=Math.floor((s-1)/2);for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++)setPx(x-o2+dx,y-o2+dy,u)}
   function lineEach(a,b,fn){let x0=a.x,y0=a.y;const dx=Math.abs(b.x-x0),dy=-Math.abs(b.y-y0),sx=x0<b.x?1:-1,sy=y0<b.y?1:-1;let e=dx+dy;
     for(;;){fn(x0,y0);if(x0===b.x&&y0===b.y)break;const e2=2*e;if(e2>=dy){e+=dy;x0+=sx}if(e2<=dx){e+=dx;y0+=sy}}}
-  function flood(x,y,u){if(x<0||y<0||x>=W||y>=H)return;const t=A[y*W+x];if(t===u)return;const stk=[y*W+x];
-    while(stk.length){const i=stk.pop();if(A[i]!==t)continue;A[i]=u;const px=i%W;if(px>0)stk.push(i-1);if(px<W-1)stk.push(i+1);if(i>=W)stk.push(i-W);if(i<W*(H-1))stk.push(i+W)}}
-  function selPixels(s){const d=new ImageData(s.w,s.h),D=new Uint32Array(d.data.buffer);for(let y=0;y<s.h;y++)D.set(A.subarray((s.y+y)*W+s.x,(s.y+y)*W+s.x+s.w),y*s.w);return d}
+  function flood(x,y,u){if(x<0||y<0||x>=W||y>=H)return;const t=A[y*W+x],fn=typeof u==='function';if(!fn&&t===u)return;const seen=new Uint8Array(W*H),stk=[y*W+x];
+    while(stk.length){const i=stk.pop();if(seen[i]||A[i]!==t)continue;seen[i]=1;const px=i%W,py=(i-px)/W;A[i]=fn?u(px,py):u;if(px>0)stk.push(i-1);if(px<W-1)stk.push(i+1);if(i>=W)stk.push(i-W);if(i<W*(H-1))stk.push(i+W)}}
   function clearRect(s){for(let y=s.y;y<s.y+s.h;y++)A.fill(0,y*W+s.x,y*W+s.x+s.w)}
   function flipData(d,horiz){const D=new Uint32Array(d.data.buffer),w=d.width,hh=d.height,o2=new Uint32Array(D.length);
     for(let y=0;y<hh;y++)for(let x=0;x<w;x++)o2[y*w+x]=horiz?D[y*w+(w-1-x)]:D[(hh-1-y)*w+x];D.set(o2)}
@@ -917,7 +931,8 @@ async function openPixelEditor(o){
     c.fillStyle=checker;c.fillRect(st.ox,st.oy,W*z,H*z);
     c.imageSmoothingEnabled=false;c.drawImage(doc,st.ox,st.oy,W*z,H*z);
     const f=st.float;if(f){c.drawImage(fcv,st.ox+f.x*z,st.oy+f.y*z,f.d.width*z,f.d.height*z)}
-    if(st.line){c.fillStyle=st.col[3]?c2hex(st.col):'rgba(255,0,0,.5)';const s=st.size,o2=Math.floor((s-1)/2);lineEach(st.line.a,st.line.b,(x,y)=>c.fillRect(st.ox+(x-o2)*z,st.oy+(y-o2)*z,s*z,s*z))}
+    if(st.line){const s=st.size,o2=Math.floor((s-1)/2),tf=st.tone!=null?TONES[st.tone][1]:null;c.fillStyle=st.col[3]?c2hex(st.col):'rgba(255,0,0,.5)';
+      lineEach(st.line.a,st.line.b,(x,y)=>{if(!tf){c.fillRect(st.ox+(x-o2)*z,st.oy+(y-o2)*z,s*z,s*z);return}for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++){const X=x-o2+dx,Y=y-o2+dy;c.fillStyle=tf(X,Y)?'#000':'#fff';c.fillRect(st.ox+X*z,st.oy+Y*z,z,z)}})}
     const x0=Math.max(0,Math.floor(-st.ox/z)),y0=Math.max(0,Math.floor(-st.oy/z)),x1=Math.min(W,Math.ceil((cw-st.ox)/z)),y1=Math.min(H,Math.ceil((ch-st.oy)/z));
     if(st.grid){
       if(z>=8){c.strokeStyle='rgba(0,0,0,.12)';c.lineWidth=1/dpr;c.beginPath();for(let x=x0;x<=x1;x++){const X=Math.round(st.ox+x*z)+.5/dpr;c.moveTo(X,st.oy+y0*z);c.lineTo(X,st.oy+y1*z)}for(let y=y0;y<=y1;y++){const Y=Math.round(st.oy+y*z)+.5/dpr;c.moveTo(st.ox+x0*z,Y);c.lineTo(st.ox+x1*z,Y)}c.stroke()}
@@ -948,7 +963,7 @@ async function openPixelEditor(o){
   function snapPt(p,ceil){const[gw,gh]=gridWH();if(!st.snap||!gw)return p;return{x:Math.round((ceil?Math.ceil:Math.floor)(p.x/gw)*gw),y:Math.round((ceil?Math.ceil:Math.floor)(p.y/gh)*gh)}}
   function begin(p){
     const t=st.tool;
-    if(t==='pick'){if(p.x<0||p.y<0||p.x>=W||p.y>=H)return;const c=u2c(A[p.y*W+p.x]);if(!c[3]){st.tool='erase'}else{st.col=c;st.tool='pen'}refreshUI();return}
+    if(t==='pick'){if(p.x<0||p.y<0||p.x>=W||p.y>=H)return;const c=u2c(A[p.y*W+p.x]);st.tone=null;if(!c[3]){st.tool='erase'}else{st.col=c;st.tool='pen'}refreshUI();return}
     if(t==='select'){
       const f=st.float;
       if(f&&inR(p,{x:f.x,y:f.y,w:f.d.width,h:f.d.height})){stroke={t:'move',p0:p,fx:f.x,fy:f.y};return}
@@ -1001,7 +1016,7 @@ async function openPixelEditor(o){
     if(k==='cut'){st.clip=selPixels(s);clearRect(s)}
     if(k==='del')clearRect(s);
     if(k==='fliph'||k==='flipv'){const d=selPixels(s);flipData(d,k==='fliph');const D=new Uint32Array(d.data.buffer);for(let y=0;y<s.h;y++)A.set(D.subarray(y*s.w,y*s.w+s.w),(s.y+y)*W+s.x)}
-    if(k==='fill'){const u=cmap();for(let y=s.y;y<s.y+s.h;y++)A.fill(u,y*W+s.x,y*W+s.x+s.w)}
+    if(k==='fill'){const u=cmap();for(let y=s.y;y<s.y+s.h;y++)for(let x=s.x;x<s.x+s.w;x++)setPx(x,y,u)}
     pushPatch(b);refreshUI();req();
   }
   function resizeDlg(){
@@ -1032,8 +1047,12 @@ async function openPixelEditor(o){
     area.querySelectorAll('[data-pt]').forEach(b=>b.classList.toggle('on',b.dataset.pt===st.tool));
     area.querySelectorAll('[data-ps]').forEach(b=>b.classList.toggle('on',+b.dataset.ps===st.size));
     area.querySelector('#peGrid').classList.toggle('on',st.grid);area.querySelector('#peSnap').classList.toggle('on',st.snap);
-    swBox.innerHTML='';const cur=c2hex(st.col);
-    for(const hx of[...PE_SW,...peRecent]){const b=h('button',{class:'pe-sw'+(st.tool!=='erase'&&st.col[3]&&cur===hx?' on':''),style:'background:'+hx,onclick:()=>{st.col=hex2c(hx);if(st.tool==='erase'||st.tool==='pick'||st.tool==='select'||st.tool==='hand')st.tool='pen';refreshUI()}});swBox.append(b)}
+    swBox.innerHTML='';toneBox.innerHTML='';toneBox.append(h('span',{class:'hint',style:'align-self:center;margin-right:2px;white-space:nowrap'},'トーン'));const cur=c2hex(st.col);
+    const toPen=()=>{if(st.tool==='erase'||st.tool==='pick'||st.tool==='select'||st.tool==='hand')st.tool='pen'};
+    TONES.forEach(([n,f],i)=>{const cv2=h('canvas',{width:30,height:30,style:'width:30px;height:30px;display:block;border-radius:4px'}),q=cv2.getContext('2d');
+      for(let y=0;y<10;y++)for(let x=0;x<10;x++){q.fillStyle=f(x,y)?'#000':'#fff';q.fillRect(x*3,y*3,3,3)}
+      toneBox.append(h('button',{class:'pe-sw'+(st.tool!=='erase'&&st.tone===i?' on':''),title:n,onclick:()=>{st.tone=i;toPen();refreshUI()}},cv2))});
+    for(const hx of[...PE_SW,...peRecent].reverse()){const b=h('button',{class:'pe-sw'+(st.tool!=='erase'&&st.tone==null&&st.col[3]&&cur===hx?' on':''),style:'background:'+hx,onclick:()=>{st.tone=null;st.col=hex2c(hx);if(st.tool==='erase'||st.tool==='pick'||st.tool==='select'||st.tool==='hand')st.tool='pen';refreshUI()}});swBox.prepend(b)}
     colInp.value=cur;
     bar2.innerHTML='';const f=st.float,s=st.sel,B=(l,k,cls)=>btn(l,()=>selAct(k),'sm '+(cls||''));
     const add=(...a)=>bar2.append(...a.filter(Boolean));
@@ -1047,13 +1066,14 @@ async function openPixelEditor(o){
     area=b;
     const wrap=h('div',{style:'flex:1;position:relative;min-height:120px;overflow:hidden'},cv=h('canvas',{style:'position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block'}));
     if(o.kind==='charsets'){pvCv=h('canvas',{width:144,height:144,style:'position:absolute;right:6px;top:6px;width:72px;height:72px;background:#fffd;border:1px solid var(--bd);border-radius:8px;image-rendering:pixelated',onclick:()=>{st.pdir=(st.pdir+1)%4}});wrap.append(pvCv)}
-    colInp=h('input',{type:'color',style:'width:40px;height:34px;padding:0;border:0;background:none;flex:none',onchange:()=>{const hx=colInp.value;st.col=hex2c(hx);if(!PE_SW.includes(hx)&&!peRecent.includes(hx)){peRecent.unshift(hx);peRecent=peRecent.slice(0,6)}if(st.tool!=='pen'&&st.tool!=='fill'&&st.tool!=='line')st.tool='pen';refreshUI()}});
-    swBox=h('div',{style:'display:flex;gap:6px'});
+    colInp=h('input',{type:'color',style:'width:40px;height:34px;padding:0;border:0;background:none;flex:none',onchange:()=>{const hx=colInp.value;st.tone=null;st.col=hex2c(hx);if(!PE_SW.includes(hx)&&!peRecent.includes(hx)){peRecent.unshift(hx);peRecent=peRecent.slice(0,6)}if(st.tool!=='pen'&&st.tool!=='fill'&&st.tool!=='line')st.tool='pen';refreshUI()}});
+    swBox=h('div',{style:'display:flex;gap:6px'});toneBox=h('div',{class:'bar',style:'gap:6px'});
     bar2=h('div',{class:'bar',style:'border-top:1px solid var(--bd)'});
     b.append(wrap,bar2,
       h('div',{class:'bar'},...TOOLS.map(([k,l])=>h('button',{class:'btn','data-pt':k,onclick:()=>{if(k!=='select'&&k!=='hand')commitFloat();st.tool=k;refreshUI();req()}},l)),
         h('div',{class:'seg'},...[1,2,3,4].map(n=>h('button',{'data-ps':n,onclick:()=>{st.size=n;refreshUI()}},n))),
         btn('↶',undo),btn('↷',redo)),
+      toneBox,
       h('div',{class:'bar'},swBox,colInp,
         h('button',{class:'btn sm',id:'peGrid',onclick:()=>{st.grid=!st.grid;refreshUI();req()}},'#'),
         h('button',{class:'btn sm',id:'peSnap',onclick:()=>{st.snap=!st.snap;refreshUI()}},'🧲吸着'),
