@@ -115,7 +115,7 @@
   "価値を知った",
   "エントランスに行った",
   "1日目の集合が終わった",
-  "",
+  "今日はもう遅い",
   "",
   "",
   "",
@@ -134,11 +134,11 @@
   ""
  ],
  "variables": [
-  "",
-  "",
-  "",
-  "",
-  "",
+  "ムロと過ごした回数",
+  "ネイサと過ごした回数",
+  "ノノノと過ごした回数",
+  "ニノマエと過ごした回数",
+  "ピヲラと過ごした回数",
   "",
   "",
   "",
@@ -251,8 +251,158 @@
         {
          "t": "text",
          "face": "",
-         "name": "ノノノ",
-         "text": "（ノノノの会話をここに）"
+         "name": "",
+         "text": "ノノノと過ごす？"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 3,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 2,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ノノノ",
+                   "text": "（1回目に過ごしたときの会話）"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ノノノ",
+                   "text": "（2回目に過ごしたときの会話）"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ノノノ",
+                   "text": "（3回目に過ごしたときの会話）"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ノノノ",
+                 "text": "（話すことがなくなったときの会話）"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 2,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 3,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ノノノ",
+                 "text": "（どうでもいい会話A）"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ノノノ",
+                 "text": "（どうでもいい会話B）"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ノノノ",
+                 "text": "（どうでもいい会話C）"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
         }
        ]
       }
@@ -301,10 +451,172 @@
         {
          "t": "text",
          "face": "",
-         "name": "ニノマエ",
-         "text": "（ニノマエの会話をここに）",
-         "pic": "ninomae_normal",
-         "picPos": "C"
+         "name": "",
+         "text": "ニノマエと過ごす？"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 3,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 3,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（1回目に過ごしたときの会話）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（2回目に過ごしたときの会話）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（3回目に過ごしたときの会話）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（話すことがなくなったときの会話）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 3,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 3,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（どうでもいい会話A）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（どうでもいい会話B）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（どうでもいい会話C）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
         }
        ]
       }
@@ -353,10 +665,208 @@
         {
          "t": "text",
          "face": "",
+         "name": "",
+         "text": "ネイサと過ごす？"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 3,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 1,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（1回目に過ごしたときの会話）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（2回目に過ごしたときの会話）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（3回目に過ごしたときの会話）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（話すことがなくなったときの会話）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 1,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 3,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（どうでもいい会話A）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（どうでもいい会話B）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（どうでもいい会話C）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": "==",
+         "val": 3
+        },
+        {
+         "type": "self",
+         "key": "A",
+         "val": false
+        }
+       ],
+       "image": {
+        "charset": "neisa",
+        "dir": 1
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
          "name": "ネイサ",
-         "text": "（ネイサの会話をここに）",
+         "text": "（3日目だけの特別なイベント会話。例として入れてあります）",
          "pic": "neisa_normal",
          "picPos": "C"
+        },
+        {
+         "t": "self",
+         "key": "A",
+         "val": true
         }
        ]
       }
@@ -985,8 +1495,158 @@
         {
          "t": "text",
          "face": "",
-         "name": "ピヲラ",
-         "text": "（ピヲラの会話をここに）"
+         "name": "",
+         "text": "ピヲラと過ごす？"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 3,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 4,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（1回目に過ごしたときの会話）"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（2回目に過ごしたときの会話）"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（3回目に過ごしたときの会話）"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（話すことがなくなったときの会話）"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 4,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 3,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（どうでもいい会話A）"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（どうでもいい会話B）"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（どうでもいい会話C）"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
         }
        ]
       }
@@ -1312,6 +1972,11 @@
            "label": "眠る",
            "cmds": [
             {
+             "t": "sw",
+             "id": 3,
+             "val": false
+            },
+            {
              "t": "sleep"
             }
            ]
@@ -1479,27 +2144,172 @@
         {
          "t": "text",
          "face": "",
-         "name": "ムロ",
-         "text": "（ムロの会話をここに）\n今日は[day]日目の[slot]。",
-         "pic": "muro_normal",
-         "picPos": "C"
-        },
-        {
-         "t": "money",
-         "op": "add",
-         "val": 3
-        },
-        {
-         "t": "text",
-         "face": "",
          "name": "",
-         "text": "ムロから価値を3もらった。"
+         "text": "ムロと過ごす？"
         },
         {
-         "t": "time",
-         "op": "next",
-         "n": 1,
-         "slot": 0
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 3,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 0,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（1回目に過ごしたときの会話）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（2回目に過ごしたときの会話）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（3回目に過ごしたときの会話）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（話すことがなくなったときの会話）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 0,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 3,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（どうでもいい会話A）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（どうでもいい会話B）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（どうでもいい会話C）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
         }
        ]
       }
