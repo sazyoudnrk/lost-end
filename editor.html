@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-10k';
+const APP_VER='2026-11-10l';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -498,6 +498,7 @@ function endStroke(){
     if(s.ev){if(!same&&inMap(m,t)&&!evAt(m,t.x,t.y)){s.ev.x=t.x;s.ev.y=t.y;changed()}else if(same)openEvent(m,s.ev)}
     else if(same&&inMap(m,t))actionMenu([
       ['🎯 ここに新規イベント',()=>{const ev=newEvent(m,t.x,t.y);changed();reqDraw();openEvent(m,ev)}],
+      EVCLIP?['📋 ここに「'+EVCLIP.name+'」を貼り付け',()=>{pasteEvent(m,EVCLIP,t.x,t.y);toast('貼り付けました')}]:null,
       ['▶ ここからテストプレイ',()=>testPlay(m.id,t.x,t.y)],
       ['🚩 ここをプレイヤー開始位置に',()=>{Object.assign(G.player,{map:m.id,x:t.x,y:t.y});changed();reqDraw()}]],`(${t.x}, ${t.y})`);
     reqDraw();return;
@@ -536,6 +537,10 @@ function setBrush(a,b){
   ME.brush={x:x0,y:y0,w:x1-x0+1,h:y1-y0+1};
   if(!['pen','rect','fill'].includes(ME.tool)){ME.tool='pen';refreshTools()}drawPalette();
 }
+// イベントのコピー・複製（新しい番号を付けて置く）
+let EVCLIP=null;
+function pasteEvent(m,src,x,y){const id=Math.max(0,...m.events.map(e=>e.id))+1,ev=clone(src);ev.id=id;ev.x=x;ev.y=y;m.events.push(ev);changed();reqDraw();return ev}
+function freeNear(m,x,y){for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,2],[0,-2]]){const nx=x+dx,ny=y+dy;if(nx>=0&&ny>=0&&nx<m.w&&ny<m.h&&!evAt(m,nx,ny))return{x:nx,y:ny}}return null}
 function newEvent(m,x,y){const id=Math.max(0,...m.events.map(e=>e.id))+1;const ev={id,name:'EV'+pad3(id),x,y,pages:[newPage()]};m.events.push(ev);return ev}
 function buildMapTab(){
   const T=$('#tab-map');T.innerHTML='';T.style.overflow='hidden';
@@ -821,7 +826,7 @@ function openEvent(m,ev,onClose){
     b.append(card('起動条件',h('div',{class:'row'},fSel('トリガー',pg,'trigger',[['action','調べる（A）'],['touch','プレイヤー接触'],['auto','自動実行']],{on:api.rerender}),fSel('重なり',pg,'priority',[['same','キャラと同じ'],['below','キャラの下']])),
       fChk('すり抜け',pg,'through'),pg.trigger==='auto'?h('div',{class:'hint'},'自動実行は、スイッチ等で条件を外さないと繰り返し実行されます'):null));
     b.append(card('実行内容',cmdTree(pg.cmds,api.rerender)));
-  },{actions:[['削除',api=>{if(confirm('このイベントを削除しますか？')){m.events.splice(m.events.indexOf(ev),1);changed();api.close()}},'dg']],onClose:()=>{reqDraw();onClose&&onClose()}});
+  },{actions:[['複製',api=>{const p=freeNear(m,ev.x,ev.y);if(!p){toast('となりに空きマスがありません。コピーして貼り付けてください');return}const n=pasteEvent(m,ev,p.x,p.y);api.close();toast(`(${p.x},${p.y}) に複製しました`);setTimeout(()=>openEvent(m,n),250)},' '],['コピー',()=>{EVCLIP=clone(ev);toast('コピーしました。🎯EVで空きマスをタップして貼り付け（別のマップにも貼れます）')},' '],['削除',api=>{if(confirm('このイベントを削除しますか？')){m.events.splice(m.events.indexOf(ev),1);changed();api.close()}},'dg']],onClose:()=>{reqDraw();onClose&&onClose()}});
 }
 
 /* ===== 日ごとの配置 ===== */
