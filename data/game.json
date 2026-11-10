@@ -24,12 +24,6 @@
    "index": 1
   },
   {
-   "id": "nonono",
-   "name": "ノノノ",
-   "image": "assets/characters/lost_end_chars.png",
-   "index": 2
-  },
-  {
    "id": "neisa",
    "name": "ネイサ",
    "image": "assets/characters/lost_end_chars.png",
@@ -229,56 +223,6 @@
          "dir": 0
         }
        ]
-      }
-     ]
-    },
-    {
-     "id": 7,
-     "name": "ノノノ",
-     "x": 8,
-     "y": 10,
-     "pages": [
-      {
-       "cond": [],
-       "image": {
-        "charset": "nonono",
-        "dir": 0
-       },
-       "trigger": "action",
-       "priority": "same",
-       "through": false,
-       "cmds": [
-        {
-         "t": "text",
-         "face": "",
-         "name": "ノノノ",
-         "text": "（ノノノの会話をここに）"
-        }
-       ]
-      }
-     ],
-     "schedule": [
-      {
-       "from": 1,
-       "to": 1,
-       "slot": -1,
-       "sw": 2,
-       "swv": false,
-       "map": 1,
-       "x": 4,
-       "y": 8,
-       "dir": 0
-      },
-      {
-       "from": 1,
-       "to": "",
-       "slot": -1,
-       "sw": 2,
-       "swv": true,
-       "map": 1,
-       "x": 8,
-       "y": 10,
-       "dir": -1
       }
      ]
     },
@@ -562,12 +506,6 @@
          "text": "これで全員ですかね？\n警告音について何かご存知の方は……",
          "pic": "muro_normal",
          "picPos": "C"
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "ノノノ",
-         "text": "（6時間で着く予定だったのに、と不満をこぼす）"
         },
         {
          "t": "text",
