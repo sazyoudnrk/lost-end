@@ -109,8 +109,8 @@
   "価値を知った",
   "エントランスに行った",
   "1日目の集合が終わった",
-  "",
-  "",
+  "2回目の集合が終わった",
+  "今日はもう遅い",
   "",
   "",
   "",
@@ -128,12 +128,12 @@
   ""
  ],
  "variables": [
+  "ムロと過ごした回数",
+  "ネイサと過ごした回数",
+  "ニノマエと過ごした回数",
+  "ピヲラと過ごした回数",
   "",
-  "",
-  "",
-  "",
-  "",
-  "",
+  "進行度",
   "",
   "",
   "",
@@ -251,6 +251,194 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 3,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "ninomae",
+        "dir": 2
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ニノマエと過ごす？"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 4,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 2,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（話すことがなくなったときの会話）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 2,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 4,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（どうでもいい会話A：3日の航海の話題）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（どうでもいい会話B：3日の航海の話題）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（どうでもいい会話C：3日の航海の話題）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
       }
      ],
      "schedule": [
@@ -258,23 +446,43 @@
        "from": 1,
        "to": 1,
        "slot": -1,
-       "sw": 2,
+       "sw": -1,
        "swv": false,
        "map": 1,
        "x": 4,
        "y": 5,
-       "dir": 2
+       "dir": 2,
+       "vr": 5,
+       "vop": "==",
+       "vv": 0
       },
       {
        "from": 1,
        "to": "",
        "slot": -1,
-       "sw": 2,
+       "sw": -1,
        "swv": true,
        "map": 1,
        "x": 3,
        "y": 5,
-       "dir": -1
+       "dir": -1,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 1
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "map": 1,
+       "x": 4,
+       "y": 5,
+       "dir": 2,
+       "vr": 5,
+       "vop": "==",
+       "vv": 2
       }
      ]
     },
@@ -303,6 +511,194 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 3,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "neisa",
+        "dir": 1
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ネイサと過ごす？"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 4,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 1,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（話すことがなくなったときの会話）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 1,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 4,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（どうでもいい会話A：3日の航海の話題）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（どうでもいい会話B：3日の航海の話題）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（どうでもいい会話C：3日の航海の話題）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
       }
      ],
      "schedule": [
@@ -310,23 +706,56 @@
        "from": 1,
        "to": 1,
        "slot": -1,
-       "sw": 2,
+       "sw": -1,
        "swv": false,
        "map": 1,
        "x": 7,
        "y": 4,
-       "dir": 0
+       "dir": 0,
+       "vr": 5,
+       "vop": "==",
+       "vv": 0
       },
       {
        "from": 1,
        "to": "",
        "slot": -1,
-       "sw": 2,
+       "sw": -1,
        "swv": true,
        "map": 2,
        "x": 14,
        "y": 1,
-       "dir": 3
+       "dir": 3,
+       "vr": 5,
+       "vop": "==",
+       "vv": 1
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "map": 1,
+       "x": 10,
+       "y": 8,
+       "dir": -1,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 3
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "map": 1,
+       "x": 7,
+       "y": 4,
+       "dir": 0,
+       "vr": 5,
+       "vop": "==",
+       "vv": 2
       }
      ]
     },
@@ -573,6 +1002,12 @@
          "val": true
         },
         {
+         "t": "var",
+         "id": 5,
+         "op": "set",
+         "val": 1
+        },
+        {
          "t": "move",
          "map": 1,
          "x": 6,
@@ -594,6 +1029,102 @@
        "priority": "below",
        "through": true,
        "cmds": []
+      }
+     ]
+    },
+    {
+     "id": 16,
+     "name": "全員集合（2回目）",
+     "x": 2,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "警告音が止まり、エントランスにまた全員が集まっている。"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "（操縦室の表示では、到着まで3日かかるらしいと報告する）",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "（3日の航海なら、まあいいでしょう）",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ニノマエ",
+         "text": "（……）",
+         "pic": "ninomae_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "（……）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ここで解散）"
+        },
+        {
+         "t": "sw",
+         "id": 3,
+         "val": true
+        },
+        {
+         "t": "var",
+         "id": 5,
+         "op": "set",
+         "val": 3
+        },
+        {
+         "t": "move",
+         "map": 1,
+         "x": 6,
+         "y": 10,
+         "dir": 3
+        }
+       ]
       }
      ]
     }
@@ -941,6 +1472,180 @@
          "text": "（ピヲラの会話をここに）"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 3,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "piwora",
+        "dir": 1
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ピヲラと過ごす？"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 4,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 3,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（1回目に過ごしたときの会話：3日の航海に触れる）"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（2回目に過ごしたときの会話：3日の航海に触れる）"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（話すことがなくなったときの会話）"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 3,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 4,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（どうでもいい会話A：3日の航海の話題）"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（どうでもいい会話B：3日の航海の話題）"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（どうでもいい会話C：3日の航海の話題）"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
       }
      ],
      "schedule": [
@@ -948,12 +1653,15 @@
        "from": 1,
        "to": 1,
        "slot": -1,
-       "sw": 2,
+       "sw": -1,
        "swv": false,
        "map": 1,
        "x": 4,
        "y": 7,
-       "dir": 2
+       "dir": 2,
+       "vr": 5,
+       "vop": "==",
+       "vv": 0
       },
       {
        "from": 1,
@@ -963,8 +1671,25 @@
        "x": 2,
        "y": 7,
        "dir": -1,
-       "sw": 2,
-       "swv": true
+       "sw": -1,
+       "swv": true,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 1
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "map": 1,
+       "x": 4,
+       "y": 7,
+       "dir": 2,
+       "vr": 5,
+       "vop": "==",
+       "vv": 2
       }
      ]
     },
@@ -1053,6 +1778,220 @@
          "x": 6,
          "y": 9,
          "dir": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 15,
+     "name": "ピッキング",
+     "x": 13,
+     "y": 5,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 1
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ネイサとムロが操縦室の扉の前にいる）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "（扉の鍵をピッキングしている）",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "（……）",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "[shake]カチャ、と音がして扉が開いた。"
+        },
+        {
+         "t": "route",
+         "target": "ネイサ",
+         "route": [
+          "U"
+         ],
+         "wait": false,
+         "through": true,
+         "speed": 1
+        },
+        {
+         "t": "route",
+         "target": "ムロ",
+         "route": [
+          "U",
+          "U"
+         ],
+         "wait": true,
+         "through": true,
+         "speed": 1
+        },
+        {
+         "t": "wait",
+         "ms": 800
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "……しばらくして、警告音が止んだ。"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（エントランスに戻ってみよう）"
+        },
+        {
+         "t": "var",
+         "id": 5,
+         "op": "set",
+         "val": 2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 16,
+     "name": "ピッキング",
+     "x": 14,
+     "y": 5,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 1
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ネイサとムロが操縦室の扉の前にいる）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "（扉の鍵をピッキングしている）",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "（……）",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "[shake]カチャ、と音がして扉が開いた。"
+        },
+        {
+         "t": "route",
+         "target": "ネイサ",
+         "route": [
+          "U"
+         ],
+         "wait": false,
+         "through": true,
+         "speed": 1
+        },
+        {
+         "t": "route",
+         "target": "ムロ",
+         "route": [
+          "U",
+          "U"
+         ],
+         "wait": true,
+         "through": true,
+         "speed": 1
+        },
+        {
+         "t": "wait",
+         "ms": 800
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "……しばらくして、警告音が止んだ。"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（エントランスに戻ってみよう）"
+        },
+        {
+         "t": "var",
+         "id": 5,
+         "op": "set",
+         "val": 2
         }
        ]
       }
@@ -1264,6 +2203,11 @@
            "label": "眠る",
            "cmds": [
             {
+             "t": "sw",
+             "id": 4,
+             "val": false
+            },
+            {
              "t": "sleep"
             }
            ]
@@ -1432,26 +2376,197 @@
          "t": "text",
          "face": "",
          "name": "ムロ",
-         "text": "（ムロの会話をここに）\n今日は[day]日目の[slot]。",
+         "text": "（ムロの会話をここに）",
          "pic": "muro_normal",
          "picPos": "C"
-        },
+        }
+       ]
+      },
+      {
+       "cond": [
         {
-         "t": "money",
-         "op": "add",
-         "val": 3
-        },
+         "type": "sw",
+         "id": 3,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 3
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
         {
          "t": "text",
          "face": "",
          "name": "",
-         "text": "ムロから価値を3もらった。"
+         "text": "ムロと過ごす？"
         },
         {
-         "t": "time",
-         "op": "next",
-         "n": 1,
-         "slot": 0
+         "t": "choice",
+         "options": [
+          {
+           "label": "過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 4,
+              "val": true
+             },
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "もう遅い。今日は部屋に戻って休もう。"
+              }
+             ],
+             "else": [
+              {
+               "t": "vcase",
+               "id": 0,
+               "cases": [
+                {
+                 "val": 0,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 1,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                }
+               ],
+               "hasElse": true,
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（話すことがなくなったときの会話）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "t": "var",
+               "id": 0,
+               "op": "add",
+               "val": 1
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "slot",
+                "op": "==",
+                "val": 2
+               },
+               "then": [
+                {
+                 "t": "sw",
+                 "id": 4,
+                 "val": true
+                }
+               ],
+               "else": [
+                {
+                 "t": "time",
+                 "op": "next",
+                 "n": 1,
+                 "slot": 0
+                }
+               ],
+               "hasElse": true
+              }
+             ],
+             "hasElse": true
+            }
+           ]
+          },
+          {
+           "label": "話すだけ",
+           "cmds": [
+            {
+             "t": "random",
+             "options": [
+              {
+               "label": "A",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（どうでもいい会話A：3日の航海の話題）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "B",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（どうでもいい会話B：3日の航海の話題）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              },
+              {
+               "label": "C",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（どうでもいい会話C：3日の航海の話題）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
         }
        ]
       }
@@ -1461,23 +2576,42 @@
        "from": 1,
        "to": 1,
        "slot": -1,
-       "sw": 2,
+       "sw": -1,
        "swv": false,
        "map": 1,
        "x": 5,
        "y": 4,
-       "dir": 0
+       "dir": 0,
+       "vr": 5,
+       "vop": "==",
+       "vv": 0
       },
       {
        "from": 1,
        "to": "",
        "slot": -1,
-       "sw": 2,
+       "sw": -1,
        "swv": true,
        "map": 2,
        "x": 13,
        "y": 2,
-       "dir": -1
+       "dir": -1,
+       "vr": 5,
+       "vop": "==",
+       "vv": 1
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "map": 8,
+       "x": 8,
+       "y": 5,
+       "dir": -1,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 3
       },
       {
        "from": 2,
@@ -1487,8 +2621,25 @@
        "x": 8,
        "y": 8,
        "dir": 0,
-       "sw": 2,
-       "swv": true
+       "sw": -1,
+       "swv": true,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 3
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "map": 1,
+       "x": 5,
+       "y": 4,
+       "dir": 0,
+       "vr": 5,
+       "vop": "==",
+       "vv": 2
       }
      ]
     },
