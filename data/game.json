@@ -55,13 +55,13 @@
   },
   {
    "id": "sample1",
-   "name": "自作キャラ_1",
+   "name": "主人公（自作）",
    "image": "assets/characters/denryoku_chars.png",
    "index": 0
   },
   {
    "id": "sample2",
-   "name": "自作キャラ_2",
+   "name": "ムロ（自作）",
    "image": "assets/characters/denryoku_chars.png",
    "index": 1
   }
@@ -113,7 +113,7 @@
   ""
  ],
  "player": {
-  "charset": "hero",
+  "charset": "sample1",
   "map": 6,
   "x": 8,
   "y": 4,
@@ -616,7 +616,7 @@
       {
        "cond": [],
        "image": {
-        "charset": "muro",
+        "charset": "sample2",
         "dir": 3
        },
        "trigger": "action",
@@ -696,32 +696,6 @@
        ]
       }
      ]
-    },
-    {
-     "id": 2,
-     "name": "自作キャラ_1",
-     "x": 7,
-     "y": 5,
-     "pages": [
-      {
-       "cond": [],
-       "image": {
-        "charset": "sample1",
-        "dir": 0
-       },
-       "trigger": "action",
-       "priority": "same",
-       "through": false,
-       "cmds": [
-        {
-         "t": "text",
-         "face": "",
-         "name": "自作キャラ_1",
-         "text": "（自作キャラ_1の会話をここに）"
-        }
-       ]
-      }
-     ]
     }
    ]
   },
@@ -756,32 +730,6 @@
          "x": 18,
          "y": 16,
          "dir": 0
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "id": 2,
-     "name": "自作キャラ_2",
-     "x": 7,
-     "y": 5,
-     "pages": [
-      {
-       "cond": [],
-       "image": {
-        "charset": "sample2",
-        "dir": 0
-       },
-       "trigger": "action",
-       "priority": "same",
-       "through": false,
-       "cmds": [
-        {
-         "t": "text",
-         "face": "",
-         "name": "自作キャラ_2",
-         "text": "（自作キャラ_2の会話をここに）"
         }
        ]
       }
