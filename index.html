@@ -347,16 +347,19 @@ async function showText(c){
   const fim=f?await loadImg(f.image):null;
   if(fim){faceEl.src=fim.src;faceEl.style.display='block'}else faceEl.style.display='none';
   nameEl.textContent=c.name||'';nameEl.style.display=c.name?'block':'none';
-  textEl.textContent='';arrowEl.style.display='none';
-  let skip=false,typing=true;
-  const done=new Promise(r=>{onAdvance=()=>{if(typing)skip=true;else{onAdvance=null;r()}}});
-  for(const tk of tokenize(c.text||'')){
-    if(tk.w!=null){if(!skip)await waitMs(tk.w,()=>skip)}
-    else if(tk.shake){if(!skip){msgEl.classList.remove('shake');void msgEl.offsetWidth;msgEl.classList.add('shake')}}
-    else{textEl.textContent+=tk.s;if(!skip)await waitMs(28,()=>skip)}
+  // [p] で改ページ（前後の改行は無視）
+  for(const page of (c.text||'').split(/\n?\[p\]\n?/)){
+    textEl.textContent='';arrowEl.style.display='none';
+    let skip=false,typing=true;
+    const done=new Promise(r=>{onAdvance=()=>{if(typing)skip=true;else{onAdvance=null;r()}}});
+    for(const tk of tokenize(page)){
+      if(tk.w!=null){if(!skip)await waitMs(tk.w,()=>skip)}
+      else if(tk.shake){if(!skip){msgEl.classList.remove('shake');void msgEl.offsetWidth;msgEl.classList.add('shake')}}
+      else{textEl.textContent+=tk.s;if(!skip)await waitMs(28,()=>skip)}
+    }
+    typing=false;arrowEl.style.display='block';
+    await done;arrowEl.style.display='none';
   }
-  typing=false;arrowEl.style.display='block';
-  await done;arrowEl.style.display='none';
 }
 function showChoice(labels){
   return new Promise(r=>{

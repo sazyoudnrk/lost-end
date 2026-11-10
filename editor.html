@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-10g';
+const APP_VER='2026-11-10h';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -770,8 +770,8 @@ function cmdForm(b,d,rr){
       const f=G.faces.find(x=>x.id===d.face);
       c.append(h('div',{class:'row',style:'align-items:center'},f?thumb(f.image):null,fSel('顔グラフィック',d,'face',[['','なし'],...G.faces.map(x=>[x.id,x.name])],{on:rr})),fText('名前',d,'name',{ph:'空なら名前欄なし'}));
       const a=fArea('本文',d,'text',{rows:5});
-      c.append(a,h('div',{class:'bar',style:'background:none;padding:4px 0'},...[['[w=300]','ウェイト'],['[shake]','揺れ'],['[v=1]','変数'],['[day]','日付'],['[slot]','時間帯'],['[money]','価値']].map(([s,l])=>h('button',{class:'btn sm',onpointerdown:e=>e.preventDefault(),onclick:()=>insertAt(a._input,s)},l))),
-        h('div',{class:'hint'},'[w=ミリ秒] 待つ ／ [shake] 枠を揺らす ／ [v=番号] 変数の値 ／ [day] [slot] [money] 日付・時間帯・価値。1つの「文章」= 1ウィンドウで、表情は文章ごとに選べます。「保存＋次」で続けて入力できます。'));
+      c.append(a,h('div',{class:'bar',style:'background:none;padding:4px 0'},...[['\n[p]\n','改ページ'],['[w=300]','ウェイト'],['[shake]','揺れ'],['[v=1]','変数'],['[day]','日付'],['[slot]','時間帯'],['[money]','価値']].map(([s,l])=>h('button',{class:'btn sm',onpointerdown:e=>e.preventDefault(),onclick:()=>insertAt(a._input,s)},l))),
+        h('div',{class:'hint'},'[p] ページ送り ／ [w=ミリ秒] 待つ ／ [shake] 枠を揺らす ／ [v=番号] 変数の値 ／ [day] [slot] [money] 日付・時間帯・価値。1つの「文章」= 1ウィンドウで、表情は文章ごとに選べます。「保存＋次」で続けて入力できます。'));
       if(!G.faces.length)c.append(h('div',{class:'hint'},'顔グラは「素材」タブで追加できます'));
       d.pic=d.pic||'';d.picPos=d.picPos||'C';const pc=d.pic&&d.pic!=='-'&&G.pictures.find(x=>x.id===d.pic);
       c.append(h('div',{class:'row',style:'align-items:center;margin-top:6px'},pc?thumb(pc.image):null,
