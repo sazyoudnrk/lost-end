@@ -245,7 +245,7 @@ async function loadMap(id,x,y,dir){
   const pr=m.parallax&&G.parallaxes.find(p=>p.id===m.parallax.id);parImg=pr?await loadImg(pr.image):null;
   events=m.events.filter(d=>!(d.schedule&&d.schedule.length)).map(d=>mkEv(d,m.id,d.x,d.y,null));
   const ts=G.tileSize;
-  P.x=P.tx=x;P.y=P.ty=y;P.px=x*ts;P.py=y*ts;P.moving=false;
+  clearPath();P.x=P.tx=x;P.y=P.ty=y;P.px=x*ts;P.py=y*ts;P.moving=false;
   if(dir!=null&&dir>=0)P.dir=dir;
   S.map=m.id;
   placeScheduled();updHud();
@@ -289,7 +289,7 @@ function checkAuto(){const e=events.find(e=>!e.erased&&e.page&&e.page.trigger===
 
 /* ---------- イベント実行 ---------- */
 async function runEvent(ev){
-  busy=true;aPressed=false;setPad(null);held.length=0;showControls(false);tapEl.style.display='block';
+  busy=true;aPressed=false;setPad(null);held.length=0;clearPath();showControls(false);tapEl.style.display='block';
   const cx={ev,mapId:map.id};
   try{await exec(ev.page.cmds,cx)}catch(e){if(e!==END)console.error(e)}
   hideMsg();clearPics();showStill(null,false);busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
@@ -369,6 +369,29 @@ function showChoice(labels){
 function hideMsg(){msgEl.classList.remove('show');chEl.style.display='none';onAdvance=null}
 function fade(v){$('#fade').style.opacity=v;return sleep(270)}
 
+/* ---------- タップ（クリック）で移動 ---------- */
+let path=[],pathFace=null,pathGoal=null,cam={x:0,y:0};
+// 目的地まで最短ルートを探す。通れないマス（人や物）なら隣まで行ってそちらを向く
+function findPath(tx,ty){
+  const W=map.w,H=map.h,sx=P.moving?P.tx:P.x,sy=P.moving?P.ty:P.y;if(tx<0||ty<0||tx>=W||ty>=H)return null;
+  const goals=new Map();
+  if((tx===sx&&ty===sy)||passable(tx,ty))goals.set(ty*W+tx,null);
+  else for(let d=0;d<4;d++){const ax=tx-DIRS[d][0],ay=ty-DIRS[d][1];if(ax<0||ay<0||ax>=W||ay>=H)continue;if((ax===sx&&ay===sy)||passable(ax,ay))goals.set(ay*W+ax,d)}
+  if(!goals.size)return null;
+  const prev=new Int32Array(W*H).fill(-1),pd=new Int8Array(W*H),q=[sy*W+sx];prev[sy*W+sx]=sy*W+sx;
+  for(let qi=0;qi<q.length;qi++){const i=q[qi];if(goals.has(i)){const dirs=[];let j=i;while(j!==sy*W+sx){dirs.unshift(pd[j]);j=prev[j]}return{dirs,face:goals.get(i)}}
+    const x=i%W,y=(i-x)/W;for(let d=0;d<4;d++){const nx=x+DIRS[d][0],ny=y+DIRS[d][1];if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(prev[n]>=0||!passable(nx,ny))continue;prev[n]=i;pd[n]=d;q.push(n)}}
+  return null;
+}
+function clearPath(){path=[];pathFace=null;pathGoal=null}
+cv.addEventListener('pointerdown',e=>{
+  if(!map||!S||busy||menuOpen)return;e.preventDefault();
+  const r=cv.getBoundingClientRect(),bx=(e.clientX-r.left)*cv.width/r.width,by=(e.clientY-r.top)*cv.height/r.height,ts=G.tileSize;
+  const tx=Math.floor((bx/scale+cam.x)/ts),ty=Math.floor((by/scale+cam.y)/ts);
+  const res=findPath(tx,ty);if(!res){clearPath();return}
+  path=res.dirs;pathFace=res.face;pathGoal={x:tx,y:ty,t:performance.now()};
+});
+
 /* ---------- 更新・描画 ---------- */
 function update(){
   if(!map||!S)return;
@@ -382,7 +405,11 @@ function update(){
   }
   if(P.moving||busy||menuOpen)return;
   if(aPressed){aPressed=false;if(checkAction())return}
-  const d=curDir();
+  let d=curDir();
+  if(d!=null)clearPath();
+  else if(path.length){d=path[0];const nx=P.x+DIRS[d][0],ny=P.y+DIRS[d][1];if(passable(nx,ny))path.shift();else{P.dir=d;clearPath();d=null;if(checkBump(nx,ny))return}}
+  else if(pathFace!=null){P.dir=pathFace;pathFace=null;pathGoal=null;if(checkAction())return}
+  else if(pathGoal&&P.x===pathGoal.x&&P.y===pathGoal.y)pathGoal=null;
   if(d!=null){
     P.dir=d;const nx=P.x+DIRS[d][0],ny=P.y+DIRS[d][1];
     if(passable(nx,ny)){P.tx=nx;P.ty=ny;P.moving=true;if(!P.anim)P.anim=1}
@@ -390,7 +417,7 @@ function update(){
   }else P.anim=0;
   if(!busy)checkAuto();
 }
-// 横長（PC・横持ち）はツクールMZと同じ 816×624（17×13マス）の画面を拡大表示。縦持ちスマホは全画面
+// 横長（PC・横持ち）は 816×624（17×13マス）の画面を拡大表示。縦持ちスマホは全画面
 const BASE_W=816,BASE_H=624;let fixedMode=false,uiK=1;
 function resize(){
   const iw=innerWidth,ih=innerHeight,scr=$('#screen'),dpr=devicePixelRatio||1,ts=G?G.tileSize:48;
@@ -415,7 +442,7 @@ function draw(){
   const ts=G.tileSize,vw=cv.width/scale,vh=cv.height/scale,mw=map.w*ts,mh=map.h*ts;
   let cx=mw>vw?Math.min(Math.max(P.px+ts/2-vw/2,0),mw-vw):(mw-vw)/2;
   let cy=mh>vh?Math.min(Math.max(P.py+ts/2-vh/2,0),mh-vh):(mh-vh)/2;
-  cx=Math.round(cx*scale)/scale;cy=Math.round(cy*scale)/scale;
+  cx=Math.round(cx*scale)/scale;cy=Math.round(cy*scale)/scale;cam.x=cx;cam.y=cy;
   ctx.setTransform(scale,0,0,scale,-cx*scale,-cy*scale);ctx.imageSmoothingEnabled=false;
   const x0=Math.max(0,Math.floor(cx/ts)),y0=Math.max(0,Math.floor(cy/ts)),x1=Math.min(map.w,Math.ceil((cx+vw)/ts)+1),y1=Math.min(map.h,Math.ceil((cy+vh)/ts)+1);
   if(parImg&&parImg.width){const pp=map.parallax,r=(pp.rate??20)/100,iw=parImg.width,ih=parImg.height,t=performance.now()/1000;
@@ -427,6 +454,7 @@ function draw(){
   list.push({z:1,y:P.py,f:drawPlayer});
   list.sort((a,b)=>a.z-b.z||a.y-b.y);for(const o of list)o.f();
   layer(3,x0,y0,x1,y1);
+  if(pathGoal){const a=.45+.35*Math.sin(performance.now()/120);ctx.strokeStyle=`rgba(255,255,255,${a})`;ctx.lineWidth=3/scale*2;ctx.strokeRect(pathGoal.x*ts+4,pathGoal.y*ts+4,ts-8,ts-8);ctx.strokeStyle=`rgba(0,0,0,${a})`;ctx.lineWidth=1/scale*2;ctx.strokeRect(pathGoal.x*ts+7,pathGoal.y*ts+7,ts-14,ts-14)}
 }
 function loop(){update();draw();requestAnimationFrame(loop)}
 

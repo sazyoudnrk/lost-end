@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-10f';
+const APP_VER='2026-11-10g';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -954,7 +954,7 @@ function renderAssets(){
         else G[k].push(Object.assign({id:uid(),name:nm,image:p},k==='tilesets'?{blocked:[]}:{}))}
       changed();renderAssets()}),'sm')));
     if(k==='tilesets')c.append(h('div',{class:'hint'},`1マス ${G.tileSize}px で区切って使います（「データ」→タイルサイズで変更）`));
-    if(k==='charsets')c.append(h('div',{class:'hint'},'縦長＝1キャラ（横3×縦4コマ）、横長＝8キャラ並び（ツクール形式 横12×縦8コマ）。8キャラ並びは絵のある分だけ自動で登録されます。行は 下・左・右・上 の順。'));
+    if(k==='charsets')c.append(h('div',{class:'hint'},'縦長＝1キャラ（横3×縦4コマ）、横長＝8キャラ並び（横12×縦8コマ）。8キャラ並びは絵のある分だけ自動で登録されます。行は 下・左・右・上 の順。'));
     if(k==='faces')c.append(h('div',{class:'hint'},'表情1つにつき画像1枚。文章ごとに選べます'));
     if(k==='pictures')c.append(h('div',{class:'hint'},'会話で表示する立ち絵。表情ごとに1枚（例：ムロ_通常、ムロ_焦り）。追加するとき、外側の白を透明にできます'));
     if(k==='stills')c.append(h('div',{class:'hint'},'イベントで画面いっぱいに表示する一枚絵。「スチル」コマンドで表示・消去'));
