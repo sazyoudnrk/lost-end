@@ -8,17 +8,17 @@
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;font-family:system-ui,-apple-system,"Hiragino Sans",sans-serif}
-#cv{position:fixed;left:0;top:0;width:100vw;height:100vh;height:100dvh;image-rendering:pixelated;display:block}
-#tap{position:fixed;inset:0;z-index:5;display:none}
-#pics{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}
-#pics img{position:absolute;bottom:0;height:min(78vh,78dvh);max-width:70vw;object-fit:contain;object-position:bottom;opacity:0;transition:opacity .25s,filter .25s;image-rendering:auto}
+#cv{position:absolute;left:0;top:0;width:100%;height:100%;image-rendering:pixelated;display:block}
+#tap{position:absolute;inset:0;z-index:5;display:none}
+#pics{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+#pics img{position:absolute;bottom:0;height:78%;max-width:70%;object-fit:contain;object-position:bottom;opacity:0;transition:opacity .25s,filter .25s;image-rendering:auto}
 #pics img.show{opacity:1}
 #pics img.dim{filter:brightness(.55)}
-#picL{left:-4vw}#picC{left:50%;transform:translateX(-50%)}#picR{right:-4vw}
-#still{position:fixed;inset:0;z-index:4;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+#picL{left:-4%}#picC{left:50%;transform:translateX(-50%)}#picR{right:-4%}
+#still{position:absolute;inset:0;z-index:4;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
 #still.show{opacity:1}
 #still img{width:100%;height:100%;object-fit:contain}
-#msg{position:fixed;left:8px;right:8px;bottom:calc(14px + env(safe-area-inset-bottom));min-height:118px;background:rgba(12,14,34,.9);border:2px solid #fff;border-radius:10px;padding:16px 12px 14px;display:none;gap:10px;z-index:6;pointer-events:none}
+#msg{position:absolute;left:8px;right:8px;bottom:calc(14px + env(safe-area-inset-bottom));min-height:118px;background:rgba(12,14,34,.9);border:2px solid #fff;border-radius:10px;padding:16px 12px 14px;display:none;gap:10px;z-index:6;pointer-events:none}
 #msg.show{display:flex}
 #face{width:96px;height:96px;flex:none;object-fit:contain;display:none;image-rendering:pixelated}
 #mname{position:absolute;top:-15px;left:12px;background:rgba(12,14,34,.96);border:2px solid #fff;border-radius:6px;padding:1px 10px;font-size:14px;display:none}
@@ -27,25 +27,25 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 @keyframes bl{50%{opacity:0}}
 .shake{animation:shk .35s}
 @keyframes shk{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-#choices{position:fixed;right:10px;bottom:calc(146px + env(safe-area-inset-bottom));display:none;flex-direction:column;gap:6px;z-index:7;max-width:80vw}
+#choices{position:absolute;right:10px;bottom:calc(146px + env(safe-area-inset-bottom));display:none;flex-direction:column;gap:6px;z-index:7;max-width:80%}
 .ui-btn{background:rgba(12,14,34,.92);color:#fff;border:2px solid #fff;border-radius:8px;padding:10px 18px;font:inherit;font-size:16px;text-align:left;touch-action:manipulation}
-#pad{position:fixed;left:14px;bottom:calc(18px + env(safe-area-inset-bottom));width:150px;height:150px;z-index:4;touch-action:none}
+#pad{position:absolute;left:14px;bottom:calc(18px + env(safe-area-inset-bottom));width:150px;height:150px;z-index:4;touch-action:none}
 #pad b{position:absolute;width:50px;height:50px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.35);border-radius:10px;pointer-events:none}
 #pad b.on{background:rgba(255,255,255,.45)}
-#abtn{position:fixed;right:22px;bottom:calc(40px + env(safe-area-inset-bottom));width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);z-index:4;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;touch-action:none}
+#abtn{position:absolute;right:22px;bottom:calc(40px + env(safe-area-inset-bottom));width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);z-index:4;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;touch-action:none}
 #abtn.on{background:rgba(255,255,255,.45)}
-#menuBtn{position:fixed;right:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 14px}
-#menu,#title{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.75)}
+#menuBtn{position:absolute;right:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 14px}
+#menu,#title{position:absolute;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.75)}
 #title{background:#000}
 #title h1{font-size:28px;margin:0 20px 30px;text-align:center}
 #menu .ui-btn,#title .ui-btn{min-width:200px;text-align:center}
-#items{max-height:50vh;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
-#fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
+#items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
+#fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
 .hide{display:none!important}
-#hud{position:fixed;left:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;background:rgba(12,14,34,.85);border:2px solid #fff;border-radius:8px;padding:4px 12px;font-size:14px;pointer-events:none;white-space:nowrap}
-#daycard{position:fixed;inset:0;z-index:21;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;pointer-events:none;transition:opacity .5s}
+#hud{position:absolute;left:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;background:rgba(12,14,34,.85);border:2px solid #fff;border-radius:8px;padding:4px 12px;font-size:14px;pointer-events:none;white-space:nowrap}
+#daycard{position:absolute;inset:0;z-index:21;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;pointer-events:none;transition:opacity .5s}
 #daycard.show{opacity:1}#daycard b{font-size:34px;letter-spacing:.2em}#daycard span{font-size:16px;color:#aaa}
-#shop{position:fixed;inset:0;z-index:12;background:rgba(0,0,0,.85);display:none;flex-direction:column;padding:calc(14px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom))}
+#shop{position:absolute;inset:0;z-index:12;background:rgba(0,0,0,.85);display:none;flex-direction:column;padding:calc(14px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom))}
 #shop.show{display:flex}
 #shop h2{margin:0 0 4px;font-size:20px;text-align:center;letter-spacing:.1em}
 #shop .st{display:flex;justify-content:space-between;font-size:14px;color:#ccc;margin:4px 2px 8px}
@@ -55,9 +55,15 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 #shop .card.sold{opacity:.35}#shop .card div{flex:1}#shop .card b{display:block;font-size:16px}#shop .card small{color:#bbb;font-size:13px;line-height:1.4;display:block}
 #shop .card .ui-btn{padding:8px 12px;white-space:nowrap;text-align:center}
 #shop .msg{min-height:22px;text-align:center;font-size:14px;margin:6px 0}
+
+#screen{position:fixed;left:0;top:0;overflow:hidden;background:#000;transform-origin:0 0}
+.ui-btn.kf{background:#fff;color:#000}
+.ui-btn:disabled{opacity:.5}
+body.notouch #pad,body.notouch #abtn{display:none}
 </style>
 </head>
 <body>
+<div id="screen">
 <canvas id="cv"></canvas>
 <div id="pics"><img id="picL" alt=""><img id="picC" alt=""><img id="picR" alt=""></div>
 <div id="still"><img alt=""></div>
@@ -73,6 +79,7 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 <div id="shop"><h2>等価交換機</h2><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="tabs"><button class="ui-btn on" data-tab="buy">取り出す</button><button class="ui-btn" data-tab="sell">入れる</button></div><div class="list"></div><div class="msg"></div><button class="ui-btn" id="shopClose" style="text-align:center">閉じる</button></div>
 <div id="daycard"><b></b><span></span></div>
 <div id="fade"></div>
+</div>
 <script>
 'use strict';
 const NS='rpgmk:'+location.pathname.replace(/[^/]*$/,'');
@@ -126,14 +133,43 @@ function press(d){if(!held.includes(d))held.push(d)}
 function release(d){const i=held.indexOf(d);if(i>=0)held.splice(i,1)}
 function curDir(){if(needRelease){if(!held.length)needRelease=false;return null}return held.length?held[held.length-1]:null}
 const KEY={ArrowDown:0,ArrowLeft:1,ArrowRight:2,ArrowUp:3,s:0,a:1,d:2,w:3};
+let dash=false;
+const OK_KEYS=['Enter',' ','z','Z'],CANCEL_KEYS=['Escape','x','X','Backspace'];
+// 今キーボードで操作するボタンの集まり（タイトル・メニュー・選択肢・交換機）
+function navBox(){
+  if($('#shop').classList.contains('show'))return $('#shop');
+  if($('#title').style.display==='flex')return $('#title');
+  if(menuOpen)return $('#menu');
+  if(chEl.style.display==='flex')return chEl;
+  return null}
+function navBtns(box){return[...box.querySelectorAll('button')].filter(b=>!b.disabled&&b.offsetParent!==null&&!(box.id==='shop'&&b.dataset.tab))}
+function navMove(box,d){const bs=navBtns(box);if(!bs.length)return;let i=bs.findIndex(b=>b.classList.contains('kf'));
+  bs.forEach(b=>b.classList.remove('kf'));i=i<0?0:(i+d+bs.length)%bs.length;bs[i].classList.add('kf');bs[i].scrollIntoView({block:'nearest'})}
+function navOk(box){const b=box.querySelector('button.kf');if(!b){navMove(box,0);return}
+  if(box===chEl)b.dispatchEvent(new Event('pointerdown',{bubbles:true}));else b.click()}
 addEventListener('keydown',e=>{
+  if(e.key==='Shift'){dash=true;return}
+  const box=navBox();
+  if(box){
+    if(e.key==='ArrowUp'||e.key==='w'){e.preventDefault();navMove(box,-1);return}
+    if(e.key==='ArrowDown'||e.key==='s'){e.preventDefault();navMove(box,1);return}
+    if(box.id==='shop'&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();const t=box.querySelector('[data-tab]:not(.on)');if(t){t.click();navMove(box,0)}return}
+    if(OK_KEYS.includes(e.key)){e.preventDefault();if(!e.repeat)navOk(box);return}
+    if(CANCEL_KEYS.includes(e.key)){e.preventDefault();if(box.id==='shop')$('#shopClose').click();else if(box.id==='menu'){if($('#items').style.display==='block')$('#items').style.display='none';else toggleMenu(false)}return}
+    return}
   if(e.key in KEY){press(KEY[e.key]);e.preventDefault()}
-  else if(['Enter',' ','z','Z'].includes(e.key)){e.preventDefault();if(e.repeat)return;if(busy)advance();else aPressed=true}
-  else if(e.key==='Escape'||e.key==='x'){if(!busy)toggleMenu()}
+  else if(OK_KEYS.includes(e.key)){e.preventDefault();if(e.repeat)return;if(busy)advance();else aPressed=true}
+  else if(CANCEL_KEYS.includes(e.key)){e.preventDefault();if(!busy)toggleMenu(true)}
 });
-addEventListener('keyup',e=>{if(e.key in KEY)release(KEY[e.key])});
+addEventListener('keyup',e=>{if(e.key==='Shift')dash=false;if(e.key in KEY)release(KEY[e.key])});
+addEventListener('blur',()=>{held.length=0;dash=false});
+// マウスを乗せたボタンにカーソルを合わせる
+document.addEventListener('mouseover',e=>{const b=e.target.closest&&e.target.closest('button');const box=navBox();if(!b||!box||!box.contains(b)||!navBtns(box).includes(b))return;navBtns(box).forEach(x=>x.classList.remove('kf'));b.classList.add('kf')});
+// タッチ操作の端末だけ十字キー・Aボタンを出す
+if(!(matchMedia('(pointer:coarse)').matches||'ontouchstart' in window))document.body.classList.add('notouch');
+addEventListener('touchstart',()=>document.body.classList.remove('notouch'),{passive:true});
 const pad=$('#pad');let padD=null;
-function padAt(e){const r=pad.getBoundingClientRect();const x=e.clientX-r.left-75,y=e.clientY-r.top-75;if(Math.hypot(x,y)<12)return padD;return Math.abs(x)>Math.abs(y)?(x<0?1:2):(y<0?3:0)}
+function padAt(e){const r=pad.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*150-75,y=(e.clientY-r.top)/r.height*150-75;if(Math.hypot(x,y)<12)return padD;return Math.abs(x)>Math.abs(y)?(x<0?1:2):(y<0?3:0)}
 function setPad(d){if(padD===d)return;if(padD!=null)release(padD);padD=d;if(d!=null)press(d);pad.querySelectorAll('b').forEach(b=>b.classList.toggle('on',+b.dataset.d===d))}
 pad.addEventListener('pointerdown',e=>{e.preventDefault();pad.setPointerCapture(e.pointerId);setPad(padAt(e))});
 pad.addEventListener('pointermove',e=>{if(pad.hasPointerCapture(e.pointerId))setPad(padAt(e))});
@@ -191,11 +227,11 @@ function openShop(){return new Promise(res=>{
     if(S.buys>=S.buyLimit){msg.textContent='オーバーヒート中…今日はもう取り出せない';return}
     if(S.money<(+r.price||0)){msg.textContent='価値が足りない';return}
     S.money-=(+r.price||0);S.it[it.id]=(S.it[it.id]||0)+1;S.buys++;sl.sold=true;if(r.once)S.once[sl.p]=true;if(r.limitUp)S.buyLimit+=+r.limitUp;
-    msg.textContent=`${it.name}を手に入れた`;render();updHud()}
-  function sell(it){if(!confirm(`${it.name}を入れて、価値 ${it.value} に変えますか？`))return;S.it[it.id]--;S.money+=(+it.value||0);msg.textContent=`価値 ${it.value} になった`;render();updHud()}
-  box.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;msg.textContent='';render()});
+    msg.textContent=`${it.name}を手に入れた`;render();updHud();navMove(box,0)}
+  function sell(it){if(!confirm(`${it.name}を入れて、価値 ${it.value} に変えますか？`))return;S.it[it.id]--;S.money+=(+it.value||0);msg.textContent=`価値 ${it.value} になった`;render();updHud();navMove(box,0)}
+  box.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;msg.textContent='';render();navMove(box,0)});
   $('#shopClose').onclick=()=>{box.classList.remove('show');refresh();res()};
-  render();box.classList.add('show');
+  render();box.classList.add('show');navMove(box,0);
 })}
 
 /* ---------- マップ ---------- */
@@ -327,7 +363,7 @@ function showChoice(labels){
     onAdvance=null;chEl.innerHTML='';
     labels.forEach((l,i)=>{const b=document.createElement('button');b.className='ui-btn';b.textContent=l;
       b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();chEl.style.display='none';r(i)});chEl.append(b)});
-    chEl.style.display='flex';
+    chEl.style.display='flex';navMove(chEl,0);
   });
 }
 function hideMsg(){msgEl.classList.remove('show');chEl.style.display='none';onAdvance=null}
@@ -336,7 +372,7 @@ function fade(v){$('#fade').style.opacity=v;return sleep(270)}
 /* ---------- 更新・描画 ---------- */
 function update(){
   if(!map||!S)return;
-  const ts=G.tileSize,sp=Math.max(1,ts/8);
+  const ts=G.tileSize,sp=Math.max(1,ts/8)*(dash&&!busy?2:1);
   if(P.moving){
     const gx=P.tx*ts,gy=P.ty*ts;
     P.px+=Math.sign(gx-P.px)*Math.min(sp,Math.abs(gx-P.px));
@@ -354,7 +390,17 @@ function update(){
   }else P.anim=0;
   if(!busy)checkAuto();
 }
-function resize(){cv.width=Math.round(cv.clientWidth*(devicePixelRatio||1));cv.height=Math.round(cv.clientHeight*(devicePixelRatio||1));const ts=G?G.tileSize:32;scale=Math.max(1,Math.round(Math.min(cv.width,cv.height)/(ts*11)))}
+// 横長（PC・横持ち）はツクールMZと同じ 816×624（17×13マス）の画面を拡大表示。縦持ちスマホは全画面
+const BASE_W=816,BASE_H=624;let fixedMode=false,uiK=1;
+function resize(){
+  const iw=innerWidth,ih=innerHeight,scr=$('#screen'),dpr=devicePixelRatio||1,ts=G?G.tileSize:48;
+  fixedMode=iw>=ih;
+  if(fixedMode){uiK=Math.min(iw/BASE_W,ih/BASE_H);scr.style.width=BASE_W+'px';scr.style.height=BASE_H+'px';
+    scr.style.transform=`translate(${Math.round((iw-BASE_W*uiK)/2)}px,${Math.round((ih-BASE_H*uiK)/2)}px) scale(${uiK})`;
+    cv.width=Math.round(BASE_W*uiK*dpr);cv.height=Math.round(BASE_H*uiK*dpr);scale=cv.width/(17*ts)}
+  else{uiK=1;scr.style.width=iw+'px';scr.style.height=ih+'px';scr.style.transform='none';
+    cv.width=Math.round(iw*dpr);cv.height=Math.round(ih*dpr);scale=Math.max(1,Math.round(Math.min(cv.width,cv.height)/(ts*11)))}
+}
 addEventListener('resize',resize);
 function tileDraw(v,x,y){const ts=G.tileSize,cols=Math.floor(tsImg.width/ts);if(!cols)return;ctx.drawImage(tsImg,(v%cols)*ts,Math.floor(v/cols)*ts,ts,ts,x,y,ts,ts)}
 function layer(l,x0,y0,x1,y1){const L=map.layers[l];if(!L||!tsImg)return;const ts=G.tileSize;for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const v=L[y*map.w+x];if(v>=0)tileDraw(v,x*ts,y*ts)}}
@@ -385,7 +431,7 @@ function draw(){
 function loop(){update();draw();requestAnimationFrame(loop)}
 
 /* ---------- メニュー・タイトル ---------- */
-function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';$('#items').style.display='none'}
+function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';$('#items').style.display='none';if(menuOpen){$('#menu').querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));navMove($('#menu'),0)}}
 $('#menuBtn').addEventListener('click',()=>toggleMenu(true));
 $('#menu').addEventListener('click',e=>{
   const m=e.target.dataset&&e.target.dataset.m;if(!m)return;
@@ -409,6 +455,7 @@ function showTitle(){
   $('#tCont').classList.toggle('hide',!localStorage.getItem(SAVEKEY));
   $('#tNew').onclick=async()=>{$('#title').style.display='none';await startNew()};
   $('#tCont').onclick=loadGame;
+  $('#title').querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));navMove($('#title'),0);
 }
 (async()=>{
   try{G=await loadData()}catch(e){document.body.innerHTML='<p style="padding:20px;color:#fff">data/game.json を読み込めませんでした。</p>';return}

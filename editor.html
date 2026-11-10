@@ -70,6 +70,15 @@ textarea{resize:vertical;line-height:1.5}
 .seg button.on{background:var(--ac);color:#fff}
 .ptabs{display:flex;gap:6px;overflow-x:auto;padding:4px 10px}
 canvas{image-rendering:pixelated}
+/* PC・横長画面：マップとパレットを左右に並べ、設定画面は中央寄せ */
+@media (min-width:900px) and (orientation:landscape){
+  #tab-map.on{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,34vw);grid-template-rows:auto auto minmax(0,1fr)}
+  #tab-map .m-top{grid-column:1;grid-row:1}#tab-map .m-tools{grid-column:1;grid-row:2;border-top:1px solid var(--bd)}#tab-map #mapWrap{grid-column:1;grid-row:3}
+  #tab-map .m-palhead{grid-column:2;grid-row:1/3;border-top:0;border-left:1px solid var(--bd)}#tab-map #palWrap{grid-column:2;grid-row:3;height:auto;border-left:1px solid var(--bd)}
+  .sh-body{padding-left:max(0px,calc((100% - 820px)/2));padding-right:max(0px,calc((100% - 820px)/2))}
+  .tab:not(#tab-map){padding:0 max(0px,calc((100% - 820px)/2))}
+  .menu{max-width:520px;margin:0 auto;border-radius:14px}.ov{align-items:center}
+}
 .float-ur{position:absolute;right:8px;bottom:8px;display:flex;gap:6px;z-index:2}
 .float-ur .btn{background:#2a2d38e6;font-size:18px;padding:6px 14px}
 .pe-sw{width:34px;height:34px;border-radius:6px;border:2px solid var(--bd);flex:none;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff}
@@ -80,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-10e';
+const APP_VER='2026-11-10f';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -498,14 +507,20 @@ function bindMap(){
   mapCv.addEventListener('pointerdown',e=>{e.preventDefault();mapCv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,mapPos(e));
     if(ptrs.size===2){if(stroke)cancelStroke();startGest();return}
     if(ptrs.size>2)return;
-    if(ME.tool==='hand'){startGest();return}
+    if(ME.tool==='hand'||isPanBtn(e)){startGest();return}
     startStroke(toTile(mapPos(e)))});
   mapCv.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,mapPos(e));if(gest)moveGest();else if(stroke)moveStroke(toTile(mapPos(e)))});
   const up=e=>{if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);
     if(gest){if(ptrs.size===0)gest=null;else startGest()}
     else if(stroke){if(e.type==='pointercancel')cancelStroke();else endStroke()}};
   mapCv.addEventListener('pointerup',up);mapCv.addEventListener('pointercancel',up);
+  mapCv.addEventListener('contextmenu',e=>e.preventDefault());
+  mapCv.addEventListener('wheel',e=>{e.preventDefault();const p=mapPos(e),f=Math.exp(-e.deltaY*(e.ctrlKey?0.01:0.0015)),z=clamp(ME.zoom*f,.15,6);
+    ME.ox=p.x-(p.x-ME.ox)*z/ME.zoom;ME.oy=p.y-(p.y-ME.oy)*z/ME.zoom;ME.zoom=z;reqDraw()},{passive:false});
 }
+// マウス：右・中ボタン、またはスペースを押しながらのドラッグで移動
+let spaceHeld=false;
+const isPanBtn=e=>e.pointerType==='mouse'&&(e.button===1||e.button===2||spaceHeld);
 function bindPal(){
   let st=null;
   const pos=e=>{const r=palCv.getBoundingClientRect(),S=palS();return{x:Math.floor((e.clientX-r.left)/S),y:Math.floor((e.clientY-r.top)/S),cx:e.clientX,cy:e.clientY}};
@@ -526,12 +541,12 @@ function buildMapTab(){
   const sel=h('select',{id:'mapSel',style:'width:auto;flex:1;min-width:130px',onchange:()=>{ME.mapId=+sel.value;ME.undo=[];ME.redo=[];fitMap();reqDraw();drawPalette()}});
   const tools=[['pen','✏️'],['rect','▭'],['fill','🪣'],['erase','🧽'],['pick','💧'],['event','🎯EV'],['hand','✋']];
   T.append(
-    h('div',{class:'bar'},sel,btn('⚙',mapSettings),btn('＋',newMap),btn('イベント一覧',eventList)),
+    h('div',{class:'bar m-top'},sel,btn('⚙',mapSettings),btn('＋',newMap),btn('イベント一覧',eventList)),
     h('div',{id:'mapWrap'},h('canvas',{id:'mapCv'}),h('div',{class:'float-ur'},btn('↶',undo),btn('↷',redo))),
-    h('div',{class:'bar'},...tools.map(([k,l])=>h('button',{class:'btn tool','data-t':k,onclick:()=>{ME.tool=k;refreshTools();reqDraw()}},l)),
+    h('div',{class:'bar m-tools'},...tools.map(([k,l])=>h('button',{class:'btn tool','data-t':k,onclick:()=>{ME.tool=k;refreshTools();reqDraw()}},l)),
       h('div',{class:'seg',id:'laySeg'},...['下層','中層','上層','最上'].map((l,i)=>h('button',{onclick:()=>{ME.layer=i;if(ME.tool==='event'||ME.tool==='hand')ME.tool='pen';refreshTools();reqDraw()}},l))),
       h('button',{class:'btn',id:'gridBtn',onclick:()=>{ME.grid=!ME.grid;refreshTools();reqDraw()}},'#'),btn('⤢',()=>{fitMap();reqDraw()})),
-    h('div',{class:'bar',style:'padding:4px 8px;border-top:1px solid var(--bd)'},h('span',{style:'font-size:12px;color:var(--mut);flex:1'},'タイル（タップで選択／2本指でマップ拡大・移動）'),h('button',{class:'btn sm',id:'rangeBtn',onclick:()=>{ME.range=!ME.range;refreshTools()}},'範囲選択')),
+    h('div',{class:'bar m-palhead',style:'padding:4px 8px;border-top:1px solid var(--bd)'},h('span',{style:'font-size:12px;color:var(--mut);flex:1'},matchMedia('(pointer:fine)').matches?'タイル（クリックで選択／ホイールで拡大・右ドラッグで移動）':'タイル（タップで選択／2本指でマップ拡大・移動）'),h('button',{class:'btn sm',id:'rangeBtn',onclick:()=>{ME.range=!ME.range;refreshTools()}},'範囲選択')),
     h('div',{id:'palWrap'},h('canvas',{id:'palCv'})));
   mapCv=$('#mapCv');palCv=$('#palCv');bindMap();bindPal();refreshMapSel();refreshTools();
   new ResizeObserver(()=>reqDraw()).observe($('#mapWrap'));ME.needFit=true;
@@ -951,6 +966,7 @@ function renderAssets(){
 }
 
 /* ===== ドット絵エディタ ===== */
+let PE_ACTIVE=null;
 const PE_SW=['#000000','#ffffff','T'];
 // トーン（黒と白の2値パターン。座標基準なのでタイルをまたいでもつながる）
 const TONES=[
@@ -1114,7 +1130,10 @@ async function openPixelEditor(o){
   function bind(){
     cv.addEventListener('pointerdown',e=>{e.preventDefault();cv.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,pos(e));
       if(ptrs.size===2){end(true);startGest();return}if(ptrs.size>2)return;
-      if(st.tool==='hand'){startGest();return}begin(toPx(pos(e)))});
+      if(st.tool==='hand'||isPanBtn(e)){startGest();return}begin(toPx(pos(e)))});
+    cv.addEventListener('contextmenu',e=>e.preventDefault());
+    cv.addEventListener('wheel',e=>{e.preventDefault();const p=pos(e),f=Math.exp(-e.deltaY*(e.ctrlKey?0.01:0.0015)),z=clamp(st.z*f,.1,64);
+      st.ox=p.x-(p.x-st.ox)*z/st.z;st.oy=p.y-(p.y-st.oy)*z/st.z;st.z=z;req()},{passive:false});
     cv.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,pos(e));if(gest)moveGest();else if(stroke)moveTo(toPx(pos(e)))});
     const up=e=>{if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);if(gest){if(!ptrs.size)gest=null;else startGest()}else end(e.type==='pointercancel')};
     cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
@@ -1192,7 +1211,7 @@ async function openPixelEditor(o){
     bar2.style.display='flex';
   }
   const api=sheet((o.isNew?'新規：':'')+(o.asset?o.asset.name:o.name||'ドット絵'),(b)=>{
-    b.style.cssText='display:flex;flex-direction:column;overflow:hidden;padding-bottom:env(safe-area-inset-bottom)';
+    b.style.cssText='display:flex;flex-direction:column;overflow:hidden;padding:0 0 env(safe-area-inset-bottom)';
     area=b;
     const wrap=h('div',{style:'flex:1;position:relative;min-height:120px;overflow:hidden'},cv=h('canvas',{style:'position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block'}));
     if(o.kind==='charsets'){pvCv=h('canvas',{width:144,height:144,style:'position:absolute;right:6px;top:6px;width:72px;height:72px;background:#fffd;border:1px solid var(--bd);border-radius:8px;image-rendering:pixelated',onclick:()=>{st.pdir=(st.pdir+1)%4}});wrap.append(pvCv)}
@@ -1211,12 +1230,29 @@ async function openPixelEditor(o){
         btn('⋯',()=>actionMenu([['🖼 画像を読み込んで貼り付け',importImg],['📐 キャンバスサイズ変更',resizeDlg],['🫧 外側の白を透明に',()=>{commitFloat();const b2=snap();whiteFlood(img.data,W,H);pushPatch(b2);req()}],['🧹 全部消す',()=>{commitFloat();const b2=snap();A.fill(0);pushPatch(b2);req()},'danger']]),'sm')));
     bind();refreshUI();
     new ResizeObserver(()=>{if(!st.fitted&&cv.clientWidth){st.fitted=true;fit()}req()}).observe(wrap);
-  },{back:'閉じる',actions:[['↶',()=>undo(),' '],['↷',()=>redo(),' '],['保存',()=>save()]],onClose:()=>{alive=false;clearInterval(pvTimer)}});
+  },{back:'閉じる',actions:[['↶',()=>undo(),' '],['↷',()=>redo(),' '],['保存',()=>save()]],onClose:()=>{alive=false;clearInterval(pvTimer);PE_ACTIVE=null}});
   const origClose=api.close;
   api.el.querySelector('.sh-head .btn').onclick=null;
   api.el.querySelector('.sh-head .btn').addEventListener('click',e=>{e.stopImmediatePropagation()},true);
   api.el.querySelector('.sh-head .btn').replaceWith(btn('閉じる',()=>{if(st.changed&&!confirm('保存していない変更があります。閉じますか？'))return;origClose()},'sm'));
   const pvTimer=setInterval(()=>{pvT++;drawPreview()},180);
+  // キーボード操作（PC）
+  const PK={b:'pen',g:'fill',l:'line',i:'pick',m:'select',h:'hand'};
+  PE_ACTIVE={undo,redo,key(e){const k=e.key.toLowerCase(),mod=e.ctrlKey||e.metaKey;
+    if(mod&&k==='s'){save();return true}
+    if(mod&&k==='c'){selAct('copy');return true}
+    if(mod&&k==='x'){selAct('cut');return true}
+    if(mod&&k==='v'){selAct('paste');return true}
+    if(mod&&k==='a'){st.tool='select';selAct('all');return true}
+    if(mod)return false;
+    if(PK[k]){if(k!=='m'&&k!=='h')commitFloat();st.tool=PK[k];refreshUI();req();return true}
+    if(k==='0'||k==='f'){fit();return true}
+    const ar={arrowleft:'L',arrowright:'R',arrowup:'U',arrowdown:'D'}[k];if(ar&&(st.sel||st.float)){selAct(ar);return true}
+    if(k==='enter'&&st.float){selAct('ok');return true}
+    if(k==='escape'){if(st.float)selAct('drop');else if(st.sel)selAct('none');return true}
+    if((k==='delete'||k==='backspace')&&st.sel&&!st.float){selAct('del');return true}
+    if(k>='1'&&k<='4'){st.size=+k;refreshUI();return true}
+    return false}};
 }
 
 /* ===== Gitタブ ===== */
@@ -1260,6 +1296,23 @@ function buildUI(){
     h('nav',null,...[['map','🗺 マップ'],['db','📚 データ'],['assets','🖼 素材'],['git','☁ Git']].map(([k,l])=>h('button',{id:'nv-'+k,onclick:()=>showTab(k)},l))));
   buildMapTab();updateTitle();updateBadge();
 }
+const MK={b:'pen',r:'rect',g:'fill',e:'erase',i:'pick',v:'event',h:'hand'};
+addEventListener('keydown',e=>{
+  if(e.key===' '&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){spaceHeld=true}
+  if(/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;
+  const k=e.key.toLowerCase(),mod=e.ctrlKey||e.metaKey;
+  const U=PE_ACTIVE||(curTab==='map'&&!document.querySelector('.sheet')?{undo,redo}:null);
+  if(mod&&k==='z'&&U){e.preventDefault();e.shiftKey?U.redo():U.undo();return}
+  if(mod&&k==='y'&&U){e.preventDefault();U.redo();return}
+  if(PE_ACTIVE){if(PE_ACTIVE.key(e))e.preventDefault();return}
+  if(document.querySelector('.sheet')||document.querySelector('.ov'))return;
+  if(mod&&k==='s'){e.preventDefault();runPush();return}
+  if(curTab!=='map'||mod)return;
+  if(MK[k]){ME.tool=MK[k];refreshTools();reqDraw();e.preventDefault()}
+  else if(k>='1'&&k<='4'){ME.layer=+k-1;if(ME.tool==='event'||ME.tool==='hand')ME.tool='pen';refreshTools();reqDraw()}
+  else if(k==='0'||k==='f'){fitMap();reqDraw()}
+});
+addEventListener('keyup',e=>{if(e.key===' ')spaceHeld=false});
 function afterLoad(){ME.mapId=G.maps[0].id;ME.undo=[];ME.redo=[];ME.needFit=true;buildUI();showTab(curTab||'map')}
 (async()=>{
   guessGit();
