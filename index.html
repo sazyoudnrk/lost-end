@@ -82,6 +82,10 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
+const GAME_VER='2026-11-10j';
+// 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
+(async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
+  if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
 const NS='rpgmk:'+location.pathname.replace(/[^/]*$/,'');
 const Q=new URLSearchParams(location.search);
 const PREVIEW=Q.has('preview');
