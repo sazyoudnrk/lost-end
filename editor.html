@@ -907,8 +907,11 @@ async function openPixelEditor(o){
   function brush(x,y,u){const s=st.size,o2=Math.floor((s-1)/2);for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++)setPx(x-o2+dx,y-o2+dy,u)}
   function lineEach(a,b,fn){let x0=a.x,y0=a.y;const dx=Math.abs(b.x-x0),dy=-Math.abs(b.y-y0),sx=x0<b.x?1:-1,sy=y0<b.y?1:-1;let e=dx+dy;
     for(;;){fn(x0,y0);if(x0===b.x&&y0===b.y)break;const e2=2*e;if(e2>=dy){e+=dy;x0+=sx}if(e2<=dx){e+=dx;y0+=sy}}}
-  function flood(x,y,u){if(x<0||y<0||x>=W||y>=H)return;const t=A[y*W+x],fn=typeof u==='function';if(!fn&&t===u)return;const seen=new Uint8Array(W*H),stk=[y*W+x];
-    while(stk.length){const i=stk.pop();if(seen[i]||A[i]!==t)continue;seen[i]=1;const px=i%W,py=(i-px)/W;A[i]=fn?u(px,py):u;if(px>0)stk.push(i-1);if(px<W-1)stk.push(i+1);if(i>=W)stk.push(i-W);if(i<W*(H-1))stk.push(i+W)}}
+  // 選択範囲があればその中だけを塗る
+  function flood(x,y,u){const r=st.sel||{x:0,y:0,w:W,h:H},X0=r.x,Y0=r.y,X1=r.x+r.w-1,Y1=r.y+r.h-1;
+    if(x<X0||y<Y0||x>X1||y>Y1)return false;const t=A[y*W+x],fn=typeof u==='function';if(!fn&&t===u)return true;const seen=new Uint8Array(W*H),stk=[y*W+x];
+    while(stk.length){const i=stk.pop();if(seen[i]||A[i]!==t)continue;seen[i]=1;const px=i%W,py=(i-px)/W;A[i]=fn?u(px,py):u;
+      if(px>X0)stk.push(i-1);if(px<X1)stk.push(i+1);if(py>Y0)stk.push(i-W);if(py<Y1)stk.push(i+W)}return true}
   function clearRect(s){for(let y=s.y;y<s.y+s.h;y++)A.fill(0,y*W+s.x,y*W+s.x+s.w)}
   function flipData(d,horiz){const D=new Uint32Array(d.data.buffer),w=d.width,hh=d.height,o2=new Uint32Array(D.length);
     for(let y=0;y<hh;y++)for(let x=0;x<w;x++)o2[y*w+x]=horiz?D[y*w+(w-1-x)]:D[(hh-1-y)*w+x];D.set(o2)}
@@ -970,7 +973,7 @@ async function openPixelEditor(o){
       if(f)commitFloat();
       if(st.sel&&inR(p,st.sel)){const s=st.sel,before=snap(),d=selPixels(s);clearRect(s);st.dirty=true;st.sel=null;setFloat(d,s.x,s.y,before);stroke={t:'move',p0:p,fx:s.x,fy:s.y};return}
       stroke={t:'sel',a:p};updSel(p);return}
-    if(t==='fill'){const b=snap();flood(p.x,p.y,cmap());pushPatch(b);req();return}
+    if(t==='fill'){const b=snap();if(!flood(p.x,p.y,cmap())){if(st.sel)toast('選択範囲の中をタップしてください（解除は「解除」）');return}pushPatch(b);req();return}
     const u=cmap();
     if(t==='line'){stroke={t:'line',b:snap(),u};st.line={a:p,b:p};req();return}
     stroke={t:'pen',b:snap(),u,last:p};brush(p.x,p.y,u);st.dirty=true;req();
@@ -1058,7 +1061,7 @@ async function openPixelEditor(o){
     bar2.innerHTML='';const f=st.float,s=st.sel,B=(l,k,cls)=>btn(l,()=>selAct(k),'sm '+(cls||''));
     const add=(...a)=>bar2.append(...a.filter(Boolean));
     if(f)add(h('span',{class:'hint',style:'margin:0 4px'},'貼り付け中：ドラッグで移動'),B('確定','ok','pri'),B('⇋反転','fliph'),B('⇅反転','flipv'),B('コピー','copy'),B('取消','drop','dg'));
-    else if(s)add(h('span',{class:'hint',style:'margin:0 4px'},`${s.w}×${s.h}`),B('コピー','copy'),B('切り取り','cut'),st.clip?B('貼り付け','paste'):null,B('⇋反転','fliph'),B('⇅反転','flipv'),B('塗る','fill'),B('消す','del','dg'),B('解除','none'));
+    else if(s)add(h('span',{class:'hint',style:'margin:0 4px'},`${s.w}×${s.h}`+(st.tool==='fill'?'（この中だけ塗る）':'')),B('コピー','copy'),B('切り取り','cut'),st.clip?B('貼り付け','paste'):null,B('⇋反転','fliph'),B('⇅反転','flipv'),B('塗る','fill'),B('消す','del','dg'),B('解除','none'));
     else add(h('span',{class:'hint',style:'margin:0 4px'},st.tool==='select'?'ドラッグで範囲選択（選択内をドラッグで移動）':'1本指で描く／2本指で拡大・移動'),st.clip?B('貼り付け','paste'):null,st.tool==='select'?B('全選択','all'):null);
     bar2.style.display='flex';
   }
