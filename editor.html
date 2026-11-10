@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-10l';
+const APP_VER='2026-11-11a';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -831,14 +831,15 @@ function openEvent(m,ev,onClose){
 
 /* ===== 日ごとの配置 ===== */
 function schedSummary(r){const d=(r.to==null||r.to==='')?`${r.from||1}日目〜`:(r.from===r.to?`${r.from}日目`:`${r.from||1}〜${r.to}日目`);
-  return `${d}・${r.slot==null||r.slot<0?'いつでも':slotN(r.slot)}：${r.map?`${mapName(+r.map)} (${r.x},${r.y})`:'いない'}`}
-function editSched(r,home,onSave){const d=clone(r);d.where=d.map?'here':'none';if(!d.map){d.map=home.id;d.x=d.x||0;d.y=d.y||0}if(d.dir==null)d.dir=-1;if(d.to==='')d.to=0;
+  return `${d}・${r.slot==null||r.slot<0?'いつでも':slotN(r.slot)}${r.sw>=0?`・${swName(r.sw)}${r.swv===false?'OFF':'ON'}`:''}：${r.map?`${mapName(+r.map)} (${r.x},${r.y})`:'いない'}`}
+function editSched(r,home,onSave){const d=clone(r);d.where=d.map?'here':'none';if(!d.map){d.map=home.id;d.x=d.x||0;d.y=d.y||0}if(d.dir==null)d.dir=-1;if(d.to==='')d.to=0;if(d.sw==null)d.sw=-1;if(d.swv==null)d.swv=true;
   sheet('配置',(b,api)=>{b.append(card(null,h('div',{class:'row'},fNum('何日目から',d,'from',{min:1}),fNum('何日目まで',d,'to',{min:0,hint:'0＝ずっと'})),
     fSel('時間帯',d,'slot',[[-1,'いつでも'],...slotOpts()],{num:true}),
+    h('div',{class:'row'},fSel('スイッチ',d,'sw',[[-1,'条件なし'],...swOpts()],{num:true}),fSel('が',d,'swv',[[true,'ONのとき'],[false,'OFFのとき']],{bool:true})),
     fSel('居場所',d,'where',[['here','マップに置く'],['none','いない（どこにも出ない）']],{on:api.rerender}),
     d.where==='here'?[fSel('マップ',d,'map',mapOpts(),{num:true,on:api.rerender}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'ページの設定'],...DIRN.map((n,i)=>[i,n])],{num:true})),
       btn('マップで位置を指定',()=>mapPicker(+d.map,(x,y)=>{d.x=x;d.y=y;api.rerender()}),'sm')]:null))},
-    {back:'キャンセル',actions:[['保存',api=>{const o={from:d.from||1,to:d.to?d.to:'',slot:d.slot,map:d.where==='here'?+d.map:0,x:d.x,y:d.y,dir:d.dir};onSave(o);api.close()}]]})}
+    {back:'キャンセル',actions:[['保存',api=>{const o={from:d.from||1,to:d.to?d.to:'',slot:d.slot,sw:d.sw,swv:d.swv,map:d.where==='here'?+d.map:0,x:d.x,y:d.y,dir:d.dir};onSave(o);api.close()}]]})}
 function scheduleCard(m,ev,rr){
   const L=ev.schedule||[],c=card('日ごとの配置');
   if(!L.length)c.append(h('div',{class:'hint'},'なし：いつもこのマップのこの位置にいます'));

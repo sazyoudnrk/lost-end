@@ -114,7 +114,7 @@
  "switches": [
   "価値を知った",
   "エントランスに行った",
-  "",
+  "1日目の集合が終わった",
   "",
   "",
   "",
@@ -256,6 +256,30 @@
         }
        ]
       }
+     ],
+     "schedule": [
+      {
+       "from": 1,
+       "to": 1,
+       "slot": -1,
+       "sw": 2,
+       "swv": false,
+       "map": 1,
+       "x": 4,
+       "y": 8,
+       "dir": 0
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": 2,
+       "swv": true,
+       "map": 1,
+       "x": 8,
+       "y": 10,
+       "dir": -1
+      }
      ]
     },
     {
@@ -282,6 +306,30 @@
         }
        ]
       }
+     ],
+     "schedule": [
+      {
+       "from": 1,
+       "to": 1,
+       "slot": -1,
+       "sw": 2,
+       "swv": false,
+       "map": 1,
+       "x": 8,
+       "y": 8,
+       "dir": 0
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": 2,
+       "swv": true,
+       "map": 1,
+       "x": 3,
+       "y": 5,
+       "dir": -1
+      }
      ]
     },
     {
@@ -307,6 +355,30 @@
          "text": "（ネイサの会話をここに）"
         }
        ]
+      }
+     ],
+     "schedule": [
+      {
+       "from": 1,
+       "to": 1,
+       "slot": -1,
+       "sw": 2,
+       "swv": false,
+       "map": 1,
+       "x": 7,
+       "y": 7,
+       "dir": 0
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": 2,
+       "swv": true,
+       "map": 1,
+       "x": 10,
+       "y": 8,
+       "dir": -1
       }
      ]
     },
@@ -439,6 +511,129 @@
          "dir": 2
         }
        ]
+      }
+     ]
+    },
+    {
+     "id": 15,
+     "name": "全員集合（1日目）",
+     "x": 1,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": "==",
+         "val": 1
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "エントランスに全員が集まっている。"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "（星間ワープ装置が壊れてしまったことを説明する）",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ノノノ",
+         "text": "（6時間で着く予定だったのに、と不満をこぼす）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "（不満をこぼす）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ニノマエ",
+         "text": "（不満をこぼす）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "[shake]ビープ音が鳴り続けている。"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "（うるさいので、ムロと機械室を見に行くと言う）"
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "（到着まで3日と表示されていた、と報告する）",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "とりあえず3日で済むなら……と、みんな散り散りになっていった。"
+        },
+        {
+         "t": "sw",
+         "id": 2,
+         "val": true
+        },
+        {
+         "t": "move",
+         "map": 1,
+         "x": 6,
+         "y": 10,
+         "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 2,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
       }
      ]
     }
@@ -791,12 +986,25 @@
      "schedule": [
       {
        "from": 1,
+       "to": 1,
+       "slot": -1,
+       "sw": 2,
+       "swv": false,
+       "map": 1,
+       "x": 6,
+       "y": 8,
+       "dir": 0
+      },
+      {
+       "from": 1,
        "to": "",
        "slot": 0,
        "map": 1,
        "x": 2,
        "y": 7,
-       "dir": -1
+       "dir": -1,
+       "sw": 2,
+       "swv": true
       }
      ]
     },
@@ -1291,12 +1499,25 @@
      "schedule": [
       {
        "from": 1,
+       "to": 1,
+       "slot": -1,
+       "sw": 2,
+       "swv": false,
+       "map": 1,
+       "x": 5,
+       "y": 7,
+       "dir": 0
+      },
+      {
+       "from": 1,
        "to": "",
        "slot": -1,
        "map": 8,
        "x": 8,
        "y": 5,
-       "dir": -1
+       "dir": -1,
+       "sw": 2,
+       "swv": true
       },
       {
        "from": 2,
@@ -1305,7 +1526,9 @@
        "map": 1,
        "x": 8,
        "y": 8,
-       "dir": 0
+       "dir": 0,
+       "sw": 2,
+       "swv": true
       }
      ]
     },
