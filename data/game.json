@@ -112,7 +112,7 @@
   }
  ],
  "switches": [
-  "",
+  "価値を知った",
   "",
   "",
   "",
@@ -1164,6 +1164,14 @@
    "夜"
   ],
   "startDay": 1,
-  "hud": true
+  "hud": true,
+  "hudDay": {
+   "from": 2,
+   "sw": -1
+  },
+  "hudMoney": {
+   "from": 1,
+   "sw": 0
+  }
  }
 }

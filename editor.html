@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-10h';
+const APP_VER='2026-11-10i';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -286,6 +286,7 @@ function normalize(g){
   }
   g.player=Object.assign({charset:g.charsets[0]?.id||'',map:g.maps[0].id,x:0,y:0,dir:0},g.player||{});
   g.system=Object.assign({slots:['朝','昼','夜'],startDay:1,hud:true},g.system||{});
+  g.system.hudDay=Object.assign({from:1,sw:-1},g.system.hudDay||{});g.system.hudMoney=Object.assign({from:1,sw:-1},g.system.hudMoney||{});
   g.shop=Object.assign({count:3,limit:1,startMoney:0,pool:[]},g.shop||{});
   return g;
 }
@@ -892,7 +893,10 @@ function renderDB(){
     btn('マップで開始位置を指定',()=>mapPicker(P.map,(x,y)=>{P.x=x;P.y=y;changed();renderDB();reqDraw()}),'sm')));
   const SY=G.system,slotsT={v:SY.slots.join('、')};
   T.append(card('日付と時間帯',fText('時間帯（「、」区切り）',slotsT,'v',{on:()=>{const a=slotsT.v.split(/[、,，]/).map(x=>x.trim()).filter(Boolean);if(a.length)SY.slots=a}}),
-    fNum('開始日',SY,'startDay',{min:1}),fChk('ゲーム画面に日付・時間帯・価値を表示',SY,'hud'),
+    fNum('開始日',SY,'startDay',{min:1}),fChk('ゲーム画面の左上に表示する',SY,'hud'),
+    h('div',{class:'card-t',style:'margin-top:6px'},'日付・時間帯の表示'),h('div',{class:'row'},fNum('何日目から',SY.hudDay,'from',{min:1}),fSel('スイッチ',SY.hudDay,'sw',[[-1,'条件なし'],...swOpts()],{num:true})),
+    h('div',{class:'card-t',style:'margin-top:6px'},'価値の表示'),h('div',{class:'row'},fNum('何日目から',SY.hudMoney,'from',{min:1}),fSel('スイッチ',SY.hudMoney,'sw',[[-1,'条件なし'],...swOpts()],{num:true})),
+    h('div',{class:'hint'},'スイッチを選ぶと、そのスイッチがONになってから表示されます（会話の中で「スイッチ」コマンドでONにする）'),
     h('div',{class:'hint'},'「時間を進める」で時間帯が進み、「次の日へ」で日付+1・朝に戻ります（ベッドのイベントなどに入れる）。イベントの「日ごとの配置」でキャラの居場所を日・時間帯ごとに変えられます')));
   T.append(shopCard());
   T.append(nameListCard('スイッチ',G.switches),nameListCard('変数',G.variables));

@@ -122,7 +122,7 @@ function normalize(g){
   g.tileSize=g.tileSize||32;
   for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','items','maps','switches','variables'])g[k]=g[k]||[];
   g.player=g.player||{map:g.maps[0]&&g.maps[0].id,x:0,y:0,dir:0};
-  g.system=Object.assign({slots:['朝','昼','夜'],startDay:1,hud:true},g.system||{});
+  g.system=Object.assign({slots:['朝','昼','夜'],startDay:1,hud:true,hudDay:{from:1,sw:-1},hudMoney:{from:1,sw:-1}},g.system||{});
   g.shop=Object.assign({count:3,limit:1,startMoney:0,pool:[]},g.shop||{});
   for(const m of g.maps){m.events=m.events||[];for(const e of m.events){e.pages=e.pages||[];for(const p of e.pages){p.cond=p.cond||[];p.cmds=p.cmds||[]}}}
 }
@@ -183,7 +183,10 @@ function showControls(v){for(const el of[pad,abtn,$('#menuBtn')])el.classList.to
 
 /* ---------- 日付・時間帯・価値 ---------- */
 const slotName=i=>G.system.slots[i]??'';
-function updHud(){const h=$('#hud');if(!S||!G.system.hud){h.style.display='none';return}h.style.display='block';h.textContent=`${S.day}日目 ${slotName(S.slot)}　価値 ${S.money}`}
+// 表示条件：何日目から＋スイッチ（-1 は条件なし）
+const shown=c=>!!c&&S.day>=(c.from||1)&&(c.sw==null||c.sw<0||!!S.sw[c.sw]);
+function hudText(){const a=[];if(shown(G.system.hudDay))a.push(`${S.day}日目 ${slotName(S.slot)}`);if(shown(G.system.hudMoney))a.push(`価値 ${S.money}`);return a.join('　')}
+function updHud(){const h=$('#hud'),t=S&&G.system.hud?hudText():'';h.style.display=t?'block':'none';h.textContent=t}
 // 日ごとの配置：下の行ほど優先。当てはまる行がなければ「いない」
 function placement(d){const L=d.schedule;for(let i=L.length-1;i>=0;i--){const r=L[i];
   if(S.day>=(r.from||1)&&(r.to==null||r.to===''||S.day<=r.to)&&(r.slot==null||r.slot<0||r.slot===S.slot))return r.map?r:null}return null}
@@ -263,6 +266,7 @@ function evalCond(c,cx){
   return true;
 }
 function refresh(){
+  updHud();
   if(!map)return;
   for(const e of events){
     const ps=e.d.pages;let pg=null;
@@ -468,7 +472,7 @@ $('#menu').addEventListener('click',e=>{
   const m=e.target.dataset&&e.target.dataset.m;if(!m)return;
   if(m==='close')toggleMenu(false);
   if(m==='items'){const it=$('#items');const own=G.items.filter(i=>(S.it[i.id]||0)>0);it.innerHTML='';
-    it.textContent='';const hd=document.createElement('div');hd.textContent=`${S.day}日目 ${slotName(S.slot)}　価値 ${S.money}`;hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd);
+    it.textContent='';const hd=document.createElement('div');hd.textContent=hudText();if(!hd.textContent)hd.style.display='none';hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd);
     if(!own.length)it.append('なにも持っていない');
     for(const i of own){const d=document.createElement('div');d.textContent=`${i.name} ×${S.it[i.id]}`+(i.desc?`　${i.desc}`:'');it.append(d)}
     it.style.display='block'}
