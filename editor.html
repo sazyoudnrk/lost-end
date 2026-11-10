@@ -70,6 +70,8 @@ textarea{resize:vertical;line-height:1.5}
 .seg button.on{background:var(--ac);color:#fff}
 .ptabs{display:flex;gap:6px;overflow-x:auto;padding:4px 10px}
 canvas{image-rendering:pixelated}
+.float-ur{position:absolute;right:8px;bottom:8px;display:flex;gap:6px;z-index:2}
+.float-ur .btn{background:#2a2d38e6;font-size:18px;padding:6px 14px}
 .pe-sw{width:34px;height:34px;border-radius:6px;border:2px solid var(--bd);flex:none;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff}
 .pe-sw.on{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac)}
 </style>
@@ -517,10 +519,10 @@ function buildMapTab(){
   const tools=[['pen','✏️'],['rect','▭'],['fill','🪣'],['erase','🧽'],['pick','💧'],['event','🎯EV'],['hand','✋']];
   T.append(
     h('div',{class:'bar'},sel,btn('⚙',mapSettings),btn('＋',newMap),btn('イベント一覧',eventList)),
-    h('div',{id:'mapWrap'},h('canvas',{id:'mapCv'})),
+    h('div',{id:'mapWrap'},h('canvas',{id:'mapCv'}),h('div',{class:'float-ur'},btn('↶',undo),btn('↷',redo))),
     h('div',{class:'bar'},...tools.map(([k,l])=>h('button',{class:'btn tool','data-t':k,onclick:()=>{ME.tool=k;refreshTools();reqDraw()}},l)),
       h('div',{class:'seg',id:'laySeg'},...['下層','中層','上層'].map((l,i)=>h('button',{onclick:()=>{ME.layer=i;if(ME.tool==='event'||ME.tool==='hand')ME.tool='pen';refreshTools();reqDraw()}},l))),
-      btn('↶',undo),btn('↷',redo),h('button',{class:'btn',id:'gridBtn',onclick:()=>{ME.grid=!ME.grid;refreshTools();reqDraw()}},'#'),btn('⤢',()=>{fitMap();reqDraw()})),
+      h('button',{class:'btn',id:'gridBtn',onclick:()=>{ME.grid=!ME.grid;refreshTools();reqDraw()}},'#'),btn('⤢',()=>{fitMap();reqDraw()})),
     h('div',{class:'bar',style:'padding:4px 8px;border-top:1px solid var(--bd)'},h('span',{style:'font-size:12px;color:var(--mut);flex:1'},'タイル（タップで選択／2本指でマップ拡大・移動）'),h('button',{class:'btn sm',id:'rangeBtn',onclick:()=>{ME.range=!ME.range;refreshTools()}},'範囲選択')),
     h('div',{id:'palWrap'},h('canvas',{id:'palCv'})));
   mapCv=$('#mapCv');palCv=$('#palCv');bindMap();bindPal();refreshMapSel();refreshTools();
@@ -1076,7 +1078,7 @@ async function openPixelEditor(o){
     b.append(wrap,bar2,
       h('div',{class:'bar'},...TOOLS.map(([k,l])=>h('button',{class:'btn','data-pt':k,onclick:()=>{if(k!=='select'&&k!=='hand')commitFloat();st.tool=k;refreshUI();req()}},l)),
         h('div',{class:'seg'},...[1,2,3,4].map(n=>h('button',{'data-ps':n,onclick:()=>{st.size=n;refreshUI()}},n))),
-        btn('↶',undo),btn('↷',redo)),
+      ),
       toneBox,
       h('div',{class:'bar'},swBox,colInp,
         h('button',{class:'btn sm',id:'peGrid',onclick:()=>{st.grid=!st.grid;refreshUI();req()}},'#'),
@@ -1085,7 +1087,7 @@ async function openPixelEditor(o){
         btn('⋯',()=>actionMenu([['🖼 画像を読み込んで貼り付け',importImg],['📐 キャンバスサイズ変更',resizeDlg],['🧹 全部消す',()=>{commitFloat();const b2=snap();A.fill(0);pushPatch(b2);req()},'danger']]),'sm')));
     bind();refreshUI();
     new ResizeObserver(()=>{if(!st.fitted&&cv.clientWidth){st.fitted=true;fit()}req()}).observe(wrap);
-  },{back:'閉じる',actions:[['保存',()=>save()]],onClose:()=>{alive=false;clearInterval(pvTimer)}});
+  },{back:'閉じる',actions:[['↶',()=>undo(),' '],['↷',()=>redo(),' '],['保存',()=>save()]],onClose:()=>{alive=false;clearInterval(pvTimer)}});
   const origClose=api.close;
   api.el.querySelector('.sh-head .btn').onclick=null;
   api.el.querySelector('.sh-head .btn').addEventListener('click',e=>{e.stopImmediatePropagation()},true);
