@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11b';
+const APP_VER='2026-11-11c';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -286,6 +286,7 @@ function normalize(g){
   }
   g.player=Object.assign({charset:g.charsets[0]?.id||'',map:g.maps[0].id,x:0,y:0,dir:0},g.player||{});
   g.system=Object.assign({slots:['朝','昼','夜'],startDay:1,hud:true},g.system||{});
+  g.system.names=g.system.names||['主人公','ムロ','ネイサ','ニノマエ','ピヲラ'];
   g.system.hudDay=Object.assign({from:1,sw:-1},g.system.hudDay||{});g.system.hudMoney=Object.assign({from:1,sw:-1},g.system.hudMoney||{});
   g.shop=Object.assign({count:3,limit:1,startMoney:0,pool:[]},g.shop||{});
   return g;
@@ -773,16 +774,26 @@ function addCmd(arr,idx,rr,t){
 function textChain(arr,idx,rr,c){editCmd(c,s=>{arr.splice(idx,0,s);changed();rr()},{next:s=>{arr.splice(idx,0,s);changed();rr();textChain(arr,idx+1,rr,{t:'text',face:s.face,name:s.name,picPos:s.picPos,text:''})}})}
 function editCmd(c,onSave,opts={}){
   const d=clone(c),actions=[];
-  if(opts.next)actions.push(['保存＋次',api=>{api.close();opts.next(d)},'']);
-  actions.push(['保存',api=>{onSave(d);api.close()}]);
+  if(opts.next)actions.push(['保存＋次',api=>{delete d._nameOther;api.close();opts.next(d)},'']);
+  actions.push(['保存',api=>{delete d._nameOther;onSave(d);api.close()}]);
   sheet(CT[d.t].n,(b,api)=>cmdForm(b,d,api.rerender),{back:'キャンセル',actions});
+}
+// 名前：登場人物から選ぶ（その他は自由入力）
+function nameField(d,rr){
+  const N=G.system.names||[],cur=d.name||'',other=d._nameOther||(cur&&!N.includes(cur));
+  const sel=h('select',{onchange:()=>{if(sel.value==='__o'){d._nameOther=true}else{d._nameOther=false;d.name=sel.value}rr()}},
+    h('option',{value:''},'（名前なし）'),...N.map(n=>h('option',{value:n},n)),h('option',{value:'__o'},'その他（自由に入力）'));
+  sel.value=other?'__o':cur;
+  const box=h('div',null,field('名前',sel));
+  if(other){const i=h('input',{type:'text',value:cur,placeholder:'名前を入力',oninput:()=>{d.name=i.value}});box.append(field('',i))}
+  return box;
 }
 function cmdForm(b,d,rr){
   const c=card(null);b.append(c);
   switch(d.t){
     case'text':{
       const f=G.faces.find(x=>x.id===d.face);
-      c.append(h('div',{class:'row',style:'align-items:center'},f?thumb(f.image):null,fSel('顔グラフィック',d,'face',[['','なし'],...G.faces.map(x=>[x.id,x.name])],{on:rr})),fText('名前',d,'name',{ph:'空なら名前欄なし'}));
+      c.append(h('div',{class:'row',style:'align-items:center'},f?thumb(f.image):null,fSel('顔グラフィック',d,'face',[['','なし'],...G.faces.map(x=>[x.id,x.name])],{on:rr})),nameField(d,rr));
       const a=fArea('本文',d,'text',{rows:5});
       c.append(a,h('div',{class:'bar',style:'background:none;padding:4px 0'},...[['\n[p]\n','改ページ'],['[w=300]','ウェイト'],['[shake]','揺れ'],['[v=1]','変数'],['[day]','日付'],['[slot]','時間帯'],['[money]','価値']].map(([s,l])=>h('button',{class:'btn sm',onpointerdown:e=>e.preventDefault(),onclick:()=>insertAt(a._input,s)},l))),
         h('div',{class:'hint'},'[p] ページ送り ／ [w=ミリ秒] 待つ ／ [shake] 枠を揺らす ／ [v=番号] 変数の値 ／ [day] [slot] [money] 日付・時間帯・価値。1つの「文章」= 1ウィンドウで、表情は文章ごとに選べます。「保存＋次」で続けて入力できます。'));
@@ -916,6 +927,8 @@ function renderDB(){
     fSel('開始時の向き',P,'dir',DIRN.map((n,i)=>[i,n]),{num:true}),
     btn('マップで開始位置を指定',()=>mapPicker(P.map,(x,y)=>{P.x=x;P.y=y;changed();renderDB();reqDraw()}),'sm')));
   const SY=G.system,slotsT={v:SY.slots.join('、')};
+  const NT={v:(SY.names||[]).join('、')};
+  T.append(card('登場人物',fText('名前（「、」区切り）',NT,'v',{on:()=>{SY.names=NT.v.split(/[、,，]/).map(x=>x.trim()).filter(Boolean)}}),h('div',{class:'hint'},'「文章」の名前のプルダウンに出る候補です')));
   T.append(card('日付と時間帯',fText('時間帯（「、」区切り）',slotsT,'v',{on:()=>{const a=slotsT.v.split(/[、,，]/).map(x=>x.trim()).filter(Boolean);if(a.length)SY.slots=a}}),
     fNum('開始日',SY,'startDay',{min:1}),fChk('ゲーム画面の左上に表示する',SY,'hud'),
     h('div',{class:'card-t',style:'margin-top:6px'},'日付・時間帯の表示'),h('div',{class:'row'},fNum('何日目から',SY.hudDay,'from',{min:1}),fSel('スイッチ',SY.hudDay,'sw',[[-1,'条件なし'],...swOpts()],{num:true})),
