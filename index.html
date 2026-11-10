@@ -82,7 +82,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-10j';
+const GAME_VER='2026-11-10k';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -266,6 +266,7 @@ function evalCond(c,cx){
     case'self':return !!S.ss[cx.ev.home+':'+cx.ev.d.id+':'+c.key]===!!c.val;
     case'day':case'money':{const a=c.type==='day'?S.day:S.money,b=+c.val||0;return c.op==='=='?a===b:c.op==='!='?a!==b:c.op==='>='?a>=b:c.op==='<='?a<=b:c.op==='>'?a>b:a<b}
     case'slot':return(S.slot===+c.val)===(c.op!=='!=');
+    case'pdir':return P.dir===+c.val;
   }
   return true;
 }
