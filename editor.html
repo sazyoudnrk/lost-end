@@ -394,7 +394,10 @@ function drawMapContent(c,m,im,x0,y0,x1,y1,o={}){
   const ts=G.tileSize,MW=m.w*ts,MH=m.h*ts,pr=parOf(m),pim=pr&&getImg(pr.image);
   if(pim&&pim.width){c.save();c.beginPath();c.rect(0,0,MW,MH);c.clip();for(let y=0;y<MH;y+=pim.height)for(let x=0;x<MW;x+=pim.width)c.drawImage(pim,x,y);c.restore()}
   else{c.fillStyle=tpPattern(c,ts/6);c.fillRect(0,0,MW,MH)}
-  if(im){for(let l=0;l<3;l++){const L=m.layers[l];c.globalAlpha=(o.dimAbove!=null&&l>o.dimAbove)?0.4:1;
+  // 選択中の層以外は薄く：下の層には白いベールをかけ、上の層は半透明で描く
+  if(im){for(let l=0;l<3;l++){const L=m.layers[l];
+    if(o.layer!=null&&l===o.layer&&l>0){c.globalAlpha=1;c.fillStyle='rgba(255,255,255,.6)';c.fillRect(x0*ts,y0*ts,(x1-x0)*ts,(y1-y0)*ts)}
+    c.globalAlpha=(o.layer!=null&&l>o.layer)?0.35:1;
     for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const v=L[y*m.w+x];if(v>=0)drawTile(c,im,v,x*ts,y*ts)}}c.globalAlpha=1}
   if(o.events)for(const e of m.events)drawEvMarker(c,e,im);
   if(o.grid){c.strokeStyle='rgba(255,255,255,.15)';c.lineWidth=o.gridW;c.beginPath();
@@ -411,7 +414,7 @@ function drawMap(){
   const ts=G.tileSize,z=ME.zoom;c.setTransform(dpr*z,0,0,dpr*z,dpr*ME.ox,dpr*ME.oy);c.imageSmoothingEnabled=false;
   const t=tilesetOf(m),im=t&&getImg(t.image);
   const x0=Math.max(0,Math.floor(-ME.ox/z/ts)),y0=Math.max(0,Math.floor(-ME.oy/z/ts)),x1=Math.min(m.w,Math.ceil((W-ME.ox)/z/ts)),y1=Math.min(m.h,Math.ceil((H-ME.oy)/z/ts));
-  drawMapContent(c,m,im,x0,y0,x1,y1,{events:true,grid:ME.grid,gridW:1/(z*dpr),dimAbove:ME.tool==='event'?null:ME.layer});
+  drawMapContent(c,m,im,x0,y0,x1,y1,{events:true,grid:ME.grid,gridW:1/(z*dpr),layer:ME.tool==='event'||ME.tool==='hand'?null:ME.layer});
   const P=G.player;
   if(P.map===m.id){c.strokeStyle='#4af';c.lineWidth=ts/12;c.strokeRect(P.x*ts+2,P.y*ts+2,ts-4,ts-4);c.fillStyle='#4af';c.font=`bold ${ts*.45}px sans-serif`;c.fillText('S',P.x*ts+ts*.34,P.y*ts+ts*.66)}
   if(stroke&&stroke.tool==='rect'){const r=rectOf(stroke.t0,stroke.t1);c.fillStyle='rgba(91,140,255,.35)';c.fillRect(r.x*ts,r.y*ts,r.w*ts,r.h*ts)}
