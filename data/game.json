@@ -11,8 +11,8 @@
   },
   {
    "id": "sample",
-   "name": "仮置きタイル",
-   "image": "assets/tilesets/sample_tiles.png",
+   "name": "自作タイル",
+   "image": "assets/tilesets/denryoku_tiles.png",
    "blocked": []
   }
  ],
@@ -55,14 +55,14 @@
   },
   {
    "id": "sample1",
-   "name": "仮置き_1",
-   "image": "assets/characters/sample_chars.png",
+   "name": "自作キャラ_1",
+   "image": "assets/characters/denryoku_chars.png",
    "index": 0
   },
   {
    "id": "sample2",
-   "name": "仮置き_2",
-   "image": "assets/characters/sample_chars.png",
+   "name": "自作キャラ_2",
+   "image": "assets/characters/denryoku_chars.png",
    "index": 1
   }
  ],
@@ -303,6 +303,58 @@
          "face": "",
          "name": "",
          "text": "大きな窓の向こうに、星が流れていく。"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 8,
+     "name": "自作キャラ_1",
+     "x": 3,
+     "y": 6,
+     "pages": [
+      {
+       "cond": [],
+       "image": {
+        "charset": "sample1",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（自作キャラ_1 の会話をここに）"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 9,
+     "name": "自作キャラ_2",
+     "x": 11,
+     "y": 8,
+     "pages": [
+      {
+       "cond": [],
+       "image": {
+        "charset": "sample2",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（自作キャラ_2 の会話をここに）"
         }
        ]
       }
