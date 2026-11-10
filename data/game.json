@@ -302,7 +302,9 @@
          "t": "text",
          "face": "",
          "name": "ニノマエ",
-         "text": "（ニノマエの会話をここに）"
+         "text": "（ニノマエの会話をここに）",
+         "pic": "ninomae_normal",
+         "picPos": "C"
         }
        ]
       }
@@ -352,7 +354,9 @@
          "t": "text",
          "face": "",
          "name": "ネイサ",
-         "text": "（ネイサの会話をここに）"
+         "text": "（ネイサの会話をここに）",
+         "pic": "neisa_normal",
+         "picPos": "C"
         }
        ]
       }
@@ -575,7 +579,9 @@
          "t": "text",
          "face": "",
          "name": "ニノマエ",
-         "text": "（不満をこぼす）"
+         "text": "（不満をこぼす）",
+         "pic": "ninomae_normal",
+         "picPos": "C"
         },
         {
          "t": "text",
@@ -587,7 +593,9 @@
          "t": "text",
          "face": "",
          "name": "ネイサ",
-         "text": "（うるさいので、ムロと機械室を見に行くと言う）"
+         "text": "（うるさいので、ムロと機械室を見に行くと言う）",
+         "pic": "neisa_normal",
+         "picPos": "C"
         },
         {
          "t": "wait",
@@ -1805,6 +1813,16 @@
    "id": "muro_normal",
    "name": "ムロ_通常",
    "image": "assets/pictures/muro_normal.png"
+  },
+  {
+   "id": "ninomae_normal",
+   "name": "ニノマエ_通常",
+   "image": "assets/pictures/ninomae_normal.png"
+  },
+  {
+   "id": "neisa_normal",
+   "name": "ネイサ_通常",
+   "image": "assets/pictures/neisa_normal.png"
   }
  ],
  "stills": [],
