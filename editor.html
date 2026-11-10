@@ -63,7 +63,7 @@ textarea{resize:vertical;line-height:1.5}
 #palWrap.range{touch-action:none}
 #palCv{display:block;-webkit-touch-callout:none}
 .toast{position:fixed;left:50%;top:calc(58px + env(safe-area-inset-top));transform:translateX(-50%);background:#000d;color:#fff;padding:9px 16px;border-radius:20px;z-index:200;font-size:14px;max-width:92vw;pointer-events:none;text-align:center}
-.thumb{width:52px;height:52px;object-fit:contain;background:repeating-conic-gradient(#333 0 25%,#222 0 50%) 0 0/12px 12px;border-radius:6px;image-rendering:pixelated;flex:none}
+.thumb{width:52px;height:52px;object-fit:contain;background:repeating-conic-gradient(#d6c8ec 0 25%,#f1ebf9 0 50%) 0 0/10px 10px;border-radius:6px;image-rendering:pixelated;flex:none}
 .list-row{display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd)}
 .seg{display:flex;border:1px solid var(--bd);border-radius:8px;overflow:hidden;flex:none}
 .seg button{background:var(--bg3);border:0;padding:7px 10px}
@@ -165,7 +165,11 @@ function thumb(path){const im=h('img',{class:'thumb'});imgAsync(path).then(i=>{i
 async function storeFile(f,p){const buf=await f.arrayBuffer();await idbPut(p,{buf,type:f.type||'image/png'});pending.add(p);deleted.delete(p);delete imgs[p];saveDraft();updateBadge()}
 function canvasBlob(c){return new Promise(r=>c.toBlob(r,'image/png'))}
 async function putCanvas(c,p){const b=await canvasBlob(c);await idbPut(p,{buf:await b.arrayBuffer(),type:'image/png'});pending.add(p);delete imgs[p]}
-const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces].map(a=>a.image);
+const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces,...G.parallaxes].map(a=>a.image);
+/* 透明部分の表示（うす紫の市松模様） */
+const TP=['#d6c8ec','#f1ebf9'],tpSrc={};
+function tpPattern(c,cell){cell=Math.max(1,Math.round(cell));let s=tpSrc[cell];if(!s){s=document.createElement('canvas');s.width=s.height=cell*2;const q=s.getContext('2d');q.fillStyle=TP[0];q.fillRect(0,0,cell*2,cell*2);q.fillStyle=TP[1];q.fillRect(0,0,cell,cell);q.fillRect(cell,cell,cell,cell);tpSrc[cell]=s}return c.createPattern(s,'repeat')}
+const parOf=m=>m&&m.parallax&&G.parallaxes.find(p=>p.id===m.parallax.id);
 function uniquePath(dir,f){
   const ext=((f.name.match(/\.([a-z0-9]+)$/i)||[])[1]||'png').toLowerCase();
   let b=f.name.replace(/\.[^.]+$/,'').replace(/[^\w\-]+/g,'_').replace(/^_+|_+$/g,'');if(!b)b=uid();
@@ -252,7 +256,7 @@ const newPage=()=>({cond:[],image:null,trigger:'action',priority:'below',through
 function layersFor(w,h){return[new Array(w*h).fill(0),new Array(w*h).fill(-1),new Array(w*h).fill(-1)]}
 function normalize(g){
   g.version=g.version||1;g.title=g.title??'ゲーム';g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','items','maps','switches','variables'])g[k]=g[k]||[];
   while(g.switches.length<20)g.switches.push('');while(g.variables.length<20)g.variables.push('');
   for(const t of g.tilesets)t.blocked=t.blocked||[];
   if(!g.maps.length)g.maps.push({id:1,name:'MAP001',w:20,h:15,tileset:g.tilesets[0]?.id||'',layers:layersFor(20,15),events:[]});
@@ -379,7 +383,9 @@ function drawEvMarker(c,e,tim){
   c.strokeStyle='rgba(255,200,40,.95)';c.lineWidth=lw;c.strokeRect(x+lw/2,y+lw/2,ts-lw,ts-lw);
 }
 function drawMapContent(c,m,im,x0,y0,x1,y1,o={}){
-  const ts=G.tileSize;c.fillStyle='#000';c.fillRect(0,0,m.w*ts,m.h*ts);
+  const ts=G.tileSize,MW=m.w*ts,MH=m.h*ts,pr=parOf(m),pim=pr&&getImg(pr.image);
+  if(pim&&pim.width){c.save();c.beginPath();c.rect(0,0,MW,MH);c.clip();for(let y=0;y<MH;y+=pim.height)for(let x=0;x<MW;x+=pim.width)c.drawImage(pim,x,y);c.restore()}
+  else{c.fillStyle=tpPattern(c,ts/6);c.fillRect(0,0,MW,MH)}
   if(im){for(let l=0;l<3;l++){const L=m.layers[l];c.globalAlpha=(o.dimAbove!=null&&l>o.dimAbove)?0.4:1;
     for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const v=L[y*m.w+x];if(v>=0)drawTile(c,im,v,x*ts,y*ts)}}c.globalAlpha=1}
   if(o.events)for(const e of m.events)drawEvMarker(c,e,im);
@@ -413,7 +419,7 @@ function drawTileset(cv,im,S,overlay){
   const ts=G.tileSize,cols=Math.floor(im.width/ts),rows=Math.floor(im.height/ts),dpr=devicePixelRatio||1;
   cv.width=cols*S*dpr;cv.height=rows*S*dpr;cv.style.width=cols*S+'px';cv.style.height=rows*S+'px';
   const c=cv.getContext('2d');c.setTransform(1,0,0,1,0,0);
-  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){c.fillStyle=(x+y)%2?'#2a2a32':'#1e1e24';c.fillRect(x*S*dpr,y*S*dpr,S*dpr,S*dpr)}
+  c.fillStyle=tpPattern(c,5*dpr);c.fillRect(0,0,cv.width,cv.height);
   c.imageSmoothingEnabled=false;c.drawImage(im,0,0,cols*ts,rows*ts,0,0,cv.width,cv.height);
   c.setTransform(dpr,0,0,dpr,0,0);overlay&&overlay(c,cols,rows);return{cols,rows};
 }
@@ -532,13 +538,17 @@ function resizeMap(m,w,hh){
   m.w=w;m.h=hh;for(const e of m.events){e.x=Math.min(e.x,w-1);e.y=Math.min(e.y,hh-1)}
 }
 function mapSettings(){
-  const m=curMap(),d={name:m.name,w:m.w,h:m.h,tileset:m.tileset};
+  const m=curMap(),P0=m.parallax||{},d={name:m.name,w:m.w,h:m.h,tileset:m.tileset,par:P0.id||'',rate:P0.rate??20,sx:P0.sx??0,sy:P0.sy??0};
   sheet('マップ設定',(b,api)=>{
     b.append(card(null,fText('名前',d,'name'),h('div',{class:'row'},fNum('幅',d,'w',{min:1,max:256}),fNum('高さ',d,'h',{min:1,max:256})),
       fSel('タイルセット',d,'tileset',G.tilesets.map(t=>[t.id,t.name])),h('div',{class:'hint'},'マップID: '+m.id)),
+      card('遠景',fSel('遠景画像',d,'par',[['','なし'],...G.parallaxes.map(p=>[p.id,p.name])]),
+        fNum('スクロール率（%）',d,'rate',{min:0,max:100,hint:'0＝画面に固定、100＝マップと一緒に動く。間の値で奥行きが出ます'}),
+        h('div',{class:'row'},fNum('自動スクロール 横',d,'sx',{hint:'1秒に動くドット数（マイナスで左）'}),fNum('縦',d,'sy',{hint:'マイナスで上'})),
+        h('div',{class:'hint'},'遠景はマップの一番奥に敷き詰めて表示され、タイルの透明な部分から見えます。画像は「素材」タブの「遠景」に追加します')),
       card(null,btn('このマップを複製',()=>{const n=clone(m);n.id=Math.max(...G.maps.map(x=>x.id))+1;n.name=m.name+' コピー';G.maps.push(n);ME.mapId=n.id;changed();refreshMapSel();fitMap();reqDraw();api.close()},'sm'),' ',
         btn('このマップを削除',()=>{if(G.maps.length<=1){toast('最後のマップは削除できません');return}if(!confirm(`「${m.name}」を削除しますか？`))return;G.maps.splice(G.maps.indexOf(m),1);ME.mapId=G.maps[0].id;changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()},'sm dg')));
-  },{actions:[['保存',api=>{m.name=d.name;m.tileset=d.tileset;if(d.w!==m.w||d.h!==m.h){resizeMap(m,d.w,d.h);ME.undo=[];ME.redo=[]}changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()}]]});
+  },{actions:[['保存',api=>{m.name=d.name;m.tileset=d.tileset;m.parallax=d.par?{id:d.par,rate:d.rate,sx:d.sx,sy:d.sy}:null;if(d.w!==m.w||d.h!==m.h){resizeMap(m,d.w,d.h);ME.undo=[];ME.redo=[]}changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()}]]});
 }
 function eventList(){
   const m=curMap();
@@ -552,7 +562,7 @@ function eventList(){
 /* ===== 位置・タイル選択 ===== */
 async function renderMapStatic(cv,m,px){
   const ts=G.tileSize,dpr=devicePixelRatio||1;cv.width=m.w*px*dpr;cv.height=m.h*px*dpr;cv.style.width=m.w*px+'px';cv.style.height=m.h*px+'px';
-  const t=tilesetOf(m),im=t?await imgAsync(t.image):null;
+  const t=tilesetOf(m),im=t?await imgAsync(t.image):null;const pr=parOf(m);if(pr)await imgAsync(pr.image);
   for(const e of m.events){const ci=e.pages[0]&&e.pages[0].image;if(ci&&ci.charset){const cs=G.charsets.find(x=>x.id===ci.charset);if(cs)await imgAsync(cs.image)}}
   const c=cv.getContext('2d'),s=px*dpr/ts;c.setTransform(s,0,0,s,0,0);c.imageSmoothingEnabled=false;
   drawMapContent(c,m,im,0,0,m.w,m.h,{events:true,grid:true,gridW:1/s});
@@ -583,7 +593,7 @@ function charPreview(im0){
 }
 function tilePreview(m,v){
   const cv=h('canvas',{width:48,height:48,style:'width:48px;height:48px;background:#0004;border-radius:6px;flex:none'});const t=tilesetOf(m);
-  if(t)imgAsync(t.image).then(im=>{if(!im)return;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;const ts=G.tileSize,cols=Math.floor(im.width/ts);x.drawImage(im,(v%cols)*ts,Math.floor(v/cols)*ts,ts,ts,0,0,48,48)});
+  if(t)imgAsync(t.image).then(im=>{if(!im)return;const x=cv.getContext('2d');x.fillStyle=tpPattern(x,6);x.fillRect(0,0,48,48);x.imageSmoothingEnabled=false;const ts=G.tileSize,cols=Math.floor(im.width/ts);x.drawImage(im,(v%cols)*ts,Math.floor(v/cols)*ts,ts,ts,0,0,48,48)});
   return cv;
 }
 
@@ -770,7 +780,7 @@ function renderDB(){
 }
 
 /* ===== 素材タブ ===== */
-const AK={tilesets:{n:'タイルセット',dir:'tilesets'},charsets:{n:'歩行キャラ',dir:'characters'},faces:{n:'顔グラフィック',dir:'faces'}};
+const AK={tilesets:{n:'タイルセット',dir:'tilesets'},charsets:{n:'歩行キャラ',dir:'characters'},faces:{n:'顔グラフィック',dir:'faces'},parallaxes:{n:'遠景',dir:'parallaxes'}};
 function delAsset(k,a){
   if(!confirm(`「${a.name}」を削除しますか？\n（使っている箇所は表示されなくなります）`))return;
   G[k].splice(G[k].indexOf(a),1);
@@ -814,6 +824,8 @@ function renderAssets(){
     if(k==='tilesets')c.append(h('div',{class:'hint'},`1マス ${G.tileSize}px で区切って使います（「データ」→タイルサイズで変更）`));
     if(k==='charsets')c.append(h('div',{class:'hint'},'縦長＝1キャラ（横3×縦4コマ）、横長＝8キャラ並び（ツクール形式 横12×縦8コマ）。8キャラ並びは絵のある分だけ自動で登録されます。行は 下・左・右・上 の順。'));
     if(k==='faces')c.append(h('div',{class:'hint'},'表情1つにつき画像1枚。文章ごとに選べます'));
+    if(k==='parallaxes')c.append(h('div',{class:'hint'},'マップの奥に敷き詰めて表示するループ画像（上下左右がつながるように描くときれいです）。マップ設定（⚙）で選びます'));
+    if(k==='tilesets')c.append(h('div',{class:'hint'},'うす紫の市松模様の部分が透明。透明な部分からは遠景が見えます'));
     T.append(c);
   }
   T.scrollTop=sc;
@@ -827,12 +839,12 @@ const c2hex=c=>'#'+c.slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('');
 const c2u=c=>((c[3]<<24)|(c[2]<<16)|(c[1]<<8)|c[0])>>>0;
 const u2c=u=>[u&255,(u>>>8)&255,(u>>>16)&255,u>>>24];
 function newDrawing(k){
-  const ts=G.tileSize,d={name:'',cols:8,rows:8,type:'single',fw:96,fh:96,w:96,h:96};
+  const ts=G.tileSize,big=k==='parallaxes',d={name:'',cols:8,rows:8,type:'single',fw:96,fh:96,w:big?384:96,h:big?384:96};
   sheet('新規作成：'+AK[k].n,b=>{
     const c=card(null,fText('名前',d,'name',{ph:AK[k].n}));
     if(k==='tilesets')c.append(h('div',{class:'row'},fNum('横のタイル数',d,'cols',{min:1,max:32}),fNum('縦のタイル数',d,'rows',{min:1,max:64})),h('div',{class:'hint'},`1マス ${ts}px（「データ」のタイルサイズ）`));
     if(k==='charsets')c.append(fSel('形式',d,'type',[['single','1キャラ（横3×縦4コマ）'],['multi','8キャラ並び（横12×縦8コマ）']]),h('div',{class:'row'},fNum('1コマの幅',d,'fw',{min:8,max:256}),fNum('1コマの高さ',d,'fh',{min:8,max:256})),h('div',{class:'hint'},'行は 下・左・右・上 の順。足元がマスの下端に合わせて表示されます'));
-    if(k==='faces')c.append(h('div',{class:'row'},fNum('幅',d,'w',{min:8,max:512}),fNum('高さ',d,'h',{min:8,max:512})));
+    if(k==='faces'||k==='parallaxes')c.append(h('div',{class:'row'},fNum('幅',d,'w',{min:8,max:1024}),fNum('高さ',d,'h',{min:8,max:1024})));
     b.append(c);
   },{back:'キャンセル',actions:[['作成',api=>{
     let w,hh;
@@ -896,7 +908,7 @@ async function openPixelEditor(o){
     if(st.dirty){dctx.putImageData(img,0,0);st.dirty=false}
     const c=cv.getContext('2d');c.setTransform(1,0,0,1,0,0);c.fillStyle='#0b0b0f';c.fillRect(0,0,cv.width,cv.height);
     c.setTransform(dpr,0,0,dpr,0,0);const z=st.z;
-    if(!checker){const p=document.createElement('canvas');p.width=p.height=16;const q=p.getContext('2d');q.fillStyle='#bdbdbd';q.fillRect(0,0,16,16);q.fillStyle='#e0e0e0';q.fillRect(0,0,8,8);q.fillRect(8,8,8,8);checker=c.createPattern(p,'repeat')}
+    if(!checker){const p=document.createElement('canvas');p.width=p.height=16;const q=p.getContext('2d');q.fillStyle=TP[0];q.fillRect(0,0,16,16);q.fillStyle=TP[1];q.fillRect(0,0,8,8);q.fillRect(8,8,8,8);checker=c.createPattern(p,'repeat')}
     c.fillStyle=checker;c.fillRect(st.ox,st.oy,W*z,H*z);
     c.imageSmoothingEnabled=false;c.drawImage(doc,st.ox,st.oy,W*z,H*z);
     const f=st.float;if(f){c.drawImage(fcv,st.ox+f.x*z,st.oy+f.y*z,f.d.width*z,f.d.height*z)}
@@ -1001,7 +1013,7 @@ async function openPixelEditor(o){
     commitFloat();dctx.putImageData(img,0,0);st.dirty=false;
     const blob=await canvasBlob(doc);
     if(o.isNew&&!st.path){
-      const k=o.kind,p=uniquePath(AK[k].dir,{name:{tilesets:'tileset',charsets:'chara',faces:'face'}[k]+'.png'});await storeFile(blob,p);st.path=p;
+      const k=o.kind,p=uniquePath(AK[k].dir,{name:{tilesets:'tileset',charsets:'chara',faces:'face',parallaxes:'parallax'}[k]+'.png'});await storeFile(blob,p);st.path=p;
       if(k==='charsets'&&W>H){const bl=usedBlocks(doc);for(const b of(bl.length?bl:[0]))G[k].push({id:uid(),name:o.name+'_'+(b+1),image:p,index:b})}
       else G[k].push(Object.assign({id:uid(),name:o.name,image:p},k==='tilesets'?{blocked:[]}:{}));
       o.asset=G[k][G[k].length-1];changed();

@@ -58,7 +58,7 @@ const $=s=>document.querySelector(s);
 const cv=$('#cv'), ctx=cv.getContext('2d');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const END={};
-let G=null,S=null,map=null,tsImg=null,blocked=new Set(),events=[],scale=2,busy=false,menuOpen=false;
+let G=null,S=null,map=null,tsImg=null,parImg=null,blocked=new Set(),events=[],scale=2,busy=false,menuOpen=false;
 const P={x:0,y:0,px:0,py:0,tx:0,ty:0,dir:0,moving:false,anim:0};
 
 /* ---------- ファイル ---------- */
@@ -87,7 +87,7 @@ async function loadData(){
 }
 function normalize(g){
   g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','items','maps','switches','variables'])g[k]=g[k]||[];
   g.player=g.player||{map:g.maps[0]&&g.maps[0].id,x:0,y:0,dir:0};
   for(const m of g.maps){m.events=m.events||[];for(const e of m.events){e.pages=e.pages||[];for(const p of e.pages){p.cond=p.cond||[];p.cmds=p.cmds||[]}}}
 }
@@ -125,6 +125,7 @@ async function loadMap(id,x,y,dir){
   const t=G.tilesets.find(t=>t.id===m.tileset)||G.tilesets[0]||null;
   blocked=new Set(t?t.blocked||[]:[]);
   tsImg=t?await loadImg(t.image):null;
+  const pr=m.parallax&&G.parallaxes.find(p=>p.id===m.parallax.id);parImg=pr?await loadImg(pr.image):null;
   events=m.events.map(d=>({d,x:d.x,y:d.y,dir:0,page:undefined,erased:false}));
   const ts=G.tileSize;
   P.x=P.tx=x;P.y=P.ty=y;P.px=x*ts;P.py=y*ts;P.moving=false;
@@ -267,6 +268,9 @@ function draw(){
   cx=Math.round(cx*scale)/scale;cy=Math.round(cy*scale)/scale;
   ctx.setTransform(scale,0,0,scale,-cx*scale,-cy*scale);ctx.imageSmoothingEnabled=false;
   const x0=Math.max(0,Math.floor(cx/ts)),y0=Math.max(0,Math.floor(cy/ts)),x1=Math.min(map.w,Math.ceil((cx+vw)/ts)+1),y1=Math.min(map.h,Math.ceil((cy+vh)/ts)+1);
+  if(parImg&&parImg.width){const pp=map.parallax,r=(pp.rate??20)/100,iw=parImg.width,ih=parImg.height,t=performance.now()/1000;
+    const ox=cx*(1-r)+(pp.sx||0)*t,oy=cy*(1-r)+(pp.sy||0)*t,sx0=ox+Math.floor((cx-ox)/iw)*iw,sy0=oy+Math.floor((cy-oy)/ih)*ih;
+    for(let y=sy0;y<cy+vh;y+=ih)for(let x=sx0;x<cx+vw;x+=iw)ctx.drawImage(parImg,Math.round(x*scale)/scale,Math.round(y*scale)/scale)}
   layer(0,x0,y0,x1,y1);layer(1,x0,y0,x1,y1);
   const list=[];
   for(const e of events){if(e.erased||!e.page||!e.page.image)continue;list.push({z:e.page.priority==='below'?0:1,y:e.y*ts,f:()=>drawEv(e)})}
