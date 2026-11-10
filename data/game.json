@@ -113,7 +113,7 @@
  ],
  "switches": [
   "価値を知った",
-  "",
+  "エントランスに行った",
   "",
   "",
   "",
@@ -405,6 +405,42 @@
        ]
       }
      ]
+    },
+    {
+     "id": 10,
+     "name": "エントランス到着",
+     "x": 0,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "sw",
+         "id": 1,
+         "val": true
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 1,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      }
+     ]
     }
    ]
   },
@@ -537,6 +573,27 @@
        "through": false,
        "cmds": [
         {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "鍵がかかっている。"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 1,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
          "t": "move",
          "map": 3,
          "x": 5,
@@ -561,6 +618,27 @@
        "through": false,
        "cmds": [
         {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "鍵がかかっている。"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 1,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
          "t": "move",
          "map": 4,
          "x": 5,
@@ -579,6 +657,27 @@
      "pages": [
       {
        "cond": [],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "鍵がかかっている。"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 1,
+         "val": true
+        }
+       ],
        "image": null,
        "trigger": "touch",
        "priority": "same",
@@ -627,6 +726,27 @@
      "pages": [
       {
        "cond": [],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "鍵がかかっている。"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 1,
+         "val": true
+        }
+       ],
        "image": null,
        "trigger": "touch",
        "priority": "same",
@@ -694,6 +814,27 @@
        "through": false,
        "cmds": [
         {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "鍵がかかっている。"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 1,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
          "t": "move",
          "map": 8,
          "x": 6,
@@ -712,6 +853,27 @@
      "pages": [
       {
        "cond": [],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "鍵がかかっている。"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 1,
+         "val": true
+        }
+       ],
        "image": null,
        "trigger": "touch",
        "priority": "same",
