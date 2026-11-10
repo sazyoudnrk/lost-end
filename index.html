@@ -82,7 +82,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11b';
+const GAME_VER='2026-11-11c';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -194,7 +194,7 @@ function updHud(){const h=$('#hud'),t=S&&G.system.hud?hudText():'';h.style.displ
 // 日ごとの配置：下の行ほど優先。当てはまる行がなければ「いない」
 function placement(d){const L=d.schedule;for(let i=L.length-1;i>=0;i--){const r=L[i];
   if(S.day>=(r.from||1)&&(r.to==null||r.to===''||S.day<=r.to)&&(r.slot==null||r.slot<0||r.slot===S.slot)&&(r.sw==null||r.sw<0||!!S.sw[r.sw]===(r.swv!==false)))return r.map?r:null}return null}
-function mkEv(d,home,x,y,fixDir){return{d,home,x,y,dir:0,fixDir,page:undefined,erased:false}}
+function mkEv(d,home,x,y,fixDir){const ts=G.tileSize;return{d,home,x,y,px:x*ts,py:y*ts,dir:0,fixDir,page:undefined,erased:false}}
 function placeScheduled(){
   if(!map)return;events=events.filter(e=>!e.sched);
   for(const m of G.maps)for(const d of m.events){if(!(d.schedule&&d.schedule.length))continue;const p=placement(d);
@@ -320,7 +320,10 @@ async function cmd(c,cx){
     case'buylimit':S.buyLimit=Math.max(0,c.op==='set'?+c.val||0:S.buyLimit+(+c.val||0));break;
     case'shop':hideMsg();await openShop();break;
     case'item':S.it[c.id]=Math.max(0,(S.it[c.id]||0)+(+c.n||0));refresh();break;
-    case'move':hideMsg();await fade(1);await loadMap(c.map,c.x,c.y,c.dir);await fade(0);break;
+    case'move':hideMsg();if(c.fade===false&&+c.map===map.id){const ts=G.tileSize;clearPath();P.x=P.tx=c.x;P.y=P.ty=c.y;P.px=c.x*ts;P.py=c.y*ts;P.moving=false;if(c.dir!=null&&c.dir>=0)P.dir=c.dir}
+      else if(c.fade===false)await loadMap(c.map,c.x,c.y,c.dir);else{await fade(1);await loadMap(c.map,c.x,c.y,c.dir);await fade(0)}break;
+    case'route':{const t=routeTarget(c.target,cx);if(!t)break;const job=runRoute(t,c.route||[],c);if(c.wait!==false)await job;break}
+    case'turn':{const t=routeTarget(c.target,cx);if(t)t.dir=faceDir(t,c.dir);break}
     case'wait':await sleep(+c.ms||0);break;
     case'pic':if(c.pos==='A')clearPics();else{await setPic(c.pos||'C',c.id||null);if(c.id)setActive(c.pos||'C')}break;
     case'still':await showStill(c.id||null,c.fade!==false);break;
@@ -338,6 +341,25 @@ function tokenize(s){
   push(s.slice(i));return out;
 }
 function waitMs(ms,skip){return new Promise(r=>{const t0=performance.now();(function f(){if(skip()||performance.now()-t0>=ms)r();else requestAnimationFrame(f)})()})}
+/* ---------- キャラを歩かせる・向きを変える ---------- */
+function routeTarget(k,cx){if(!k||k==='this')return cx.ev;if(k==='player')return P;return events.find(e=>!e.erased&&e.d.name===k)||null}
+const pos=t=>t===P?{x:P.x,y:P.y}:{x:t.x,y:t.y};
+function faceDir(t,d){if(d!=='P'&&d!=='A')return+d;const a=pos(t),dx=P.x-a.x,dy=P.y-a.y;let r=Math.abs(dx)>Math.abs(dy)?(dx<0?1:2):(dy<0?3:0);return d==='A'?3-r:r}
+function canStep(t,nx,ny,through){if(through)return nx>=0&&ny>=0&&nx<map.w&&ny<map.h;
+  if(!passable(nx,ny))return false;if(t!==P&&P.x===nx&&P.y===ny)return false;return true}
+async function runRoute(t,route,o){
+  const isP=t===P;if(!isP)t.spd=+o.speed||1;else P.spd=+o.speed||1;
+  for(const st of route){
+    if(st==='w'){await sleep(300);continue}
+    if(st[0]==='t'){t.dir=faceDir(t,st[1]==='P'?'P':st[1]==='A'?'A':'DLRU'.indexOf(st[1]));continue}
+    const d='DLRU'.indexOf(st);if(d<0)continue;t.dir=d;const a=pos(t),nx=a.x+DIRS[d][0],ny=a.y+DIRS[d][1];
+    if(!canStep(t,nx,ny,o.through))continue;
+    if(isP){P.tx=nx;P.ty=ny;P.moving=true;if(!P.anim)P.anim=1;while(P.moving)await sleep(16)}
+    else{t.x=nx;t.y=ny;t.tx=nx;t.ty=ny;t.moving=true;while(t.moving)await sleep(16)}
+  }
+  if(isP){P.spd=1;P.anim=0}
+}
+
 /* ---------- 立ち絵・スチル ---------- */
 const PIC={L:$('#picL'),C:$('#picC'),R:$('#picR')};
 async function setPic(pos,id){const el=PIC[pos];if(!el)return;const p=id&&G.pictures.find(x=>x.id===id);
@@ -409,7 +431,11 @@ cv.addEventListener('pointerdown',e=>{
 /* ---------- 更新・描画 ---------- */
 function update(){
   if(!map||!S)return;
-  const ts=G.tileSize,sp=Math.max(1,ts/8)*(dash&&!busy?2:1);
+  const ts=G.tileSize,sp=Math.max(1,ts/8)*(dash&&!busy?2:1)*(P.spd||1);
+  // イベント（キャラ）の歩きアニメ
+  for(const e of events){if(!e.moving)continue;const gx=e.tx*ts,gy=e.ty*ts,s2=Math.max(1,ts/8)*(e.spd||1);
+    e.px+=Math.sign(gx-e.px)*Math.min(s2,Math.abs(gx-e.px));e.py+=Math.sign(gy-e.py)*Math.min(s2,Math.abs(gy-e.py));e.anim=(e.anim||0)+1;
+    if(e.px===gx&&e.py===gy){e.moving=false;e.anim=0}}
   if(P.moving){
     const gx=P.tx*ts,gy=P.ty*ts;
     P.px+=Math.sign(gx-P.px)*Math.min(sp,Math.abs(gx-P.px));
@@ -448,7 +474,7 @@ function layer(l,x0,y0,x1,y1){const L=map.layers[l];if(!L||!tsImg)return;const t
 // 歩行グラ：縦長=1キャラ(3x4コマ)、横長=8キャラ並び(12x8コマ)。index で何人目かを指定
 function charRect(im,index,dir,frame){const m=im.width>im.height,fw=im.width/(m?12:3),fh=im.height/(m?8:4),i=m?(index||0):0;return[((i%4)*3+frame)*fw,(Math.floor(i/4)*4+dir)*fh,fw,fh]}
 function drawChar(cs,im,dir,frame,px,py){const ts=G.tileSize,[sx,sy,fw,fh]=charRect(im,cs.index,dir,frame);ctx.drawImage(im,sx,sy,fw,fh,Math.round(px+ts/2-fw/2),Math.round(py+ts-fh),fw,fh)}
-function drawEv(e){const im=e.page.image,ts=G.tileSize;if(im.tile!=null){if(tsImg)tileDraw(im.tile,e.x*ts,e.y*ts)}else{const ci=charImg(im.charset);if(ci)drawChar(charsetOf(im.charset),ci,e.dir,1,e.x*ts,e.y*ts)}}
+function drawEv(e){const im=e.page.image,ts=G.tileSize,px=e.px??e.x*ts,py=e.py??e.y*ts;if(im.tile!=null){if(tsImg)tileDraw(im.tile,px,py)}else{const ci=charImg(im.charset);if(ci)drawChar(charsetOf(im.charset),ci,e.dir,e.anim?[1,2,1,0][Math.floor(e.anim/8)%4]:1,px,py)}}
 function drawPlayer(){const ci=charImg(G.player.charset);if(!ci)return;const f=P.anim?[1,2,1,0][Math.floor(P.anim/8)%4]:1;drawChar(charsetOf(G.player.charset),ci,P.dir,f,P.px,P.py)}
 function draw(){
   ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
@@ -464,7 +490,7 @@ function draw(){
     for(let y=sy0;y<cy+vh;y+=ih)for(let x=sx0;x<cx+vw;x+=iw)ctx.drawImage(parImg,Math.round(x*scale)/scale,Math.round(y*scale)/scale)}
   layer(0,x0,y0,x1,y1);layer(1,x0,y0,x1,y1);layer(2,x0,y0,x1,y1);
   const list=[];
-  for(const e of events){if(e.erased||!e.page||!e.page.image)continue;list.push({z:e.page.priority==='below'?0:1,y:e.y*ts,f:()=>drawEv(e)})}
+  for(const e of events){if(e.erased||!e.page||!e.page.image)continue;list.push({z:e.page.priority==='below'?0:1,y:e.py??e.y*ts,f:()=>drawEv(e)})}
   list.push({z:1,y:P.py,f:drawPlayer});
   list.sort((a,b)=>a.z-b.z||a.y-b.y);for(const o of list)o.f();
   layer(3,x0,y0,x1,y1);

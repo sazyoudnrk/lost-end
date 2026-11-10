@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11c';
+const APP_VER='2026-11-11d';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -653,12 +653,18 @@ const CT={
   money:{n:'価値の増減',c:'#2a9a9a',make:()=>({t:'money',op:'add',val:1})},
   shop:{n:'等価交換機',c:'#2a9a9a',make:()=>({t:'shop'})},
   buylimit:{n:'取り出し回数',c:'#2a9a9a',make:()=>({t:'buylimit',op:'add',val:1})},
+  route:{n:'歩かせる',c:'#8a5ad0',make:()=>({t:'route',target:'this',route:[],wait:true,through:false,speed:1})},
+  turn:{n:'向きを変える',c:'#8a5ad0',make:()=>({t:'turn',target:'this',dir:'P'})},
   wait:{n:'ウェイト',c:'#777',make:()=>({t:'wait',ms:500})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
   end:{n:'処理を中断',c:'#777',make:()=>({t:'end'})},
   comment:{n:'注釈',c:'#4a7a4a',make:()=>({t:'comment',text:''})},
 };
 const POSN={L:'左',C:'中央',R:'右',A:'全部'};
+const tgtName=k=>k==='player'?'プレイヤー':(!k||k==='this')?'このイベント':k;
+function tgtOpts(){const n=new Set();for(const m of G.maps)for(const e of m.events)if(e.name)n.add(e.name);return[['player','プレイヤー'],['this','このイベント'],...[...n].map(x=>[x,x])]}
+const RT={U:'↑',D:'↓',L:'←',R:'→',tU:'向↑',tD:'向↓',tL:'向←',tR:'向→',tP:'向P',tA:'向反',w:'待'};
+const routeText=r=>(r||[]).map(x=>RT[x]||x).join(' ');
 const slotN=i=>G.system.slots[i]??'?',slotOpts=()=>G.system.slots.map((n,i)=>[i,n]);
 function condSummary(c){
   if(c.type==='sw')return `${swName(c.id)} が ${c.val?'ON':'OFF'}`;
@@ -684,7 +690,9 @@ function cmdSummary(c){
     case'var':return `${varName(c.id)} ${{set:'=',add:'+=',sub:'-=',rand:'= 乱数0〜'}[c.op]} ${c.val}`;
     case'self':return `${c.key} = ${c.val?'ON':'OFF'}`;
     case'item':return `${itemName(c.id)} ${c.n>=0?'+':''}${c.n}`;
-    case'move':return `${mapName(c.map)} (${c.x}, ${c.y})`;
+    case'move':return `${mapName(c.map)} (${c.x}, ${c.y})`+(c.fade===false?'（暗転なし）':'');
+    case'route':return `${tgtName(c.target)}：${routeText(c.route)||'（未設定）'}`+(c.wait===false?'（待たない）':'');
+    case'turn':return `${tgtName(c.target)}：${{P:'プレイヤーの方',A:'プレイヤーと反対'}[c.dir]||DIRN[c.dir]+'向き'}`;
     case'wait':return c.ms+'ms';
     case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
     case'sleep':return '日付+1、朝に戻す';
@@ -823,8 +831,21 @@ function cmdForm(b,d,rr){
     case'var':c.append(fSel('変数',d,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('操作',d,'op',[['set','代入 ='],['add','加算 +'],['sub','減算 −'],['rand','乱数 0〜値']]),fNum('値',d,'val')));break;
     case'self':c.append(h('div',{class:'row'},fSel('セルフスイッチ',d,'key',['A','B','C','D'].map(k=>[k,k])),fSel('状態',d,'val',BOOL,{bool:true})),h('div',{class:'hint'},'このイベントだけのスイッチ（宝箱を開けた、など）'));break;
     case'item':if(!G.items.length)c.append(h('div',{class:'hint'},'「データ」タブでアイテムを作ってください'));c.append(h('div',{class:'row'},fSel('アイテム',d,'id',itemOpts(),{num:true}),fNum('増減',d,'n')));break;
-    case'move':c.append(fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
+    case'move':if(d.fade==null)d.fade=true;c.append(fChk('暗転する（オフにすると一瞬で移動）',d,'fade'),fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
     case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
+    case'route':{
+      c.append(fSel('誰を',d,'target',tgtOpts()),h('div',{class:'hint'},'名前のイベントは、今いるマップにいるものが動きます'));
+      const show=h('div',{style:'min-height:44px;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);font-size:18px;letter-spacing:.05em;word-break:break-all;margin:6px 0'},routeText(d.route)||'（ボタンで道順を入れる）');
+      const add=k=>{d.route.push(k);show.textContent=routeText(d.route)};
+      const B=(l,k)=>h('button',{class:'btn',style:'min-width:46px',onclick:()=>add(k)},l);
+      c.append(show,
+        h('div',{class:'hint'},'1歩ずつ進む'),h('div',{class:'bar',style:'background:none;padding:2px 0'},B('↑','U'),B('↓','D'),B('←','L'),B('→','R'),B('待つ','w')),
+        h('div',{class:'hint'},'その場で向きだけ変える'),h('div',{class:'bar',style:'background:none;padding:2px 0'},B('向↑','tU'),B('向↓','tD'),B('向←','tL'),B('向→','tR'),B('プレイヤーの方','tP'),B('反対','tA')),
+        h('div',{class:'bar',style:'background:none;padding:2px 0'},btn('1つ消す',()=>{d.route.pop();show.textContent=routeText(d.route)||'（ボタンで道順を入れる）'},'sm'),btn('全部消す',()=>{d.route=[];show.textContent='（ボタンで道順を入れる）'},'sm dg')),
+        fSel('速さ',d,'speed',[[0.5,'ゆっくり'],[1,'ふつう'],[2,'はやい']],{num:true}),
+        fChk('歩き終わるまで次に進まない',d,'wait'),fChk('すり抜け（壁や人を通り抜ける）',d,'through'),
+        h('div',{class:'hint'},'通れないマスに当たった歩はとばします。待つ＝0.3秒'));break}
+    case'turn':c.append(fSel('誰を',d,'target',tgtOpts()),fSel('向き',d,'dir',[['P','プレイヤーの方'],['A','プレイヤーと反対'],...DIRN.map((n,i)=>[String(i),n])]));break;
     case'time':c.append(fSel('',d,'op',[['next','進める'],['set','指定する']],{on:rr}),d.op==='set'?fSel('時間帯',d,'slot',slotOpts(),{num:true}):fNum('いくつ進めるか',d,'n',{min:1}),
       h('div',{class:'hint'},'最後の時間帯（夜）より先には進みません。日付を進めるのは「次の日へ」'));break;
     case'money':c.append(h('div',{class:'row'},fSel('操作',d,'op',[['add','増やす'],['sub','減らす'],['set','にする']]),fNum('価値',d,'val',{min:0})));break;
