@@ -77,6 +77,11 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
+const APP_VER='2026-11-10c';
+// 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
+async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
+  if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
+  onclick:()=>location.replace('editor.html?v='+encodeURIComponent(m[1]))},'新しいバージョンがあります。タップで更新');document.body.append(b)}catch(e){}}
 const NS='rpgmk:'+location.pathname.replace(/[^/]*$/,'');
 const $=s=>document.querySelector(s);
 const uid=()=>Math.random().toString(36).slice(2,9);
@@ -1114,6 +1119,7 @@ function afterLoad(){ME.mapId=G.maps[0].id;ME.undo=[];ME.redo=[];ME.needFit=true
   if(!G)await loadFromSite();
   if(!G)await newProject();
   ME.mapId=G.maps[0].id;buildUI();showTab('map');
+  checkUpdate();document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkUpdate()});
 })();
 </script>
 </body>
