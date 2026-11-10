@@ -261,7 +261,7 @@ function testPlay(mapId,x,y){saveDraft();const q=mapId!=null?`&map=${mapId}&x=${
 
 /* ===== データ構造 ===== */
 const newPage=()=>({cond:[],image:null,trigger:'action',priority:'below',through:false,cmds:[]});
-function layersFor(w,h){return[new Array(w*h).fill(0),new Array(w*h).fill(-1),new Array(w*h).fill(-1)]}
+function layersFor(w,h){return[new Array(w*h).fill(0),new Array(w*h).fill(-1),new Array(w*h).fill(-1),new Array(w*h).fill(-1)]}
 function normalize(g){
   g.version=g.version||1;g.title=g.title??'ゲーム';g.tileSize=g.tileSize||32;
   for(const k of['tilesets','charsets','faces','parallaxes','items','maps','switches','variables'])g[k]=g[k]||[];
@@ -270,7 +270,7 @@ function normalize(g){
   if(!g.maps.length)g.maps.push({id:1,name:'MAP001',w:20,h:15,tileset:g.tilesets[0]?.id||'',layers:layersFor(20,15),events:[]});
   for(const m of g.maps){
     const n=m.w*m.h;m.layers=m.layers||[];
-    for(let l=0;l<3;l++){const L=m.layers[l]||[];if(L.length!==n){const a=new Array(n).fill(l===0?0:-1);for(let i=0;i<Math.min(n,L.length);i++)a[i]=L[i];m.layers[l]=a}}
+    for(let l=0;l<4;l++){const L=m.layers[l]||[];if(L.length!==n){const a=new Array(n).fill(l===0?0:-1);for(let i=0;i<Math.min(n,L.length);i++)a[i]=L[i];m.layers[l]=a}}
     m.events=m.events||[];
     for(const e of m.events){e.pages=e.pages&&e.pages.length?e.pages:[newPage()];
       for(const p of e.pages){p.cond=p.cond||[];p.cmds=p.cmds||[];p.trigger=p.trigger||'action';p.priority=p.priority||'same'}}
@@ -395,7 +395,7 @@ function drawMapContent(c,m,im,x0,y0,x1,y1,o={}){
   if(pim&&pim.width){c.save();c.beginPath();c.rect(0,0,MW,MH);c.clip();for(let y=0;y<MH;y+=pim.height)for(let x=0;x<MW;x+=pim.width)c.drawImage(pim,x,y);c.restore()}
   else{c.fillStyle=tpPattern(c,ts/6);c.fillRect(0,0,MW,MH)}
   // 選択中の層以外は薄く：下の層には白いベールをかけ、上の層は半透明で描く
-  if(im){for(let l=0;l<3;l++){const L=m.layers[l];
+  if(im){for(let l=0;l<4;l++){const L=m.layers[l];
     if(o.layer!=null&&l===o.layer&&l>0){c.globalAlpha=1;c.fillStyle='rgba(255,255,255,.6)';c.fillRect(x0*ts,y0*ts,(x1-x0)*ts,(y1-y0)*ts)}
     c.globalAlpha=(o.layer!=null&&l>o.layer)?0.35:1;
     for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){const v=L[y*m.w+x];if(v>=0)drawTile(c,im,v,x*ts,y*ts)}}c.globalAlpha=1}
@@ -466,7 +466,7 @@ function startStroke(t){
   const m=curMap();if(!m)return;ME.last=t;const tool=ME.tool;
   if(tool==='event'){stroke={tool,t0:t,t1:t,ev:evAt(m,t.x,t.y)};reqDraw();return}
   if(!inMap(m,t))return;
-  if(tool==='pick'){const cols=tsCols(m);let v=-1,l=ME.layer;for(let k=2;k>=0&&v<0;k--){const q=m.layers[k][t.y*m.w+t.x];if(q>=0&&(k===ME.layer||m.layers[ME.layer][t.y*m.w+t.x]<0)){v=q;l=k}}
+  if(tool==='pick'){const cols=tsCols(m);let v=-1,l=ME.layer;for(let k=3;k>=0&&v<0;k--){const q=m.layers[k][t.y*m.w+t.x];if(q>=0&&(k===ME.layer||m.layers[ME.layer][t.y*m.w+t.x]<0)){v=q;l=k}}
     if(v>=0&&cols){ME.brush={x:v%cols,y:Math.floor(v/cols),w:1,h:1};ME.layer=l;ME.tool='pen';refreshTools();drawPalette()}return}
   pushUndo(m);stroke={tool,t0:t,t1:t};
   if(tool==='pen'||tool==='erase')stampTiles(m,t,t);
@@ -525,7 +525,7 @@ function buildMapTab(){
     h('div',{class:'bar'},sel,btn('⚙',mapSettings),btn('＋',newMap),btn('イベント一覧',eventList)),
     h('div',{id:'mapWrap'},h('canvas',{id:'mapCv'}),h('div',{class:'float-ur'},btn('↶',undo),btn('↷',redo))),
     h('div',{class:'bar'},...tools.map(([k,l])=>h('button',{class:'btn tool','data-t':k,onclick:()=>{ME.tool=k;refreshTools();reqDraw()}},l)),
-      h('div',{class:'seg',id:'laySeg'},...['下層','中層','上層'].map((l,i)=>h('button',{onclick:()=>{ME.layer=i;if(ME.tool==='event'||ME.tool==='hand')ME.tool='pen';refreshTools();reqDraw()}},l))),
+      h('div',{class:'seg',id:'laySeg'},...['下層','中層','上層','最上'].map((l,i)=>h('button',{onclick:()=>{ME.layer=i;if(ME.tool==='event'||ME.tool==='hand')ME.tool='pen';refreshTools();reqDraw()}},l))),
       h('button',{class:'btn',id:'gridBtn',onclick:()=>{ME.grid=!ME.grid;refreshTools();reqDraw()}},'#'),btn('⤢',()=>{fitMap();reqDraw()})),
     h('div',{class:'bar',style:'padding:4px 8px;border-top:1px solid var(--bd)'},h('span',{style:'font-size:12px;color:var(--mut);flex:1'},'タイル（タップで選択／2本指でマップ拡大・移動）'),h('button',{class:'btn sm',id:'rangeBtn',onclick:()=>{ME.range=!ME.range;refreshTools()}},'範囲選択')),
     h('div',{id:'palWrap'},h('canvas',{id:'palCv'})));
@@ -807,7 +807,7 @@ function passageEditor(t){
         c.stroke()}})};
     cv.onclick=e=>{if(!im)return;const r=cv.getBoundingClientRect(),cols=Math.floor(im.width/G.tileSize),i=Math.floor((e.clientY-r.top)/S)*cols+Math.floor((e.clientX-r.left)/S);
       const s=new Set(t.blocked);s.has(i)?s.delete(i):s.add(i);t.blocked=[...s].sort((a,b)=>a-b);changed();draw()};
-    b.append(h('div',{class:'hint',style:'padding:8px 12px'},'タップで ○通れる／×通れない を切替。下層・中層のタイルで判定し、上層はキャラの上に描かれるだけで判定しません。'),
+    b.append(h('div',{class:'hint',style:'padding:8px 12px'},'タップで ○通れる／×通れない を切替。下層・中層のタイルで判定します。上層・最上層は見た目だけで判定しません。'),
       h('div',{style:'overflow:auto;padding:8px'},cv),
       h('div',{class:'bar',style:'background:none'},btn('全部○',()=>{t.blocked=[];changed();draw()},'sm'),btn('全部×',()=>{if(!im)return;const n=Math.floor(im.width/G.tileSize)*Math.floor(im.height/G.tileSize);t.blocked=[...Array(n).keys()];changed();draw()},'sm')));
     imgAsync(t.image).then(i=>{im=i;draw()});

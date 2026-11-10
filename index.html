@@ -271,12 +271,12 @@ function draw(){
   if(parImg&&parImg.width){const pp=map.parallax,r=(pp.rate??20)/100,iw=parImg.width,ih=parImg.height,t=performance.now()/1000;
     const ox=cx*(1-r)+(pp.sx||0)*t,oy=cy*(1-r)+(pp.sy||0)*t,sx0=ox+Math.floor((cx-ox)/iw)*iw,sy0=oy+Math.floor((cy-oy)/ih)*ih;
     for(let y=sy0;y<cy+vh;y+=ih)for(let x=sx0;x<cx+vw;x+=iw)ctx.drawImage(parImg,Math.round(x*scale)/scale,Math.round(y*scale)/scale)}
-  layer(0,x0,y0,x1,y1);layer(1,x0,y0,x1,y1);
+  layer(0,x0,y0,x1,y1);layer(1,x0,y0,x1,y1);layer(2,x0,y0,x1,y1);
   const list=[];
   for(const e of events){if(e.erased||!e.page||!e.page.image)continue;list.push({z:e.page.priority==='below'?0:1,y:e.y*ts,f:()=>drawEv(e)})}
   list.push({z:1,y:P.py,f:drawPlayer});
   list.sort((a,b)=>a.z-b.z||a.y-b.y);for(const o of list)o.f();
-  layer(2,x0,y0,x1,y1);
+  layer(3,x0,y0,x1,y1);
 }
 function loop(){update();draw();requestAnimationFrame(loop)}
 
