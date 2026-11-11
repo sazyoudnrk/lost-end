@@ -100,7 +100,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11v';
+const GAME_VER='2026-11-11w';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -123,7 +123,9 @@ async function idbGet(k){try{const d=await db();return await new Promise(res=>{c
 const imgP={},imgR={};
 let AC=null;const sndP={};
 function audioCtx(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}if(AC&&AC.state==='suspended')AC.resume();return AC}
-['pointerdown','keydown','touchend'].forEach(t=>addEventListener(t,()=>{const a=audioCtx();if(a&&!a._u){const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0);a._u=1}},{capture:true}));
+// iPhoneはタップ(touchend/click)の中でないと音を出せないので、止まっている間は毎回起こしに行く
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+['pointerdown','pointerup','touchend','click','keydown'].forEach(t=>addEventListener(t,()=>{const a=audioCtx();if(!a||a.state==='running')return;try{a.resume();const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0)}catch(e){}},{capture:true}));
 function loadSnd(path){if(!path)return Promise.resolve(null);if(sndP[path])return sndP[path];
   return sndP[path]=(async()=>{try{const a=audioCtx();if(!a)return null;let buf=null;
     if(PREVIEW){const f=await idbGet(path);if(f)buf=f.buf.slice(0)}
