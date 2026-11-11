@@ -246,7 +246,7 @@
          "t": "text",
          "face": "",
          "name": "ニノマエ",
-         "text": "（ニノマエの会話をここに）",
+         "text": "……",
          "pic": "ninomae_normal",
          "picPos": "C"
         }
@@ -930,7 +930,7 @@
         },
         {
          "t": "route",
-         "target": "this",
+         "target": "player",
          "route": [
           "L",
           "L",
@@ -1459,7 +1459,7 @@
        "cond": [],
        "image": {
         "charset": "piwora",
-        "dir": 1
+        "dir": 2
        },
        "trigger": "action",
        "priority": "same",
@@ -1469,7 +1469,9 @@
          "t": "text",
          "face": "",
          "name": "ピヲラ",
-         "text": "（ピヲラの会話をここに）"
+         "text": "ああ、ほんっとありえない！\n私この旅行のために一番信用できそうな星間旅行会社をえらんだのに！",
+         "pic": "",
+         "picPos": "C"
         }
        ]
       },
