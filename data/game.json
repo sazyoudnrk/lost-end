@@ -12,18 +12,6 @@
  ],
  "charsets": [
   {
-   "id": "hero",
-   "name": "主人公（旧・仮）",
-   "image": "assets/characters/lost_end_chars.png",
-   "index": 0
-  },
-  {
-   "id": "muro",
-   "name": "ムロ（旧・仮）",
-   "image": "assets/characters/lost_end_chars.png",
-   "index": 1
-  },
-  {
    "id": "neisa",
    "name": "ネイサ（自作）",
    "image": "assets/characters/denryoku_chars.png",
