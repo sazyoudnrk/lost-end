@@ -42,6 +42,9 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 #items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
 #fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
 .hide{display:none!important}
+#dbgBtn{position:absolute;right:178px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 10px;font-size:14px}
+#dbg{position:fixed;inset:0;z-index:50;background:rgba(8,9,22,.97);color:#fff;overflow:auto;padding:calc(12px + env(safe-area-inset-top)) 14px 40px;font-size:15px;-webkit-overflow-scrolling:touch}
+#dbg h3{margin:16px 0 6px;font-size:14px;color:#aab}#dbg .r{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #223}#dbg .r span{flex:1}#dbg input,#dbg select{font:inherit;font-size:16px;background:#1a1c36;color:#fff;border:1px solid #556;border-radius:6px;padding:5px 6px}#dbg input[type=number]{width:80px}#dbg input[type=checkbox]{width:22px;height:22px}#dbg .ui-btn{padding:7px 12px;font-size:14px;text-align:center}#dbg .top{position:sticky;top:-12px;background:rgba(8,9,22,.97);display:flex;gap:8px;padding:6px 0;z-index:1}
 #pvBack{position:absolute;right:62px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 12px;font-size:14px}
 #hud{position:absolute;left:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;background:rgba(12,14,34,.85);border:2px solid #fff;border-radius:8px;padding:4px 12px;font-size:14px;pointer-events:none;white-space:nowrap}
 #daycard{position:absolute;inset:0;z-index:21;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;pointer-events:none;transition:opacity .5s}
@@ -74,7 +77,8 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <div id="pad"><b data-d="3" style="left:50px;top:0"></b><b data-d="1" style="left:0;top:50px"></b><b data-d="2" style="left:100px;top:50px"></b><b data-d="0" style="left:50px;top:100px"></b></div>
 <div id="abtn">A</div>
 <button id="menuBtn" class="ui-btn">☰</button>
-<button id="pvBack" class="ui-btn hide">✕ テスト終了</button>
+<button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
+<div id="dbg" class="hide"></div>
 <div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="close">閉じる</button></div>
 <div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button></div>
 <div id="hud"></div>
@@ -84,7 +88,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11h';
+const GAME_VER='2026-11-11i';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -154,7 +158,7 @@ function navMove(box,d){const bs=navBtns(box);if(!bs.length)return;let i=bs.find
 function navOk(box){const b=box.querySelector('button.kf');if(!b){navMove(box,0);return}
   if(box===chEl)b.dispatchEvent(new Event('pointerdown',{bubbles:true}));else b.click()}
 addEventListener('keydown',e=>{
-  if(e.target&&e.target.tagName==='INPUT')return;
+  if(e.target&&e.target.tagName==='INPUT')return;if(!$('#dbg').classList.contains('hide'))return;
   if(e.key==='Shift'){dash=true;return}
   const box=navBox();
   if(box){
@@ -186,7 +190,7 @@ abtn.addEventListener('pointerdown',e=>{e.preventDefault();abtn.classList.add('o
 abtn.addEventListener('pointerup',()=>abtn.classList.remove('on'));abtn.addEventListener('pointercancel',()=>abtn.classList.remove('on'));
 const tapEl=$('#tap');
 tapEl.addEventListener('pointerdown',e=>{e.preventDefault();advance()});
-function showControls(v){for(const el of[pad,abtn,$('#menuBtn')])el.classList.toggle('hide',!v);if(PREVIEW)$('#pvBack').classList.toggle('hide',!v)}
+function showControls(v){for(const el of[pad,abtn,$('#menuBtn')])el.classList.toggle('hide',!v);if(PREVIEW){$('#pvBack').classList.toggle('hide',!v);$('#dbgBtn').classList.toggle('hide',!v)}}
 
 /* ---------- 日付・時間帯・価値 ---------- */
 const slotName=i=>G.system.slots[i]??'';
@@ -548,8 +552,54 @@ function showTitle(){
   loop();
   // テストプレイ：エディタに戻るボタン（タブを閉じる。閉じられなければエディタを開く）
   if(PREVIEW){const b=$('#pvBack');b.classList.remove('hide');b.onclick=()=>{window.close();setTimeout(()=>location.href='editor.html',300)}}
+  if(PREVIEW){$('#dbgBtn').classList.remove('hide');$('#dbgBtn').onclick=openDbg}
   if(PREVIEW)startNew();else showTitle();
 })();
+// ===== デバッグ（テストプレイ専用）=====
+const DBGKEY=NS+'dbgsnaps';
+function dbgSnaps(){try{return JSON.parse(localStorage.getItem(DBGKEY)||'[]')}catch(e){return[]}}
+function dbgSetSnaps(a){try{localStorage.setItem(DBGKEY,JSON.stringify(a))}catch(e){}}
+function openDbg(){
+  if(busy||!S)return;S.x=P.x;S.y=P.y;S.dir=P.dir;
+  const D=$('#dbg');D.innerHTML='';D.classList.remove('hide');
+  const el=(t,a={},...k)=>{const e=document.createElement(t);for(const x in a){if(x.startsWith('on'))e[x]=a[x];else e.setAttribute(x,a[x])}e.append(...k);return e};
+  const W={sw:{},vr:{}};
+  const close=()=>{D.classList.add('hide');D.innerHTML=''};
+  const apply=async()=>{
+    for(const i in W.sw)S.sw[i]=W.sw[i].checked;
+    for(const i in W.vr)S.vr[i]=parseInt(W.vr[i].value,10)||0;
+    S.day=Math.max(1,parseInt(W.day.value,10)||1);S.slot=+W.slot.value;S.money=parseInt(W.money.value,10)||0;
+    S.pname=W.pname.value.trim()||undefined;
+    const m=+W.map.value,x=parseInt(W.x.value,10),y=parseInt(W.y.value,10);
+    close();await fade(1);await loadMap(m,isNaN(x)?0:x,isNaN(y)?0:y,S.dir);updHud();await fade(0);
+  };
+  D.append(el('div',{class:'top'},el('button',{class:'ui-btn',onclick:apply},'✓ 反映してこの場所から再開'),el('button',{class:'ui-btn',onclick:close},'閉じる')));
+  // スナップショット
+  D.append(el('h3',{},'状態の保存（進行度ごとのセーブ）'));
+  const sn=el('div');D.append(sn);
+  const drawSn=()=>{sn.innerHTML='';const a=dbgSnaps();
+    a.forEach((s,i)=>sn.append(el('div',{class:'r'},el('span',{},s.name),
+      el('button',{class:'ui-btn',onclick:async()=>{S=JSON.parse(JSON.stringify(s.S));if(!S.shop)S.shop=drawShop();close();await fade(1);await loadMap(S.map,S.x,S.y,S.dir);updHud();await fade(0)}},'読込'),
+      el('button',{class:'ui-btn',onclick:()=>{if(confirm(`「${s.name}」を削除しますか？`)){a.splice(i,1);dbgSetSnaps(a);drawSn()}}},'✕'))));
+    if(!a.length)sn.append(el('div',{style:'color:#889;font-size:13px'},'まだありません。今の状態に名前をつけて保存すると、次のテストプレイからすぐそこへ飛べます'));
+    sn.append(el('div',{class:'r'},el('button',{class:'ui-btn',onclick:()=>{const n=prompt('名前（例：進行度3 警告音を止めた後）',`進行度${S.vr[5]||0} ${S.day}日目`);if(!n)return;a.push({name:n,S:JSON.parse(JSON.stringify(S))});dbgSetSnaps(a);drawSn()}},'＋ 今の状態を保存')));
+  };drawSn();
+  // 場所
+  D.append(el('h3',{},'場所'));
+  W.map=el('select');for(const m of G.maps){const o=el('option',{value:m.id},`${m.id}: ${m.name}`);if(m.id===S.map)o.selected=true;W.map.append(o)}
+  W.x=el('input',{type:'number',value:P.x});W.y=el('input',{type:'number',value:P.y});
+  D.append(el('div',{class:'r'},W.map),el('div',{class:'r'},el('span',{},'X'),W.x,el('span',{},'Y'),W.y));
+  // 日付
+  D.append(el('h3',{},'日付・時間帯・価値・名前'));
+  W.day=el('input',{type:'number',value:S.day});W.slot=el('select');(G.system.slots||[]).forEach((n,i)=>{const o=el('option',{value:i},n);if(i===S.slot)o.selected=true;W.slot.append(o)});
+  W.money=el('input',{type:'number',value:S.money});W.pname=el('input',{type:'text',value:S.pname||'',placeholder:'未入力'});
+  D.append(el('div',{class:'r'},el('span',{},'日'),W.day,W.slot),el('div',{class:'r'},el('span',{},'価値'),W.money),el('div',{class:'r'},el('span',{},'主人公の名前'),W.pname));
+  // 変数・スイッチ（名前のあるものだけ）
+  D.append(el('h3',{},'変数'));
+  G.variables.forEach((n,i)=>{if(!n)return;W.vr[i]=el('input',{type:'number',value:S.vr[i]||0});D.append(el('div',{class:'r'},el('span',{},`${i}: ${n}`),W.vr[i]))});
+  D.append(el('h3',{},'スイッチ'));
+  G.switches.forEach((n,i)=>{if(!n)return;W.sw[i]=el('input',{type:'checkbox'});W.sw[i].checked=!!S.sw[i];D.append(el('label',{class:'r'},el('span',{},`${i}: ${n}`),W.sw[i]))});
+}
 </script>
 </body>
 </html>
