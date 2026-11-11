@@ -4164,7 +4164,7 @@
  "shop": {
   "count": 3,
   "limit": 1,
-  "startMoney": 10,
+  "startMoney": 0,
   "pool": [
    {
     "item": 1,
