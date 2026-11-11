@@ -103,6 +103,12 @@
    "name": "ぬいぐるみ",
    "desc": "意味はない。でも心が落ち着く",
    "value": 2
+  },
+  {
+   "id": 9,
+   "name": "備蓄食品",
+   "desc": "長持ちする保存食",
+   "value": 250
   }
  ],
  "switches": [
@@ -199,6 +205,138 @@
          "t": "shop"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "なにこれ？等価交換機？",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "これは船内で困り事があった時に、同等の価値を使って部品などを出力する機械ですね。\nかなり古そうですが。",
+         "picPos": "C",
+         "pic": "muro_normal"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "ねえねえこの備蓄食品！出してみようよ。",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "出してみよう",
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "主人公",
+             "text": "価値のあるものが必要みたい",
+             "picPos": "C",
+             "pic": "-"
+            }
+           ]
+          },
+          {
+           "label": "価値を持っていない",
+           "cmds": []
+          }
+         ]
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "ムロさん何か持ってない？",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "えぇ〜　なにかあったかな……",
+         "picPos": "C",
+         "pic": "muro_normal"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ムロさんはポケットから薬を取り出して価値に変換した。",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "sw",
+         "id": 0,
+         "val": true
+        },
+        {
+         "t": "money",
+         "op": "add",
+         "val": 300
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "300の価値があったみたいね。備蓄食品は250だから交換してみるわよ。",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "comment",
+         "text": "（ここに等価交換機のチュートリアルを入れる予定。UI変更後に作る）"
+        },
+        {
+         "t": "money",
+         "op": "sub",
+         "val": 250
+        },
+        {
+         "t": "item",
+         "id": 9,
+         "n": 1
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "備蓄食品を手に入れた。",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "var",
+         "id": 5,
+         "op": "set",
+         "val": 5
+        }
+       ]
       }
      ]
     },
@@ -235,6 +373,40 @@
          "x": 2,
          "y": 7,
          "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "真ん中の機械はなんだろう？",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "U"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
         }
        ]
       }
@@ -497,6 +669,20 @@
        "vr": 5,
        "vop": "==",
        "vv": 3
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": "==",
+       "vv": 4,
+       "map": null,
+       "x": 0,
+       "y": 0,
+       "dir": -1
       }
      ]
     },
@@ -810,6 +996,20 @@
        "x": 5,
        "y": 5,
        "dir": 3
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": "==",
+       "vv": 4,
+       "map": null,
+       "x": 0,
+       "y": 0,
+       "dir": -1
       }
      ]
     },
@@ -870,6 +1070,40 @@
          "dir": 1
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "真ん中の機械はなんだろう？",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "R"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
+        }
+       ]
       }
      ]
     },
@@ -892,6 +1126,40 @@
          "x": 1,
          "y": 5,
          "dir": 2
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "真ん中の機械はなんだろう？",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "L"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
         }
        ]
       }
@@ -918,6 +1186,40 @@
          "dir": 1
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "真ん中の機械はなんだろう？",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "R"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
+        }
+       ]
       }
      ]
     },
@@ -940,6 +1242,40 @@
          "x": 1,
          "y": 6,
          "dir": 2
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "真ん中の機械はなんだろう？",
+         "picPos": "C",
+         "pic": "-"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "L"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
         }
        ]
       }
@@ -1837,6 +2173,33 @@
          ]
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": {
+        "charset": "piwora",
+        "dir": 1
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "ねえ、真ん中のあの機械なにかしら？",
+         "picPos": "C",
+         "pic": "-"
+        }
+       ]
       }
      ],
      "schedule": [
@@ -1881,6 +2244,20 @@
        "vr": 5,
        "vop": "==",
        "vv": 3
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": "==",
+       "vv": 4,
+       "map": 1,
+       "x": 5,
+       "y": 5,
+       "dir": 3
       }
      ]
     },
@@ -2882,6 +3259,33 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 4
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 3
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "真ん中の機械、なんでしょうね……",
+         "picPos": "C",
+         "pic": "muro_normal"
+        }
+       ]
       }
      ],
      "schedule": [
@@ -2963,6 +3367,20 @@
        "vop": "==",
        "vv": 2,
        "map": 8,
+       "x": 7,
+       "y": 5,
+       "dir": 3
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": "==",
+       "vv": 4,
+       "map": 1,
        "x": 7,
        "y": 5,
        "dir": 3
