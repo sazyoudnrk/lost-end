@@ -13,33 +13,33 @@
  "charsets": [
   {
    "id": "hero",
-   "name": "主人公",
+   "name": "主人公（旧・仮）",
    "image": "assets/characters/lost_end_chars.png",
    "index": 0
   },
   {
    "id": "muro",
-   "name": "ムロ",
+   "name": "ムロ（旧・仮）",
    "image": "assets/characters/lost_end_chars.png",
    "index": 1
   },
   {
    "id": "neisa",
-   "name": "ネイサ",
-   "image": "assets/characters/lost_end_chars.png",
-   "index": 3
+   "name": "ネイサ（自作）",
+   "image": "assets/characters/denryoku_chars.png",
+   "index": 2
   },
   {
    "id": "ninomae",
-   "name": "ニノマエ",
-   "image": "assets/characters/lost_end_chars.png",
-   "index": 4
+   "name": "ニノマエ（自作）",
+   "image": "assets/characters/denryoku_chars.png",
+   "index": 3
   },
   {
    "id": "piwora",
-   "name": "ピヲラ",
-   "image": "assets/characters/lost_end_chars.png",
-   "index": 5
+   "name": "ピヲラ（自作）",
+   "image": "assets/characters/denryoku_chars.png",
+   "index": 4
   },
   {
    "id": "sample1",
