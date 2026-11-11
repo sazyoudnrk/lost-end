@@ -140,6 +140,24 @@
    "desc": "ムロのポケットに入っていた薬",
    "value": 300,
    "icon": "ic_med"
+  },
+  {
+   "id": 11,
+   "name": "星間ワープ装置-E04 C02",
+   "desc": "星間ワープ装置の部品",
+   "value": 0
+  },
+  {
+   "id": 12,
+   "name": "星間ワープ装置-E04 C15",
+   "desc": "星間ワープ装置の部品",
+   "value": 0
+  },
+  {
+   "id": 13,
+   "name": "星間ワープ装置-E04 C33",
+   "desc": "星間ワープ装置の部品",
+   "value": 0
   }
  ],
  "switches": [
@@ -155,7 +173,7 @@
   "ピヲラの名前公開",
   "2日目の集合が終わった",
   "3日目の集合が終わった",
-  "",
+  "パーツ探し開始",
   "",
   "",
   "",
@@ -4163,8 +4181,26 @@
          "picPos": "C"
         },
         {
-         "t": "comment",
-         "text": "（ここで必要な3つのパーツを見せる：パーツが決まったら追加）"
+         "t": "shopview",
+         "show": true,
+         "fixed": [
+          {
+           "item": 11,
+           "price": 300
+          },
+          {
+           "item": 12,
+           "price": 300
+          },
+          {
+           "item": 13,
+           "price": 300
+          }
+         ]
+        },
+        {
+         "t": "wait",
+         "ms": 400
         },
         {
          "t": "text",
@@ -4175,12 +4211,21 @@
          "picPos": "C"
         },
         {
+         "t": "shopview",
+         "show": false
+        },
+        {
          "t": "text",
          "face": "",
          "name": "ムロ",
          "text": "そのためにはまず価値が必要です。[pname]さん、どうにか皆さんに協力を仰いでみてください。",
          "pic": "muro_normal",
          "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 12,
+         "val": true
         },
         {
          "t": "var",
@@ -5958,6 +6003,36 @@
     "to": "",
     "sw": -1,
     "once": false,
+    "limitUp": 0
+   },
+   {
+    "item": 11,
+    "price": 300,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": 12,
+    "once": true,
+    "limitUp": 0
+   },
+   {
+    "item": 12,
+    "price": 300,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": 12,
+    "once": true,
+    "limitUp": 0
+   },
+   {
+    "item": 13,
+    "price": 300,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": 12,
+    "once": true,
     "limitUp": 0
    }
   ]

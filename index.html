@@ -60,7 +60,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #shop .list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:start}
 #shop .list>p{grid-column:1/-1;text-align:center;color:#bbb;margin:24px 0}
 #shop .icard{display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:6px;border-radius:8px;text-align:left;min-width:0;font-size:14px}
-#shop .icard b{font-size:14px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#shop .icard b{font-size:13px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-all;min-height:2.6em}
 #shop .icard .im{aspect-ratio:1;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #shop .icard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 #shop .icard small{color:#bbb;font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3.9em}
@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-12a';
+const GAME_VER='2026-11-12b';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
