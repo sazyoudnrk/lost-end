@@ -1147,6 +1147,43 @@
          "ms": 400
         },
         {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 6,
+          "op": "==",
+          "val": 1
+         },
+         "then": [
+          {
+           "t": "route",
+           "target": "player",
+           "wait": true,
+           "through": false,
+           "speed": 1,
+           "route": [
+            "R",
+            "R"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "t": "route",
+           "target": "player",
+           "wait": true,
+           "through": false,
+           "speed": 1,
+           "route": [
+            "L",
+            "L",
+            "L"
+           ]
+          }
+         ],
+         "hasElse": true
+        },
+        {
          "t": "text",
          "face": "",
          "name": "ネイサ",
@@ -2581,6 +2618,28 @@
          "text": "先に警告音を止めないと。"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 3
+        }
+       ],
+       "trigger": "touch",
+       "priority": "below",
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ハッチが開かない。"
+        }
+       ],
+       "image": null,
+       "through": false
       }
      ]
     },
