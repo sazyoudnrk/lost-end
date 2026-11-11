@@ -99,7 +99,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11o';
+const GAME_VER='2026-11-11p';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -352,7 +352,7 @@ async function runEvent(ev){
   busy=true;aPressed=false;setPad(null);held.length=0;clearPath();showControls(false);tapEl.style.display='block';
   const cx={ev,mapId:map.id};
   try{await exec(ev.page.cmds,cx)}catch(e){if(e!==END)console.error(e)}
-  hideMsg();clearPics();showStill(null,false);closeShopView();busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
+  hideMsg();clearPics();showStill(null,false);closeShopView();if(+$('#fade').style.opacity>0)await fade(0);busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
 }
 async function exec(list,cx){for(const c of list||[])await cmd(c,cx)}
 async function cmd(c,cx){
@@ -379,6 +379,7 @@ async function cmd(c,cx){
     case'turn':{const t=routeTarget(c.target,cx);if(t)t.dir=faceDir(t,c.dir);break}
     case'wait':await sleep(+c.ms||0);break;
     case'se':playSe(c.id,c.vol);break;
+    case'fade':if(c.mode!=='in'){hideMsg();clearPics()}$('#fade').style.transition=`opacity ${+c.ms||300}ms`;$('#fade').style.opacity=c.mode==='in'?0:1;await sleep(+c.ms||300);$('#fade').style.transition='';break;
     case'pic':if(c.pos==='A')clearPics();else{await setPic(c.pos||'C',c.id||null);if(c.id)setActive(c.pos||'C')}break;
     case'still':await showStill(c.id||null,c.fade!==false);break;
     case'erase':cx.ev.erased=true;break;

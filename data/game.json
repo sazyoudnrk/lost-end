@@ -423,10 +423,24 @@
          "picPos": "C"
         },
         {
+         "t": "fade",
+         "mode": "out",
+         "ms": 400
+        },
+        {
          "t": "var",
          "id": 5,
          "op": "set",
          "val": 5
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "fade",
+         "mode": "in",
+         "ms": 400
         }
        ]
       }

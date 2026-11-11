@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11l';
+const APP_VER='2026-11-11m';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -658,6 +658,7 @@ const CT={
   item:{n:'アイテム増減',c:'#3f9a55',make:()=>({t:'item',id:G.items[0]?G.items[0].id:0,n:1})},
   move:{n:'場所移動',c:'#8a5ad0',make:()=>({t:'move',map:curMap().id,x:0,y:0,dir:-1})},
   pic:{n:'立ち絵',c:'#c0508f',make:()=>({t:'pic',pos:'C',id:G.pictures[0]?G.pictures[0].id:''})},
+  fade:{n:'暗転',c:'#c0508f',make:()=>({t:'fade',mode:'out',ms:400})},
   still:{n:'スチル',c:'#c0508f',make:()=>({t:'still',id:G.stills[0]?G.stills[0].id:'',fade:true})},
   time:{n:'時間を進める',c:'#2a9a9a',make:()=>({t:'time',op:'next',n:1,slot:0})},
   sleep:{n:'次の日へ',c:'#2a9a9a',make:()=>({t:'sleep'})},
@@ -695,6 +696,7 @@ function cmdSummary(c){
   switch(c.t){
     case'text':{const f=G.faces.find(x=>x.id===c.face),pc=c.pic&&c.pic!=='-'&&G.pictures.find(x=>x.id===c.pic);return(c.name?`【${c.name}】`:'')+(f?`(${f.name}) `:'')+(pc?`[${pc.name}・${POSN[c.picPos||'C']}] `:c.pic==='-'?`[立ち絵消す・${POSN[c.picPos||'C']}] `:'')+(c.text||'')}
     case'pic':return c.pos==='A'?'全部消す':`${POSN[c.pos]}：${c.id?(G.pictures.find(x=>x.id===c.id)||{name:'?'}).name:'消す'}`;
+    case'fade':return(c.mode==='in'?'明るくする':'暗くする')+` ${c.ms||300}ms`;
     case'still':return(c.id?(G.stills.find(x=>x.id===c.id)||{name:'?'}).name:'消す')+(c.fade===false?'':'（フェード）');
     case'choice':return c.options.map(o=>o.label).join(' / ');
     case'if':return condSummary(c.cond);
@@ -873,6 +875,7 @@ function cmdForm(b,d,rr){
     case'pic':{const pc=d.id&&G.pictures.find(x=>x.id===d.id);c.append(fSel('位置',d,'pos',[['L','左'],['C','中央'],['R','右'],['A','全部消す']],{on:rr}));
       if(d.pos!=='A')c.append(h('div',{class:'row',style:'align-items:center'},pc?thumb(pc.image):null,fSel('立ち絵',d,'id',[['','消す'],...G.pictures.map(x=>[x.id,x.name])],{on:rr})));
       if(!G.pictures.length)c.append(h('div',{class:'hint'},'「素材」タブの「立ち絵」に画像を追加してください'));break}
+    case'fade':c.append(fSel('',d,'mode',[['out','暗くする（ブラックアウト）'],['in','明るくする']]),fNum('かける時間（ミリ秒）',d,'ms',{min:0}),h('div',{class:'hint'},'暗くしている間に人の配置や場所を変え、「明るくする」で戻します。暗くするときは文章と立ち絵も消えます。イベントが終わると自動で明るくなります'));break;
     case'still':{const st=d.id&&G.stills.find(x=>x.id===d.id);c.append(h('div',{class:'row',style:'align-items:center'},st?thumb(st.image):null,fSel('スチル',d,'id',[['','消す'],...G.stills.map(x=>[x.id,x.name])],{on:rr})),fChk('フェードで切り替える',d,'fade'),
       h('div',{class:'hint'},'画面いっぱいに表示し、文章はその上に出ます。イベントが終わると自動で消えます'));
       if(!G.stills.length)c.append(h('div',{class:'hint'},'「素材」タブの「スチル」に画像を追加してください'));break}
