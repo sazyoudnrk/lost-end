@@ -148,12 +148,12 @@
   "1日目の集合が終わった",
   "2回目の集合が終わった",
   "今日はもう遅い",
-  "はしごを使った",
+  "ハッチ開通",
   "ムロの名前公開",
   "ネイサの名前公開",
   "ニノマエの名前公開",
   "ピヲラの名前公開",
-  "",
+  "2日目の集合が終わった",
   "",
   "",
   "",
@@ -897,6 +897,20 @@
        "x": 4,
        "y": 5,
        "dir": 2
+      },
+      {
+       "from": 2,
+       "to": 2,
+       "slot": 0,
+       "sw": 10,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 5,
+       "map": 1,
+       "x": 4,
+       "y": 5,
+       "dir": 2
       }
      ]
     },
@@ -1244,6 +1258,20 @@
        "to": 3,
        "slot": 0,
        "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 5,
+       "map": 1,
+       "x": 7,
+       "y": 4,
+       "dir": 0
+      },
+      {
+       "from": 2,
+       "to": 2,
+       "slot": 0,
+       "sw": 10,
        "swv": false,
        "vr": 5,
        "vop": ">=",
@@ -2045,6 +2073,229 @@
        ]
       }
      ]
+    },
+    {
+     "id": 29,
+     "name": "全員集合（2日目）",
+     "x": 3,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": "==",
+         "val": 2
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 0
+        },
+        {
+         "type": "sw",
+         "id": 10,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 5
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 6,
+          "op": "==",
+          "val": 1
+         },
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "D",
+              "R",
+              "R",
+              "R"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "R",
+              "R",
+              "R"
+             ]
+            }
+           ],
+           "hasElse": true
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "D",
+              "L",
+              "L",
+              "L"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "L",
+              "L",
+              "L"
+             ]
+            }
+           ],
+           "hasElse": true
+          }
+         ],
+         "hasElse": true
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "みんなおはよう。気になっていたけどここにある食料は誰のものなんだ？",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "それはみんなのもの！正確にはムロさんのものかもだけど……\nそこの等価交換機ってやつで生成したの",
+         "pic": "piwora_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "全然、自由に食べていいですよ。\n[p]そういえば、操縦室とエントランスを行き来するハッチを開けておきました。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 5,
+         "val": true
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "へーそんなのもあるんだ。",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "……",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ニノマエ",
+         "text": "腹減ってたから食いもんもらうわ　ありがと",
+         "pic": "ninomae_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "特に異常もないようで良かった。じゃ、解散ってことで",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "fade",
+         "mode": "out",
+         "ms": 400
+        },
+        {
+         "t": "sw",
+         "id": 10,
+         "val": true
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "fade",
+         "mode": "in",
+         "ms": 400
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2721,6 +2972,20 @@
        "to": 3,
        "slot": 0,
        "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 5,
+       "map": 1,
+       "x": 8,
+       "y": 5,
+       "dir": 1
+      },
+      {
+       "from": 2,
+       "to": 2,
+       "slot": 0,
+       "sw": 10,
        "swv": false,
        "vr": 5,
        "vop": ">=",
@@ -3581,10 +3846,8 @@
      "pages": [
       {
        "cond": [],
-       "image": null,
        "trigger": "touch",
        "priority": "same",
-       "through": false,
        "cmds": [
         {
          "t": "if",
@@ -3594,22 +3857,18 @@
          },
          "then": [
           {
-           "t": "sw",
-           "id": 5,
-           "val": true
-          },
-          {
-           "t": "move",
-           "map": 1,
-           "x": 2,
-           "y": 10,
-           "dir": 3
+           "t": "text",
+           "face": "",
+           "name": "",
+           "text": "ハッチが開かない。"
           }
          ],
          "else": [],
          "hasElse": false
         }
-       ]
+       ],
+       "image": null,
+       "through": false
       },
       {
        "cond": [
@@ -3647,14 +3906,15 @@
       {
        "cond": [
         {
-         "type": "var",
+         "type": "sw",
          "id": 5,
-         "op": "<=",
-         "val": 3
+         "val": true
         }
        ],
+       "image": null,
        "trigger": "touch",
        "priority": "same",
+       "through": false,
        "cmds": [
         {
          "t": "if",
@@ -3664,18 +3924,17 @@
          },
          "then": [
           {
-           "t": "text",
-           "face": "",
-           "name": "",
-           "text": "ハッチが開かない。"
+           "t": "move",
+           "map": 1,
+           "x": 2,
+           "y": 10,
+           "dir": 3
           }
          ],
          "else": [],
          "hasElse": false
         }
-       ],
-       "image": null,
-       "through": false
+       ]
       }
      ]
     },
@@ -4064,6 +4323,20 @@
        "to": 3,
        "slot": 0,
        "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 5,
+       "map": 1,
+       "x": 5,
+       "y": 4,
+       "dir": 0
+      },
+      {
+       "from": 2,
+       "to": 2,
+       "slot": 0,
+       "sw": 10,
        "swv": false,
        "vr": 5,
        "vop": ">=",
