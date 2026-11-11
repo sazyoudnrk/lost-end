@@ -2762,6 +2762,11 @@
          "id": 5,
          "op": "==",
          "val": 2
+        },
+        {
+         "type": "self",
+         "key": "A",
+         "val": false
         }
        ],
        "image": null,
@@ -2776,54 +2781,401 @@
         {
          "t": "text",
          "face": "",
+         "name": "",
+         "text": "警告音が鳴っている。"
+        },
+        {
+         "t": "text",
+         "face": "",
          "name": "ムロ",
-         "text": "（計器を調べて、警告音を止める）",
+         "text": "（警告音がどこから鳴っているのか探してみましょう）",
          "pic": "muro_normal",
          "picPos": "C"
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "警告音が鳴っている",
-         "pic": "",
-         "picPos": "C"
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "……警告音が止んだ。"
         },
         {
          "t": "text",
          "face": "",
          "name": "ネイサ",
-         "text": "（到着まで3日、という表示を見つける）",
+         "text": "（手分けして探そう）",
          "pic": "neisa_normal",
          "picPos": "C"
         },
         {
+         "t": "self",
+         "key": "A",
+         "val": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 14,
+     "name": "計器",
+     "x": 3,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
          "t": "text",
          "face": "",
-         "name": "ムロ",
-         "text": "（みんなに知らせに行きましょう）",
-         "pic": "muro_normal",
-         "picPos": "C"
-        },
+         "name": "",
+         "text": "（計器が並んでいる。ここではないようだ）"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 15,
+     "name": "計器",
+     "x": 4,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
         {
-         "t": "var",
+         "type": "var",
          "id": 5,
-         "op": "set",
-         "val": 3
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（計器が並んでいる。ここではないようだ）"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 16,
+     "name": "計器",
+     "x": 5,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（計器が並んでいる。ここではないようだ）"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 17,
+     "name": "計器",
+     "x": 6,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（計器が並んでいる。ここではないようだ）"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 18,
+     "name": "計器",
+     "x": 7,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（計器が並んでいる。ここではないようだ）"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 19,
+     "name": "計器",
+     "x": 8,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（計器が並んでいる。ここではないようだ）"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 20,
+     "name": "生還ワープ装置",
+     "x": 9,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（計器のひとつが激しく点滅している。「生還ワープ装置」と書かれている）"
         },
         {
-         "t": "move",
-         "map": 2,
-         "x": 13,
-         "y": 2,
-         "dir": 0,
-         "fade": true
+         "t": "choice",
+         "options": [
+          {
+           "label": "止める",
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "装置に触れて、警告を止めた。"
+            },
+            {
+             "t": "wait",
+             "ms": 500
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "[shake]……警告音が止んだ。"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "text": "生還ワープ装置の不具合だったのか。",
+             "pic": "neisa_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "text": "（到着まで3日、という表示を見つける）",
+             "pic": "muro_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "text": "（みんなに知らせに行きましょう）",
+             "pic": "muro_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 5,
+             "op": "set",
+             "val": 3
+            },
+            {
+             "t": "move",
+             "map": 2,
+             "x": 13,
+             "y": 2,
+             "dir": 0,
+             "fade": true
+            }
+           ]
+          },
+          {
+           "label": "やめる",
+           "cmds": []
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 21,
+     "name": "計器",
+     "x": 10,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（計器が並んでいる。ここではないようだ）"
         }
        ]
       }
