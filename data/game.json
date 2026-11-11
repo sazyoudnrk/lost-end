@@ -988,6 +988,7 @@
          "route": [
           "L",
           "L",
+          "D",
           "L"
          ],
          "wait": true,
@@ -1584,7 +1585,7 @@
        "cond": [],
        "image": {
         "charset": "piwora",
-        "dir": 2
+        "dir": 1
        },
        "trigger": "action",
        "priority": "same",
@@ -1782,13 +1783,13 @@
        "slot": -1,
        "sw": -1,
        "swv": false,
-       "map": 1,
-       "x": 4,
-       "y": 7,
-       "dir": 2,
        "vr": 5,
        "vop": "==",
-       "vv": 0
+       "vv": 0,
+       "map": 1,
+       "x": 8,
+       "y": 5,
+       "dir": 1
       },
       {
        "from": 1,
