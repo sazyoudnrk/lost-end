@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11q';
+const APP_VER='2026-11-11r';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -676,6 +676,8 @@ const CT={
   turn:{n:'向きを変える',c:'#8a5ad0',make:()=>({t:'turn',target:'this',dir:'P'})},
   wait:{n:'ウェイト',c:'#777',make:()=>({t:'wait',ms:500})},
   bgm:{n:'BGM',c:'#777',make:()=>({t:'bgm',op:'play',id:G.bgms[0]?G.bgms[0].id:'',ms:600})},
+  flash:{n:'画面フラッシュ',c:'#c0508f',make:()=>({t:'flash',color:'#ff0000',alpha:60,ms:400,times:1,wait:true})},
+  shake:{n:'画面の揺れ',c:'#c0508f',make:()=>({t:'shake',power:6,ms:500,wait:true})},
   se:{n:'効果音',c:'#777',make:()=>({t:'se',id:G.sounds[0]?G.sounds[0].id:'',vol:100})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
   end:{n:'処理を中断',c:'#777',make:()=>({t:'end'})},
@@ -716,6 +718,8 @@ function cmdSummary(c){
     case'route':return `${tgtName(c.target)}：${routeText(c.route)||'（未設定）'}`+(c.wait===false?'（待たない）':'');
     case'turn':return `${tgtName(c.target)}：${{P:'プレイヤーの方',A:'プレイヤーと反対'}[c.dir]||DIRN[c.dir]+'向き'}`;
     case'wait':return c.ms+'ms';
+    case'flash':return `${c.color||'#ff0000'} 濃さ${c.alpha??60}% ${c.ms||400}ms×${c.times||1}`+(c.wait===false?'（待たない）':'');
+    case'shake':return `強さ${c.power||6} ${c.ms||500}ms`+(c.wait===false?'（待たない）':'');
     case'bgm':return c.op==='stop'?'止める':c.op==='map'?'マップのBGMに戻す':((G.bgms.find(x=>x.id===c.id)||{name:'（未選択）'}).name+'を流す');
     case'se':{const s=G.sounds.find(x=>x.id===c.id);return (s?s.name:'（未選択）')+(c.vol!=null&&+c.vol!==100?` 音量${c.vol}`:'')}
     case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
@@ -859,6 +863,8 @@ function cmdForm(b,d,rr){
     case'item':if(!G.items.length)c.append(h('div',{class:'hint'},'「データ」タブでアイテムを作ってください'));c.append(h('div',{class:'row'},fSel('アイテム',d,'id',itemOpts(),{num:true}),fNum('増減',d,'n')));break;
     case'move':if(d.fade==null)d.fade=true;c.append(fChk('暗転する（オフにすると一瞬で移動）',d,'fade'),fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
     case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
+    case'flash':{const ci=h('input',{type:'color',value:d.color||'#ff0000',style:'width:60px;height:36px',onchange:()=>{d.color=ci.value;changed()}});c.append(field('色',ci),h('div',{class:'row'},fNum('濃さ（%）',d,'alpha',{min:0,max:100}),fNum('1回の長さ（ミリ秒）',d,'ms',{min:60}),fNum('回数',d,'times',{min:1})),fChk('終わるまで待つ',d,'wait'),h('div',{class:'hint'},'画面が一瞬その色に染まります（白い部分ほど色がつきます）。「待つ」を外すと、点滅しながら次のコマンドへ進みます'));break}
+    case'shake':c.append(h('div',{class:'row'},fNum('強さ（ドット）',d,'power',{min:1}),fNum('長さ（ミリ秒）',d,'ms',{min:50})),fChk('終わるまで待つ',d,'wait'),h('div',{class:'hint'},'マップの画面を揺らします（会話の窓は揺れません）'));break;
     case'bgm':c.append(fSel('',d,'op',[['play','曲を流す'],['stop','止める'],['map','マップのBGMに戻す']],{on:rr}),d.op==='play'?fSel('曲',d,'id',[['','（未選択）'],...G.bgms.map(x=>[x.id,x.name])]):null,fNum('フェード（ミリ秒）',d,'ms',{min:0}),h('div',{class:'hint'},'「曲を流す」「止める」をすると、場所移動してもマップのBGMに切り替わりません。「マップのBGMに戻す」で元に戻ります'));break;
     case'se':c.append(h('div',{class:'row',style:'align-items:end'},fSel('効果音',d,'id',[['','（未選択）'],...G.sounds.map(x=>[x.id,x.name])]),btn('▶',()=>{const s=G.sounds.find(x=>x.id===d.id);if(s)playSnd(s.file)},'sm')),fNum('音量（0〜100）',d,'vol',{min:0,max:100}),h('div',{class:'hint'},'音は「素材」タブの「効果音（SE）」で追加します。鳴らしたらすぐ次へ進みます'));break;
     case'route':{

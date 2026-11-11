@@ -3271,6 +3271,34 @@
        "through": false,
        "cmds": [
         {
+         "t": "bgm",
+         "op": "play",
+         "id": "bgm_alarm",
+         "ms": 0
+        },
+        {
+         "t": "wait",
+         "ms": 300
+        },
+        {
+         "t": "flash",
+         "color": "#ff0000",
+         "alpha": 55,
+         "ms": 700,
+         "times": 2,
+         "wait": false
+        },
+        {
+         "t": "shake",
+         "power": 4,
+         "ms": 1400,
+         "wait": true
+        },
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
          "t": "text",
          "face": "",
          "name": "",
@@ -4310,6 +4338,11 @@
            "label": "止める",
            "cmds": [
             {
+             "t": "bgm",
+             "op": "map",
+             "ms": 300
+            },
+            {
              "t": "text",
              "face": "",
              "name": "",
@@ -4878,6 +4911,12 @@
    "name": "lostEnd_bgm1",
    "file": "assets/bgm/lostEnd_bgm1.m4a",
    "vol": 80
+  },
+  {
+   "id": "bgm_alarm",
+   "name": "警告音",
+   "file": "assets/bgm/alarm.wav",
+   "vol": 55
   }
  ]
 }
