@@ -288,6 +288,10 @@
          "pic": "muro_normal"
         },
         {
+         "t": "wait",
+         "ms": 500
+        },
+        {
          "t": "shopview",
          "show": true,
          "fixed": [
