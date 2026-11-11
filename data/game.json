@@ -3271,21 +3271,6 @@
        "through": false,
        "cmds": [
         {
-         "t": "bgm",
-         "op": "play",
-         "id": "bgm_alarm",
-         "ms": 0
-        },
-        {
-         "t": "shake",
-         "power": 5,
-         "ms": 170,
-         "wait": true,
-         "beats": "0,250,700,950",
-         "period": 1400,
-         "repeat": 2
-        },
-        {
          "t": "text",
          "face": "",
          "name": "",
