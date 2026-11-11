@@ -100,7 +100,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11r';
+const GAME_VER='2026-11-11t';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -140,7 +140,12 @@ async function playBgm(id,vol,ms=600){
   const v=(vol==null?(s.vol??80):+vol)/100,t=a.currentTime;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+ms/1000);src.start();BGM.src=src;BGM.gain=g}
 async function flashScreen(c){const f=$('#flash'),ms=Math.max(60,+c.ms||400),n=Math.max(1,+c.times||1),a=(c.alpha??60)/100;f.style.background=c.color||'#ff0000';
   for(let i=0;i<n;i++){f.style.transition=`opacity ${ms/2}ms ease-out`;f.style.opacity=a;await sleep(ms/2);f.style.transition=`opacity ${ms/2}ms ease-in`;f.style.opacity=0;await sleep(ms/2)}}
-async function shakeScreen(c){const el=$('#cv'),pw=+c.power||6,ms=+c.ms||500,t0=performance.now();
+async function shakeScreen(c){
+  const beats=String(c.beats||'').split(/[,、\s]+/).filter(x=>x!=='').map(Number).filter(n=>!isNaN(n)&&n>=0);
+  if(beats.length){const per=+c.period||0,rep=Math.max(1,+c.repeat||1),t0=performance.now(),list=[];for(let r=0;r<rep;r++)for(const b of beats)list.push(t0+r*per+b);
+    for(const at of list){const d=at-performance.now();if(d>0)await sleep(d);shakeScreen({power:c.power,ms:c.ms})}
+    await sleep(Math.max(0,t0+rep*per-performance.now()));return}
+  const el=$('#cv'),pw=+c.power||6,ms=+c.ms||500,t0=performance.now();
   await new Promise(r=>{const step=()=>{const t=performance.now()-t0;if(t>=ms){el.style.transform='';r();return}const k=pw*(1-t/ms);el.style.transform=`translate(${Math.round((Math.random()*2-1)*k)}px,${Math.round((Math.random()*2-1)*k*.5)}px)`;requestAnimationFrame(step)};step()})}
 function mapBgm(m){const v=m&&m.bgm;if(v==='-')return null;return v||(G.system&&G.system.bgm)||null}
 document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else AC.resume()});
@@ -397,7 +402,7 @@ async function cmd(c,cx){
     case'se':playSe(c.id,c.vol);break;
     case'flash':{const p=flashScreen(c);if(c.wait!==false)await p;break}
     case'shake':{const p=shakeScreen(c);if(c.wait!==false)await p;break}
-    case'bgm':if(c.op==='map'){S.bgmOv=false;S.bgmId=null;playBgm(mapBgm(map),null,c.ms==null?600:+c.ms)}else{S.bgmOv=true;S.bgmId=c.op==='stop'?null:c.id;playBgm(S.bgmId,c.vol,c.ms==null?600:+c.ms)}break;
+    case'bgm':if(c.op==='map'){S.bgmOv=false;S.bgmId=null;playBgm(mapBgm(map),null,c.ms==null?600:+c.ms)}else{S.bgmOv=true;S.bgmId=c.op==='stop'?null:c.id;await playBgm(S.bgmId,c.vol,c.ms==null?600:+c.ms)}break;
     case'fade':if(c.mode!=='in'){hideMsg();clearPics()}$('#fade').style.transition=`opacity ${+c.ms||300}ms`;$('#fade').style.opacity=c.mode==='in'?0:1;await sleep(+c.ms||300);$('#fade').style.transition='';break;
     case'pic':if(c.pos==='A')clearPics();else{await setPic(c.pos||'C',c.id||null);if(c.id)setActive(c.pos||'C')}break;
     case'still':await showStill(c.id||null,c.fade!==false);break;
