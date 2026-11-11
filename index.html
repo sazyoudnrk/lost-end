@@ -88,7 +88,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11i';
+const GAME_VER='2026-11-11j';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -329,7 +329,7 @@ async function cmd(c,cx){
     case'shop':hideMsg();await openShop();break;
     case'nameinput':hideMsg();tapEl.style.display='none';await nameInput(c);tapEl.style.display='block';break;
     case'item':S.it[c.id]=Math.max(0,(S.it[c.id]||0)+(+c.n||0));refresh();break;
-    case'move':hideMsg();if(c.fade===false&&+c.map===map.id){const ts=G.tileSize;clearPath();P.x=P.tx=c.x;P.y=P.ty=c.y;P.px=c.x*ts;P.py=c.y*ts;P.moving=false;if(c.dir!=null&&c.dir>=0)P.dir=c.dir}
+    case'move':hideMsg();clearPics();if(c.fade===false&&+c.map===map.id){const ts=G.tileSize;clearPath();P.x=P.tx=c.x;P.y=P.ty=c.y;P.px=c.x*ts;P.py=c.y*ts;P.moving=false;if(c.dir!=null&&c.dir>=0)P.dir=c.dir}
       else if(c.fade===false)await loadMap(c.map,c.x,c.y,c.dir);else{await fade(1);await loadMap(c.map,c.x,c.y,c.dir);await fade(0)}break;
     case'route':{const t=routeTarget(c.target,cx);if(!t)break;const job=runRoute(t,c.route||[],c);if(c.wait!==false)await job;break}
     case'turn':{const t=routeTarget(c.target,cx);if(t)t.dir=faceDir(t,c.dir);break}
