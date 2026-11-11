@@ -1546,30 +1546,84 @@
          },
          "then": [
           {
-           "t": "route",
-           "target": "player",
-           "route": [
-            "R",
-            "R",
-            "R"
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "route": [
+              "D",
+              "R",
+              "R",
+              "R"
+             ],
+             "wait": true,
+             "through": false,
+             "speed": 1
+            }
            ],
-           "wait": true,
-           "through": false,
-           "speed": 1
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "route": [
+              "R",
+              "R",
+              "R"
+             ],
+             "wait": true,
+             "through": false,
+             "speed": 1
+            }
+           ],
+           "hasElse": true
           }
          ],
          "else": [
           {
-           "t": "route",
-           "target": "player",
-           "route": [
-            "L",
-            "L",
-            "L"
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "route": [
+              "D",
+              "L",
+              "L",
+              "L"
+             ],
+             "wait": true,
+             "through": false,
+             "speed": 1
+            }
            ],
-           "wait": true,
-           "through": false,
-           "speed": 1
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "route": [
+              "L",
+              "L",
+              "L"
+             ],
+             "wait": true,
+             "through": false,
+             "speed": 1
+            }
+           ],
+           "hasElse": true
           }
          ],
          "hasElse": true
@@ -1708,30 +1762,84 @@
          },
          "then": [
           {
-           "t": "route",
-           "target": "player",
-           "wait": true,
-           "through": false,
-           "speed": 1,
-           "route": [
-            "R",
-            "R",
-            "R"
-           ]
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "D",
+              "R",
+              "R",
+              "R"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "R",
+              "R",
+              "R"
+             ]
+            }
+           ],
+           "hasElse": true
           }
          ],
          "else": [
           {
-           "t": "route",
-           "target": "player",
-           "wait": true,
-           "through": false,
-           "speed": 1,
-           "route": [
-            "L",
-            "L",
-            "L"
-           ]
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "D",
+              "L",
+              "L",
+              "L"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "L",
+              "L",
+              "L"
+             ]
+            }
+           ],
+           "hasElse": true
           }
          ],
          "hasElse": true

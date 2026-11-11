@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11t';
+const APP_VER='2026-11-11u';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -697,6 +697,7 @@ function condSummary(c){
   if(c.type==='day')return `日付 ${c.op} ${c.val}日目`;
   if(c.type==='money')return `価値 ${c.op} ${c.val}`;
   if(c.type==='pdir')return `プレイヤーが${DIRN[c.val]}向き`;
+  if(c.type==='ppos')return `プレイヤーの${c.axis==='x'?'X':'Y'}座標 ${c.op} ${c.val}`;
   if(c.type==='slot')return `時間帯が${slotN(c.val)}${c.op==='!='?'ではない':''}`;
   return '?';
 }
@@ -733,15 +734,16 @@ function cmdSummary(c){
   }return '';
 }
 function condForm(c,rr){
-  const out=[fSel('種類',c,'type',[['sw','スイッチ'],['var','変数'],['item','アイテム'],['self','セルフスイッチ'],['day','日付'],['slot','時間帯'],['money','価値'],['pdir','プレイヤーの向き']],{on:()=>{
+  const out=[fSel('種類',c,'type',[['sw','スイッチ'],['var','変数'],['item','アイテム'],['self','セルフスイッチ'],['day','日付'],['slot','時間帯'],['money','価値'],['pdir','プレイヤーの向き'],['ppos','プレイヤーの位置']],{on:()=>{
     const t=c.type;for(const k of Object.keys(c))if(k!=='type')delete c[k];
-    Object.assign(c,t==='sw'?{id:0,val:true}:t==='var'?{id:0,op:'>=',val:0}:t==='item'?{id:G.items[0]?G.items[0].id:0,has:true}:t==='day'?{op:'==',val:1}:t==='slot'?{op:'==',val:0}:t==='money'?{op:'>=',val:0}:t==='pdir'?{val:3}:{key:'A',val:true});rr()}})];
+    Object.assign(c,t==='sw'?{id:0,val:true}:t==='var'?{id:0,op:'>=',val:0}:t==='item'?{id:G.items[0]?G.items[0].id:0,has:true}:t==='day'?{op:'==',val:1}:t==='slot'?{op:'==',val:0}:t==='money'?{op:'>=',val:0}:t==='pdir'?{val:3}:t==='ppos'?{axis:'y',op:'==',val:0}:{key:'A',val:true});rr()}})];
   if(c.type==='sw')out.push(h('div',{class:'row'},fSel('スイッチ',c,'id',swOpts(),{num:true}),fSel('状態',c,'val',BOOL,{bool:true})));
   if(c.type==='var')out.push(fSel('変数',c,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum('値',c,'val')));
   if(c.type==='item')out.push(h('div',{class:'row'},fSel('アイテム',c,'id',itemOpts(),{num:true}),fSel('',c,'has',[[true,'持っている'],[false,'持っていない']],{bool:true})));
   if(c.type==='self')out.push(h('div',{class:'row'},fSel('キー',c,'key',['A','B','C','D'].map(k=>[k,k])),fSel('状態',c,'val',BOOL,{bool:true})));
   if(c.type==='day'||c.type==='money')out.push(h('div',{class:'row'},fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum(c.type==='day'?'日目':'価値',c,'val')));
   if(c.type==='pdir')out.push(fSel('向き',c,'val',DIRN.map((n,i)=>[i,n]),{num:true}));
+  if(c.type==='ppos')out.push(h('div',{class:'row'},fSel('',c,'axis',[['x','X座標（横）'],['y','Y座標（縦）']]),fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum('値',c,'val',{min:0})));
   if(c.type==='slot')out.push(h('div',{class:'row'},fSel('',c,'op',[['==','が'],['!=','ではない']]),fSel('時間帯',c,'val',slotOpts(),{num:true})));
   return out;
 }
