@@ -699,6 +699,33 @@
          ]
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": {
+        "charset": "neisa",
+        "dir": 1
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "うるせー警告音だよな。俺これのせいでねれなかったし",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        }
+       ]
       }
      ],
      "schedule": [
@@ -2628,6 +2655,33 @@
            ]
           }
          ]
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 3
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "機械がひたすらに多いですね……",
+         "pic": "muro_normal",
+         "picPos": "C"
         }
        ]
       }
