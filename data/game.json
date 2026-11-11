@@ -2776,15 +2776,17 @@
         {
          "t": "text",
          "face": "",
-         "name": "",
-         "text": "（操縦室の中。警告音が鳴っている）"
+         "name": "ムロ",
+         "text": "（計器を調べて、警告音を止める）",
+         "pic": "muro_normal",
+         "picPos": "C"
         },
         {
          "t": "text",
          "face": "",
-         "name": "ムロ",
-         "text": "（計器を調べて、警告音を止める）",
-         "pic": "muro_normal",
+         "name": "",
+         "text": "警告音が鳴っている",
+         "pic": "",
          "picPos": "C"
         },
         {
