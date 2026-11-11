@@ -84,7 +84,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11f';
+const GAME_VER='2026-11-11g';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -395,7 +395,7 @@ async function showText(c){
   const f=G.faces.find(x=>x.id===c.face);
   const fim=f?await loadImg(f.image):null;
   if(fim){faceEl.src=fim.src;faceEl.style.display='block'}else faceEl.style.display='none';
-  const nm=(c.name==='主人公'?pName():(c.name||'').replace(/\[pname\]/g,pName()));nameEl.textContent=nm;nameEl.style.display=nm?'block':'none';
+  const ns=(G.system&&G.system.nameSw)||{},hid=c.name&&ns[c.name]!=null&&ns[c.name]>=0&&!S.sw[ns[c.name]];const nm=hid?'？':(c.name==='主人公'?pName():(c.name||'').replace(/\[pname\]/g,pName()));nameEl.textContent=nm;nameEl.style.display=nm?'block':'none';
   // [p] で改ページ（前後の改行は無視）
   for(const page of (c.text||'').split(/\n?\[p\]\n?/)){
     textEl.textContent='';arrowEl.style.display='none';
