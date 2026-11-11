@@ -42,6 +42,7 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 #items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
 #fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
 .hide{display:none!important}
+#pvBack{position:absolute;right:62px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 12px;font-size:14px}
 #hud{position:absolute;left:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;background:rgba(12,14,34,.85);border:2px solid #fff;border-radius:8px;padding:4px 12px;font-size:14px;pointer-events:none;white-space:nowrap}
 #daycard{position:absolute;inset:0;z-index:21;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;pointer-events:none;transition:opacity .5s}
 #daycard.show{opacity:1}#daycard b{font-size:34px;letter-spacing:.2em}#daycard span{font-size:16px;color:#aaa}
@@ -73,6 +74,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <div id="pad"><b data-d="3" style="left:50px;top:0"></b><b data-d="1" style="left:0;top:50px"></b><b data-d="2" style="left:100px;top:50px"></b><b data-d="0" style="left:50px;top:100px"></b></div>
 <div id="abtn">A</div>
 <button id="menuBtn" class="ui-btn">☰</button>
+<button id="pvBack" class="ui-btn hide">✕ テスト終了</button>
 <div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="close">閉じる</button></div>
 <div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button></div>
 <div id="hud"></div>
@@ -82,7 +84,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11d';
+const GAME_VER='2026-11-11e';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -183,7 +185,7 @@ abtn.addEventListener('pointerdown',e=>{e.preventDefault();abtn.classList.add('o
 abtn.addEventListener('pointerup',()=>abtn.classList.remove('on'));abtn.addEventListener('pointercancel',()=>abtn.classList.remove('on'));
 const tapEl=$('#tap');
 tapEl.addEventListener('pointerdown',e=>{e.preventDefault();advance()});
-function showControls(v){for(const el of[pad,abtn,$('#menuBtn')])el.classList.toggle('hide',!v)}
+function showControls(v){for(const el of[pad,abtn,$('#menuBtn')])el.classList.toggle('hide',!v);if(PREVIEW)$('#pvBack').classList.toggle('hide',!v)}
 
 /* ---------- 日付・時間帯・価値 ---------- */
 const slotName=i=>G.system.slots[i]??'';
@@ -531,6 +533,8 @@ function showTitle(){
   normalize(G);document.title=G.title||'RPG';resize();
   for(const c of G.charsets)loadImg(c.image);
   loop();
+  // テストプレイ：エディタに戻るボタン（タブを閉じる。閉じられなければエディタを開く）
+  if(PREVIEW){const b=$('#pvBack');b.classList.remove('hide');b.onclick=()=>{window.close();setTimeout(()=>location.href='editor.html',300)}}
   if(PREVIEW)startNew();else showTitle();
 })();
 </script>
