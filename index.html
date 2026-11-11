@@ -99,7 +99,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11m';
+const GAME_VER='2026-11-11n';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -120,6 +120,16 @@ let _db=null;
 function db(){return _db||(_db=new Promise((res,rej)=>{const r=indexedDB.open(NS,1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))}
 async function idbGet(k){try{const d=await db();return await new Promise(res=>{const q=d.transaction('files').objectStore('files').get(k);q.onsuccess=()=>res(q.result||null);q.onerror=()=>res(null)})}catch(e){return null}}
 const imgP={},imgR={};
+let AC=null;const sndP={};
+function audioCtx(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}if(AC&&AC.state==='suspended')AC.resume();return AC}
+['pointerdown','keydown','touchend'].forEach(t=>addEventListener(t,()=>{const a=audioCtx();if(a&&!a._u){const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0);a._u=1}},{capture:true}));
+function loadSnd(path){if(!path)return Promise.resolve(null);if(sndP[path])return sndP[path];
+  return sndP[path]=(async()=>{try{const a=audioCtx();if(!a)return null;let buf=null;
+    if(PREVIEW){const f=await idbGet(path);if(f)buf=f.buf.slice(0)}
+    if(!buf){const r=await fetch(path+(PREVIEW?'?t='+Date.now():''));if(!r.ok)return null;buf=await r.arrayBuffer()}
+    return await new Promise((res)=>a.decodeAudioData(buf,res,()=>res(null)))}catch(e){return null}})()}
+async function playSe(id,vol){const s=(G.sounds||[]).find(x=>x.id===id);if(!s)return;const b=await loadSnd(s.file);const a=audioCtx();if(!b||!a)return;
+  const src=a.createBufferSource(),g=a.createGain();g.gain.value=(vol==null?100:+vol)/100;src.buffer=b;src.connect(g).connect(a.destination);src.start()}
 function loadImg(path){
   if(!path)return Promise.resolve(null);
   if(imgP[path])return imgP[path];
@@ -141,7 +151,7 @@ async function loadData(){
 }
 function normalize(g){
   g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','sounds','items','maps','switches','variables'])g[k]=g[k]||[];
   g.player=g.player||{map:g.maps[0]&&g.maps[0].id,x:0,y:0,dir:0};
   g.system=Object.assign({slots:['朝','昼','夜'],startDay:1,hud:true,hudDay:{from:1,sw:-1},hudMoney:{from:1,sw:-1}},g.system||{});
   g.shop=Object.assign({count:3,limit:1,startMoney:0,pool:[]},g.shop||{});
@@ -368,6 +378,7 @@ async function cmd(c,cx){
     case'route':{const t=routeTarget(c.target,cx);if(!t)break;const job=runRoute(t,c.route||[],c);if(c.wait!==false)await job;break}
     case'turn':{const t=routeTarget(c.target,cx);if(t)t.dir=faceDir(t,c.dir);break}
     case'wait':await sleep(+c.ms||0);break;
+    case'se':playSe(c.id,c.vol);break;
     case'pic':if(c.pos==='A')clearPics();else{await setPic(c.pos||'C',c.id||null);if(c.id)setActive(c.pos||'C')}break;
     case'still':await showStill(c.id||null,c.fade!==false);break;
     case'erase':cx.ev.erased=true;break;

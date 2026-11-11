@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11k';
+const APP_VER='2026-11-11l';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -141,7 +141,7 @@ function actionMenu(items,title){
     h('button',{class:'mi cancel',onclick:()=>ov.remove()},'キャンセル')));
   document.body.append(ov);
 }
-function pickFiles(multiple,cb){const i=h('input',{type:'file',accept:'image/*',multiple,style:'display:none'});i.onchange=()=>{const fs=[...i.files];i.remove();if(fs.length)cb(fs)};document.body.append(i);i.click()}
+function pickFiles(multiple,cb,accept){const i=h('input',{type:'file',accept:accept||'image/*',multiple,style:'display:none'});i.onchange=()=>{const fs=[...i.files];i.remove();if(fs.length)cb(fs)};document.body.append(i);i.click()}
 
 /* ===== 保存 ===== */
 function lsGet(k,d){try{const v=localStorage.getItem(NS+k);return v==null?d:JSON.parse(v)}catch(e){return d}}
@@ -182,7 +182,7 @@ function thumb(path){const im=h('img',{class:'thumb'});imgAsync(path).then(i=>{i
 async function storeFile(f,p){const buf=await f.arrayBuffer();await idbPut(p,{buf,type:f.type||'image/png'});pending.add(p);deleted.delete(p);delete imgs[p];saveDraft();updateBadge()}
 function canvasBlob(c){return new Promise(r=>c.toBlob(r,'image/png'))}
 async function putCanvas(c,p){const b=await canvasBlob(c);await idbPut(p,{buf:await b.arrayBuffer(),type:'image/png'});pending.add(p);delete imgs[p]}
-const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces,...G.parallaxes,...G.pictures,...G.stills,...G.icons].map(a=>a.image);
+const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces,...G.parallaxes,...G.pictures,...G.stills,...G.icons].map(a=>a.image).concat((G.sounds||[]).map(a=>a.file));
 /* 透明部分の表示（うす紫の市松模様） */
 const TP=['#d6c8ec','#f1ebf9'],tpSrc={};
 function tpPattern(c,cell){cell=Math.max(1,Math.round(cell));let s=tpSrc[cell];if(!s){s=document.createElement('canvas');s.width=s.height=cell*2;const q=s.getContext('2d');q.fillStyle=TP[0];q.fillRect(0,0,cell*2,cell*2);q.fillStyle=TP[1];q.fillRect(0,0,cell,cell);q.fillRect(cell,cell,cell,cell);tpSrc[cell]=s}return c.createPattern(s,'repeat')}
@@ -284,7 +284,7 @@ const newPage=()=>({cond:[],image:null,trigger:'action',priority:'below',through
 function layersFor(w,h){return[new Array(w*h).fill(0),new Array(w*h).fill(-1),new Array(w*h).fill(-1),new Array(w*h).fill(-1)]}
 function normalize(g){
   g.version=g.version||1;g.title=g.title??'ゲーム';g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','sounds','items','maps','switches','variables'])g[k]=g[k]||[];
   while(g.switches.length<20)g.switches.push('');while(g.variables.length<20)g.variables.push('');
   for(const t of g.tilesets)t.blocked=t.blocked||[];
   if(!g.maps.length)g.maps.push({id:1,name:'MAP001',w:20,h:15,tileset:g.tilesets[0]?.id||'',layers:layersFor(20,15),events:[]});
@@ -669,6 +669,7 @@ const CT={
   route:{n:'歩かせる',c:'#8a5ad0',make:()=>({t:'route',target:'this',route:[],wait:true,through:false,speed:1})},
   turn:{n:'向きを変える',c:'#8a5ad0',make:()=>({t:'turn',target:'this',dir:'P'})},
   wait:{n:'ウェイト',c:'#777',make:()=>({t:'wait',ms:500})},
+  se:{n:'効果音',c:'#777',make:()=>({t:'se',id:G.sounds[0]?G.sounds[0].id:'',vol:100})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
   end:{n:'処理を中断',c:'#777',make:()=>({t:'end'})},
   comment:{n:'注釈',c:'#4a7a4a',make:()=>({t:'comment',text:''})},
@@ -707,6 +708,7 @@ function cmdSummary(c){
     case'route':return `${tgtName(c.target)}：${routeText(c.route)||'（未設定）'}`+(c.wait===false?'（待たない）':'');
     case'turn':return `${tgtName(c.target)}：${{P:'プレイヤーの方',A:'プレイヤーと反対'}[c.dir]||DIRN[c.dir]+'向き'}`;
     case'wait':return c.ms+'ms';
+    case'se':{const s=G.sounds.find(x=>x.id===c.id);return (s?s.name:'（未選択）')+(c.vol!=null&&+c.vol!==100?` 音量${c.vol}`:'')}
     case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
     case'sleep':return '日付+1、朝に戻す';
     case'money':return c.op==='set'?`= ${c.val}`:`${c.op==='sub'?'−':'+'} ${c.val}`;
@@ -848,6 +850,7 @@ function cmdForm(b,d,rr){
     case'item':if(!G.items.length)c.append(h('div',{class:'hint'},'「データ」タブでアイテムを作ってください'));c.append(h('div',{class:'row'},fSel('アイテム',d,'id',itemOpts(),{num:true}),fNum('増減',d,'n')));break;
     case'move':if(d.fade==null)d.fade=true;c.append(fChk('暗転する（オフにすると一瞬で移動）',d,'fade'),fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
     case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
+    case'se':c.append(h('div',{class:'row',style:'align-items:end'},fSel('効果音',d,'id',[['','（未選択）'],...G.sounds.map(x=>[x.id,x.name])]),btn('▶',()=>{const s=G.sounds.find(x=>x.id===d.id);if(s)playSnd(s.file)},'sm')),fNum('音量（0〜100）',d,'vol',{min:0,max:100}),h('div',{class:'hint'},'音は「素材」タブの「効果音（SE）」で追加します。鳴らしたらすぐ次へ進みます'));break;
     case'route':{
       c.append(fSel('誰を',d,'target',tgtOpts(),{on:rr}),h('div',{class:'hint'},'名前のイベントは、今いるマップにいるものが動きます'),
         (!d.target||d.target==='this')?h('div',{class:'hint',style:'color:#e2a84a'},'「このイベント」はこのコマンドを入れているイベント自身です。画像のない見えないイベント（自動実行の会話など）だと、何も動いて見えません。キャラを動かすときは名前を、主人公なら「プレイヤー」を選んでください'):null);
@@ -1054,8 +1057,17 @@ function renderAssets(){
     if(k==='tilesets')c.append(h('div',{class:'hint'},'うす紫の市松模様の部分が透明。透明な部分からは遠景が見えます'));
     T.append(c);
   }
+  {const c=card('効果音（SE）');
+    for(const a of G.sounds){const n=h('input',{type:'text',value:a.name,oninput:()=>{a.name=n.value;changed()}});
+      c.append(h('div',{class:'list-row'},btn('▶',()=>playSnd(a.file),'sm'),h('div',{style:'flex:1;min-width:0'},n,h('div',{class:'hint',style:'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'},a.file+(pending.has(a.file)?'  ●未プッシュ':''))),
+        h('div',{style:'display:flex;flex-direction:column;gap:4px'},btn('差替',()=>pickFiles(false,async fs=>{await storeFile(fs[0],a.file);delete sndCache[a.file];renderAssets()},'audio/*'),'sm'),btn('削除',()=>{if(!confirm(`「${a.name}」を削除しますか？`))return;G.sounds.splice(G.sounds.indexOf(a),1);changed();renderAssets()},'sm dg'))))}
+    c.append(h('div',{style:'margin-top:8px'},btn('＋ 音を追加',()=>pickFiles(true,async fs=>{for(const f of fs){const p=uniquePath('se',f);await storeFile(f,p);G.sounds.push({id:uid(),name:f.name.replace(/\.[^.]+$/,''),file:p})}changed();renderAssets()},'audio/*'),'sm')),
+      h('div',{class:'hint'},'mp3 / wav / m4a など。「効果音」コマンドで鳴らします'));
+    T.append(c)}
   T.scrollTop=sc;
 }
+const sndCache={};
+async function playSnd(path){try{let u=sndCache[path];if(!u){const f=await idbGet(path);u=sndCache[path]=f?URL.createObjectURL(new Blob([f.buf],{type:f.type||'audio/wav'})):path+'?t='+Date.now()}const a=new Audio(u);await a.play()}catch(e){toast('再生できませんでした')}}
 
 /* ===== ドット絵エディタ ===== */
 let PE_ACTIVE=null;

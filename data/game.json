@@ -1950,16 +1950,13 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "[shake]コンコン……",
-         "pic": "-",
-         "picPos": "C"
+         "t": "se",
+         "id": "se_knock",
+         "vol": 100
         },
         {
          "t": "wait",
-         "ms": 300
+         "ms": 900
         },
         {
          "t": "move",
@@ -2007,16 +2004,13 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "[shake]コンコン……",
-         "pic": "-",
-         "picPos": "C"
+         "t": "se",
+         "id": "se_knock",
+         "vol": 100
         },
         {
          "t": "wait",
-         "ms": 300
+         "ms": 900
         },
         {
          "t": "move",
@@ -2064,16 +2058,13 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "[shake]コンコン……",
-         "pic": "-",
-         "picPos": "C"
+         "t": "se",
+         "id": "se_knock",
+         "vol": 100
         },
         {
          "t": "wait",
-         "ms": 300
+         "ms": 900
         },
         {
          "t": "move",
@@ -2145,16 +2136,13 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "[shake]コンコン……",
-         "pic": "-",
-         "picPos": "C"
+         "t": "se",
+         "id": "se_knock",
+         "vol": 100
         },
         {
          "t": "wait",
-         "ms": 300
+         "ms": 900
         },
         {
          "t": "move",
@@ -4690,6 +4678,13 @@
    "id": "ic_med",
    "name": "薬",
    "image": "assets/icons/medicine.png"
+  }
+ ],
+ "sounds": [
+  {
+   "id": "se_knock",
+   "name": "ノック",
+   "file": "assets/se/knock.wav"
   }
  ]
 }
