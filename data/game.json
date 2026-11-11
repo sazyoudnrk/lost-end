@@ -582,7 +582,7 @@
        "cond": [],
        "image": {
         "charset": "ninomae",
-        "dir": 2
+        "dir": 0
        },
        "trigger": "action",
        "priority": "same",
@@ -2293,7 +2293,7 @@
        "cond": [],
        "image": {
         "charset": "piwora",
-        "dir": 1
+        "dir": 0
        },
        "trigger": "action",
        "priority": "same",
@@ -4869,7 +4869,8 @@
    "ムロ": 6,
    "ネイサ": 7,
    "ニノマエ": 8,
-   "ピヲラ": 9
+   "ピヲラ": 9,
+   "主人公": -1
   },
   "bgm": "bgm_main"
  },
