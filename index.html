@@ -11,7 +11,7 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 #cv{position:absolute;left:0;top:0;width:100%;height:100%;image-rendering:pixelated;display:block}
 #tap{position:absolute;inset:0;z-index:5;display:none}
 #pics{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
-#pics img{position:absolute;bottom:0;height:78%;max-width:70%;object-fit:contain;object-position:bottom;opacity:0;transition:opacity .25s,filter .25s;image-rendering:auto}
+#pics img{position:absolute;bottom:0;height:78%;max-width:96%;object-fit:contain;object-position:bottom;opacity:0;transition:opacity .25s,filter .25s;image-rendering:auto}
 #pics img.show{opacity:1}
 #pics img.dim{filter:brightness(.55)}
 #picL{left:-4%}#picC{left:50%;transform:translateX(-50%)}#picR{right:-4%}
@@ -100,7 +100,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11u';
+const GAME_VER='2026-11-11v';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();

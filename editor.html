@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11u';
+const APP_VER='2026-11-11v';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1114,7 +1114,7 @@ const c2hex=c=>'#'+c.slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('');
 const c2u=c=>((c[3]<<24)|(c[2]<<16)|(c[1]<<8)|c[0])>>>0;
 const u2c=u=>[u&255,(u>>>8)&255,(u>>>16)&255,u>>>24];
 function newDrawing(k){
-  const ts=G.tileSize,SZ={parallaxes:[384,384],pictures:[400,600],stills:[640,480],icons:[48,48]}[k]||[96,96],d={name:'',cols:8,rows:8,type:'single',fw:96,fh:96,w:SZ[0],h:SZ[1]};
+  const ts=G.tileSize,SZ={parallaxes:[384,384],pictures:[540,600],stills:[640,480],icons:[48,48]}[k]||[96,96],d={name:'',cols:8,rows:8,type:'single',fw:96,fh:96,w:SZ[0],h:SZ[1]};
   sheet('新規作成：'+AK[k].n,b=>{
     const c=card(null,fText('名前',d,'name',{ph:AK[k].n}));
     if(k==='tilesets')c.append(h('div',{class:'row'},fNum('横のタイル数',d,'cols',{min:1,max:32}),fNum('縦のタイル数',d,'rows',{min:1,max:64})),h('div',{class:'hint'},`1マス ${ts}px（「データ」のタイルサイズ）`));
