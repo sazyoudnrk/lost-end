@@ -111,7 +111,7 @@
   "1日目の集合が終わった",
   "2回目の集合が終わった",
   "今日はもう遅い",
-  "",
+  "はしごを使った",
   "",
   "",
   "",
@@ -210,6 +210,20 @@
      "pages": [
       {
        "cond": [],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 5,
+         "val": true
+        }
+       ],
        "image": null,
        "trigger": "touch",
        "priority": "below",
@@ -2434,11 +2448,38 @@
        "through": false,
        "cmds": [
         {
+         "t": "sw",
+         "id": 5,
+         "val": true
+        },
+        {
          "t": "move",
          "map": 1,
          "x": 2,
          "y": 10,
          "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先に警告音を止めないと。"
         }
        ]
       }
@@ -2790,6 +2831,28 @@
          "x": 13,
          "y": 1,
          "dir": 0
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 2
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先に警告音を止めないと。"
         }
        ]
       }
