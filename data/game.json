@@ -230,10 +230,9 @@
          "t": "text",
          "face": "",
          "name": "",
-         "text": "等価交換機だ。[w=200]\n今の価値は [money]。"
-        },
-        {
-         "t": "shop"
+         "text": "なんだろうこの機械",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       },
@@ -483,6 +482,31 @@
          "t": "fade",
          "mode": "in",
          "ms": 400
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 5
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "等価交換機だ。[w=200]\n今の価値は [money]。"
+        },
+        {
+         "t": "shop"
         }
        ]
       }
