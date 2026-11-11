@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11e';
+const APP_VER='2026-11-11f';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -845,7 +845,8 @@ function cmdForm(b,d,rr){
     case'move':if(d.fade==null)d.fade=true;c.append(fChk('暗転する（オフにすると一瞬で移動）',d,'fade'),fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
     case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
     case'route':{
-      c.append(fSel('誰を',d,'target',tgtOpts()),h('div',{class:'hint'},'名前のイベントは、今いるマップにいるものが動きます'));
+      c.append(fSel('誰を',d,'target',tgtOpts(),{on:rr}),h('div',{class:'hint'},'名前のイベントは、今いるマップにいるものが動きます'),
+        (!d.target||d.target==='this')?h('div',{class:'hint',style:'color:#e2a84a'},'「このイベント」はこのコマンドを入れているイベント自身です。画像のない見えないイベント（自動実行の会話など）だと、何も動いて見えません。キャラを動かすときは名前を、主人公なら「プレイヤー」を選んでください'):null);
       const show=h('div',{style:'min-height:44px;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);font-size:18px;letter-spacing:.05em;word-break:break-all;margin:6px 0'},routeText(d.route)||'（ボタンで道順を入れる）');
       const add=k=>{d.route.push(k);show.textContent=routeText(d.route)};
       const B=(l,k)=>h('button',{class:'btn',style:'min-width:46px',onclick:()=>add(k)},l);
