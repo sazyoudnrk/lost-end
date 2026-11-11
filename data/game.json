@@ -245,6 +245,16 @@
          "pic": "muro_normal"
         },
         {
+         "t": "shopview",
+         "show": true,
+         "fixed": [
+          {
+           "item": 9,
+           "price": 250
+          }
+         ]
+        },
+        {
          "t": "text",
          "face": "",
          "name": "ピヲラ",
@@ -273,6 +283,10 @@
            "cmds": []
           }
          ]
+        },
+        {
+         "t": "shopview",
+         "show": false
         },
         {
          "t": "text",
@@ -317,26 +331,14 @@
          "pic": "-"
         },
         {
-         "t": "comment",
-         "text": "（ここに等価交換機のチュートリアルを入れる予定。UI変更後に作る）"
-        },
-        {
-         "t": "money",
-         "op": "sub",
-         "val": 250
-        },
-        {
-         "t": "item",
-         "id": 9,
-         "n": 1
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "備蓄食品を手に入れた。",
-         "picPos": "C",
-         "pic": "-"
+         "t": "shop",
+         "fixed": [
+          {
+           "item": 9,
+           "price": 250
+          }
+         ],
+         "tutorial": true
         },
         {
          "t": "var",

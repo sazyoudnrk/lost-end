@@ -63,8 +63,12 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 #shop .icard .pr{font-size:13px;text-align:right}
 #shop .icard.sel{background:#fff;color:#000}#shop .icard.sel small{color:#333}#shop .icard.sel .im{outline:2px solid #000}
 #shop .icard.sold{opacity:.35}
+#shop .icard.kf:not(.sel){background:rgba(12,14,34,.92);color:#fff;outline:3px dashed #fff;outline-offset:1px}#shop .icard.kf:not(.sel) small{color:#bbb}
 #shop .st{display:flex;justify-content:space-between;font-size:14px;color:#ccc;margin:8px 4px 0}
 #shop .msg{min-height:22px;text-align:center;font-size:14px;margin:4px 0}
+#shop.lock{z-index:2;pointer-events:none}
+#shop .tip{display:none;background:#fff;color:#000;border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:15px;text-align:center}#shop.tut .tip{display:block}
+#shop .pulse{animation:pulse 1s ease-in-out infinite}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.9)}50%{box-shadow:0 0 0 6px rgba(255,255,255,.25)}}
 #shop .bar{display:flex;gap:8px}#shop .bar .ui-btn{text-align:center}#shop #shopOk{flex:1;font-size:17px}
 
 #screen{position:fixed;left:0;top:0;overflow:hidden;background:#000;transform-origin:0 0}
@@ -89,13 +93,13 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="close">閉じる</button></div>
 <div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button></div>
 <div id="hud"></div>
-<div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
+<div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="tip"></div><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
 <div id="daycard"><b></b><span></span></div>
 <div id="fade"></div>
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11k';
+const GAME_VER='2026-11-11l';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -154,7 +158,7 @@ let dash=false;
 const OK_KEYS=['Enter',' ','z','Z'],CANCEL_KEYS=['Escape','x','X','Backspace'];
 // 今キーボードで操作するボタンの集まり（タイトル・メニュー・選択肢・交換機）
 function navBox(){
-  if($('#shop').classList.contains('show'))return $('#shop');
+  if($('#shop').classList.contains('show')&&!$('#shop').classList.contains('lock'))return $('#shop');
   if($('#title').style.display==='flex')return $('#title');
   if(menuOpen)return $('#menu');
   if(chEl.style.display==='flex')return chEl;
@@ -230,9 +234,13 @@ async function nextDay(){
   await sleep(1300);placeScheduled();updHud();dc.classList.remove('show');await sleep(500);await fade(0);
 }
 /* ---------- 等価交換機 ---------- */
-function openShop(){return new Promise(res=>{
-  const box=$('#shop'),list=box.querySelector('.list'),msg=box.querySelector('.msg'),ok=$('#shopOk');let tab='buy',sel=null;msg.textContent='';
+function closeShopView(){const b=$('#shop');if(b.classList.contains('lock'))b.classList.remove('show','lock')}
+// opt.fixed: [{item,price}] 今日の品ぞろえの代わりに並べる / opt.tutorial: 手順つき / opt.view: 見せるだけ（操作不可・すぐ戻る）
+function openShop(opt={}){return new Promise(res=>{
+  const box=$('#shop'),list=box.querySelector('.list'),msg=box.querySelector('.msg'),ok=$('#shopOk'),close=$('#shopClose'),tip=box.querySelector('.tip'),tabs=[...box.querySelectorAll('[data-tab]')];
+  let tab='buy',sel=null,step=opt.tutorial?1:0;msg.textContent='';
   const item=id=>G.items.find(i=>i.id===id);
+  const stock=opt.fixed?opt.fixed.map(r=>({r:Object.assign({price:0},r),sold:false})):S.shop.map(sl=>({r:G.shop.pool[sl.p],sl,get sold(){return sl.sold}}));
   function card(it,name,desc,price,key,sold){
     const c=document.createElement('button');c.className='ui-btn icard'+(sold?' sold':'')+(sel&&sel.key===key?' sel':'');
     const b=document.createElement('b');b.textContent=name;const im=document.createElement('div');im.className='im';
@@ -240,29 +248,35 @@ function openShop(){return new Promise(res=>{
     const d=document.createElement('small');d.textContent=desc||'';const p=document.createElement('div');p.className='pr';p.textContent=price;
     c.append(b,im,d,p);return c}
   function render(){
-    $('#shopMoney').textContent=`価値 ${S.money}`;$('#shopLimit').textContent=`本日の取り出し ${S.buys}/${S.buyLimit}`;
-    box.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));list.innerHTML='';
+    $('#shopMoney').textContent=`価値 ${S.money}`;$('#shopLimit').textContent=opt.fixed?'':`本日の取り出し ${S.buys}/${S.buyLimit}`;
+    tabs.forEach(b=>{b.classList.toggle('on',b.dataset.tab===tab);b.disabled=!!step});list.innerHTML='';
     const empty=t=>{const p=document.createElement('p');p.textContent=t;list.append(p)};
-    if(tab==='buy'){if(!S.shop.length)empty('今日は何も並んでいない');
-      S.shop.forEach((sl,i)=>{const r=G.shop.pool[sl.p],it=r&&item(r.item);if(!it)return;
-        const c=card(it,it.name,(it.desc||'')+(r.limitUp?`（取り出し回数+${r.limitUp}）`:''),sl.sold?'交換済み':`価値 ${r.price}`,'b'+i,sl.sold);
-        if(sl.sold)c.disabled=true;else c.onclick=()=>pick({key:'b'+i,sl,r,it});list.append(c)})}
+    if(tab==='buy'){if(!stock.length)empty('今日は何も並んでいない');
+      stock.forEach((o,i)=>{const r=o.r,it=r&&item(r.item);if(!it)return;
+        const c=card(it,it.name,(it.desc||'')+(r.limitUp?`（取り出し回数+${r.limitUp}）`:''),o.sold?'交換済み':`価値 ${r.price}`,'b'+i,o.sold);
+        if(o.sold||step>=3)c.disabled=true;else c.onclick=()=>pick({key:'b'+i,o,r,it});if(step===1)c.classList.add('pulse');list.append(c)})}
     else{const own=G.items.filter(i=>(S.it[i.id]||0)>0&&(+i.value||0)>0);if(!own.length)empty('入れられる物を持っていない');
       for(const it of own){const c=card(it,`${it.name} ×${S.it[it.id]}`,it.desc,`価値 ${it.value}`,'s'+it.id);c.onclick=()=>pick({key:'s'+it.id,it});list.append(c)}}
     if(!sel){ok.disabled=true;ok.textContent=tab==='buy'?'とりだす物をえらぶ':'いれる物をえらぶ'}
     else{ok.disabled=false;ok.textContent=tab==='buy'?`${sel.it.name}をとりだす（価値 ${sel.r.price}）`:`${sel.it.name}をいれる（＋${sel.it.value}）`}
+    box.classList.toggle('tut',!!step);tip.textContent=['','カードを押して、とりだす物をえらぼう','下のボタンを押して、とりだそう','とりだせた！「閉じる」で戻ろう'][step]||'';
+    ok.classList.toggle('pulse',step===2);close.classList.toggle('pulse',step===3);close.disabled=step===1||step===2;
   }
-  function pick(o){sel=(sel&&sel.key===o.key)?null:o;msg.textContent='';render();if(sel){box.querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));ok.classList.add('kf')}}
-  function buy(sl,r,it){
-    if(S.buys>=S.buyLimit){msg.textContent='オーバーヒート中…今日はもう取り出せない';return}
+  function pick(o){sel=(sel&&sel.key===o.key)?null:o;msg.textContent='';if(step)step=sel?2:1;render();if(sel){box.querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));ok.classList.add('kf')}}
+  function buy(o,r,it){
+    if(!opt.fixed&&S.buys>=S.buyLimit){msg.textContent='オーバーヒート中…今日はもう取り出せない';return}
     if(S.money<(+r.price||0)){msg.textContent='価値が足りない';return}
-    S.money-=(+r.price||0);S.it[it.id]=(S.it[it.id]||0)+1;S.buys++;sl.sold=true;if(r.once)S.once[sl.p]=true;if(r.limitUp)S.buyLimit+=+r.limitUp;
-    sel=null;msg.textContent=`${it.name}を手に入れた`;render();updHud();navMove(box,0)}
+    S.money-=(+r.price||0);S.it[it.id]=(S.it[it.id]||0)+1;
+    if(o.sl){S.buys++;o.sl.sold=true;if(r.once)S.once[o.sl.p]=true}else o.sold=true;
+    if(r.limitUp)S.buyLimit+=+r.limitUp;
+    sel=null;if(step)step=3;msg.textContent=`${it.name}を手に入れた`;render();updHud();navMove(box,0)}
   function sell(it){S.it[it.id]--;S.money+=(+it.value||0);sel=null;msg.textContent=`価値 ${it.value} になった`;render();updHud();navMove(box,0)}
-  ok.onclick=()=>{if(!sel)return;if(tab==='buy')buy(sel.sl,sel.r,sel.it);else sell(sel.it)};
-  box.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;sel=null;msg.textContent='';render();navMove(box,0)});
-  $('#shopClose').onclick=()=>{box.classList.remove('show');refresh();res()};
-  render();box.classList.add('show');navMove(box,0);
+  ok.onclick=()=>{if(!sel)return;if(tab==='buy')buy(sel.o,sel.r,sel.it);else sell(sel.it)};
+  tabs.forEach(b=>b.onclick=()=>{tab=b.dataset.tab;sel=null;msg.textContent='';render();navMove(box,0)});
+  close.onclick=()=>{box.classList.remove('show','tut');refresh();res()};
+  render();
+  if(opt.view){box.classList.add('show','lock');res();return}
+  box.classList.remove('lock');box.classList.add('show');navMove(box,0);
 })}
 
 /* ---------- マップ ---------- */
@@ -325,7 +339,7 @@ async function runEvent(ev){
   busy=true;aPressed=false;setPad(null);held.length=0;clearPath();showControls(false);tapEl.style.display='block';
   const cx={ev,mapId:map.id};
   try{await exec(ev.page.cmds,cx)}catch(e){if(e!==END)console.error(e)}
-  hideMsg();clearPics();showStill(null,false);busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
+  hideMsg();clearPics();showStill(null,false);closeShopView();busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
 }
 async function exec(list,cx){for(const c of list||[])await cmd(c,cx)}
 async function cmd(c,cx){
@@ -342,10 +356,11 @@ async function cmd(c,cx){
     case'sleep':await nextDay();break;
     case'money':{const n=+c.val||0;S.money=Math.max(0,c.op==='set'?n:c.op==='sub'?S.money-n:S.money+n);updHud();refresh();break}
     case'buylimit':S.buyLimit=Math.max(0,c.op==='set'?+c.val||0:S.buyLimit+(+c.val||0));break;
-    case'shop':hideMsg();await openShop();break;
+    case'shop':hideMsg();await openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,tutorial:!!c.tutorial});break;
+    case'shopview':if(c.show===false)closeShopView();else openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,view:true});break;
     case'nameinput':hideMsg();tapEl.style.display='none';await nameInput(c);tapEl.style.display='block';break;
     case'item':S.it[c.id]=Math.max(0,(S.it[c.id]||0)+(+c.n||0));refresh();break;
-    case'move':hideMsg();clearPics();if(c.fade===false&&+c.map===map.id){const ts=G.tileSize;clearPath();P.x=P.tx=c.x;P.y=P.ty=c.y;P.px=c.x*ts;P.py=c.y*ts;P.moving=false;if(c.dir!=null&&c.dir>=0)P.dir=c.dir}
+    case'move':hideMsg();clearPics();closeShopView();if(c.fade===false&&+c.map===map.id){const ts=G.tileSize;clearPath();P.x=P.tx=c.x;P.y=P.ty=c.y;P.px=c.x*ts;P.py=c.y*ts;P.moving=false;if(c.dir!=null&&c.dir>=0)P.dir=c.dir}
       else if(c.fade===false)await loadMap(c.map,c.x,c.y,c.dir);else{await fade(1);await loadMap(c.map,c.x,c.y,c.dir);await fade(0)}break;
     case'route':{const t=routeTarget(c.target,cx);if(!t)break;const job=runRoute(t,c.route||[],c);if(c.wait!==false)await job;break}
     case'turn':{const t=routeTarget(c.target,cx);if(t)t.dir=faceDir(t,c.dir);break}
