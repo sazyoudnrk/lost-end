@@ -84,7 +84,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11e';
+const GAME_VER='2026-11-11f';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -154,6 +154,7 @@ function navMove(box,d){const bs=navBtns(box);if(!bs.length)return;let i=bs.find
 function navOk(box){const b=box.querySelector('button.kf');if(!b){navMove(box,0);return}
   if(box===chEl)b.dispatchEvent(new Event('pointerdown',{bubbles:true}));else b.click()}
 addEventListener('keydown',e=>{
+  if(e.target&&e.target.tagName==='INPUT')return;
   if(e.key==='Shift'){dash=true;return}
   const box=navBox();
   if(box){
@@ -322,6 +323,7 @@ async function cmd(c,cx){
     case'money':{const n=+c.val||0;S.money=Math.max(0,c.op==='set'?n:c.op==='sub'?S.money-n:S.money+n);updHud();refresh();break}
     case'buylimit':S.buyLimit=Math.max(0,c.op==='set'?+c.val||0:S.buyLimit+(+c.val||0));break;
     case'shop':hideMsg();await openShop();break;
+    case'nameinput':hideMsg();tapEl.style.display='none';await nameInput(c);tapEl.style.display='block';break;
     case'item':S.it[c.id]=Math.max(0,(S.it[c.id]||0)+(+c.n||0));refresh();break;
     case'move':hideMsg();if(c.fade===false&&+c.map===map.id){const ts=G.tileSize;clearPath();P.x=P.tx=c.x;P.y=P.ty=c.y;P.px=c.x*ts;P.py=c.y*ts;P.moving=false;if(c.dir!=null&&c.dir>=0)P.dir=c.dir}
       else if(c.fade===false)await loadMap(c.map,c.x,c.y,c.dir);else{await fade(1);await loadMap(c.map,c.x,c.y,c.dir);await fade(0)}break;
@@ -338,9 +340,9 @@ const msgEl=$('#msg'),faceEl=$('#face'),nameEl=$('#mname'),textEl=$('#mtext'),ar
 let onAdvance=null;
 function advance(){if(onAdvance)onAdvance()}
 function tokenize(s){
-  const out=[],re=/\[w=(\d+)\]|\[shake\]|\[v=(\d+)\]|\[(day|slot|money)\]/g;let i=0,m;
+  const out=[],re=/\[w=(\d+)\]|\[shake\]|\[v=(\d+)\]|\[(day|slot|money|pname)\]/g;let i=0,m;
   const push=str=>{for(const ch of str)out.push({s:ch})};
-  while((m=re.exec(s))){push(s.slice(i,m.index));if(m[1]!=null)out.push({w:+m[1]});else if(m[2]!=null)push(String(S.vr[+m[2]-1]||0));else if(m[3])push(String(m[3]==='day'?S.day:m[3]==='slot'?slotName(S.slot):S.money));else out.push({shake:1});i=re.lastIndex}
+  while((m=re.exec(s))){push(s.slice(i,m.index));if(m[1]!=null)out.push({w:+m[1]});else if(m[2]!=null)push(String(S.vr[+m[2]-1]||0));else if(m[3])push(String(m[3]==='day'?S.day:m[3]==='slot'?slotName(S.slot):m[3]==='pname'?pName():S.money));else out.push({shake:1});i=re.lastIndex}
   push(s.slice(i));return out;
 }
 function waitMs(ms,skip){return new Promise(r=>{const t0=performance.now();(function f(){if(skip()||performance.now()-t0>=ms)r();else requestAnimationFrame(f)})()})}
@@ -363,6 +365,17 @@ async function runRoute(t,route,o){
   if(isP){P.spd=1;P.anim=0}
 }
 
+/* ---------- 主人公の名前 ---------- */
+const pName=()=>(S&&S.pname)||'主人公';
+function nameInput(c){return new Promise(res=>{
+  const ov=document.createElement('div');ov.style.cssText='position:absolute;inset:0;z-index:15;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center';
+  ov.innerHTML='<div style="background:rgba(12,14,34,.96);border:2px solid #fff;border-radius:10px;padding:16px;width:min(320px,86%);display:flex;flex-direction:column;gap:10px"><div>名前を入力してください</div><input style="font:inherit;font-size:18px;padding:8px;border-radius:6px;border:2px solid #fff;background:#000;color:#fff"><button class="ui-btn kf" style="text-align:center">決定</button></div>';
+  const inp=ov.querySelector('input'),b=ov.querySelector('button');inp.maxLength=+c.max||8;inp.value=S.pname||c.def||'';
+  const ok=()=>{const v=inp.value.trim();if(!v){inp.focus();return}S.pname=v;ov.remove();res()};
+  b.onclick=ok;inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();ok()}});
+  $('#screen').append(ov);setTimeout(()=>inp.focus(),50);
+})}
+
 /* ---------- 立ち絵・スチル ---------- */
 const PIC={L:$('#picL'),C:$('#picC'),R:$('#picR')};
 async function setPic(pos,id){const el=PIC[pos];if(!el)return;const p=id&&G.pictures.find(x=>x.id===id);
@@ -382,7 +395,7 @@ async function showText(c){
   const f=G.faces.find(x=>x.id===c.face);
   const fim=f?await loadImg(f.image):null;
   if(fim){faceEl.src=fim.src;faceEl.style.display='block'}else faceEl.style.display='none';
-  nameEl.textContent=c.name||'';nameEl.style.display=c.name?'block':'none';
+  const nm=(c.name==='主人公'?pName():(c.name||'').replace(/\[pname\]/g,pName()));nameEl.textContent=nm;nameEl.style.display=nm?'block':'none';
   // [p] で改ページ（前後の改行は無視）
   for(const page of (c.text||'').split(/\n?\[p\]\n?/)){
     textEl.textContent='';arrowEl.style.display='none';
