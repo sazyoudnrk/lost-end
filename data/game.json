@@ -1817,13 +1817,15 @@
          "t": "text",
          "face": "",
          "name": "",
-         "text": "（ネイサとムロが操縦室の扉の前にいる）"
+         "text": "（2人がいる。ここがおそらく操縦室だ。）",
+         "pic": "",
+         "picPos": "C"
         },
         {
          "t": "text",
          "face": "",
          "name": "ネイサ",
-         "text": "（扉の鍵をピッキングしている）",
+         "text": "当然閉まっているよね。乗客が入ることなんてないし……",
          "pic": "neisa_normal",
          "picPos": "C"
         },
@@ -1831,8 +1833,50 @@
          "t": "text",
          "face": "",
          "name": "ムロ",
-         "text": "（……）",
+         "text": "……開けられるかもしれません。",
          "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "ムロ",
+         "route": [
+          "U"
+         ],
+         "wait": true,
+         "through": true,
+         "speed": 1
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "このタイプの鍵はハッキングで開かないよう物理鍵のことが多いんです。ロストエンドの人はアナログなものの知見が浅いので、逆にこうしてることが多くて。",
+         "pic": "",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ムロはピッキングを始めたようだ。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "なんか君詳しいな。泥棒……？",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "し、失礼ですよ。そんなわけないじゃないですか。",
+         "pic": "",
          "picPos": "C"
         },
         {
@@ -1846,47 +1890,26 @@
          "text": "[shake]カチャ、と音がして扉が開いた。"
         },
         {
-         "t": "route",
-         "target": "ネイサ",
-         "route": [
-          "U"
-         ],
-         "wait": false,
-         "through": true,
-         "speed": 1
-        },
-        {
-         "t": "route",
-         "target": "ムロ",
-         "route": [
-          "U",
-          "U"
-         ],
-         "wait": true,
-         "through": true,
-         "speed": 1
-        },
-        {
-         "t": "wait",
-         "ms": 800
-        },
-        {
          "t": "text",
          "face": "",
-         "name": "",
-         "text": "……しばらくして、警告音が止んだ。"
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "（エントランスに戻ってみよう）"
+         "name": "ムロ",
+         "text": "中で確認しましょう。",
+         "pic": "",
+         "picPos": "C"
         },
         {
          "t": "var",
          "id": 5,
          "op": "set",
          "val": 2
+        },
+        {
+         "t": "move",
+         "map": 8,
+         "x": 6,
+         "y": 9,
+         "dir": -1,
+         "fade": true
         }
        ]
       }
@@ -1924,13 +1947,15 @@
          "t": "text",
          "face": "",
          "name": "",
-         "text": "（ネイサとムロが操縦室の扉の前にいる）"
+         "text": "（2人がいる。ここがおそらく操縦室だ。）",
+         "pic": "",
+         "picPos": "C"
         },
         {
          "t": "text",
          "face": "",
          "name": "ネイサ",
-         "text": "（扉の鍵をピッキングしている）",
+         "text": "当然閉まっているよね。乗客が入ることなんてないし……",
          "pic": "neisa_normal",
          "picPos": "C"
         },
@@ -1938,8 +1963,50 @@
          "t": "text",
          "face": "",
          "name": "ムロ",
-         "text": "（……）",
+         "text": "……開けられるかもしれません。",
          "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "ムロ",
+         "route": [
+          "U"
+         ],
+         "wait": true,
+         "through": true,
+         "speed": 1
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "このタイプの鍵はハッキングで開かないよう物理鍵のことが多いんです。ロストエンドの人はアナログなものの知見が浅いので、逆にこうしてることが多くて。",
+         "pic": "",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ムロはピッキングを始めたようだ。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "なんか君詳しいな。泥棒……？",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "し、失礼ですよ。そんなわけないじゃないですか。",
+         "pic": "",
          "picPos": "C"
         },
         {
@@ -1953,47 +2020,26 @@
          "text": "[shake]カチャ、と音がして扉が開いた。"
         },
         {
-         "t": "route",
-         "target": "ネイサ",
-         "route": [
-          "U"
-         ],
-         "wait": false,
-         "through": true,
-         "speed": 1
-        },
-        {
-         "t": "route",
-         "target": "ムロ",
-         "route": [
-          "U",
-          "U"
-         ],
-         "wait": true,
-         "through": true,
-         "speed": 1
-        },
-        {
-         "t": "wait",
-         "ms": 800
-        },
-        {
          "t": "text",
          "face": "",
-         "name": "",
-         "text": "……しばらくして、警告音が止んだ。"
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "（エントランスに戻ってみよう）"
+         "name": "ムロ",
+         "text": "中で確認しましょう。",
+         "pic": "",
+         "picPos": "C"
         },
         {
          "t": "var",
          "id": 5,
          "op": "set",
          "val": 2
+        },
+        {
+         "t": "move",
+         "map": 8,
+         "x": 6,
+         "y": 9,
+         "dir": -1,
+         "fade": true
         }
        ]
       }
