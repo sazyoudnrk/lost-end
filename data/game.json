@@ -154,7 +154,7 @@
   "ニノマエの名前公開",
   "ピヲラの名前公開",
   "2日目の集合が終わった",
-  "",
+  "3日目の集合が終わった",
   "",
   "",
   "",
@@ -1280,6 +1280,34 @@
        "x": 7,
        "y": 4,
        "dir": 0
+      },
+      {
+       "from": 2,
+       "to": 2,
+       "slot": 1,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 5,
+       "dir": 0,
+       "map": 5,
+       "x": 6,
+       "y": 5
+      },
+      {
+       "from": 2,
+       "to": 2,
+       "slot": 2,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 5,
+       "dir": 0,
+       "map": 5,
+       "x": 6,
+       "y": 5
       }
      ]
     },
@@ -2296,6 +2324,302 @@
        ]
       }
      ]
+    },
+    {
+     "id": 30,
+     "name": "全員集合（3日目）",
+     "x": 4,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": "==",
+         "val": 3
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 0
+        },
+        {
+         "type": "sw",
+         "id": 11,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 5
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 6,
+          "op": "==",
+          "val": 1
+         },
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "D",
+              "R",
+              "R",
+              "R"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "R",
+              "R",
+              "R"
+             ]
+            }
+           ],
+           "hasElse": true
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "ppos",
+            "axis": "y",
+            "op": "==",
+            "val": 5
+           },
+           "then": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "D",
+              "L",
+              "L",
+              "L"
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "route",
+             "target": "player",
+             "wait": true,
+             "through": false,
+             "speed": 1,
+             "route": [
+              "L",
+              "L",
+              "L"
+             ]
+            }
+           ],
+           "hasElse": true
+          }
+         ],
+         "hasElse": true
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "今日でやっと到着ね！",
+         "pic": "piwora_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "……",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "ちょっと、表情が暗くない？いつものことかもしれないけど",
+         "pic": "piwora_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "……",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "憶測……なんですが。奇妙ではありませんか。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "text": "目的地のチキュウは見えず、星の配置がチキュウ周辺のものと違うと言いたいんだろう",
+         "pic": "neisa_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "……",
+         "pic": "piwora_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "え、え？どういうこと？",
+         "pic": "piwora_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "操縦室の星間ワープ装置は6時間から72時間に計画を変更していましたが、色々と噛み合わないんです。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "もし星間ワープが壊れているなら72時間は早すぎるし、壊れていないなら中途半端すぎる。\n低出力でもチキュウまでなら32時間で着くはずですから。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "それで、それで……計器を調べて、軌道計算を確認しました。\n[p]この船は……",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "fade",
+         "mode": "out",
+         "ms": 800
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "7日後に墜落します。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 11,
+         "val": true
+        },
+        {
+         "t": "var",
+         "id": 5,
+         "op": "set",
+         "val": 6
+        },
+        {
+         "t": "wait",
+         "ms": 800
+        },
+        {
+         "t": "move",
+         "map": 6,
+         "x": 8,
+         "y": 4,
+         "dir": 2,
+         "fade": false
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "fade",
+         "mode": "in",
+         "ms": 800
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "夢だったのだろうか",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "ムロさんに会いに行こう。自分は……帰らないといけないんだ",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2339,6 +2663,40 @@
          "dir": 3
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "D"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
+        }
+       ]
       }
      ]
     },
@@ -2361,6 +2719,40 @@
          "x": 3,
          "y": 13,
          "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "D"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
         }
        ]
       }
@@ -2387,6 +2779,40 @@
          "dir": 3
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "D"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
+        }
+       ]
       }
      ]
     },
@@ -2409,6 +2835,40 @@
          "x": 6,
          "y": 13,
          "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "below",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "D"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
         }
        ]
       }
@@ -2463,6 +2923,30 @@
          "x": 5,
          "y": 8,
          "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -2573,6 +3057,30 @@
          "dir": 3
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ]
     },
@@ -2649,6 +3157,30 @@
          "x": 5,
          "y": 8,
          "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -3039,6 +3571,30 @@
          "dir": 3
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ]
     },
@@ -3082,6 +3638,30 @@
          "x": 6,
          "y": 9,
          "dir": 3
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今はムロさんの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -3504,6 +4084,109 @@
          "text": "ムロのカバンだ。",
          "pic": "-",
          "picPos": "C"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 31,
+     "name": "ムロに相談",
+     "x": 0,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 300
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "ど、どうしたんですか。\n怖くて誰かと居たくなったとか……？",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "助けて",
+           "cmds": []
+          }
+         ]
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "……",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "やりようによっては……可能性はあるかもしれません。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "等価交換機があったじゃないですか。あそこには、船のパーツが交換対象として選べることがあります。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "comment",
+         "text": "（ここで必要な3つのパーツを見せる：パーツが決まったら追加）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "必要なパーツは多分この三つです。\n価値を集めてこれらを入手できれば、直せるかもしれません。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "そのためにはまず価値が必要です。[pname]さん、どうにか皆さんに協力を仰いでみてください。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "var",
+         "id": 5,
+         "op": "set",
+         "val": 7
         }
        ]
       }
@@ -4345,6 +5028,20 @@
        "x": 5,
        "y": 4,
        "dir": 0
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": "==",
+       "vv": 6,
+       "dir": 0,
+       "map": 4,
+       "x": 6,
+       "y": 5
       }
      ]
     },

@@ -43,6 +43,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #menu .ui-btn,#title .ui-btn{min-width:200px;text-align:center}
 #items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
 #flash{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:2;mix-blend-mode:multiply}
+#msg.onblack{z-index:21}
 #fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
 .hide{display:none!important}
 #dbgBtn{position:absolute;right:178px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 10px;font-size:14px}
@@ -102,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11x';
+const GAME_VER='2026-11-12a';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -470,7 +471,7 @@ async function showStill(id,fade){const box=$('#still'),img=box.querySelector('i
 async function showText(c){
   if(c.pic==='-')setPic(c.picPos||'C',null);
   else if(c.pic){await setPic(c.picPos||'C',c.pic);setActive(c.picPos||'C')}
-  msgEl.classList.add('show');
+  msgEl.classList.toggle('onblack',+getComputedStyle($('#fade')).opacity>=.99);msgEl.classList.add('show');
   const f=G.faces.find(x=>x.id===c.face);
   const fim=f?await loadImg(f.image):null;
   if(fim){faceEl.src=fim.src;faceEl.style.display='block'}else faceEl.style.display='none';
