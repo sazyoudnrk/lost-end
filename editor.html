@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11s';
+const APP_VER='2026-11-11t';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1127,6 +1127,11 @@ function newDrawing(k){
     api.close();openPixelEditor({kind:k,isNew:true,w,h:hh,name:d.name||AK[k].n});
   }]]});
 }
+function fnv32(d){let h=0x811c9dc5;for(let i=0;i<d.length;i++){h^=d[i];h=Math.imul(h,16777619)}return h>>>0}
+// レイヤー情報は同期で消えないよう別のDBに保存（この端末だけ）
+let _peDb=null;function peDb(){return _peDb||(_peDb=new Promise((res,rej)=>{const r=indexedDB.open('pe-layers',1);r.onupgradeneeded=()=>r.result.createObjectStore('l');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))}
+function peLayerGet(k){return peDb().then(d=>new Promise(res=>{const q=d.transaction('l').objectStore('l').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>res(null)}))}
+function peLayerPut(k,v){return peDb().then(d=>new Promise(res=>{const t=d.transaction('l','readwrite'),s2=t.objectStore('l');v?s2.put(v,k):s2.delete(k);t.oncomplete=()=>res();t.onerror=()=>res()}))}
 async function openPixelEditor(o){
   let W,H,img;
   if(o.isNew){W=o.w;H=o.h;img=new ImageData(W,H)}
@@ -1137,23 +1142,32 @@ async function openPixelEditor(o){
   }
   let A=new Uint32Array(img.data.buffer);
   const doc=document.createElement('canvas');doc.width=W;doc.height=H;const dctx=doc.getContext('2d');
+  // レイヤー（2枚）。img/A はいま選んでいるレイヤーを指す
+  const mkL=im=>{const c=document.createElement('canvas');c.width=im.width;c.height=im.height;return{img:im,A:new Uint32Array(im.data.buffer),cv:c,ctx:c.getContext('2d')}};
+  const L=[mkL(img),mkL(new ImageData(W,H))];let li=0;
+  if(!o.isNew&&o.path){try{const sv=await peLayerGet(o.path);if(sv&&sv.W===W&&sv.H===H&&sv.sum===fnv32(img.data)){L[0]=mkL(new ImageData(new Uint8ClampedArray(sv.l0),W,H));L[1]=mkL(new ImageData(new Uint8ClampedArray(sv.l1),W,H));img=L[0].img;A=L[0].A}}catch(e){}}
+  function useLayer(i){li=i;img=L[i].img;A=L[i].A}
+  function compose(){for(const l of L)l.ctx.putImageData(l.img,0,0);dctx.clearRect(0,0,W,H);for(const l of L)dctx.drawImage(l.cv,0,0);st.dirty=false}
   const fcv=document.createElement('canvas'),fctx=fcv.getContext('2d');
-  const st={tool:'pen',tone:null,size:1,col:[0,0,0,255],z:1,ox:0,oy:0,grid:true,snap:true,sel:null,float:null,clip:null,dirty:true,changed:false,undo:[],redo:[],line:null,pdir:0,path:o.path||null};
+  const st={tool:'pen',tone:null,size:1,col:[0,0,0,255],z:1,ox:0,oy:0,grid:true,snap:true,sel:null,float:null,clip:null,dirty:true,changed:false,undo:[],redo:[],line:null,pdir:0,path:o.path||null,histSel:null,other:'show'};
   let cv,area,bar2,swBox,toneBox,colInp,pvCv,raf=0,alive=true,pvT=0;
   const cmap=()=>{if(st.tone!=null){const f=TONES[st.tone][1];return(x,y)=>f(x,y)?TONE_FG:TONE_BG}return c2u(st.col)};
   function gridWH(){if(o.kind==='tilesets')return[G.tileSize,G.tileSize];if(o.kind==='charsets'){const m=W>H;return[W/(m?12:3),H/(m?8:4)]}return[0,0]}
-  function setImg(nw,nh,data){W=nw;H=nh;img=new ImageData(new Uint8ClampedArray(data.buffer.slice(0)),W,H);A=new Uint32Array(img.data.buffer);doc.width=W;doc.height=H;st.dirty=true}
+  function setImgAll(nw,nh,datas){W=nw;H=nh;datas.forEach((d,i)=>{L[i]=mkL(new ImageData(new Uint8ClampedArray(d.buffer.slice(0)),W,H))});useLayer(li);doc.width=W;doc.height=H;st.dirty=true}
+  const cs=x=>x?{x:x.x,y:x.y,w:x.w,h:x.h}:null,seq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+  function pushHist(e){st.undo.push(e);if(st.undo.length>60)st.undo.shift();st.redo=[]}
+  function pushSel(){const sa=cs(st.sel);if(seq(sa,st.histSel))return;pushHist({selOnly:true,sb:st.histSel,sa});st.histSel=sa}
   /* --- 履歴 --- */
   function crop(S,x0,y0,w,hh,sw){const o2=new Uint32Array(w*hh);for(let y=0;y<hh;y++)o2.set(S.subarray((y0+y)*sw+x0,(y0+y)*sw+x0+w),y*w);return o2}
   function pushPatch(before){
     const B=new Uint32Array(before.buffer);let x0=W,y0=H,x1=-1,y1=-1;
     for(let y=0;y<H;y++){const r=y*W;for(let x=0;x<W;x++)if(A[r+x]!==B[r+x]){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}
-    st.dirty=true;if(x1<0)return;const w=x1-x0+1,hh=y1-y0+1;
-    st.undo.push({x:x0,y:y0,w,h:hh,b:crop(B,x0,y0,w,hh,W),a:crop(A,x0,y0,w,hh,W)});if(st.undo.length>40)st.undo.shift();st.redo=[];st.changed=true;
+    st.dirty=true;if(x1<0){pushSel();return}const w=x1-x0+1,hh=y1-y0+1,sa=cs(st.sel);
+    pushHist({l:li,x:x0,y:y0,w,h:hh,b:crop(B,x0,y0,w,hh,W),a:crop(A,x0,y0,w,hh,W),sb:st.histSel,sa});st.histSel=sa;st.changed=true;
   }
-  function applyP(p,k){if(p.full){const s=p[k];setImg(s.W,s.H,s.d);fit();return}const S=p[k];for(let y=0;y<p.h;y++)A.set(S.subarray(y*p.w,y*p.w+p.w),(p.y+y)*W+p.x);st.dirty=true}
-  function undo(){commitFloat();const p=st.undo.pop();if(!p)return;applyP(p,'b');st.redo.push(p);st.changed=true;req()}
-  function redo(){commitFloat();const p=st.redo.pop();if(!p)return;applyP(p,'a');st.undo.push(p);st.changed=true;req()}
+  function applyP(p,k){st.sel=cs(k==='b'?p.sb:p.sa);st.histSel=cs(st.sel);if(p.selOnly){refreshUI();return}if(p.full){const s=p[k];setImgAll(s.W,s.H,s.d);fit();refreshUI();return}const S=p[k],T=L[p.l||0].A;for(let y=0;y<p.h;y++)T.set(S.subarray(y*p.w,y*p.w+p.w),(p.y+y)*W+p.x);st.dirty=true;refreshUI()}
+  function undo(){if(st.float){dropFloat();return}const p=st.undo.pop();if(!p)return;applyP(p,'b');st.redo.push(p);st.changed=true;req()}
+  function redo(){if(st.float)commitFloat();const p=st.redo.pop();if(!p)return;applyP(p,'a');st.undo.push(p);st.changed=true;req()}
   const snap=()=>img.data.slice();
   /* --- 描画処理 --- */
   function setPx(x,y,u){if(x>=0&&y>=0&&x<W&&y<H)A[y*W+x]=typeof u==='function'?u(x,y):u}
@@ -1172,8 +1186,10 @@ async function openPixelEditor(o){
   function setFloat(d,x,y,before){st.float={d,x,y,before};fcv.width=d.width;fcv.height=d.height;fctx.putImageData(d,0,0);st.tool='select';refreshUI();req()}
   function commitFloat(){const f=st.float;if(!f)return;st.float=null;const before=f.before||snap();const D=new Uint32Array(f.d.data.buffer);
     for(let y=0;y<f.d.height;y++)for(let x=0;x<f.d.width;x++){const u=D[y*f.d.width+x];if(u>>>24)setPx(f.x+x,f.y+y,u)}
-    pushPatch(before);st.sel={x:Math.max(0,f.x),y:Math.max(0,f.y),w:f.d.width,h:f.d.height};clampSel();refreshUI();req()}
-  function dropFloat(){const f=st.float;if(!f)return;st.float=null;if(f.before){img.data.set(f.before);st.dirty=true}refreshUI();req()}
+    st.sel={x:Math.max(0,f.x),y:Math.max(0,f.y),w:f.d.width,h:f.d.height};clampSel();pushPatch(before);refreshUI();req()}
+  function dropFloat(){const f=st.float;if(!f)return;st.float=null;if(f.before){img.data.set(f.before);st.dirty=true}st.sel=cs(st.histSel);refreshUI();req()}
+  // レイヤー切り替え。浮かせている絵はそのまま新しいレイヤーへ持っていく（＝レイヤーをまたいだ移動・コピー）
+  function setLayer(i){if(i===li)return;const f=st.float;if(f&&f.before){pushPatch(f.before);f.before=null}useLayer(i);st.dirty=true;refreshUI();req();if(f)toast(`レイヤー${i+1}へ持ってきました。位置を決めて「確定」`)}
   function clampSel(){const s=st.sel;if(!s)return;const x1=Math.min(W,s.x+s.w),y1=Math.min(H,s.y+s.h);s.x=Math.max(0,s.x);s.y=Math.max(0,s.y);s.w=x1-s.x;s.h=y1-s.y;if(s.w<1||s.h<1)st.sel=null}
   /* --- 表示 --- */
   function req(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;render()})}
@@ -1181,12 +1197,12 @@ async function openPixelEditor(o){
   function render(){
     if(!alive||!cv)return;const dpr=devicePixelRatio||1,cw=cv.clientWidth,ch=cv.clientHeight;
     if(cv.width!==Math.round(cw*dpr)||cv.height!==Math.round(ch*dpr)){cv.width=Math.round(cw*dpr);cv.height=Math.round(ch*dpr)}
-    if(st.dirty){dctx.putImageData(img,0,0);st.dirty=false}
+    if(st.dirty)compose();
     const c=cv.getContext('2d');c.setTransform(1,0,0,1,0,0);c.fillStyle='#0b0b0f';c.fillRect(0,0,cv.width,cv.height);
     c.setTransform(dpr,0,0,dpr,0,0);const z=st.z;
     if(!checker){const p=document.createElement('canvas');p.width=p.height=16;const q=p.getContext('2d');q.fillStyle=TP[0];q.fillRect(0,0,16,16);q.fillStyle=TP[1];q.fillRect(0,0,8,8);q.fillRect(8,8,8,8);checker=c.createPattern(p,'repeat')}
     c.fillStyle=checker;c.fillRect(st.ox,st.oy,W*z,H*z);
-    c.imageSmoothingEnabled=false;c.drawImage(doc,st.ox,st.oy,W*z,H*z);
+    c.imageSmoothingEnabled=false;L.forEach((l,i)=>{const a=i===li?1:st.other==='hide'?0:st.other==='dim'?.3:1;if(!a)return;c.globalAlpha=a;c.drawImage(l.cv,st.ox,st.oy,W*z,H*z)});c.globalAlpha=1;
     const f=st.float;if(f){c.drawImage(fcv,st.ox+f.x*z,st.oy+f.y*z,f.d.width*z,f.d.height*z)}
     if(st.line){const s=st.size,o2=Math.floor((s-1)/2),tf=st.tone!=null?TONES[st.tone][1]:null;c.fillStyle=st.col[3]?c2hex(st.col):'rgba(214,200,236,.9)';
       lineEach(st.line.a,st.line.b,(x,y)=>{if(!tf){c.fillRect(st.ox+(x-o2)*z,st.oy+(y-o2)*z,s*z,s*z);return}for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++){const X=x-o2+dx,Y=y-o2+dy;c.fillStyle=tf(X,Y)?'#000':'#fff';c.fillRect(st.ox+X*z,st.oy+Y*z,z,z)}})}
@@ -1202,7 +1218,7 @@ async function openPixelEditor(o){
   function fit(){if(!cv)return;const cw=cv.clientWidth,ch=cv.clientHeight;if(!cw)return;let z=Math.min(cw/W,ch/H)*.94;z=z>=1?Math.floor(z):z;st.z=z;st.ox=(cw-W*z)/2;st.oy=(ch-H*z)/2;req()}
   function drawPreview(){
     if(!pvCv||!alive)return;const x=pvCv.getContext('2d');x.clearRect(0,0,pvCv.width,pvCv.height);
-    if(st.dirty)dctx.putImageData(img,0,0),st.dirty=false;
+    if(st.dirty)compose();
     const m=W>H,fw=W/(m?12:3),fh=H/(m?8:4),i=m?((o.asset&&o.asset.index)||0):0,fr=[0,1,2,1][Math.floor(pvT/1)%4];
     const sx=((i%4)*3+fr)*fw,sy=(Math.floor(i/4)*4+st.pdir)*fh,S=Math.min(pvCv.width/fw,pvCv.height/fh);
     x.imageSmoothingEnabled=false;x.drawImage(doc,sx,sy,fw,fh,(pvCv.width-fw*S)/2,(pvCv.height-fh*S)/2,fw*S,fh*S);
@@ -1247,7 +1263,7 @@ async function openPixelEditor(o){
     if(cancel&&(s.t==='pen'||s.t==='line')){img.data.set(s.b);st.line=null;st.dirty=true;req();return}
     if(s.t==='pen')pushPatch(s.b);
     if(s.t==='line'){lineEach(st.line.a,st.line.b,(x,y)=>brush(x,y,s.u));st.line=null;pushPatch(s.b)}
-    if(s.t==='sel'&&st.sel&&st.sel.w*st.sel.h<=1&&!st.snap)st.sel=null;
+    if(s.t==='sel'){if(st.sel&&st.sel.w*st.sel.h<=1&&!st.snap)st.sel=null;pushSel()}
     refreshUI();req();
   }
   function bind(){
@@ -1276,12 +1292,15 @@ async function openPixelEditor(o){
       for(let y=0;y<f.d.height;y++)for(let x=0;x<f.d.width;x++){const u=D[y*f.d.width+x];if(u>>>24)setPx(f.x+x,f.y+y,u)}pushPatch(b);req();return}
     if(k==='paste'){if(!st.clip)return;const cw=cv.clientWidth,ch=cv.clientHeight;let p=s?{x:s.x,y:s.y}:snapPt(toPx({x:cw/2,y:ch/2}),false);
       const d=new ImageData(new Uint8ClampedArray(st.clip.data),st.clip.width,st.clip.height);setFloat(d,p.x,p.y,null);return}
+    if(k==='all'&&!st.float&&!s){st.sel={x:0,y:0,w:W,h:H};pushSel();refreshUI();req();return}
+    if(k==='movelayer'&&st.float){setLayer(1-li);return}
     if(st.float){const f=st.float;if(k==='fliph'||k==='flipv'){flipData(f.d,k==='fliph');fctx.putImageData(f.d,0,0);req()}
       if(k==='ok')commitFloat();if(k==='drop')dropFloat();if(k==='copy')st.clip=new ImageData(new Uint8ClampedArray(f.d.data),f.d.width,f.d.height),toast('コピーしました');refreshUI();return}
     if(!s)return;
     if(k==='copy'){st.clip=selPixels(s);toast('コピーしました');refreshUI();return}
-    if(k==='none'){st.sel=null;refreshUI();req();return}
-    if(k==='all'){st.sel={x:0,y:0,w:W,h:H};refreshUI();req();return}
+    if(k==='none'){st.sel=null;pushSel();refreshUI();req();return}
+    if(k==='all'){st.sel={x:0,y:0,w:W,h:H};pushSel();refreshUI();req();return}
+    if(k==='tolayer'){const d=selPixels(s);setLayer(1-li);setFloat(d,s.x,s.y,null);toast(`レイヤー${li+1}にコピーを浮かせました。位置を決めて「確定」`);return}
     const b=snap();
     if(k==='cut'){st.clip=selPixels(s);clearRect(s)}
     if(k==='del')clearRect(s);
@@ -1294,13 +1313,13 @@ async function openPixelEditor(o){
     sheet('キャンバスサイズ',b=>{b.append(card(null,isTs?fNum('縦のタイル数',d,'h',{min:1,max:128,hint:`横は変えられません（変えるとマップのタイル番号がずれるため）。今の縦 ${Math.ceil(H/ts)} マス`}):
       h('div',{class:'row'},fNum('幅(px)',d,'w',{min:1,max:2048}),fNum('高さ(px)',d,'h',{min:1,max:2048})),h('div',{class:'hint'},'左上を基準に広げる／切り取ります')))},
       {back:'キャンセル',actions:[['変更',api=>{api.close();const nw=isTs?W:d.w,nh=isTs?d.h*ts:d.h;if(nw===W&&nh===H)return;
-        const before={W,H,d:new Uint8ClampedArray(img.data)},n=new Uint32Array(nw*nh);for(let y=0;y<Math.min(H,nh);y++)n.set(A.subarray(y*W,y*W+Math.min(W,nw)),y*nw);
-        setImg(nw,nh,new Uint8ClampedArray(n.buffer));st.undo.push({full:true,b:before,a:{W,H,d:new Uint8ClampedArray(img.data)}});st.redo=[];st.changed=true;st.sel=null;fit();refreshUI()}]]});
+        const before={W,H,d:L.map(l=>new Uint8ClampedArray(l.img.data))},ns=L.map(l=>{const n=new Uint32Array(nw*nh);for(let y=0;y<Math.min(H,nh);y++)n.set(l.A.subarray(y*W,y*W+Math.min(W,nw)),y*nw);return new Uint8ClampedArray(n.buffer)});
+        setImgAll(nw,nh,ns);pushHist({full:true,b:before,a:{W,H,d:L.map(l=>new Uint8ClampedArray(l.img.data))},sb:st.histSel,sa:null});st.histSel=null;st.changed=true;st.sel=null;fit();refreshUI()}]]});
   }
   function importImg(){pickFiles(false,async fs=>{const im=await imgFrom(URL.createObjectURL(fs[0]));if(!im)return;const c=document.createElement('canvas');c.width=im.width;c.height=im.height;
     const x=c.getContext('2d');x.drawImage(im,0,0);commitFloat();setFloat(x.getImageData(0,0,c.width,c.height),0,0,null);toast('ドラッグで位置を決めて「確定」')})}
   async function save(){
-    commitFloat();dctx.putImageData(img,0,0);st.dirty=false;
+    commitFloat();compose();
     const blob=await canvasBlob(doc);
     if(o.isNew&&!st.path){
       const k=o.kind,p=uniquePath(AK[k].dir,{name:{tilesets:'tileset',charsets:'chara',faces:'face',parallaxes:'parallax',pictures:'picture',stills:'still',icons:'icon'}[k]+'.png'});await storeFile(blob,p);st.path=p;
@@ -1308,6 +1327,8 @@ async function openPixelEditor(o){
       else G[k].push(Object.assign({id:uid(),name:o.name,image:p},k==='tilesets'?{blocked:[]}:{}));
       o.asset=G[k][G[k].length-1];changed();
     }else await storeFile(blob,st.path);
+    try{const has1=L[1].A.some(v=>v>>>24);if(has1){const im2=await imgFrom(URL.createObjectURL(blob)),c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(im2,0,0);
+      await peLayerPut(st.path,{W,H,sum:fnv32(x.getImageData(0,0,W,H).data),l0:L[0].img.data.buffer.slice(0),l1:L[1].img.data.buffer.slice(0)})}else await peLayerPut(st.path,null)}catch(e){}
     st.changed=false;delete imgs[st.path];reqDraw();drawPalette();if(curTab==='assets')renderAssets();toast('保存しました（☁でプッシュ）');
   }
   /* --- UI --- */
@@ -1316,6 +1337,7 @@ async function openPixelEditor(o){
     if(!area)return;
     area.querySelectorAll('[data-pt]').forEach(b=>b.classList.toggle('on',b.dataset.pt===st.tool));
     area.querySelectorAll('[data-ps]').forEach(b=>b.classList.toggle('on',+b.dataset.ps===st.size));
+    area.querySelectorAll('[data-pl]').forEach(b=>b.classList.toggle('on',+b.dataset.pl===li));area.querySelector('#peOther').textContent={show:'👁 もう1枚：表示',dim:'👁 もう1枚：薄く',hide:'👁 もう1枚：隠す'}[st.other];
     area.querySelector('#peGrid').classList.toggle('on',st.grid);area.querySelector('#peSnap').classList.toggle('on',st.snap);
     swBox.innerHTML='';toneBox.innerHTML='';toneBox.append(h('span',{class:'hint',style:'align-self:center;margin-right:2px;white-space:nowrap'},'トーン'));const cur=c2hex(st.col);
     const toPen=()=>{if(st.tool==='erase'||st.tool==='pick'||st.tool==='select'||st.tool==='hand')st.tool='pen'};
@@ -1328,8 +1350,8 @@ async function openPixelEditor(o){
     bar2.innerHTML='';const f=st.float,s=st.sel,B=(l,k,cls)=>btn(l,()=>selAct(k),'sm '+(cls||''));
     const add=(...a)=>bar2.append(...a.filter(Boolean));
     const arrows=()=>[B('←','L','ar'),B('↑','U','ar'),B('↓','D','ar'),B('→','R','ar')];
-    if(f)add(B('確定','ok','pri'),...arrows(),B('⇋反転','fliph'),B('⇅反転','flipv'),B('スタンプ','stamp'),B('複製','dup'),B('コピー','copy'),B('取消','drop','dg'),h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`移動中 (${f.x},${f.y})`));
-    else if(s)add(h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`${s.w}×${s.h}`+(st.tool==='fill'?'（この中だけ塗る）':'')),...arrows(),B('複製','dup'),B('コピー','copy'),B('切り取り','cut'),st.clip?B('貼り付け','paste'):null,B('⇋反転','fliph'),B('⇅反転','flipv'),B('塗る','fill'),B('消す','del','dg'),B('解除','none'));
+    if(f)add(B('確定','ok','pri'),...arrows(),B(`→レイヤー${2-li}へ`,'movelayer'),B('⇋反転','fliph'),B('⇅反転','flipv'),B('スタンプ','stamp'),B('複製','dup'),B('コピー','copy'),B('取消','drop','dg'),h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`移動中 (${f.x},${f.y})`));
+    else if(s)add(B('選択解除','none','pri'),h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`${s.w}×${s.h}`+(st.tool==='fill'?'（この中だけ塗る）':'')),...arrows(),B('複製','dup'),B(`レイヤー${2-li}へコピー`,'tolayer'),B('コピー','copy'),B('切り取り','cut'),st.clip?B('貼り付け','paste'):null,B('⇋反転','fliph'),B('⇅反転','flipv'),B('塗る','fill'),B('消す','del','dg'));
     else add(h('span',{class:'hint',style:'margin:0 4px'},st.tool==='select'?'ドラッグで範囲選択（選択内をドラッグで移動）':'1本指で描く／2本指で拡大・移動'),st.clip?B('貼り付け','paste'):null,st.tool==='select'?B('全選択','all'):null);
     bar2.style.display='flex';
   }
@@ -1345,6 +1367,9 @@ async function openPixelEditor(o){
       h('div',{class:'bar'},...TOOLS.map(([k,l])=>h('button',{class:'btn','data-pt':k,onclick:()=>{if(k!=='select'&&k!=='hand')commitFloat();st.tool=k;refreshUI();req()}},l)),
         h('div',{class:'seg'},...[1,2,3,4].map(n=>h('button',{'data-ps':n,onclick:()=>{st.size=n;refreshUI()}},n))),
       ),
+      h('div',{class:'bar'},h('span',{class:'hint',style:'align-self:center;white-space:nowrap'},'レイヤー'),h('div',{class:'seg'},...[0,1].map(i=>h('button',{'data-pl':i,onclick:()=>setLayer(i)},['1 下','2 上'][i]))),
+        h('button',{class:'btn sm',id:'peOther',onclick:()=>{st.other={show:'dim',dim:'hide',hide:'show'}[st.other];refreshUI();req()}},''),
+        h('span',{class:'hint',style:'align-self:center'},'保存すると2枚を重ねた1枚の画像になります')),
       toneBox,
       h('div',{class:'bar'},swBox,colInp,
         h('button',{class:'btn sm',id:'peGrid',onclick:()=>{st.grid=!st.grid;refreshUI();req()}},'#'),
