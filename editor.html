@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11h';
+const APP_VER='2026-11-11i';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -182,7 +182,7 @@ function thumb(path){const im=h('img',{class:'thumb'});imgAsync(path).then(i=>{i
 async function storeFile(f,p){const buf=await f.arrayBuffer();await idbPut(p,{buf,type:f.type||'image/png'});pending.add(p);deleted.delete(p);delete imgs[p];saveDraft();updateBadge()}
 function canvasBlob(c){return new Promise(r=>c.toBlob(r,'image/png'))}
 async function putCanvas(c,p){const b=await canvasBlob(c);await idbPut(p,{buf:await b.arrayBuffer(),type:'image/png'});pending.add(p);delete imgs[p]}
-const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces,...G.parallaxes,...G.pictures,...G.stills].map(a=>a.image);
+const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces,...G.parallaxes,...G.pictures,...G.stills,...G.icons].map(a=>a.image);
 /* 透明部分の表示（うす紫の市松模様） */
 const TP=['#d6c8ec','#f1ebf9'],tpSrc={};
 function tpPattern(c,cell){cell=Math.max(1,Math.round(cell));let s=tpSrc[cell];if(!s){s=document.createElement('canvas');s.width=s.height=cell*2;const q=s.getContext('2d');q.fillStyle=TP[0];q.fillRect(0,0,cell*2,cell*2);q.fillStyle=TP[1];q.fillRect(0,0,cell,cell);q.fillRect(cell,cell,cell,cell);tpSrc[cell]=s}return c.createPattern(s,'repeat')}
@@ -284,7 +284,7 @@ const newPage=()=>({cond:[],image:null,trigger:'action',priority:'below',through
 function layersFor(w,h){return[new Array(w*h).fill(0),new Array(w*h).fill(-1),new Array(w*h).fill(-1),new Array(w*h).fill(-1)]}
 function normalize(g){
   g.version=g.version||1;g.title=g.title??'ゲーム';g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','items','maps','switches','variables'])g[k]=g[k]||[];
   while(g.switches.length<20)g.switches.push('');while(g.variables.length<20)g.variables.push('');
   for(const t of g.tilesets)t.blocked=t.blocked||[];
   if(!g.maps.length)g.maps.push({id:1,name:'MAP001',w:20,h:15,tileset:g.tilesets[0]?.id||'',layers:layersFor(20,15),events:[]});
@@ -978,13 +978,13 @@ function renderDB(){
   T.append(nameListCard('スイッチ',G.switches),nameListCard('変数',G.variables));
   const ic=card('アイテム');
   for(const it of G.items){const n=h('input',{type:'text',value:it.name,oninput:()=>{it.name=n.value;changed()}}),ds=h('input',{type:'text',value:it.desc||'',placeholder:'説明',oninput:()=>{it.desc=ds.value;changed()}}),vl=h('input',{type:'number',inputmode:'numeric',value:it.value||0,style:'width:90px',oninput:()=>{it.value=Math.max(0,parseInt(vl.value,10)||0);changed()}});
-    ic.append(h('div',{class:'list-row'},h('span',{style:'width:30px;color:var(--mut);font-size:13px;flex:none'},pad3(it.id)),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
+    const icn=G.icons.find(x=>x.id===it.icon);ic.append(h('div',{class:'list-row'},h('div',{style:'display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:48px'},h('span',{style:'color:var(--mut);font-size:13px'},pad3(it.id)),icn?thumb(icn.image):null),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,fSel('画像',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:()=>renderDB()}),h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
   ic.append(h('div',{style:'margin-top:6px'},btn('＋ アイテム追加',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'アイテム'+id,desc:''});changed();renderDB()},'sm')));
   T.append(ic);T.scrollTop=sc;
 }
 
 /* ===== 素材タブ ===== */
-const AK={tilesets:{n:'タイルセット',dir:'tilesets'},charsets:{n:'歩行キャラ',dir:'characters'},faces:{n:'顔グラフィック',dir:'faces'},pictures:{n:'立ち絵',dir:'pictures'},stills:{n:'スチル',dir:'stills'},parallaxes:{n:'遠景',dir:'parallaxes'}};
+const AK={tilesets:{n:'タイルセット',dir:'tilesets'},charsets:{n:'歩行キャラ',dir:'characters'},faces:{n:'顔グラフィック',dir:'faces'},pictures:{n:'立ち絵',dir:'pictures'},stills:{n:'スチル',dir:'stills'},icons:{n:'アイテム画像',dir:'icons'},parallaxes:{n:'遠景',dir:'parallaxes'}};
 function delAsset(k,a){
   if(!confirm(`「${a.name}」を削除しますか？\n（使っている箇所は表示されなくなります）`))return;
   G[k].splice(G[k].indexOf(a),1);
@@ -1038,6 +1038,7 @@ function renderAssets(){
     if(k==='faces')c.append(h('div',{class:'hint'},'表情1つにつき画像1枚。文章ごとに選べます'));
     if(k==='pictures')c.append(h('div',{class:'hint'},'会話で表示する立ち絵。表情ごとに1枚（例：ムロ_通常、ムロ_焦り）。追加するとき、外側の白を透明にできます'));
     if(k==='stills')c.append(h('div',{class:'hint'},'イベントで画面いっぱいに表示する一枚絵。「スチル」コマンドで表示・消去'));
+    if(k==='icons')c.append(h('div',{class:'hint'},'等価交換機のカードに出るアイテムの絵。「データ」→アイテムで、アイテムごとに選びます（正方形がおすすめ）'));
     if(k==='parallaxes')c.append(h('div',{class:'hint'},'マップの奥に敷き詰めて表示するループ画像（上下左右がつながるように描くときれいです）。マップ設定（⚙）で選びます'));
     if(k==='tilesets')c.append(h('div',{class:'hint'},'うす紫の市松模様の部分が透明。透明な部分からは遠景が見えます'));
     T.append(c);
@@ -1069,12 +1070,12 @@ const c2hex=c=>'#'+c.slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('');
 const c2u=c=>((c[3]<<24)|(c[2]<<16)|(c[1]<<8)|c[0])>>>0;
 const u2c=u=>[u&255,(u>>>8)&255,(u>>>16)&255,u>>>24];
 function newDrawing(k){
-  const ts=G.tileSize,SZ={parallaxes:[384,384],pictures:[400,600],stills:[640,480]}[k]||[96,96],d={name:'',cols:8,rows:8,type:'single',fw:96,fh:96,w:SZ[0],h:SZ[1]};
+  const ts=G.tileSize,SZ={parallaxes:[384,384],pictures:[400,600],stills:[640,480],icons:[48,48]}[k]||[96,96],d={name:'',cols:8,rows:8,type:'single',fw:96,fh:96,w:SZ[0],h:SZ[1]};
   sheet('新規作成：'+AK[k].n,b=>{
     const c=card(null,fText('名前',d,'name',{ph:AK[k].n}));
     if(k==='tilesets')c.append(h('div',{class:'row'},fNum('横のタイル数',d,'cols',{min:1,max:32}),fNum('縦のタイル数',d,'rows',{min:1,max:64})),h('div',{class:'hint'},`1マス ${ts}px（「データ」のタイルサイズ）`));
     if(k==='charsets')c.append(fSel('形式',d,'type',[['single','1キャラ（横3×縦4コマ）'],['multi','8キャラ並び（横12×縦8コマ）']]),h('div',{class:'row'},fNum('1コマの幅',d,'fw',{min:8,max:256}),fNum('1コマの高さ',d,'fh',{min:8,max:256})),h('div',{class:'hint'},'行は 下・左・右・上 の順。足元がマスの下端に合わせて表示されます'));
-    if(k==='faces'||k==='parallaxes'||k==='pictures'||k==='stills')c.append(h('div',{class:'row'},fNum('幅',d,'w',{min:8,max:1024}),fNum('高さ',d,'h',{min:8,max:1024})));
+    if(k==='faces'||k==='parallaxes'||k==='pictures'||k==='stills'||k==='icons')c.append(h('div',{class:'row'},fNum('幅',d,'w',{min:8,max:1024}),fNum('高さ',d,'h',{min:8,max:1024})));
     b.append(c);
   },{back:'キャンセル',actions:[['作成',api=>{
     let w,hh;
@@ -1260,7 +1261,7 @@ async function openPixelEditor(o){
     commitFloat();dctx.putImageData(img,0,0);st.dirty=false;
     const blob=await canvasBlob(doc);
     if(o.isNew&&!st.path){
-      const k=o.kind,p=uniquePath(AK[k].dir,{name:{tilesets:'tileset',charsets:'chara',faces:'face',parallaxes:'parallax',pictures:'picture',stills:'still'}[k]+'.png'});await storeFile(blob,p);st.path=p;
+      const k=o.kind,p=uniquePath(AK[k].dir,{name:{tilesets:'tileset',charsets:'chara',faces:'face',parallaxes:'parallax',pictures:'picture',stills:'still',icons:'icon'}[k]+'.png'});await storeFile(blob,p);st.path=p;
       if(k==='charsets'&&W>H){const bl=usedBlocks(doc);for(const b of(bl.length?bl:[0]))G[k].push({id:uid(),name:o.name+'_'+(b+1),image:p,index:b})}
       else G[k].push(Object.assign({id:uid(),name:o.name,image:p},k==='tilesets'?{blocked:[]}:{}));
       o.asset=G[k][G[k].length-1];changed();

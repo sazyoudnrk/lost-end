@@ -49,16 +49,23 @@ html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;touch-
 #hud{position:absolute;left:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;background:rgba(12,14,34,.85);border:2px solid #fff;border-radius:8px;padding:4px 12px;font-size:14px;pointer-events:none;white-space:nowrap}
 #daycard{position:absolute;inset:0;z-index:21;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;pointer-events:none;transition:opacity .5s}
 #daycard.show{opacity:1}#daycard b{font-size:34px;letter-spacing:.2em}#daycard span{font-size:16px;color:#aaa}
-#shop{position:absolute;inset:0;z-index:12;background:rgba(0,0,0,.85);display:none;flex-direction:column;padding:calc(14px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom))}
+#shop{position:absolute;inset:0;z-index:40;background:rgba(0,0,0,.88);display:none;flex-direction:column;padding:calc(14px + env(safe-area-inset-top)) 12px calc(14px + env(safe-area-inset-bottom));max-width:720px;margin:0 auto}
 #shop.show{display:flex}
-#shop h2{margin:0 0 4px;font-size:20px;text-align:center;letter-spacing:.1em}
-#shop .st{display:flex;justify-content:space-between;font-size:14px;color:#ccc;margin:4px 2px 8px}
-#shop .tabs{display:flex;gap:6px;margin-bottom:8px}#shop .tabs .ui-btn{flex:1;text-align:center;padding:8px}#shop .tabs .ui-btn.on{background:#fff;color:#000}
-#shop .list{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px}
-#shop .card{border:2px solid #fff;border-radius:10px;padding:10px 12px;background:rgba(12,14,34,.92);display:flex;gap:10px;align-items:center}
-#shop .card.sold{opacity:.35}#shop .card div{flex:1}#shop .card b{display:block;font-size:16px}#shop .card small{color:#bbb;font-size:13px;line-height:1.4;display:block}
-#shop .card .ui-btn{padding:8px 12px;white-space:nowrap;text-align:center}
-#shop .msg{min-height:22px;text-align:center;font-size:14px;margin:6px 0}
+#shop .tabs{display:flex;gap:18px;padding:0 6px;position:relative;z-index:1;margin-bottom:-2px}#shop .tabs .ui-btn{flex:1;text-align:center;padding:9px;font-size:17px;letter-spacing:.15em;border-radius:8px 8px 0 0;opacity:.6}#shop .tabs .ui-btn.on{opacity:1;background:#fff;color:#000}
+#shop .frame{flex:1;min-height:0;border:2px solid #fff;border-radius:10px;padding:8px;background:rgba(12,14,34,.92);overflow:auto;-webkit-overflow-scrolling:touch}
+#shop .list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:start}
+#shop .list>p{grid-column:1/-1;text-align:center;color:#bbb;margin:24px 0}
+#shop .icard{display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:6px;border-radius:8px;text-align:left;min-width:0;font-size:14px}
+#shop .icard b{font-size:14px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#shop .icard .im{aspect-ratio:1;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#shop .icard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#shop .icard small{color:#bbb;font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3.9em}
+#shop .icard .pr{font-size:13px;text-align:right}
+#shop .icard.sel{background:#fff;color:#000}#shop .icard.sel small{color:#333}#shop .icard.sel .im{outline:2px solid #000}
+#shop .icard.sold{opacity:.35}
+#shop .st{display:flex;justify-content:space-between;font-size:14px;color:#ccc;margin:8px 4px 0}
+#shop .msg{min-height:22px;text-align:center;font-size:14px;margin:4px 0}
+#shop .bar{display:flex;gap:8px}#shop .bar .ui-btn{text-align:center}#shop #shopOk{flex:1;font-size:17px}
 
 #screen{position:fixed;left:0;top:0;overflow:hidden;background:#000;transform-origin:0 0}
 .ui-btn.kf{background:#fff;color:#000}
@@ -82,13 +89,13 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="close">閉じる</button></div>
 <div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button></div>
 <div id="hud"></div>
-<div id="shop"><h2>等価交換機</h2><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="tabs"><button class="ui-btn on" data-tab="buy">取り出す</button><button class="ui-btn" data-tab="sell">入れる</button></div><div class="list"></div><div class="msg"></div><button class="ui-btn" id="shopClose" style="text-align:center">閉じる</button></div>
+<div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
 <div id="daycard"><b></b><span></span></div>
 <div id="fade"></div>
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-11j';
+const GAME_VER='2026-11-11k';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -130,7 +137,7 @@ async function loadData(){
 }
 function normalize(g){
   g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','items','maps','switches','variables'])g[k]=g[k]||[];
   g.player=g.player||{map:g.maps[0]&&g.maps[0].id,x:0,y:0,dir:0};
   g.system=Object.assign({slots:['朝','昼','夜'],startDay:1,hud:true,hudDay:{from:1,sw:-1},hudMoney:{from:1,sw:-1}},g.system||{});
   g.shop=Object.assign({count:3,limit:1,startMoney:0,pool:[]},g.shop||{});
@@ -224,27 +231,36 @@ async function nextDay(){
 }
 /* ---------- 等価交換機 ---------- */
 function openShop(){return new Promise(res=>{
-  const box=$('#shop'),list=box.querySelector('.list'),msg=box.querySelector('.msg');let tab='buy';msg.textContent='';
+  const box=$('#shop'),list=box.querySelector('.list'),msg=box.querySelector('.msg'),ok=$('#shopOk');let tab='buy',sel=null;msg.textContent='';
   const item=id=>G.items.find(i=>i.id===id);
+  function card(it,name,desc,price,key,sold){
+    const c=document.createElement('button');c.className='ui-btn icard'+(sold?' sold':'')+(sel&&sel.key===key?' sel':'');
+    const b=document.createElement('b');b.textContent=name;const im=document.createElement('div');im.className='im';
+    const ic=it.icon&&(G.icons||[]).find(x=>x.id===it.icon);if(ic)loadImg(ic.image).then(i=>{if(i){const e=document.createElement('img');e.src=i.src;im.append(e)}});
+    const d=document.createElement('small');d.textContent=desc||'';const p=document.createElement('div');p.className='pr';p.textContent=price;
+    c.append(b,im,d,p);return c}
   function render(){
     $('#shopMoney').textContent=`価値 ${S.money}`;$('#shopLimit').textContent=`本日の取り出し ${S.buys}/${S.buyLimit}`;
     box.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));list.innerHTML='';
-    const card=(name,desc,btnL,fn,dis,sold)=>{const c=document.createElement('div');c.className='card'+(sold?' sold':'');const d=document.createElement('div');
-      d.innerHTML='<b></b><small></small>';d.querySelector('b').textContent=name;d.querySelector('small').textContent=desc||'';const b=document.createElement('button');b.className='ui-btn';b.textContent=btnL;
-      if(dis)b.disabled=true;b.onclick=fn;c.append(d,b);list.append(c)};
-    if(tab==='buy'){if(!S.shop.length)list.textContent='今日は何も並んでいない';
-      for(const sl of S.shop){const r=G.shop.pool[sl.p],it=r&&item(r.item);if(!it)continue;
-        card(it.name,(it.desc||'')+(r.limitUp?`（取り出し回数+${r.limitUp}）`:''),sl.sold?'交換済み':`価値 ${r.price}`,()=>buy(sl),sl.sold,sl.sold)}}
-    else{const own=G.items.filter(i=>(S.it[i.id]||0)>0&&(+i.value||0)>0);if(!own.length)list.textContent='入れられる物を持っていない';
-      for(const it of own)card(`${it.name} ×${S.it[it.id]}`,it.desc,`価値 ${it.value} にする`,()=>sell(it))}
+    const empty=t=>{const p=document.createElement('p');p.textContent=t;list.append(p)};
+    if(tab==='buy'){if(!S.shop.length)empty('今日は何も並んでいない');
+      S.shop.forEach((sl,i)=>{const r=G.shop.pool[sl.p],it=r&&item(r.item);if(!it)return;
+        const c=card(it,it.name,(it.desc||'')+(r.limitUp?`（取り出し回数+${r.limitUp}）`:''),sl.sold?'交換済み':`価値 ${r.price}`,'b'+i,sl.sold);
+        if(sl.sold)c.disabled=true;else c.onclick=()=>pick({key:'b'+i,sl,r,it});list.append(c)})}
+    else{const own=G.items.filter(i=>(S.it[i.id]||0)>0&&(+i.value||0)>0);if(!own.length)empty('入れられる物を持っていない');
+      for(const it of own){const c=card(it,`${it.name} ×${S.it[it.id]}`,it.desc,`価値 ${it.value}`,'s'+it.id);c.onclick=()=>pick({key:'s'+it.id,it});list.append(c)}}
+    if(!sel){ok.disabled=true;ok.textContent=tab==='buy'?'とりだす物をえらぶ':'いれる物をえらぶ'}
+    else{ok.disabled=false;ok.textContent=tab==='buy'?`${sel.it.name}をとりだす（価値 ${sel.r.price}）`:`${sel.it.name}をいれる（＋${sel.it.value}）`}
   }
-  function buy(sl){const r=G.shop.pool[sl.p],it=item(r.item);
+  function pick(o){sel=(sel&&sel.key===o.key)?null:o;msg.textContent='';render();if(sel){box.querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));ok.classList.add('kf')}}
+  function buy(sl,r,it){
     if(S.buys>=S.buyLimit){msg.textContent='オーバーヒート中…今日はもう取り出せない';return}
     if(S.money<(+r.price||0)){msg.textContent='価値が足りない';return}
     S.money-=(+r.price||0);S.it[it.id]=(S.it[it.id]||0)+1;S.buys++;sl.sold=true;if(r.once)S.once[sl.p]=true;if(r.limitUp)S.buyLimit+=+r.limitUp;
-    msg.textContent=`${it.name}を手に入れた`;render();updHud();navMove(box,0)}
-  function sell(it){if(!confirm(`${it.name}を入れて、価値 ${it.value} に変えますか？`))return;S.it[it.id]--;S.money+=(+it.value||0);msg.textContent=`価値 ${it.value} になった`;render();updHud();navMove(box,0)}
-  box.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;msg.textContent='';render();navMove(box,0)});
+    sel=null;msg.textContent=`${it.name}を手に入れた`;render();updHud();navMove(box,0)}
+  function sell(it){S.it[it.id]--;S.money+=(+it.value||0);sel=null;msg.textContent=`価値 ${it.value} になった`;render();updHud();navMove(box,0)}
+  ok.onclick=()=>{if(!sel)return;if(tab==='buy')buy(sel.sl,sel.r,sel.it);else sell(sel.it)};
+  box.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;sel=null;msg.textContent='';render();navMove(box,0)});
   $('#shopClose').onclick=()=>{box.classList.remove('show');refresh();res()};
   render();box.classList.add('show');navMove(box,0);
 })}
