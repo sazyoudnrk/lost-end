@@ -910,7 +910,7 @@
        "cond": [],
        "image": {
         "charset": "neisa",
-        "dir": 1
+        "dir": 0
        },
        "trigger": "action",
        "priority": "same",
