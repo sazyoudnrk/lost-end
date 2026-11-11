@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11p';
+const APP_VER='2026-11-11q';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -186,7 +186,7 @@ function thumb(path){const im=h('img',{class:'thumb'});imgAsync(path).then(i=>{i
 async function storeFile(f,p){const buf=await f.arrayBuffer();await idbPut(p,{buf,type:f.type||'image/png'});pending.add(p);deleted.delete(p);delete imgs[p];saveDraft();updateBadge()}
 function canvasBlob(c){return new Promise(r=>c.toBlob(r,'image/png'))}
 async function putCanvas(c,p){const b=await canvasBlob(c);await idbPut(p,{buf:await b.arrayBuffer(),type:'image/png'});pending.add(p);delete imgs[p]}
-const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces,...G.parallaxes,...G.pictures,...G.stills,...G.icons].map(a=>a.image).concat((G.sounds||[]).map(a=>a.file));
+const allAssetPaths=()=>[...G.tilesets,...G.charsets,...G.faces,...G.parallaxes,...G.pictures,...G.stills,...G.icons].map(a=>a.image).concat((G.sounds||[]).map(a=>a.file),(G.bgms||[]).map(a=>a.file));
 /* 透明部分の表示（うす紫の市松模様） */
 const TP=['#d6c8ec','#f1ebf9'],tpSrc={};
 function tpPattern(c,cell){cell=Math.max(1,Math.round(cell));let s=tpSrc[cell];if(!s){s=document.createElement('canvas');s.width=s.height=cell*2;const q=s.getContext('2d');q.fillStyle=TP[0];q.fillRect(0,0,cell*2,cell*2);q.fillStyle=TP[1];q.fillRect(0,0,cell,cell);q.fillRect(cell,cell,cell,cell);tpSrc[cell]=s}return c.createPattern(s,'repeat')}
@@ -288,7 +288,7 @@ const newPage=()=>({cond:[],image:null,trigger:'action',priority:'below',through
 function layersFor(w,h){return[new Array(w*h).fill(0),new Array(w*h).fill(-1),new Array(w*h).fill(-1),new Array(w*h).fill(-1)]}
 function normalize(g){
   g.version=g.version||1;g.title=g.title??'ゲーム';g.tileSize=g.tileSize||32;
-  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','sounds','items','maps','switches','variables'])g[k]=g[k]||[];
+  for(const k of['tilesets','charsets','faces','parallaxes','pictures','stills','icons','sounds','bgms','items','maps','switches','variables'])g[k]=g[k]||[];
   while(g.switches.length<20)g.switches.push('');while(g.variables.length<20)g.variables.push('');
   for(const t of g.tilesets)t.blocked=t.blocked||[];
   if(!g.maps.length)g.maps.push({id:1,name:'MAP001',w:20,h:15,tileset:g.tilesets[0]?.id||'',layers:layersFor(20,15),events:[]});
@@ -590,17 +590,18 @@ function resizeMap(m,w,hh){
   m.w=w;m.h=hh;for(const e of m.events){e.x=Math.min(e.x,w-1);e.y=Math.min(e.y,hh-1)}
 }
 function mapSettings(){
-  const m=curMap(),P0=m.parallax||{},d={name:m.name,w:m.w,h:m.h,tileset:m.tileset,par:P0.id||'',rate:P0.rate??20,sx:P0.sx??0,sy:P0.sy??0};
+  const m=curMap(),P0=m.parallax||{},d={name:m.name,w:m.w,h:m.h,tileset:m.tileset,bgm:m.bgm||'',par:P0.id||'',rate:P0.rate??20,sx:P0.sx??0,sy:P0.sy??0};
   sheet('マップ設定',(b,api)=>{
     b.append(card(null,fText('名前',d,'name'),h('div',{class:'row'},fNum('幅',d,'w',{min:1,max:256}),fNum('高さ',d,'h',{min:1,max:256})),
       fSel('タイルセット',d,'tileset',G.tilesets.map(t=>[t.id,t.name])),h('div',{class:'hint'},'マップID: '+m.id)),
+      card('BGM',fSel('このマップのBGM',d,'bgm',[['','基本のBGM（システム設定）'],['-','なし（止める）'],...G.bgms.map(x=>[x.id,x.name])]),h('div',{class:'hint'},'同じ曲のマップ同士を移動しても曲は途切れません')),
       card('遠景',fSel('遠景画像',d,'par',[['','なし'],...G.parallaxes.map(p=>[p.id,p.name])]),
         fNum('スクロール率（%）',d,'rate',{min:0,max:100,hint:'0＝画面に固定、100＝マップと一緒に動く。間の値で奥行きが出ます'}),
         h('div',{class:'row'},fNum('自動スクロール 横',d,'sx',{hint:'1秒に動くドット数（マイナスで左）'}),fNum('縦',d,'sy',{hint:'マイナスで上'})),
         h('div',{class:'hint'},'遠景はマップの一番奥に敷き詰めて表示され、タイルの透明な部分から見えます。画像は「素材」タブの「遠景」に追加します')),
       card(null,btn('このマップを複製',()=>{const n=clone(m);n.id=Math.max(...G.maps.map(x=>x.id))+1;n.name=m.name+' コピー';G.maps.push(n);ME.mapId=n.id;changed();refreshMapSel();fitMap();reqDraw();api.close()},'sm'),' ',
         btn('このマップを削除',()=>{if(G.maps.length<=1){toast('最後のマップは削除できません');return}if(!confirm(`「${m.name}」を削除しますか？`))return;G.maps.splice(G.maps.indexOf(m),1);ME.mapId=G.maps[0].id;changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()},'sm dg')));
-  },{actions:[['保存',api=>{m.name=d.name;m.tileset=d.tileset;m.parallax=d.par?{id:d.par,rate:d.rate,sx:d.sx,sy:d.sy}:null;if(d.w!==m.w||d.h!==m.h){resizeMap(m,d.w,d.h);ME.undo=[];ME.redo=[]}changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()}]]});
+  },{actions:[['保存',api=>{m.name=d.name;m.tileset=d.tileset;m.bgm=d.bgm||'';m.parallax=d.par?{id:d.par,rate:d.rate,sx:d.sx,sy:d.sy}:null;if(d.w!==m.w||d.h!==m.h){resizeMap(m,d.w,d.h);ME.undo=[];ME.redo=[]}changed();refreshMapSel();fitMap();reqDraw();drawPalette();api.close()}]]});
 }
 function eventList(){
   const m=curMap();
@@ -674,6 +675,7 @@ const CT={
   route:{n:'歩かせる',c:'#8a5ad0',make:()=>({t:'route',target:'this',route:[],wait:true,through:false,speed:1})},
   turn:{n:'向きを変える',c:'#8a5ad0',make:()=>({t:'turn',target:'this',dir:'P'})},
   wait:{n:'ウェイト',c:'#777',make:()=>({t:'wait',ms:500})},
+  bgm:{n:'BGM',c:'#777',make:()=>({t:'bgm',op:'play',id:G.bgms[0]?G.bgms[0].id:'',ms:600})},
   se:{n:'効果音',c:'#777',make:()=>({t:'se',id:G.sounds[0]?G.sounds[0].id:'',vol:100})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
   end:{n:'処理を中断',c:'#777',make:()=>({t:'end'})},
@@ -714,6 +716,7 @@ function cmdSummary(c){
     case'route':return `${tgtName(c.target)}：${routeText(c.route)||'（未設定）'}`+(c.wait===false?'（待たない）':'');
     case'turn':return `${tgtName(c.target)}：${{P:'プレイヤーの方',A:'プレイヤーと反対'}[c.dir]||DIRN[c.dir]+'向き'}`;
     case'wait':return c.ms+'ms';
+    case'bgm':return c.op==='stop'?'止める':c.op==='map'?'マップのBGMに戻す':((G.bgms.find(x=>x.id===c.id)||{name:'（未選択）'}).name+'を流す');
     case'se':{const s=G.sounds.find(x=>x.id===c.id);return (s?s.name:'（未選択）')+(c.vol!=null&&+c.vol!==100?` 音量${c.vol}`:'')}
     case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
     case'sleep':return '日付+1、朝に戻す';
@@ -856,6 +859,7 @@ function cmdForm(b,d,rr){
     case'item':if(!G.items.length)c.append(h('div',{class:'hint'},'「データ」タブでアイテムを作ってください'));c.append(h('div',{class:'row'},fSel('アイテム',d,'id',itemOpts(),{num:true}),fNum('増減',d,'n')));break;
     case'move':if(d.fade==null)d.fade=true;c.append(fChk('暗転する（オフにすると一瞬で移動）',d,'fade'),fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
     case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
+    case'bgm':c.append(fSel('',d,'op',[['play','曲を流す'],['stop','止める'],['map','マップのBGMに戻す']],{on:rr}),d.op==='play'?fSel('曲',d,'id',[['','（未選択）'],...G.bgms.map(x=>[x.id,x.name])]):null,fNum('フェード（ミリ秒）',d,'ms',{min:0}),h('div',{class:'hint'},'「曲を流す」「止める」をすると、場所移動してもマップのBGMに切り替わりません。「マップのBGMに戻す」で元に戻ります'));break;
     case'se':c.append(h('div',{class:'row',style:'align-items:end'},fSel('効果音',d,'id',[['','（未選択）'],...G.sounds.map(x=>[x.id,x.name])]),btn('▶',()=>{const s=G.sounds.find(x=>x.id===d.id);if(s)playSnd(s.file)},'sm')),fNum('音量（0〜100）',d,'vol',{min:0,max:100}),h('div',{class:'hint'},'音は「素材」タブの「効果音（SE）」で追加します。鳴らしたらすぐ次へ進みます'));break;
     case'route':{
       c.append(fSel('誰を',d,'target',tgtOpts(),{on:rr}),h('div',{class:'hint'},'名前のイベントは、今いるマップにいるものが動きます'),
@@ -995,6 +999,7 @@ function renderDB(){
     h('div',{class:'card-t',style:'margin-top:6px'},'価値の表示'),h('div',{class:'row'},fNum('何日目から',SY.hudMoney,'from',{min:1}),fSel('スイッチ',SY.hudMoney,'sw',[[-1,'条件なし'],...swOpts()],{num:true})),
     h('div',{class:'hint'},'スイッチを選ぶと、そのスイッチがONになってから表示されます（会話の中で「スイッチ」コマンドでONにする）'),
     h('div',{class:'hint'},'「時間を進める」で時間帯が進み、「次の日へ」で日付+1・朝に戻ります（ベッドのイベントなどに入れる）。イベントの「日ごとの配置」でキャラの居場所を日・時間帯ごとに変えられます')));
+  T.append(card('BGM',fSel('基本のBGM（全マップ）',SY,'bgm',[['','なし'],...G.bgms.map(x=>[x.id,x.name])]),h('div',{class:'hint'},'マップ設定でBGMを「基本」にしているマップで流れます。タイトル画面は無音です')));
   T.append(shopCard());
   T.append(nameListCard('スイッチ',G.switches),nameListCard('変数',G.variables));
   const ic=card('アイテム');
@@ -1064,17 +1069,18 @@ function renderAssets(){
     if(k==='tilesets')c.append(h('div',{class:'hint'},'うす紫の市松模様の部分が透明。透明な部分からは遠景が見えます'));
     T.append(c);
   }
-  {const c=card('効果音（SE）');
-    for(const a of G.sounds){const n=h('input',{type:'text',value:a.name,oninput:()=>{a.name=n.value;changed()}});
-      c.append(h('div',{class:'list-row'},btn('▶',()=>playSnd(a.file),'sm'),h('div',{style:'flex:1;min-width:0'},n,h('div',{class:'hint',style:'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'},a.file+(pending.has(a.file)?'  ●未プッシュ':''))),
-        h('div',{style:'display:flex;flex-direction:column;gap:4px'},btn('差替',()=>pickFiles(false,async fs=>{await storeFile(fs[0],a.file);delete sndCache[a.file];renderAssets()},'audio/*'),'sm'),btn('削除',()=>{if(!confirm(`「${a.name}」を削除しますか？`))return;G.sounds.splice(G.sounds.indexOf(a),1);changed();renderAssets()},'sm dg'))))}
-    c.append(h('div',{style:'margin-top:8px'},btn('＋ 音を追加',()=>pickFiles(true,async fs=>{for(const f of fs){const p=uniquePath('se',f);await storeFile(f,p);G.sounds.push({id:uid(),name:f.name.replace(/\.[^.]+$/,''),file:p})}changed();renderAssets()},'audio/*'),'sm')),
-      h('div',{class:'hint'},'mp3 / wav / m4a など。「効果音」コマンドで鳴らします'));
+  for(const [k,title,dir,hint] of [['sounds','効果音（SE）','se','mp3 / wav / m4a など。「効果音」コマンドで鳴らします'],['bgms','BGM','bgm','ループ再生されます。「データ」→システムで全マップの基本BGM、マップ設定（⚙）でマップごとのBGM、「BGM」コマンドで途中の切り替えができます']]){const c=card(title);
+    for(const a of G[k]){const n=h('input',{type:'text',value:a.name,oninput:()=>{a.name=n.value;changed()}});
+      c.append(h('div',{class:'list-row'},btn('▶',()=>playSnd(a.file),'sm'),h('div',{style:'flex:1;min-width:0'},n,k==='bgms'?fNum('音量（0〜100）',a,'vol',{min:0,max:100}):null,h('div',{class:'hint',style:'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'},a.file+(pending.has(a.file)?'  ●未プッシュ':''))),
+        h('div',{style:'display:flex;flex-direction:column;gap:4px'},btn('差替',()=>pickFiles(false,async fs=>{await storeFile(fs[0],a.file);delete sndCache[a.file];renderAssets()},'audio/*'),'sm'),btn('削除',()=>{if(!confirm(`「${a.name}」を削除しますか？`))return;G[k].splice(G[k].indexOf(a),1);changed();renderAssets()},'sm dg'))))}
+    c.append(h('div',{style:'margin-top:8px;display:flex;gap:6px'},btn('＋ 音を追加',()=>pickFiles(true,async fs=>{for(const f of fs){const p=uniquePath(dir,f);await storeFile(f,p);G[k].push(Object.assign({id:uid(),name:f.name.replace(/\.[^.]+$/,''),file:p},k==='bgms'?{vol:80}:{}))}changed();renderAssets()},'audio/*,video/mp4'),'sm'),btn('■ 止める',()=>{if(curSnd){curSnd.pause();curSnd=null}},'sm')),
+      h('div',{class:'hint'},hint));
     T.append(c)}
   T.scrollTop=sc;
 }
 const sndCache={};
-async function playSnd(path){try{let u=sndCache[path];if(!u){const f=await idbGet(path);u=sndCache[path]=f?URL.createObjectURL(new Blob([f.buf],{type:f.type||'audio/wav'})):path+'?t='+Date.now()}const a=new Audio(u);await a.play()}catch(e){toast('再生できませんでした')}}
+let curSnd=null;
+async function playSnd(path){try{if(curSnd){curSnd.pause();curSnd=null}let u=sndCache[path];if(!u){const f=await idbGet(path);u=sndCache[path]=f?URL.createObjectURL(new Blob([f.buf],{type:f.type||'audio/wav'})):path+'?t='+Date.now()}const a=new Audio(u);curSnd=a;await a.play()}catch(e){toast('再生できませんでした')}}
 
 /* ===== ドット絵エディタ ===== */
 let PE_ACTIVE=null;

@@ -4850,7 +4850,8 @@
    "ネイサ": 7,
    "ニノマエ": 8,
    "ピヲラ": 9
-  }
+  },
+  "bgm": "bgm_main"
  },
  "icons": [
   {
@@ -4869,6 +4870,14 @@
    "id": "se_knock",
    "name": "ノック",
    "file": "assets/se/knock.wav"
+  }
+ ],
+ "bgms": [
+  {
+   "id": "bgm_main",
+   "name": "lostEnd_bgm1",
+   "file": "assets/bgm/lostEnd_bgm1.m4a",
+   "vol": 80
   }
  ]
 }
