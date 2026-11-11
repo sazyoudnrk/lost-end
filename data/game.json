@@ -997,7 +997,6 @@
            "route": [
             "R",
             "R",
-            "D",
             "R"
            ],
            "wait": true,
@@ -1012,7 +1011,6 @@
            "route": [
             "L",
             "L",
-            "D",
             "L"
            ],
            "wait": true,
