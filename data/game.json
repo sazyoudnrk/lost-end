@@ -57,6 +57,36 @@
    "id": "obj_food",
    "name": "備蓄食品（置物）",
    "image": "assets/characters/stock_food_obj.png"
+  },
+  {
+   "id": "bag_hero",
+   "name": "主人公のカバン",
+   "image": "assets/characters/bags.png",
+   "index": 0
+  },
+  {
+   "id": "bag_muro",
+   "name": "ムロのカバン",
+   "image": "assets/characters/bags.png",
+   "index": 1
+  },
+  {
+   "id": "bag_neisa",
+   "name": "ネイサのカバン",
+   "image": "assets/characters/bags.png",
+   "index": 2
+  },
+  {
+   "id": "bag_ninomae",
+   "name": "ニノマエのカバン",
+   "image": "assets/characters/bags.png",
+   "index": 3
+  },
+  {
+   "id": "bag_piwora",
+   "name": "ピヲラのカバン",
+   "image": "assets/characters/bags.png",
+   "index": 4
   }
  ],
  "faces": [],
@@ -1920,6 +1950,18 @@
        "through": false,
        "cmds": [
         {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "[shake]コンコン……",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "wait",
+         "ms": 300
+        },
+        {
          "t": "move",
          "map": 3,
          "x": 5,
@@ -1965,6 +2007,18 @@
        "through": false,
        "cmds": [
         {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "[shake]コンコン……",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "wait",
+         "ms": 300
+        },
+        {
          "t": "move",
          "map": 4,
          "x": 5,
@@ -2009,6 +2063,18 @@
        "priority": "same",
        "through": false,
        "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "[shake]コンコン……",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "wait",
+         "ms": 300
+        },
         {
          "t": "move",
          "map": 5,
@@ -2078,6 +2144,18 @@
        "priority": "same",
        "through": false,
        "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "[shake]コンコン……",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "wait",
+         "ms": 300
+        },
         {
          "t": "move",
          "map": 7,
@@ -2770,6 +2848,34 @@
        ]
       }
      ]
+    },
+    {
+     "id": 24,
+     "name": "ニノマエのカバン",
+     "x": 10,
+     "y": 4,
+     "pages": [
+      {
+       "cond": [],
+       "image": {
+        "charset": "bag_ninomae",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ニノマエのカバンだ。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2815,6 +2921,34 @@
        ]
       }
      ]
+    },
+    {
+     "id": 25,
+     "name": "ムロのカバン",
+     "x": 10,
+     "y": 4,
+     "pages": [
+      {
+       "cond": [],
+       "image": {
+        "charset": "bag_muro",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ムロのカバンだ。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -2856,6 +2990,34 @@
          "x": 5,
          "y": 9,
          "dir": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 26,
+     "name": "ネイサのカバン",
+     "x": 10,
+     "y": 4,
+     "pages": [
+      {
+       "cond": [],
+       "image": {
+        "charset": "bag_neisa",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ネイサのカバンだ。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -2994,6 +3156,34 @@
        "cmds": []
       }
      ]
+    },
+    {
+     "id": 27,
+     "name": "主人公のカバン",
+     "x": 10,
+     "y": 4,
+     "pages": [
+      {
+       "cond": [],
+       "image": {
+        "charset": "bag_hero",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "自分のカバンだ。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -3035,6 +3225,34 @@
          "x": 22,
          "y": 9,
          "dir": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 28,
+     "name": "ピヲラのカバン",
+     "x": 10,
+     "y": 4,
+     "pages": [
+      {
+       "cond": [],
+       "image": {
+        "charset": "bag_piwora",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ピヲラのカバンだ。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
