@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11j';
+const APP_VER='2026-11-11k';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -710,7 +710,7 @@ function cmdSummary(c){
     case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
     case'sleep':return '日付+1、朝に戻す';
     case'money':return c.op==='set'?`= ${c.val}`:`${c.op==='sub'?'−':'+'} ${c.val}`;
-    case'shop':return '交換画面を開く'+(c.fixed&&c.fixed.length?`（${fixedSum(c.fixed)}）`:'')+(c.tutorial?'・チュートリアル':'');
+    case'shop':return '交換画面を開く'+(c.fixed&&c.fixed.length?`（${fixedSum(c.fixed)}）`:'')+(c.tutorial?(c.tutorial==='sell'?'・いれるチュートリアル':'・とりだすチュートリアル'):'');
     case'shopview':return c.show===false?'消す':'見せる（操作不可）'+(c.fixed&&c.fixed.length?`（${fixedSum(c.fixed)}）`:'');
     case'nameinput':return `主人公の名前を入力（最大${c.max||8}文字）`;
     case'buylimit':return c.op==='set'?`= ${c.val}`:`+ ${c.val}`;
@@ -873,8 +873,8 @@ function cmdForm(b,d,rr){
     case'still':{const st=d.id&&G.stills.find(x=>x.id===d.id);c.append(h('div',{class:'row',style:'align-items:center'},st?thumb(st.image):null,fSel('スチル',d,'id',[['','消す'],...G.stills.map(x=>[x.id,x.name])],{on:rr})),fChk('フェードで切り替える',d,'fade'),
       h('div',{class:'hint'},'画面いっぱいに表示し、文章はその上に出ます。イベントが終わると自動で消えます'));
       if(!G.stills.length)c.append(h('div',{class:'hint'},'「素材」タブの「スチル」に画像を追加してください'));break}
-    case'shop':c.append(fixedForm(d,rr),fChk('チュートリアルにする（手順を案内し、その品を取り出すまで閉じられない）',d,'tutorial'),h('div',{class:'hint'},'品を指定すると今日の品ぞろえの代わりに並び、本日の取り出し回数を使いません'));break;
-    case'shopview':d.show=d.show!==false;c.append(fSel('',d,'show',[[true,'見せる'],[false,'消す']],{bool:true,on:rr}));if(d.show)c.append(fixedForm(d,rr),h('div',{class:'hint'},'交換画面を見せるだけで操作はできません。続く文章は画面の上に出ます。「消す」かイベント終了・場所移動で消えます'));break;
+    case'shop':if(d.tutorial===true)d.tutorial='buy';d.tutorial=d.tutorial||'';c.append(fixedForm(d,rr),sellForm(d,rr),fSel('チュートリアル',d,'tutorial',[['','なし'],['buy','とりだすの手順'],['sell','いれるの手順']]),h('div',{class:'hint'},'チュートリアル中は手順を案内し、終わるまで閉じられません'),h('div',{class:'hint'},'品を指定すると今日の品ぞろえの代わりに並び、本日の取り出し回数を使いません'));break;
+    case'shopview':d.show=d.show!==false;c.append(fSel('',d,'show',[[true,'見せる'],[false,'消す']],{bool:true,on:rr}));if(d.show)c.append(fixedForm(d,rr),sellForm(d,rr),h('div',{class:'hint'},'交換画面を見せるだけで操作はできません。続く文章は画面の上に出ます。「消す」かイベント終了・場所移動で消えます'));break;
     case'comment':c.append(fArea('注釈（ゲームには影響しません）',d,'text'));break;
   }
 }
@@ -898,6 +898,9 @@ function openEvent(m,ev,onClose){
 
 /* ===== 日ごとの配置 ===== */
 function fixedSum(L){return L.map(r=>{const it=G.items.find(i=>i.id===r.item);return(it?it.name:'?')+' '+(r.price||0)}).join('、')}
+function sellForm(d,rr){const w=card(null,fChk('「いれる」に出す物を限定する',d,'sellOnly',{on:rr}));if(d.sellOnly){d.sell=d.sell||[];
+  d.sell.forEach((id,i)=>{const o={v:id};w.append(h('div',{class:'row',style:'align-items:end'},fSel('アイテム',o,'v',itemOpts(),{num:true,on:()=>{d.sell[i]=o.v}}),btn('✕',()=>{d.sell.splice(i,1);changed();rr()},'sm dg')))});
+  w.append(btn('＋ 物を追加',()=>{d.sell.push(G.items[0]?G.items[0].id:0);changed();rr()},'sm'),h('div',{class:'hint'},'持っている物のうち、ここにある物だけが「いれる」に並びます'))}return w}
 function fixedForm(d,rr){d.fixed=d.fixed||[];const w=card('並べる品（空なら今日の品ぞろえ）');
   d.fixed.forEach((r,i)=>w.append(h('div',{class:'row',style:'align-items:end'},fSel('アイテム',r,'item',itemOpts(),{num:true}),fNum('価値',r,'price',{min:0}),btn('✕',()=>{d.fixed.splice(i,1);changed();rr()},'sm dg'))));
   w.append(btn('＋ 品を追加',()=>{d.fixed.push({item:G.items[0]?G.items[0].id:0,price:0});changed();rr()},'sm'));return w}

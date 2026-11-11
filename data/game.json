@@ -52,6 +52,11 @@
    "name": "ムロ（自作）",
    "image": "assets/characters/denryoku_chars.png",
    "index": 1
+  },
+  {
+   "id": "obj_food",
+   "name": "備蓄食品（置物）",
+   "image": "assets/characters/stock_food_obj.png"
   }
  ],
  "faces": [],
@@ -108,7 +113,15 @@
    "id": 9,
    "name": "備蓄食品",
    "desc": "長持ちする保存食",
-   "value": 250
+   "value": 250,
+   "icon": "ic_food"
+  },
+  {
+   "id": 10,
+   "name": "薬",
+   "desc": "ムロのポケットに入っていた薬",
+   "value": 300,
+   "icon": "ic_med"
   }
  ],
  "switches": [
@@ -308,9 +321,14 @@
          "t": "text",
          "face": "",
          "name": "",
-         "text": "ムロさんはポケットから薬を取り出して価値に変換した。",
-         "picPos": "C",
-         "pic": "-"
+         "text": "ムロさんはポケットから薬を取り出して渡してくれた。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "item",
+         "id": 10,
+         "n": 1
         },
         {
          "t": "sw",
@@ -318,9 +336,16 @@
          "val": true
         },
         {
-         "t": "money",
-         "op": "add",
-         "val": 300
+         "t": "shop",
+         "fixed": [
+          {
+           "item": 9,
+           "price": 250
+          }
+         ],
+         "sellOnly": true,
+         "sell": [10],
+         "tutorial": "sell"
         },
         {
          "t": "text",
@@ -338,7 +363,30 @@
            "price": 250
           }
          ],
-         "tutorial": true
+         "sellOnly": true,
+         "sell": [],
+         "tutorial": "buy"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "これ、みんな食べれるところに置いておこうよ。絶対お腹空くもん",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "item",
+         "id": 9,
+         "n": -1
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "エントランスに備蓄食品を置いた。",
+         "pic": "-",
+         "picPos": "C"
         },
         {
          "t": "var",
@@ -1658,6 +1706,49 @@
          "x": 6,
          "y": 10,
          "dir": 3
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 23,
+     "name": "備蓄食品（置物）",
+     "x": 8,
+     "y": 3,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 5
+        }
+       ],
+       "image": {
+        "charset": "obj_food",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "みんなの備蓄食品が置いてある。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -4357,5 +4448,16 @@
    "ピヲラ": 9
   }
  },
- "icons": []
+ "icons": [
+  {
+   "id": "ic_food",
+   "name": "備蓄食品",
+   "image": "assets/icons/stock_food.png"
+  },
+  {
+   "id": "ic_med",
+   "name": "薬",
+   "image": "assets/icons/medicine.png"
+  }
+ ]
 }
