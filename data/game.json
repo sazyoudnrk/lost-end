@@ -371,8 +371,8 @@
          "t": "move",
          "map": 8,
          "x": 2,
-         "y": 7,
-         "dir": 3
+         "y": 9,
+         "dir": 0
         }
        ]
       },
@@ -2956,20 +2956,31 @@
        "cond": [],
        "image": null,
        "trigger": "touch",
-       "priority": "below",
+       "priority": "same",
        "through": false,
        "cmds": [
         {
-         "t": "sw",
-         "id": 5,
-         "val": true
-        },
-        {
-         "t": "move",
-         "map": 1,
-         "x": 2,
-         "y": 10,
-         "dir": 3
+         "t": "if",
+         "cond": {
+          "type": "pdir",
+          "val": 3
+         },
+         "then": [
+          {
+           "t": "sw",
+           "id": 5,
+           "val": true
+          },
+          {
+           "t": "move",
+           "map": 1,
+           "x": 2,
+           "y": 10,
+           "dir": 3
+          }
+         ],
+         "else": [],
+         "hasElse": false
         }
        ]
       },
@@ -2984,14 +2995,25 @@
        ],
        "image": null,
        "trigger": "touch",
-       "priority": "below",
+       "priority": "same",
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "先に警告音を止めないと。"
+         "t": "if",
+         "cond": {
+          "type": "pdir",
+          "val": 3
+         },
+         "then": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "",
+           "text": "先に警告音を止めないと。"
+          }
+         ],
+         "else": [],
+         "hasElse": false
         }
        ]
       },
@@ -3005,13 +3027,24 @@
         }
        ],
        "trigger": "touch",
-       "priority": "below",
+       "priority": "same",
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "ハッチが開かない。"
+         "t": "if",
+         "cond": {
+          "type": "pdir",
+          "val": 3
+         },
+         "then": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "",
+           "text": "ハッチが開かない。"
+          }
+         ],
+         "else": [],
+         "hasElse": false
         }
        ],
        "image": null,
