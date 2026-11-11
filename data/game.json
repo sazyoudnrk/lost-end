@@ -134,7 +134,7 @@
   "ピヲラと過ごした回数",
   "",
   "進行度",
-  "",
+  "エントランスに入った方向（1=左 2=右）",
   "",
   "",
   "",
@@ -983,17 +983,44 @@
          "text": "エントランスに全員が集まっている。"
         },
         {
-         "t": "route",
-         "target": "player",
-         "route": [
-          "L",
-          "L",
-          "D",
-          "L"
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 6,
+          "op": "==",
+          "val": 1
+         },
+         "then": [
+          {
+           "t": "route",
+           "target": "player",
+           "route": [
+            "R",
+            "R",
+            "D",
+            "R"
+           ],
+           "wait": true,
+           "through": false,
+           "speed": 1
+          }
          ],
-         "wait": true,
-         "through": false,
-         "speed": 1
+         "else": [
+          {
+           "t": "route",
+           "target": "player",
+           "route": [
+            "L",
+            "L",
+            "D",
+            "L"
+           ],
+           "wait": true,
+           "through": false,
+           "speed": 1
+          }
+         ],
+         "hasElse": true
         },
         {
          "t": "text",
@@ -3455,6 +3482,12 @@
        "through": false,
        "cmds": [
         {
+         "t": "var",
+         "id": 6,
+         "op": "set",
+         "val": 1
+        },
+        {
          "t": "move",
          "map": 1,
          "x": 1,
@@ -3478,6 +3511,12 @@
        "priority": "below",
        "through": false,
        "cmds": [
+        {
+         "t": "var",
+         "id": 6,
+         "op": "set",
+         "val": 1
+        },
         {
          "t": "move",
          "map": 1,
@@ -3572,6 +3611,12 @@
        "through": false,
        "cmds": [
         {
+         "t": "var",
+         "id": 6,
+         "op": "set",
+         "val": 2
+        },
+        {
          "t": "move",
          "map": 1,
          "x": 11,
@@ -3595,6 +3640,12 @@
        "priority": "below",
        "through": false,
        "cmds": [
+        {
+         "t": "var",
+         "id": 6,
+         "op": "set",
+         "val": 2
+        },
         {
          "t": "move",
          "map": 1,
