@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-11m';
+const APP_VER='2026-11-11n';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -120,7 +120,11 @@ let toastEl=null,toastT=null;
 function toast(msg,ms=2200){if(!toastEl)toastEl=h('div',{class:'toast'});if(!toastEl.isConnected)document.body.append(toastEl);toastEl.textContent=msg;toastEl.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>toastEl.style.display='none',ms)}
 function field(label,input,hint){return h('label',{class:'fld'},label?h('span',null,label):null,input,hint?h('small',null,hint):null)}
 function fText(label,o,k,opt={}){const i=h('input',{type:'text',value:o[k]??'',placeholder:opt.ph||'',oninput:()=>{o[k]=i.value;changed();opt.on&&opt.on()}});return field(label,i,opt.hint)}
-function fNum(label,o,k,opt={}){const i=h('input',{type:'number',inputmode:'numeric',value:o[k]??0,oninput:()=>{let v=parseInt(i.value,10);if(isNaN(v))return;if(opt.min!=null)v=Math.max(opt.min,v);if(opt.max!=null)v=Math.min(opt.max,v);o[k]=v;changed();opt.on&&opt.on()}});return field(label,i,opt.hint)}
+function fNum(label,o,k,opt={}){const i=h('input',{type:'number',inputmode:'numeric',value:o[k]??0,oninput:()=>{let v=parseInt(i.value,10);if(isNaN(v))return;if(opt.min!=null)v=Math.max(opt.min,v);if(opt.max!=null)v=Math.min(opt.max,v);o[k]=v;changed();opt.on&&opt.on()}});
+  if(opt.min!=null&&opt.min>=0)return field(label,i,opt.hint);
+  // iPhoneの数字キーボードにはマイナスがないので、符号を切り替えるボタンを付ける
+  const sg=h('button',{type:'button',class:'btn sm',style:'flex:none;min-width:40px',onclick:()=>{const v=-(parseInt(i.value,10)||0);i.value=v;o[k]=v;changed();opt.on&&opt.on()}},'±');
+  return field(label,h('div',{style:'display:flex;gap:6px;align-items:center'},sg,i),opt.hint)}
 function fArea(label,o,k,opt={}){const i=h('textarea',{rows:opt.rows||4,oninput:()=>{o[k]=i.value;changed()}});i.value=o[k]??'';const f=field(label,i,opt.hint);f._input=i;return f}
 function fSel(label,o,k,opts,opt={}){const s=h('select',{onchange:()=>{const v=s.value;o[k]=opt.num?+v:opt.bool?v==='true':v;changed();opt.on&&opt.on()}},opts.map(([v,l])=>h('option',{value:String(v)},l)));s.value=String(o[k]??'');return field(label,s,opt.hint)}
 function fChk(label,o,k,opt={}){const i=h('input',{type:'checkbox',checked:!!o[k],onchange:()=>{o[k]=i.checked;changed();opt.on&&opt.on()}});return h('label',{class:'chk'},i,label)}
