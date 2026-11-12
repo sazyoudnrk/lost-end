@@ -6103,6 +6103,30 @@
             },
             {
              "t": "sleep"
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "day",
+              "op": "==",
+              "val": 2
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "wait",
+               "ms": 300
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "朝だ。一応エントランスに行ってみよう",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ]
             }
            ]
           },
@@ -6111,6 +6135,34 @@
            "cmds": []
           }
          ]
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": "==",
+         "val": 2
+        },
+        {
+         "type": "sw",
+         "id": 10,
+         "val": false
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "まだ眠くない。先にエントランスに行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
