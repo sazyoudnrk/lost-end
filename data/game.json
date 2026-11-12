@@ -767,44 +767,544 @@
            "label": "話すだけ",
            "cmds": [
             {
-             "t": "random",
-             "options": [
+             "t": "vcase",
+             "src": "day",
+             "id": 0,
+             "cases": [
               {
-               "label": "A",
+               "val": 1,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ニノマエ",
-                 "text": "（どうでもいい会話A：3日の航海の話題）",
-                 "pic": "ninomae_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（1日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（1日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（1日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "B",
+               "val": 2,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ニノマエ",
-                 "text": "（どうでもいい会話B：3日の航海の話題）",
-                 "pic": "ninomae_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（2日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（2日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（2日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "C",
+               "val": 3,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ニノマエ",
-                 "text": "（どうでもいい会話C：3日の航海の話題）",
-                 "pic": "ninomae_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（3日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（3日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（3日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 4,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（4日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（4日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（4日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 5,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（5日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（5日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（5日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 6,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（6日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（6日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（6日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 7,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（7日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（7日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（7日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 8,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（8日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（8日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（8日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 9,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（9日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（9日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（9日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 10,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ],
+             "hasElse": true,
+             "else": [
+              {
+               "t": "random",
+               "options": [
+                {
+                 "label": "A",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（どうでもいい会話A：3日の航海の話題）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "B",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（どうでもいい会話B：3日の航海の話題）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "C",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（どうでもいい会話C：3日の航海の話題）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
                 }
                ]
               }
@@ -1097,44 +1597,544 @@
            "label": "話すだけ",
            "cmds": [
             {
-             "t": "random",
-             "options": [
+             "t": "vcase",
+             "src": "day",
+             "id": 0,
+             "cases": [
               {
-               "label": "A",
+               "val": 1,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ネイサ",
-                 "text": "（どうでもいい会話A：3日の航海の話題）",
-                 "pic": "neisa_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（1日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（1日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（1日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "B",
+               "val": 2,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ネイサ",
-                 "text": "（どうでもいい会話B：3日の航海の話題）",
-                 "pic": "neisa_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（2日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（2日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（2日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "C",
+               "val": 3,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ネイサ",
-                 "text": "（どうでもいい会話C：3日の航海の話題）",
-                 "pic": "neisa_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（3日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（3日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（3日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 4,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（4日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（4日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（4日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 5,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（5日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（5日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（5日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 6,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（6日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（6日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（6日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 7,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（7日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（7日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（7日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 8,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（8日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（8日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（8日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 9,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（9日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（9日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（9日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 10,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ],
+             "hasElse": true,
+             "else": [
+              {
+               "t": "random",
+               "options": [
+                {
+                 "label": "A",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（どうでもいい会話A：3日の航海の話題）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "B",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（どうでもいい会話B：3日の航海の話題）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "C",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（どうでもいい会話C：3日の航海の話題）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
                 }
                ]
               }
@@ -3369,44 +4369,544 @@
            "label": "話すだけ",
            "cmds": [
             {
-             "t": "random",
-             "options": [
+             "t": "vcase",
+             "src": "day",
+             "id": 0,
+             "cases": [
               {
-               "label": "A",
+               "val": 1,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ピヲラ",
-                 "text": "（どうでもいい会話A：3日の航海の話題）",
-                 "pic": "piwora_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（1日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（1日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（1日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "B",
+               "val": 2,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ピヲラ",
-                 "text": "（どうでもいい会話B：3日の航海の話題）",
-                 "pic": "piwora_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（2日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（2日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（2日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "C",
+               "val": 3,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ピヲラ",
-                 "text": "（どうでもいい会話C：3日の航海の話題）",
-                 "pic": "piwora_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（3日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（3日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（3日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 4,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（4日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（4日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（4日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 5,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（5日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（5日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（5日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 6,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（6日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（6日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（6日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 7,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（7日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（7日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（7日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 8,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（8日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（8日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（8日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 9,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（9日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（9日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（9日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 10,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ],
+             "hasElse": true,
+             "else": [
+              {
+               "t": "random",
+               "options": [
+                {
+                 "label": "A",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（どうでもいい会話A：3日の航海の話題）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "B",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（どうでもいい会話B：3日の航海の話題）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "C",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（どうでもいい会話C：3日の航海の話題）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  }
+                 ]
                 }
                ]
               }
@@ -4831,44 +6331,544 @@
            "label": "話すだけ",
            "cmds": [
             {
-             "t": "random",
-             "options": [
+             "t": "vcase",
+             "src": "day",
+             "id": 0,
+             "cases": [
               {
-               "label": "A",
+               "val": 1,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "text": "（どうでもいい会話A：3日の航海の話題）",
-                 "pic": "muro_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（1日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（1日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（1日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "B",
+               "val": 2,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "text": "（どうでもいい会話B：3日の航海の話題）",
-                 "pic": "muro_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（2日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（2日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（2日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               },
               {
-               "label": "C",
+               "val": 3,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "text": "（どうでもいい会話C：3日の航海の話題）",
-                 "pic": "muro_normal",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（3日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（3日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（3日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 4,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（4日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（4日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（4日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 5,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（5日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（5日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（5日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 6,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（6日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（6日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（6日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 7,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（7日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（7日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（7日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 8,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（8日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（8日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（8日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 9,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（9日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（9日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（9日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 10,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ],
+             "hasElse": true,
+             "else": [
+              {
+               "t": "random",
+               "options": [
+                {
+                 "label": "A",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（どうでもいい会話A：3日の航海の話題）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "B",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（どうでもいい会話B：3日の航海の話題）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "C",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（どうでもいい会話C：3日の航海の話題）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
                 }
                ]
               }

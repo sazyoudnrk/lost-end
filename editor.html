@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12b';
+const APP_VER='2026-11-12c';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -655,7 +655,7 @@ const CT={
   text:{n:'文章',c:'#4a7fd0',make:()=>({t:'text',face:'',name:'',text:''})},
   choice:{n:'選択肢',c:'#c98a2a',make:()=>({t:'choice',options:[{label:'はい',cmds:[]},{label:'いいえ',cmds:[]}]})},
   if:{n:'条件分岐',c:'#c98a2a',make:()=>({t:'if',cond:{type:'sw',id:0,val:true},then:[],else:[],hasElse:false})},
-  vcase:{n:'変数で分岐',c:'#c98a2a',make:()=>({t:'vcase',id:0,cases:[{val:0,cmds:[]},{val:1,cmds:[]},{val:2,cmds:[]}],hasElse:true,else:[]})},
+  vcase:{n:'値で分岐',c:'#c98a2a',make:()=>({t:'vcase',id:0,cases:[{val:0,cmds:[]},{val:1,cmds:[]},{val:2,cmds:[]}],hasElse:true,else:[]})},
   random:{n:'ランダム分岐',c:'#c98a2a',make:()=>({t:'random',options:[{label:'A',cmds:[]},{label:'B',cmds:[]},{label:'C',cmds:[]}]})},
   sw:{n:'スイッチ',c:'#c84a5a',make:()=>({t:'sw',id:0,val:true})},
   var:{n:'変数',c:'#c84a5a',make:()=>({t:'var',id:0,op:'set',val:0})},
@@ -709,7 +709,7 @@ function cmdSummary(c){
     case'still':return(c.id?(G.stills.find(x=>x.id===c.id)||{name:'?'}).name:'消す')+(c.fade===false?'':'（フェード）');
     case'choice':return c.options.map(o=>o.label).join(' / ');
     case'if':return condSummary(c.cond);
-    case'vcase':return `${varName(c.id)} の値で分岐（${(c.cases||[]).map(x=>x.val).join(', ')}${c.hasElse?', それ以外':''}）`;
+    case'vcase':return `${c.src==='day'?'日付':c.src==='slot'?'時間帯':varName(c.id)} の値で分岐（${(c.cases||[]).map(x=>x.val).join(', ')}${c.hasElse?', それ以外':''}）`;
     case'random':return `${(c.options||[]).length}つの中からランダム`;
     case'sw':return `${swName(c.id)} = ${c.val?'ON':'OFF'}`;
     case'var':return `${varName(c.id)} ${{set:'=',add:'+=',sub:'-=',rand:'= 乱数0〜'}[c.op]} ${c.val}`;
@@ -776,7 +776,7 @@ function cmdTree(root,rr){
     arr.forEach((c,i)=>{
       wrap.append(row(depth,'',label(c),()=>cmdMenu(arr,i,rr)));
       if(c.t==='choice'){c.options.forEach(o=>{wrap.append(row(depth+1,'br','▸ 「'+o.label+'」のとき'));list(o.cmds,depth+2)});wrap.append(row(depth+1,'br','◆ 分岐終了'))}
-      if(c.t==='vcase'){(c.cases||[]).forEach(k=>{wrap.append(row(depth+1,'br',`▸ ${k.val} のとき`));list(k.cmds,depth+2)});if(c.hasElse){wrap.append(row(depth+1,'br','▸ それ以外'));list(c.else,depth+2)}wrap.append(row(depth+1,'br','◆ 分岐終了'))}
+      if(c.t==='vcase'){(c.cases||[]).forEach(k=>{wrap.append(row(depth+1,'br',`▸ ${c.src==='day'?k.val+'日目':k.val} のとき`));list(k.cmds,depth+2)});if(c.hasElse){wrap.append(row(depth+1,'br','▸ それ以外'));list(c.else,depth+2)}wrap.append(row(depth+1,'br','◆ 分岐終了'))}
       if(c.t==='random'){(c.options||[]).forEach(o=>{wrap.append(row(depth+1,'br',`▸ 候補「${o.label}」`));list(o.cmds,depth+2)});wrap.append(row(depth+1,'br','◆ 分岐終了'))}
       if(c.t==='if'){wrap.append(row(depth+1,'br','▸ 条件を満たすとき'));list(c.then,depth+2);if(c.hasElse){wrap.append(row(depth+1,'br','▸ それ以外'));list(c.else,depth+2)}wrap.append(row(depth+1,'br','◆ 分岐終了'))}
     });
@@ -850,7 +850,7 @@ function cmdForm(b,d,rr){
       break;
     case'if':c.append(...condForm(d.cond,rr),fChk('「それ以外のとき」を作る',d,'hasElse'));break;
     case'vcase':
-      c.append(fSel('変数',d,'id',varOpts(),{num:true}),h('div',{class:'hint'},'変数の値ごとに中身を分けます（例：話した回数が0・1・2…）'));
+      d.src=d.src||'var';c.append(fSel('何で分けるか',d,'src',[['var','変数'],['day','日付（何日目）'],['slot','時間帯（0朝 1昼 2夜）']],{on:rr}),d.src==='var'?fSel('変数',d,'id',varOpts(),{num:true}):null,h('div',{class:'hint'},'値ごとに中身を分けます（例：話した回数が0・1・2…、日付が1・2・3…）'));
       d.cases.forEach((k,i)=>{const inp=h('input',{type:'number',inputmode:'numeric',value:k.val,oninput:()=>{k.val=parseInt(inp.value,10)||0}});
         c.append(h('div',{class:'row',style:'align-items:center;margin:5px 0'},inp,h('span',{style:'flex:none;color:var(--mut)'},'のとき'),btn('✕',()=>{if(k.cmds.length&&!confirm('この中身も消えます'))return;d.cases.splice(i,1);rr()},'sm dg')))});
       c.append(btn('＋ 値を追加',()=>{const mx=Math.max(-1,...d.cases.map(k=>+k.val));d.cases.push({val:mx+1,cmds:[]});rr()},'sm'),fChk('「それ以外のとき」を作る',d,'hasElse'));break;

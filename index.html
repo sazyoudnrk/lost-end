@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-12b';
+const GAME_VER='2026-11-12c';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -387,7 +387,7 @@ async function cmd(c,cx){
     case'text':await showText(c);break;
     case'choice':{const i=await showChoice(c.options.map(o=>o.label));await exec(c.options[i].cmds,cx);break}
     case'if':await exec(evalCond(c.cond,cx)?c.then:(c.hasElse?c.else:[]),cx);break;
-    case'vcase':{const v=S.vr[c.id]||0,k=(c.cases||[]).find(x=>+x.val===v);await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
+    case'vcase':{const v=c.src==='day'?S.day:c.src==='slot'?S.slot:(S.vr[c.id]||0),k=(c.cases||[]).find(x=>+x.val===v);await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
     case'random':{const o=c.options||[];if(o.length)await exec(o[Math.floor(Math.random()*o.length)].cmds,cx);break}
     case'sw':S.sw[c.id]=!!c.val;placeScheduled();break;
     case'var':{let v=S.vr[c.id]||0;const n=+c.val||0;v=c.op==='set'?n:c.op==='add'?v+n:c.op==='sub'?v-n:c.op==='rand'?Math.floor(Math.random()*(n+1)):v;S.vr[c.id]=v;placeScheduled();break}
