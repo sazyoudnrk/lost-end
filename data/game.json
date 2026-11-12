@@ -171,6 +171,13 @@
    "desc": "星間ワープ装置の部品",
    "value": 0,
    "gift": false
+  },
+  {
+   "id": 14,
+   "name": "星間ワープ装置-E04 C05",
+   "desc": "星間ワープ装置の部品",
+   "value": 0,
+   "gift": false
   }
  ],
  "switches": [
@@ -3484,6 +3491,17 @@
          "t": "sw",
          "id": 10,
          "val": true
+        },
+        {
+         "t": "stock",
+         "items": [
+          {
+           "item": 14,
+           "sold": true
+          }
+         ],
+         "fill": 2,
+         "overheat": true
         },
         {
          "t": "wait",
@@ -8371,6 +8389,16 @@
     "from": 1,
     "to": "",
     "sw": 12,
+    "once": true,
+    "limitUp": 0
+   },
+   {
+    "item": 14,
+    "price": 300,
+    "weight": 0,
+    "from": 1,
+    "to": "",
+    "sw": -1,
     "once": true,
     "limitUp": 0
    }

@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12f';
+const APP_VER='2026-11-12g';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -671,6 +671,7 @@ const CT={
   shop:{n:'等価交換機',c:'#2a9a9a',make:()=>({t:'shop'})},
   shopview:{n:'交換画面を見せる',c:'#2a9a9a',make:()=>({t:'shopview',show:true,fixed:[]})},
   nameinput:{n:'名前入力',c:'#2a9a9a',make:()=>({t:'nameinput',max:8,def:''})},
+  stock:{n:'今日の品ぞろえ',c:'#2a9a9a',make:()=>({t:'stock',items:[],fill:'',overheat:false})},
   buylimit:{n:'取り出し回数',c:'#2a9a9a',make:()=>({t:'buylimit',op:'add',val:1})},
   route:{n:'歩かせる',c:'#8a5ad0',make:()=>({t:'route',target:'this',route:[],wait:true,through:false,speed:1})},
   turn:{n:'向きを変える',c:'#8a5ad0',make:()=>({t:'turn',target:'this',dir:'P'})},
@@ -731,6 +732,7 @@ function cmdSummary(c){
     case'shop':return '交換画面を開く'+(c.fixed&&c.fixed.length?`（${fixedSum(c.fixed)}）`:'')+(c.tutorial?(c.tutorial==='sell'?'・いれるチュートリアル':'・とりだすチュートリアル'):'');
     case'shopview':return c.show===false?'消す':'見せる（操作不可）'+(c.fixed&&c.fixed.length?`（${fixedSum(c.fixed)}）`:'');
     case'nameinput':return `主人公の名前を入力（最大${c.max||8}文字）`;
+    case'stock':return (c.items||[]).map(f=>{const it=G.items.find(i=>i.id===+f.item);return (it?it.name:'?')+(f.sold?'（交換済み）':'')}).join('、')+`＋ランダム${c.fill===''||c.fill==null?'（残り）':c.fill+'つ'}`+(c.overheat?'・オーバーヒート':'');
     case'buylimit':return c.op==='empty'?'今日の品ぞろえを空にする':c.op==='today'?'今日はもう取り出せなくする':c.op==='set'?`= ${c.val}`:`+ ${c.val}`;
     case'comment':return c.text||'';
   }return '';
@@ -890,6 +892,11 @@ function cmdForm(b,d,rr){
       h('div',{class:'hint'},'最後の時間帯（夜）より先には進みません。日付を進めるのは「次の日へ」'));break;
     case'nameinput':c.append(fNum('最大文字数',d,'max',{min:1,max:16}),fText('最初に入っている名前',d,'def',{ph:'空でOK'}),h('div',{class:'hint'},'入力した名前は、文章の名前を「主人公」にすると表示され、本文では [pname] で出せます'));break;
     case'money':c.append(h('div',{class:'row'},fSel('操作',d,'op',[['add','増やす'],['sub','減らす'],['set','にする']]),fNum('価値',d,'val',{min:0})));break;
+    case'stock':{d.items=d.items||[];const w=card('必ず並ぶ品');
+      d.items.forEach((f,i)=>w.append(h('div',{class:'row',style:'align-items:end'},fSel('アイテム',f,'item',itemOpts(),{num:true}),fChk('交換済み',f,'sold'),btn('✕',()=>{d.items.splice(i,1);changed();rr()},'sm dg'))));
+      w.append(btn('＋ 品を追加',()=>{d.items.push({item:G.items[0]?G.items[0].id:0,sold:false});changed();rr()},'sm'));
+      c.append(w,fText('ほかにランダムで並べる数（空なら「1日に並ぶ数」まで）',d,'fill'),fChk('オーバーヒートさせる（今日はもう取り出せない）',d,'overheat'),
+        h('div',{class:'hint'},'今日の品ぞろえをこの場で作り直します。必ず並ぶ品は、等価交換機の品ぞろえ表に登録してある品から選んでください（値段は表のもの。重み0にしておけばランダムには出ません）'));break}
     case'buylimit':c.append(h('div',{class:'row'},fSel('操作',d,'op',[['add','増やす'],['set','にする'],['today','今日はもう取り出せなくする'],['empty','今日の品ぞろえを空にする']],{on:rr}),d.op==='today'||d.op==='empty'?h('span'):fNum('回数',d,'val',{min:0})),h('div',{class:'hint'},'等価交換機で1日に取り出せる回数（オーバーヒート対策のアップデートなど）'));break;
     case'pic':{const pc=d.id&&G.pictures.find(x=>x.id===d.id);c.append(fSel('位置',d,'pos',[['L','左'],['C','中央'],['R','右'],['A','全部消す']],{on:rr}));
       if(d.pos!=='A')c.append(h('div',{class:'row',style:'align-items:center'},pc?thumb(pc.image):null,fSel('立ち絵',d,'id',[['','消す'],...G.pictures.map(x=>[x.id,x.name])],{on:rr})));

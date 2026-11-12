@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-12f';
+const GAME_VER='2026-11-12g';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -257,10 +257,10 @@ function placeScheduled(){
   refresh();
 }
 // 品ぞろえ表から重み付きで抽選（同じ品は1日1つ）
-function drawShop(){
-  const pool=G.shop.pool.filter((r,i)=>G.items.some(it=>it.id===r.item)&&S.day>=(r.from||1)&&(r.to==null||r.to===''||S.day<=r.to)&&(r.sw==null||r.sw<0||S.sw[r.sw])&&!(r.once&&S.once[i]));
+function drawShop(count,ex){
+  const pool=G.shop.pool.filter((r,i)=>!(ex&&ex.has(i))&&G.items.some(it=>it.id===r.item)&&S.day>=(r.from||1)&&(r.to==null||r.to===''||S.day<=r.to)&&(r.sw==null||r.sw<0||S.sw[r.sw])&&!(r.once&&S.once[i]));
   const out=[],cand=pool.map(r=>({r,w:Math.max(0,r.weight==null?1:+r.weight)})).filter(c=>c.w>0);
-  for(let n=0;n<(G.shop.count||3)&&cand.length;n++){const tot=cand.reduce((a,c)=>a+c.w,0);let x=Math.random()*tot,k=0;for(;k<cand.length-1;k++){x-=cand[k].w;if(x<0)break}
+  for(let n=0;n<(count??(G.shop.count||3))&&cand.length;n++){const tot=cand.reduce((a,c)=>a+c.w,0);let x=Math.random()*tot,k=0;for(;k<cand.length-1;k++){x-=cand[k].w;if(x<0)break}
     out.push({p:G.shop.pool.indexOf(cand[k].r),sold:false});cand.splice(k,1)}
   return out;
 }
@@ -399,6 +399,9 @@ async function cmd(c,cx){
     case'time':{const n=G.system.slots.length;S.slot=c.op==='set'?Math.max(0,Math.min(n-1,+c.slot||0)):Math.min(n-1,S.slot+(+c.n||1));placeScheduled();updHud();break}
     case'sleep':await nextDay();break;
     case'money':{const n=+c.val||0;S.money=Math.max(0,c.op==='set'?n:c.op==='sub'?S.money-n:S.money+n);updHud();refresh();break}
+    case'stock':{const out=[];for(const f of c.items||[]){const i=G.shop.pool.findIndex(r=>r.item===+f.item);if(i<0)continue;out.push({p:i,sold:!!f.sold});if(f.sold&&G.shop.pool[i].once)S.once[i]=true}
+      const fill=c.fill==null||c.fill===''?Math.max(0,(G.shop.count||3)-out.length):+c.fill;out.push(...drawShop(fill,new Set(out.map(o=>o.p))));S.shop=out;
+      if(c.overheat)S.buys=S.buyLimit;break}
     case'buylimit':if(c.op==='today'){S.buys=S.buyLimit;break}if(c.op==='empty'){S.shop=[];break}S.buyLimit=Math.max(0,c.op==='set'?+c.val||0:S.buyLimit+(+c.val||0));break;
     case'shop':hideMsg();await openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,sell:c.sellOnly?(c.sell||[]):null,tutorial:c.tutorial===true?'buy':(c.tutorial||'')});break;
     case'shopview':if(c.show===false)closeShopView();else{hideMsg();clearPics();}if(c.show!==false)openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,sell:c.sellOnly?(c.sell||[]):null,view:true});break;
