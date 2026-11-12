@@ -54,6 +54,7 @@ textarea{resize:vertical;line-height:1.5}
 .cmd{padding:8px;border-bottom:1px solid var(--bd);font-size:14px;display:flex;gap:6px;align-items:flex-start;min-height:36px}
 .cmd .tg{flex:none;font-size:11px;padding:1px 6px;border-radius:4px;color:#fff;margin-top:2px}
 .cmd .sm{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap;word-break:break-all}
+.cmd.fold{cursor:pointer}
 .cmd.br{color:var(--mut);font-size:13px;min-height:0;padding-top:5px;padding-bottom:5px}
 .cmd.add{color:var(--ac)}
 .cmd:active{background:var(--bg3)}
@@ -89,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12j';
+const APP_VER='2026-11-12k';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -772,17 +773,25 @@ function imageField(pg,rr,m){
   return out;
 }
 function lastTextBefore(arr,idx){for(let i=idx-1;i>=0;i--)if(arr[i].t==='text')return arr[i];return null}
+const COLL=new WeakSet();// 閉じている分岐（中身の配列）。エディタを開いている間だけ覚える
 function cmdTree(root,rr){
   const wrap=h('div',{class:'cmds'});
   const row=(depth,cls,content,onclick)=>h('div',{class:'cmd '+cls,style:`padding-left:${8+depth*14}px`,onclick},content);
   const label=c=>{const ct=CT[c.t]||{n:c.t,c:'#666'};return[h('span',{class:'tg',style:'background:'+ct.c},ct.n),h('span',{class:'sm'},cmdSummary(c))]};
+  const count=a=>{let n=0;(function w(x){for(const c of x){n++;for(const k of subs(c))w(k)}})(a);return n};
+  const subs=c=>c.t==='choice'||c.t==='random'?(c.options||[]).map(o=>o.cmds):c.t==='vcase'?[...(c.cases||[]).map(k=>k.cmds),...(c.hasElse?[c.else]:[])]:c.t==='if'?[c.then,...(c.hasElse?[c.else]:[])]:[];
+  const all=[];(function w(a){for(const c of a)for(const k of subs(c)){all.push(k);w(k)}})(root);
+  if(all.length)wrap.append(h('div',{class:'row',style:'gap:6px;margin:0 0 6px'},btn('▸ 分岐を全部閉じる',()=>{all.forEach(a=>COLL.add(a));rr()},'sm'),btn('▾ 全部開く',()=>{all.forEach(a=>COLL.delete(a));rr()},'sm')));
+  const br=(depth,text,arr,list)=>{const shut=COLL.has(arr);
+    wrap.append(row(depth+1,'br fold',(shut?'▸ ':'▾ ')+text+(shut?`（${count(arr)}件・タップで開く）`:''),()=>{shut?COLL.delete(arr):COLL.add(arr);rr()}));
+    if(!shut)list(arr,depth+2)};
   (function list(arr,depth){
     arr.forEach((c,i)=>{
       wrap.append(row(depth,'',label(c),()=>cmdMenu(arr,i,rr)));
-      if(c.t==='choice'){c.options.forEach(o=>{wrap.append(row(depth+1,'br','▸ 「'+o.label+'」のとき'));list(o.cmds,depth+2)});wrap.append(row(depth+1,'br','◆ 分岐終了'))}
-      if(c.t==='vcase'){(c.cases||[]).forEach(k=>{wrap.append(row(depth+1,'br',`▸ ${c.src==='day'?k.val+'日目':k.val} のとき`));list(k.cmds,depth+2)});if(c.hasElse){wrap.append(row(depth+1,'br','▸ それ以外'));list(c.else,depth+2)}wrap.append(row(depth+1,'br','◆ 分岐終了'))}
-      if(c.t==='random'){(c.options||[]).forEach(o=>{wrap.append(row(depth+1,'br',`▸ 候補「${o.label}」`));list(o.cmds,depth+2)});wrap.append(row(depth+1,'br','◆ 分岐終了'))}
-      if(c.t==='if'){wrap.append(row(depth+1,'br','▸ 条件を満たすとき'));list(c.then,depth+2);if(c.hasElse){wrap.append(row(depth+1,'br','▸ それ以外'));list(c.else,depth+2)}wrap.append(row(depth+1,'br','◆ 分岐終了'))}
+      if(c.t==='choice'){c.options.forEach(o=>br(depth,'「'+o.label+'」のとき',o.cmds,list));wrap.append(row(depth+1,'br','◆ 分岐終了'))}
+      if(c.t==='vcase'){(c.cases||[]).forEach(k=>br(depth,`${c.src==='day'?k.val+'日目':k.val} のとき`,k.cmds,list));if(c.hasElse)br(depth,'それ以外',c.else,list);wrap.append(row(depth+1,'br','◆ 分岐終了'))}
+      if(c.t==='random'){(c.options||[]).forEach(o=>br(depth,`候補「${o.label}」`,o.cmds,list));wrap.append(row(depth+1,'br','◆ 分岐終了'))}
+      if(c.t==='if'){br(depth,'条件を満たすとき',c.then,list);if(c.hasElse)br(depth,'それ以外',c.else,list);wrap.append(row(depth+1,'br','◆ 分岐終了'))}
     });
     wrap.append(row(depth,'add','＋',()=>addMenu(arr,arr.length,rr)));
   })(root,0);
