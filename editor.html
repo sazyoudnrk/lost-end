@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12a';
+const APP_VER='2026-11-12b';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -969,7 +969,7 @@ function shopCard(){
     c.append(h('div',{class:'list-row'},h('div',{style:'flex:1;font-size:14px'},h('b',null,it?it.name:'(アイテムなし)'),h('div',{class:'hint',style:'margin:0'},
       `価値${r.price}・重み${r.weight??1}・${r.from||1}〜${r.to||''}日目`+(r.sw>=0?`・${swName(r.sw)}ON時`:'')+(r.once?'・一度きり':'')+(r.limitUp?`・取り出し+${r.limitUp}`:''))),
       btn('編集',()=>editPool(r,o=>{S0.pool[i]=o;changed();renderDB()}),'sm'),btn('✕',()=>{S0.pool.splice(i,1);changed();renderDB()},'sm dg')))});
-  c.append(h('div',{style:'margin-top:6px'},btn('＋ 品を追加',()=>{if(!G.items.length){toast('先にアイテムを作ってください');return}editPool({item:G.items[0].id,price:10,weight:1,from:1,to:'',sw:-1,once:false,limitUp:0},o=>{S0.pool.push(o);changed();renderDB()})},'sm')));
+  c.append(h('div',{style:'margin-top:6px'},btn('＋ 品を追加',()=>{if(!G.items.length){toast('先にアイテムを作ってください');return}editPool({item:G.items[0].id,price:10,weight:1,from:1,to:'',sw:-1,once:true,limitUp:0},o=>{S0.pool.push(o);changed();renderDB()})},'sm')));
   return c;
 }
 function editPool(r,onSave){const d=clone(r);d.to=d.to||0;
