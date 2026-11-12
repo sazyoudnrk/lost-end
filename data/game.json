@@ -774,7 +774,7 @@
          "t": "choice",
          "options": [
           {
-           "label": "過ごす",
+           "label": "一緒に過ごす",
            "cmds": [
             {
              "t": "if",
@@ -1764,7 +1764,7 @@
          "t": "choice",
          "options": [
           {
-           "label": "過ごす",
+           "label": "一緒に過ごす",
            "cmds": [
             {
              "t": "if",
@@ -4707,7 +4707,7 @@
          "t": "choice",
          "options": [
           {
-           "label": "過ごす",
+           "label": "一緒に過ごす",
            "cmds": [
             {
              "t": "if",
@@ -6881,7 +6881,7 @@
          "t": "choice",
          "options": [
           {
-           "label": "過ごす",
+           "label": "一緒に過ごす",
            "cmds": [
             {
              "t": "if",
