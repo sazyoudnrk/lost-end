@@ -1468,7 +1468,7 @@
        ],
        "image": {
         "charset": "neisa",
-        "dir": 1
+        "dir": 0
        },
        "trigger": "action",
        "priority": "same",
@@ -1614,7 +1614,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（1日目のどうでもいい会話A）",
+                     "text": "３日でほんとに着くのかな？こんなトラブル初めてだよ",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -1627,7 +1627,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（1日目のどうでもいい会話B）",
+                     "text": "退屈してるなら誰かと時間を潰してみたら？",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -1640,7 +1640,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（1日目のどうでもいい会話C）",
+                     "text": "ロストエンドには電子書籍しかないでしょう？昔は紙の本がたくさんあったんだって。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -2157,7 +2157,7 @@
        ],
        "image": {
         "charset": "neisa",
-        "dir": 1
+        "dir": 0
        },
        "trigger": "action",
        "priority": "same",
@@ -4386,7 +4386,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（1日目のどうでもいい会話A）",
+                     "text": "6時間のエレガントな旅♡が三日間に変わっただけよね！前向きに考えましょ！",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -6348,7 +6348,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（1日目のどうでもいい会話A）",
+                     "text": "僕は結構長く生きてる方ですが、星間旅行で不具合に遭うのは初めてです。",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -6361,7 +6361,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（1日目のどうでもいい会話B）",
+                     "text": "なぜ旅程が6時間から3日間になるんでしょう。低出力モードでもそんな時間かからないはずなんですが……",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -6374,7 +6374,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（1日目のどうでもいい会話C）",
+                     "text": "こんなに人と喋ったの久しぶりです。たまには悪くないですね。",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
