@@ -797,7 +797,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（1日目のどうでもいい会話A）",
+                     "text": "そんなに金ないから、滞在期間が変わるのはすごく困る……",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -810,7 +810,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（1日目のどうでもいい会話B）",
+                     "text": "警告音がうるさくて寝れてなかった。\nあんたらが止めてくれて良かった。",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -823,7 +823,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（1日目のどうでもいい会話C）",
+                     "text": "腹減った。",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
