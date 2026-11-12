@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12h';
+const APP_VER='2026-11-12i';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -809,10 +809,13 @@ function addMenu(arr,idx,rr){
     h('button',{class:'mi cancel',onclick:()=>ov.remove()},'キャンセル')));
   document.body.append(ov);
 }
+let CUR_EV=null;
+function evChar(ev){const N=(G.system.names||[]).filter(n=>n!=='主人公').sort((a,b)=>b.length-a.length);if(!ev)return'';return N.find(n=>ev.name===n||ev.name.startsWith(n))||''}
+function defPic(name){if(!name)return null;const m=(G.system.charPics||{})[name];if(m)return G.pictures.some(p=>p.id===m)?m:null;const p=G.pictures.find(x=>x.name.startsWith(name+'_')||x.name===name);return p?p.id:null}
 function addCmd(arr,idx,rr,t){
   const c=CT[t].make();
   if(t==='erase'||t==='end'||t==='sleep'){arr.splice(idx,0,c);changed();rr();return}
-  if(t==='text'){const p=lastTextBefore(arr,idx);if(p){c.face=p.face;c.name=p.name}return textChain(arr,idx,rr,c)}
+  if(t==='text'){const p=lastTextBefore(arr,idx);if(p){c.face=p.face;c.name=p.name}else c.name=evChar(CUR_EV);const dp=defPic(c.name);if(dp){c.pic=dp;c.picPos=(p&&p.name===c.name&&p.picPos)||'C'}return textChain(arr,idx,rr,c)}
   editCmd(c,s=>{arr.splice(idx,0,s);changed();rr()});
 }
 function textChain(arr,idx,rr,c){editCmd(c,s=>{arr.splice(idx,0,s);changed();rr()},{next:s=>{arr.splice(idx,0,s);changed();rr();textChain(arr,idx+1,rr,{t:'text',face:s.face,name:s.name,picPos:s.picPos,text:''})}})}
@@ -825,7 +828,7 @@ function editCmd(c,onSave,opts={}){
 // 名前：登場人物から選ぶ（その他は自由入力）
 function nameField(d,rr){
   const N=G.system.names||[],cur=d.name||'',other=d._nameOther||(cur&&!N.includes(cur));
-  const sel=h('select',{onchange:()=>{if(sel.value==='__o'){d._nameOther=true}else{d._nameOther=false;d.name=sel.value}rr()}},
+  const sel=h('select',{onchange:()=>{if(sel.value==='__o'){d._nameOther=true}else{d._nameOther=false;d.name=sel.value;const dp=defPic(d.name);if(dp){d.pic=dp;d.picPos=d.picPos||'C'}}rr()}},
     h('option',{value:''},'（名前なし）'),...N.map(n=>h('option',{value:n},n)),h('option',{value:'__o'},'その他（自由に入力）'));
   sel.value=other?'__o':cur;
   const box=h('div',null,field('名前',sel));
@@ -911,7 +914,7 @@ function cmdForm(b,d,rr){
   }
 }
 function openEvent(m,ev,onClose){
-  const st={pi:0};
+  const st={pi:0};CUR_EV=ev;
   sheet(`イベント ${pad3(ev.id)}`,(b,api)=>{
     if(st.pi>=ev.pages.length)st.pi=ev.pages.length-1;const pg=ev.pages[st.pi];
     b.append(card(null,fText('名前',ev,'name'),h('div',{class:'row'},fNum('X',ev,'x',{min:0,max:m.w-1,on:reqDraw}),fNum('Y',ev,'y',{min:0,max:m.h-1,on:reqDraw}))));
@@ -1020,6 +1023,8 @@ function renderDB(){
   const SY=G.system,slotsT={v:SY.slots.join('、')};
   const NT={v:(SY.names||[]).join('、')};
   T.append(card('登場人物',fText('名前（「、」区切り）',NT,'v',{on:()=>{SY.names=NT.v.split(/[、,，]/).map(x=>x.trim()).filter(Boolean)}}),h('div',{class:'hint'},'「文章」の名前のプルダウンに出る候補です'),
+    h('div',{class:'card-t',style:'margin-top:6px'},'いつもの立ち絵'),...(SY.names||[]).map(n=>{SY.charPics=SY.charPics||{};return fSel(n,SY.charPics,n,[['','なし'],...G.pictures.map(p=>[p.id,p.name])])}),
+    h('div',{class:'hint'},'文章の名前をこの人にすると、この立ち絵が自動で選ばれます（あとで表情を変えられます）'),
     h('div',{class:'card-t',style:'margin-top:6px'},'名前の公開'),...(SY.names||[]).map(n=>{if(SY.nameSw[n]==null)SY.nameSw[n]=-1;return fSel(n,SY.nameSw,n,[[-1,'最初から表示'],...swOpts()],{num:true})}),
     h('div',{class:'hint'},'スイッチを選ぶと、そのスイッチがONになるまで名前欄が「？」になります（自己紹介の会話の後で「スイッチ」コマンドでONにする）')));
   T.append(card('日付と時間帯',fText('時間帯（「、」区切り）',slotsT,'v',{on:()=>{const a=slotsT.v.split(/[、,，]/).map(x=>x.trim()).filter(Boolean);if(a.length)SY.slots=a}}),
