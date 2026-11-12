@@ -76,7 +76,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #shop .bar{display:flex;gap:8px}#shop .bar .ui-btn{text-align:center}#shop #shopOk{flex:1;font-size:17px}
 
 #screen{position:fixed;left:0;top:0;overflow:hidden;background:#000;transform-origin:0 0}
-.ui-btn.kf{background:#fff;color:#000}
+.ui-btn.kf{background:#fff;color:#000;box-shadow:0 0 0 2px #000,0 0 0 4px #fff}
 .ui-btn:disabled{opacity:.5}
 body.notouch #pad,body.notouch #abtn{display:none}
 </style>
@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-12h';
+const GAME_VER='2026-11-12i';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
