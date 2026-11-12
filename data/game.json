@@ -178,6 +178,41 @@
    "desc": "星間ワープ装置の部品",
    "value": 0,
    "gift": false
+  },
+  {
+   "id": 15,
+   "name": "鉛筆",
+   "desc": "ふつうの鉛筆",
+   "value": 1,
+   "gift": true
+  },
+  {
+   "id": 16,
+   "name": "ニノマエの鉛筆画",
+   "desc": "ニノマエが鉛筆で描いた絵",
+   "value": 2000,
+   "gift": true
+  },
+  {
+   "id": 17,
+   "name": "無限ポテチ",
+   "desc": "無限にポテトチップスが出てくるお菓子。子供の肥満防止条例によって廃盤",
+   "value": 300,
+   "gift": true
+  },
+  {
+   "id": 18,
+   "name": "ダクトテープバナナ:レプリカ",
+   "desc": "大昔の芸術のレプリカ。金属製",
+   "value": 300,
+   "gift": true
+  },
+  {
+   "id": 19,
+   "name": "植物図鑑",
+   "desc": "ロストエンドには存在しない植物の載った図鑑",
+   "value": 300,
+   "gift": true
   }
  ],
  "switches": [
@@ -216,10 +251,10 @@
   "正気度_ニノマエ",
   "正気度_ピヲラ",
   "プレゼントしたアイテム",
-  "",
-  "",
-  "",
-  "",
+  "協力依頼_ピヲラ（1=まだ 2=済）",
+  "協力依頼_ニノマエ（1=まだ 2=済）",
+  "協力依頼_ネイサ（1=まだ 2=済）",
+  "協力依頼の残り人数",
   "",
   "",
   ""
@@ -774,112 +809,186 @@
          "t": "choice",
          "options": [
           {
+           "label": "船のパーツを集めたい",
+           "cond": {
+            "type": "var",
+            "id": 14,
+            "op": "==",
+            "val": 1
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "主人公",
+             "text": "船を直すためのパーツを集めたいんだ。価値になりそうなものがあったら協力してもらえないかな",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ニノマエ",
+             "text": "（協力を頼まれたときのニノマエの返事）",
+             "pic": "ninomae_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "item",
+             "id": 18,
+             "n": 1
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "ダクトテープバナナ:レプリカを受け取った。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 14,
+             "op": "set",
+             "val": 2
+            },
+            {
+             "t": "var",
+             "id": 16,
+             "op": "sub",
+             "val": 1
+            }
+           ]
+          },
+          {
            "label": "一緒に過ごす",
            "cmds": [
             {
              "t": "if",
              "cond": {
-              "type": "sw",
-              "id": 4,
-              "val": true
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
              },
+             "hasElse": true,
              "then": [
               {
                "t": "text",
                "face": "",
                "name": "",
-               "text": "もう遅い。今日は部屋に戻って休もう。"
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
               }
              ],
              "else": [
               {
-               "t": "vcase",
-               "id": 2,
-               "cases": [
-                {
-                 "val": 0,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ニノマエ",
-                   "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "ninomae_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "val": 1,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ニノマエ",
-                   "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "ninomae_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "val": 2,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ニノマエ",
-                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "ninomae_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                }
-               ],
-               "hasElse": true,
-               "else": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ニノマエ",
-                 "text": "（話すことがなくなったときの会話）",
-                 "pic": "ninomae_normal",
-                 "picPos": "C"
-                }
-               ]
-              },
-              {
-               "t": "var",
-               "id": 2,
-               "op": "add",
-               "val": 1
-              },
-              {
                "t": "if",
                "cond": {
-                "type": "slot",
-                "op": "==",
-                "val": 2
+                "type": "sw",
+                "id": 4,
+                "val": true
                },
                "then": [
                 {
-                 "t": "sw",
-                 "id": 4,
-                 "val": true
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
                 }
                ],
                "else": [
                 {
-                 "t": "time",
-                 "op": "next",
-                 "n": 1,
-                 "slot": 0
+                 "t": "vcase",
+                 "id": 2,
+                 "cases": [
+                  {
+                   "val": 0,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ],
+                 "hasElse": true,
+                 "else": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（話すことがなくなったときの会話）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "t": "var",
+                 "id": 2,
+                 "op": "add",
+                 "val": 1
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "sw",
+                   "id": 4,
+                   "val": true
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
                 }
                ],
                "hasElse": true
               }
-             ],
-             "hasElse": true
+             ]
             }
            ]
           },
@@ -1475,6 +1584,42 @@
                    "val": 10
                   }
                  ]
+                },
+                {
+                 "val": 15,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "暇だし何かかいてみようか",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "wait",
+                   "ms": 600
+                  },
+                  {
+                   "t": "item",
+                   "id": 16,
+                   "n": 1
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ニノマエの鉛筆画を手に入れた。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 10,
+                   "op": "add",
+                   "val": 5
+                  }
+                 ]
                 }
                ],
                "else": [
@@ -1764,112 +1909,186 @@
          "t": "choice",
          "options": [
           {
+           "label": "船のパーツを集めたい",
+           "cond": {
+            "type": "var",
+            "id": 15,
+            "op": "==",
+            "val": 1
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "主人公",
+             "text": "船を直すためのパーツを集めたいんだ。価値になりそうなものがあったら協力してもらえないかな",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "text": "（協力を頼まれたときのネイサの返事）",
+             "pic": "neisa_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "item",
+             "id": 19,
+             "n": 1
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "植物図鑑を受け取った。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 15,
+             "op": "set",
+             "val": 2
+            },
+            {
+             "t": "var",
+             "id": 16,
+             "op": "sub",
+             "val": 1
+            }
+           ]
+          },
+          {
            "label": "一緒に過ごす",
            "cmds": [
             {
              "t": "if",
              "cond": {
-              "type": "sw",
-              "id": 4,
-              "val": true
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
              },
+             "hasElse": true,
              "then": [
               {
                "t": "text",
                "face": "",
                "name": "",
-               "text": "もう遅い。今日は部屋に戻って休もう。"
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
               }
              ],
              "else": [
               {
-               "t": "vcase",
-               "id": 1,
-               "cases": [
-                {
-                 "val": 0,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ネイサ",
-                   "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "neisa_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "val": 1,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ネイサ",
-                   "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "neisa_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "val": 2,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ネイサ",
-                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "neisa_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                }
-               ],
-               "hasElse": true,
-               "else": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ネイサ",
-                 "text": "（話すことがなくなったときの会話）",
-                 "pic": "neisa_normal",
-                 "picPos": "C"
-                }
-               ]
-              },
-              {
-               "t": "var",
-               "id": 1,
-               "op": "add",
-               "val": 1
-              },
-              {
                "t": "if",
                "cond": {
-                "type": "slot",
-                "op": "==",
-                "val": 2
+                "type": "sw",
+                "id": 4,
+                "val": true
                },
                "then": [
                 {
-                 "t": "sw",
-                 "id": 4,
-                 "val": true
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
                 }
                ],
                "else": [
                 {
-                 "t": "time",
-                 "op": "next",
-                 "n": 1,
-                 "slot": 0
+                 "t": "vcase",
+                 "id": 1,
+                 "cases": [
+                  {
+                   "val": 0,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ],
+                 "hasElse": true,
+                 "else": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（話すことがなくなったときの会話）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "t": "var",
+                 "id": 1,
+                 "op": "add",
+                 "val": 1
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "sw",
+                   "id": 4,
+                   "val": true
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
                 }
                ],
                "hasElse": true
               }
-             ],
-             "hasElse": true
+             ]
             }
            ]
           },
@@ -3976,9 +4195,23 @@
          "ms": 600
         },
         {
+         "t": "time",
+         "op": "set",
+         "n": 1,
+         "slot": 2
+        },
+        {
          "t": "fade",
          "mode": "in",
          "ms": 800
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "ショックが大きくて随分寝てしまった。もう夜だ",
+         "pic": "-",
+         "picPos": "C"
         },
         {
          "t": "text",
@@ -4707,112 +4940,186 @@
          "t": "choice",
          "options": [
           {
+           "label": "船のパーツを集めたい",
+           "cond": {
+            "type": "var",
+            "id": 13,
+            "op": "==",
+            "val": 1
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "主人公",
+             "text": "船を直すためのパーツを集めたいんだ。価値になりそうなものがあったら協力してもらえないかな",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "（協力を頼まれたときのピヲラの返事）",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "item",
+             "id": 17,
+             "n": 1
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "無限ポテチを受け取った。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 13,
+             "op": "set",
+             "val": 2
+            },
+            {
+             "t": "var",
+             "id": 16,
+             "op": "sub",
+             "val": 1
+            }
+           ]
+          },
+          {
            "label": "一緒に過ごす",
            "cmds": [
             {
              "t": "if",
              "cond": {
-              "type": "sw",
-              "id": 4,
-              "val": true
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
              },
+             "hasElse": true,
              "then": [
               {
                "t": "text",
                "face": "",
                "name": "",
-               "text": "もう遅い。今日は部屋に戻って休もう。"
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
               }
              ],
              "else": [
               {
-               "t": "vcase",
-               "id": 3,
-               "cases": [
-                {
-                 "val": 0,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "val": 1,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "val": 2,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                }
-               ],
-               "hasElse": true,
-               "else": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ピヲラ",
-                 "text": "（話すことがなくなったときの会話）",
-                 "pic": "piwora_normal",
-                 "picPos": "C"
-                }
-               ]
-              },
-              {
-               "t": "var",
-               "id": 3,
-               "op": "add",
-               "val": 1
-              },
-              {
                "t": "if",
                "cond": {
-                "type": "slot",
-                "op": "==",
-                "val": 2
+                "type": "sw",
+                "id": 4,
+                "val": true
                },
                "then": [
                 {
-                 "t": "sw",
-                 "id": 4,
-                 "val": true
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
                 }
                ],
                "else": [
                 {
-                 "t": "time",
-                 "op": "next",
-                 "n": 1,
-                 "slot": 0
+                 "t": "vcase",
+                 "id": 3,
+                 "cases": [
+                  {
+                   "val": 0,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ],
+                 "hasElse": true,
+                 "else": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（話すことがなくなったときの会話）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "t": "var",
+                 "id": 3,
+                 "op": "add",
+                 "val": 1
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "sw",
+                   "id": 4,
+                   "val": true
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
                 }
                ],
                "hasElse": true
               }
-             ],
-             "hasElse": true
+             ]
             }
            ]
           },
@@ -6253,6 +6560,54 @@
          "id": 5,
          "op": "set",
          "val": 7
+        },
+        {
+         "t": "fade",
+         "mode": "out",
+         "ms": 800
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "気づけば深夜になっていた。今日はもう部屋に戻って休もう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "move",
+         "map": 6,
+         "x": 8,
+         "y": 4,
+         "dir": 2,
+         "fade": false
+        },
+        {
+         "t": "sleep"
+        },
+        {
+         "t": "var",
+         "id": 13,
+         "op": "set",
+         "val": 1
+        },
+        {
+         "t": "var",
+         "id": 14,
+         "op": "set",
+         "val": 1
+        },
+        {
+         "t": "var",
+         "id": 15,
+         "op": "set",
+         "val": 1
+        },
+        {
+         "t": "var",
+         "id": 16,
+         "op": "set",
+         "val": 3
         }
        ]
       }
@@ -6466,6 +6821,30 @@
          "face": "",
          "name": "",
          "text": "まだ眠くない。先にエントランスに行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 16,
+         "op": ">",
+         "val": 0
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にみんなにパーツ集めの協力をお願いしよう。",
          "pic": "-",
          "picPos": "C"
         }
@@ -6886,357 +7265,379 @@
             {
              "t": "if",
              "cond": {
-              "type": "sw",
-              "id": 4,
-              "val": true
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
              },
+             "hasElse": true,
              "then": [
               {
                "t": "text",
                "face": "",
                "name": "",
-               "text": "もう遅い。今日は部屋に戻って休もう。"
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
               }
              ],
              "else": [
               {
-               "t": "vcase",
-               "id": 0,
-               "cases": [
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
                 {
-                 "val": 0,
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "僕と話してもあんまり面白い話はできないですよ。\n",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "主人公",
-                   "text": "ムロさんは物知りですね。",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "え？あ〜……そうかな？\n年の功ってやつかもですね。",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
                 {
-                 "val": 1,
-                 "cmds": [
+                 "t": "vcase",
+                 "id": 0,
+                 "cases": [
                   {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "実は２日目の朝に星間ワープ機のパーツを取り出したんです。",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "そのためには価値が必要で……",
-                   "pic": "",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "そもそも価値ってなんだろうと思って、持ってきた写真を一枚ずつ入れてみたのですが、歴史的に意味がありそうなものだけに価値がつきました。",
-                   "pic": "",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "あとはちょっと上手く撮れた写真とかにも価値がついたかな。\n一般的に他の人からも欲しい、必要だと思われるものじゃないと価値は生まれないみたいですね。",
-                   "pic": "",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "写真以外には……ボロいカメラと替えの服くらいしかなかったから、カメラと写真を合わせて価値1500くらいでした。",
-                   "pic": "",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "星間ワープ装置、それでも直らなかったんですけどね。清掃は行き届いていますが、メンテナンスしてくれてるんでしょうか……",
-                   "pic": "",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "あっごめんなさい、愚痴っぽくなっちゃって。\nところで[pname]さんはバッグの中に何を入れてきたんですか？",
-                   "pic": "",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "choice",
-                   "options": [
+                   "val": 0,
+                   "cmds": [
                     {
-                     "label": "服",
-                     "cmds": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "主人公",
-                       "text": "服が詰まっている。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "チキュウは気候がかなり変わるようですもんね！\n僕も上着とか、薄着とか、色々持ってきました。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "ロストエンドって気候がほとんど変わらないから、厚着も薄着も探すのが大変でした、全然売ってませんから。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "雨も、特定地域以外で降ることがあるみたいですよ！チキュウの方は急に雨が真上に降ってくることがあるなんて大変そうです。",
-                       "pic": "",
-                       "picPos": "C"
-                      }
-                     ]
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "僕と話してもあんまり面白い話はできないですよ。\n",
+                     "pic": "muro_normal",
+                     "picPos": "C"
                     },
                     {
-                     "label": "カメラ",
-                     "cmds": [
+                     "t": "text",
+                     "face": "",
+                     "name": "主人公",
+                     "text": "ムロさんは物知りですね。",
+                     "pic": "-",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "え？あ〜……そうかな？\n年の功ってやつかもですね。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "実は２日目の朝に星間ワープ機のパーツを取り出したんです。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "そのためには価値が必要で……",
+                     "pic": "",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "そもそも価値ってなんだろうと思って、持ってきた写真を一枚ずつ入れてみたのですが、歴史的に意味がありそうなものだけに価値がつきました。",
+                     "pic": "",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "あとはちょっと上手く撮れた写真とかにも価値がついたかな。\n一般的に他の人からも欲しい、必要だと思われるものじゃないと価値は生まれないみたいですね。",
+                     "pic": "",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "写真以外には……ボロいカメラと替えの服くらいしかなかったから、カメラと写真を合わせて価値1500くらいでした。",
+                     "pic": "",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "星間ワープ装置、それでも直らなかったんですけどね。清掃は行き届いていますが、メンテナンスしてくれてるんでしょうか……",
+                     "pic": "",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "あっごめんなさい、愚痴っぽくなっちゃって。\nところで[pname]さんはバッグの中に何を入れてきたんですか？",
+                     "pic": "",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "choice",
+                     "options": [
                       {
-                       "t": "text",
-                       "face": "",
-                       "name": "主人公",
-                       "text": "カメラを持ってきた。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "カメラはいいですよね！僕も持っていました。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "choice",
-                       "options": [
+                       "label": "服",
+                       "cmds": [
                         {
-                         "label": "自分が持っているのはフィルムカメラだ",
-                         "cmds": []
+                         "t": "text",
+                         "face": "",
+                         "name": "主人公",
+                         "text": "服が詰まっている。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "チキュウは気候がかなり変わるようですもんね！\n僕も上着とか、薄着とか、色々持ってきました。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "ロストエンドって気候がほとんど変わらないから、厚着も薄着も探すのが大変でした、全然売ってませんから。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "雨も、特定地域以外で降ることがあるみたいですよ！チキュウの方は急に雨が真上に降ってくることがあるなんて大変そうです。",
+                         "pic": "",
+                         "picPos": "C"
                         }
                        ]
                       },
                       {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "……え？フィルムカメラ？\n………………",
-                       "pic": "",
-                       "picPos": "C"
+                       "label": "カメラ",
+                       "cmds": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "主人公",
+                         "text": "カメラを持ってきた。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "カメラはいいですよね！僕も持っていました。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "choice",
+                         "options": [
+                          {
+                           "label": "自分が持っているのはフィルムカメラだ",
+                           "cmds": []
+                          }
+                         ]
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "……え？フィルムカメラ？\n………………",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "永遠でない機器を持っていたんですね。よ、よく捕まりませんでしたね？",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "ああ、なるほど、ロストエンドの人はこれがどのように終わりある機器であるかを確かめる術がないのですね。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "チキュウには現像する方法が存在するのですね、なるほど……",
+                         "pic": "",
+                         "picPos": "C"
+                        }
+                       ]
                       },
                       {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "永遠でない機器を持っていたんですね。よ、よく捕まりませんでしたね？",
-                       "pic": "",
-                       "picPos": "C"
+                       "label": "おやつ",
+                       "cmds": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "主人公",
+                         "text": "おやつを持ってきた。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "食べ物を持ってきたんですね。\n何かあった時の備えとして良さそうです。実際今困ってますし……",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "僕は食べ物食べるのあんまり好きじゃないので、ここにくる前に固形カロリーチャージを食べてきました。\n1月は何も食べなくてすみますから。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "そういえば知ってますか？チキュウの食事は腐敗するので、その場で食べるんですよ！長らく人前で食べ物を食べていないのでなんだか恥ずかしくなりそうです。",
+                         "pic": "",
+                         "picPos": "C"
+                        }
+                       ]
                       },
                       {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "ああ、なるほど、ロストエンドの人はこれがどのように終わりある機器であるかを確かめる術がないのですね。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "チキュウには現像する方法が存在するのですね、なるほど……",
-                       "pic": "",
-                       "picPos": "C"
-                      }
-                     ]
-                    },
-                    {
-                     "label": "おやつ",
-                     "cmds": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "主人公",
-                       "text": "おやつを持ってきた。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "食べ物を持ってきたんですね。\n何かあった時の備えとして良さそうです。実際今困ってますし……",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "僕は食べ物食べるのあんまり好きじゃないので、ここにくる前に固形カロリーチャージを食べてきました。\n1月は何も食べなくてすみますから。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "そういえば知ってますか？チキュウの食事は腐敗するので、その場で食べるんですよ！長らく人前で食べ物を食べていないのでなんだか恥ずかしくなりそうです。",
-                       "pic": "",
-                       "picPos": "C"
-                      }
-                     ]
-                    },
-                    {
-                     "label": "日記",
-                     "cmds": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "主人公",
-                       "text": "日記を持ってきた",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "日記を持ってるってどういうことですか？",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "ああ、手で紙に書かれるんですね……？今時珍しい\n僕は電子日記でさえ３日で飽きてしまいました。\nそれを手で書くのは立派なことですね。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "書くことがない時に、僕は今日の事を忘れて仕舞えばいいと考えてしまいます。",
-                       "pic": "",
-                       "picPos": "C"
-                      },
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "忘れないよう書き留めたいことを日々見つけられるのはすてきな才能だとおもいます。",
-                       "pic": "",
-                       "picPos": "C"
+                       "label": "日記",
+                       "cmds": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "主人公",
+                         "text": "日記を持ってきた",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "日記を持ってるってどういうことですか？",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "ああ、手で紙に書かれるんですね……？今時珍しい\n僕は電子日記でさえ３日で飽きてしまいました。\nそれを手で書くのは立派なことですね。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "書くことがない時に、僕は今日の事を忘れて仕舞えばいいと考えてしまいます。",
+                         "pic": "",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ムロ",
+                         "text": "忘れないよう書き留めたいことを日々見つけられるのはすてきな才能だとおもいます。",
+                         "pic": "",
+                         "picPos": "C"
+                        }
+                       ]
                       }
                      ]
                     }
                    ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
                   }
-                 ]
-                },
-                {
-                 "val": 2,
-                 "cmds": [
+                 ],
+                 "hasElse": true,
+                 "else": [
                   {
                    "t": "text",
                    "face": "",
                    "name": "ムロ",
-                   "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                   "text": "（話すことがなくなったときの会話）",
                    "pic": "muro_normal",
                    "picPos": "C"
                   }
                  ]
-                }
-               ],
-               "hasElse": true,
-               "else": [
+                },
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "text": "（話すことがなくなったときの会話）",
-                 "pic": "muro_normal",
-                 "picPos": "C"
-                }
-               ]
-              },
-              {
-               "t": "var",
-               "id": 0,
-               "op": "add",
-               "val": 1
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "slot",
-                "op": "==",
-                "val": 2
-               },
-               "then": [
+                 "t": "var",
+                 "id": 0,
+                 "op": "add",
+                 "val": 1
+                },
                 {
-                 "t": "sw",
-                 "id": 4,
-                 "val": true
-                }
-               ],
-               "else": [
-                {
-                 "t": "time",
-                 "op": "next",
-                 "n": 1,
-                 "slot": 0
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "sw",
+                   "id": 4,
+                   "val": true
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
                 }
                ],
                "hasElse": true
               }
-             ],
-             "hasElse": true
+             ]
             }
            ]
           },
@@ -9022,6 +9423,16 @@
     "item": 14,
     "price": 300,
     "weight": 0,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "limitUp": 0
+   },
+   {
+    "item": 15,
+    "price": 20,
+    "weight": 1,
     "from": 1,
     "to": "",
     "sw": -1,

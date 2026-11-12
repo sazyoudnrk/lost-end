@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12k';
+const APP_VER='2026-11-13a';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -710,7 +710,7 @@ function cmdSummary(c){
     case'pic':return c.pos==='A'?'全部消す':`${POSN[c.pos]}：${c.id?(G.pictures.find(x=>x.id===c.id)||{name:'?'}).name:'消す'}`;
     case'fade':return(c.mode==='in'?'明るくする':'暗くする')+` ${c.ms||300}ms`;
     case'still':return(c.id?(G.stills.find(x=>x.id===c.id)||{name:'?'}).name:'消す')+(c.fade===false?'':'（フェード）');
-    case'choice':return c.options.map(o=>o.label).join(' / ');
+    case'choice':return c.options.map(o=>o.label+(o.cond?'（条件）':'')).join(' / ');
     case'if':return condSummary(c.cond);
     case'vcase':return `${c.src==='day'?'日付':c.src==='slot'?'時間帯':varName(c.id)} の値で分岐（${(c.cases||[]).map(x=>x.val).join(', ')}${c.hasElse?', それ以外':''}）`;
     case'random':return `${(c.options||[]).length}つの中からランダム`;
@@ -861,7 +861,8 @@ function cmdForm(b,d,rr){
       break}
     case'choice':
       d.options.forEach((o,i)=>{const inp=h('input',{type:'text',value:o.label,oninput:()=>{o.label=inp.value}});
-        c.append(h('div',{class:'row',style:'align-items:center;margin:5px 0'},h('span',{style:'width:18px;color:var(--mut)'},i+1),inp,d.options.length>1?btn('✕',()=>{if(o.cmds.length&&!confirm('この選択肢の中身も消えます'))return;d.options.splice(i,1);rr()},'sm dg'):null))});
+        c.append(h('div',{class:'row',style:'align-items:center;margin:5px 0'},h('span',{style:'width:18px;color:var(--mut)'},i+1),inp,btn(o.cond?'条件あり':'条件',()=>editCond(o.cond||{type:'sw',id:0,val:true},x=>{o.cond=x;rr()}),'sm'+(o.cond?' pri':'')),o.cond?btn('外す',()=>{delete o.cond;rr()},'sm'):null,d.options.length>1?btn('✕',()=>{if(o.cmds.length&&!confirm('この選択肢の中身も消えます'))return;d.options.splice(i,1);rr()},'sm dg'):null))});
+      if(d.options.some(o=>o.cond))c.append(h('div',{class:'hint'},'条件をつけた選択肢は、条件を満たすときだけ出ます：'+d.options.filter(o=>o.cond).map(o=>`「${o.label}」→ ${condSummary(o.cond)}`).join('、')));
       if(d.options.length<6)c.append(btn('＋ 選択肢を追加',()=>{d.options.push({label:'選択肢'+(d.options.length+1),cmds:[]});rr()},'sm'));
       break;
     case'if':c.append(...condForm(d.cond,rr),fChk('「それ以外のとき」を作る',d,'hasElse'));break;

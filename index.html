@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-12i';
+const GAME_VER='2026-11-13a';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -385,7 +385,7 @@ async function exec(list,cx){for(const c of list||[])await cmd(c,cx)}
 async function cmd(c,cx){
   switch(c.t){
     case'text':await showText(c);break;
-    case'choice':{const i=await showChoice(c.options.map(o=>o.label));await exec(c.options[i].cmds,cx);break}
+    case'choice':{const op=c.options.filter(o=>!o.cond||evalCond(o.cond,cx));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
     case'gift':{const L=G.items.filter(it=>it.gift!==false&&(S.it[it.id]||0)>0);let got=0;
       if(!L.length){await showText({name:'',text:c.none||'渡せる物を持っていない。'})}
       else{hideMsg();const i=await showChoice([...L.map(it=>`${it.name}（${S.it[it.id]}）`),'やめる']);if(i<L.length){got=L[i].id;if(c.take!==false)S.it[got]--}}
