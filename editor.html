@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12c';
+const APP_VER='2026-11-12d';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -678,6 +678,7 @@ const CT={
   bgm:{n:'BGM',c:'#777',make:()=>({t:'bgm',op:'play',id:G.bgms[0]?G.bgms[0].id:'',ms:600})},
   flash:{n:'画面フラッシュ',c:'#c0508f',make:()=>({t:'flash',color:'#ff0000',alpha:60,ms:400,times:1,wait:true})},
   shake:{n:'画面の揺れ',c:'#c0508f',make:()=>({t:'shake',power:6,ms:500,wait:true})},
+  gift:{n:'プレゼント',c:'#c98a2a',make:()=>({t:'gift',var:12,take:true})},
   se:{n:'効果音',c:'#777',make:()=>({t:'se',id:G.sounds[0]?G.sounds[0].id:'',vol:100})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
   end:{n:'処理を中断',c:'#777',make:()=>({t:'end'})},
@@ -721,6 +722,7 @@ function cmdSummary(c){
     case'wait':return c.ms+'ms';
     case'flash':return `${c.color||'#ff0000'} 濃さ${c.alpha??60}% ${c.ms||400}ms×${c.times||1}`+(c.wait===false?'（待たない）':'');
     case'shake':return `強さ${c.power||6} ${c.ms||500}ms`+(c.beats?`／タイミング ${c.beats}（${c.period||0}ms×${c.repeat||1}回）`:'')+(c.wait===false?'（待たない）':'');
+    case'gift':return `持ち物から選ばせて → ${varName(c.var??12)} にアイテム番号`+(c.take===false?'（渡しても減らない）':'');
     case'bgm':return c.op==='stop'?'止める':c.op==='map'?'マップのBGMに戻す':((G.bgms.find(x=>x.id===c.id)||{name:'（未選択）'}).name+'を流す');
     case'se':{const s=G.sounds.find(x=>x.id===c.id);return (s?s.name:'（未選択）')+(c.vol!=null&&+c.vol!==100?` 音量${c.vol}`:'')}
     case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
@@ -867,6 +869,7 @@ function cmdForm(b,d,rr){
     case'wait':c.append(fNum('ミリ秒',d,'ms',{min:0,hint:'1000 = 1秒'}));break;
     case'flash':{const ci=h('input',{type:'color',value:d.color||'#ff0000',style:'width:60px;height:36px',onchange:()=>{d.color=ci.value;changed()}});c.append(field('色',ci),h('div',{class:'row'},fNum('濃さ（%）',d,'alpha',{min:0,max:100}),fNum('1回の長さ（ミリ秒）',d,'ms',{min:60}),fNum('回数',d,'times',{min:1})),fChk('終わるまで待つ',d,'wait'),h('div',{class:'hint'},'画面が一瞬その色に染まります（白い部分ほど色がつきます）。「待つ」を外すと、点滅しながら次のコマンドへ進みます'));break}
     case'shake':c.append(h('div',{class:'row'},fNum('強さ（ドット）',d,'power',{min:1}),fNum('長さ（ミリ秒）',d,'ms',{min:50})),fChk('終わるまで待つ',d,'wait'),card('リズムに合わせて揺らす（任意）',fText('揺らすタイミング（ミリ秒、カンマ区切り）',d,'beats'),h('div',{class:'row'},fNum('1周の長さ（ミリ秒）',d,'period',{min:0}),fNum('繰り返す回数',d,'repeat',{min:1})),h('div',{class:'hint'},'例：0,250,700,950 と 1400ms×2回 → 音の鳴るタイミングで計8回揺れる。空なら1回だけ揺れます。直前に「BGM」で音を鳴らすと合わせやすい')),h('div',{class:'hint'},'マップの画面を揺らします（会話の窓は揺れません）'));break;
+    case'gift':if(d.take==null)d.take=true;c.append(fSel('選んだアイテムの番号を入れる変数',d,'var',varOpts(),{num:true}),fChk('渡したアイテムは持ち物から減る',d,'take'),h('div',{class:'hint'},'「プレゼントできる」にしたアイテムのうち持っている物が選択肢に出ます。やめたら変数は0。続けて「値で分岐」でこの変数を使うと、アイテムごとに反応を変えられます'));break;
     case'bgm':c.append(fSel('',d,'op',[['play','曲を流す'],['stop','止める'],['map','マップのBGMに戻す']],{on:rr}),d.op==='play'?fSel('曲',d,'id',[['','（未選択）'],...G.bgms.map(x=>[x.id,x.name])]):null,fNum('フェード（ミリ秒）',d,'ms',{min:0}),h('div',{class:'hint'},'「曲を流す」「止める」をすると、場所移動してもマップのBGMに切り替わりません。「マップのBGMに戻す」で元に戻ります'));break;
     case'se':c.append(h('div',{class:'row',style:'align-items:end'},fSel('効果音',d,'id',[['','（未選択）'],...G.sounds.map(x=>[x.id,x.name])]),btn('▶',()=>{const s=G.sounds.find(x=>x.id===d.id);if(s)playSnd(s.file)},'sm')),fNum('音量（0〜100）',d,'vol',{min:0,max:100}),h('div',{class:'hint'},'音は「素材」タブの「効果音（SE）」で追加します。鳴らしたらすぐ次へ進みます'));break;
     case'route':{
@@ -977,11 +980,11 @@ function editPool(r,onSave){const d=clone(r);d.to=d.to||0;
   const itemBox=h('div');
   const drawItem=()=>{itemBox.innerHTML='';const it=G.items.find(x=>x.id===d.item);
     itemBox.append(card(null,fSel('アイテム',d,'item',itemOpts(),{num:true,on:drawItem}),
-      btn('＋ 新しいアイテムを作る',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'新しいアイテム',desc:'',value:0});d.item=id;changed();drawItem();setTimeout(()=>{const i=itemBox.querySelector('input[type=text]');if(i){i.focus();i.select()}},50)},'sm'),
+      btn('＋ 新しいアイテムを作る',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'新しいアイテム',desc:'',value:0,gift:true});d.item=id;changed();drawItem();setTimeout(()=>{const i=itemBox.querySelector('input[type=text]');if(i){i.focus();i.select()}},50)},'sm'),
       it?h('div',{style:'margin-top:8px;display:flex;flex-direction:column;gap:6px'},
         h('div',{class:'hint'},'このアイテムの中身（アイテム一覧と共通）'),
         fText('名前',it,'name',{on:()=>{const o=itemBox.querySelector('select option:checked');if(o)o.textContent=pad3(it.id)+' '+it.name}}),fText('説明',it,'desc'),
-        fNum('入れたときの価値',it,'value',{min:0,hint:'等価交換機に「いれる」と得られる価値。0なら入れられない'}),
+        fNum('入れたときの価値',it,'value',{min:0,hint:'等価交換機に「いれる」と得られる価値。0なら入れられない'}),fChk('プレゼントできる',it,'gift'),
         h('div',{class:'row',style:'align-items:end'},fSel('絵',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:drawItem}),(()=>{const ic=G.icons.find(x=>x.id===it.icon);return ic?thumb(ic.image):h('span')})())):null))};
   drawItem();
   sheet('品ぞろえ',b=>b.append(itemBox,card(null,h('div',{class:'row'},fNum('必要な価値',d,'price',{min:0,hint:'とりだすのに払う価値'}),fNum('重み',d,'weight',{min:0,hint:'0で出ない'})),
@@ -1021,10 +1024,14 @@ function renderDB(){
   T.append(card('BGM',fSel('基本のBGM（全マップ）',SY,'bgm',[['','なし'],...G.bgms.map(x=>[x.id,x.name])]),h('div',{class:'hint'},'マップ設定でBGMを「基本」にしているマップで流れます。タイトル画面は無音です')));
   T.append(shopCard());
   T.append(nameListCard('スイッチ',G.switches),nameListCard('変数',G.variables));
+  {SY.varCfg=SY.varCfg||{};const c=card('変数の最初の値と範囲');
+    for(const k of Object.keys(SY.varCfg)){const v=SY.varCfg[k];c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},h('b',null,varName(+k)),h('div',{class:'row'},fNum('最初',v,'init'),fNum('下限',v,'min'),fNum('上限',v,'max'))),btn('✕',()=>{delete SY.varCfg[k];changed();renderDB()},'sm dg')))}
+    const pick={v:0};c.append(h('div',{class:'row',style:'align-items:end;margin-top:6px'},fSel('変数',pick,'v',varOpts(),{num:true}),btn('＋ 設定を追加',()=>{if(!SY.varCfg[pick.v])SY.varCfg[pick.v]={init:0,min:'',max:''};changed();renderDB()},'sm')),
+      h('div',{class:'hint'},'ゲーム開始時の値と、「変数の操作」で超えない下限・上限（正気度など）'));T.append(c)}
   const ic=card('アイテム');
   for(const it of G.items){const n=h('input',{type:'text',value:it.name,oninput:()=>{it.name=n.value;changed()}}),ds=h('input',{type:'text',value:it.desc||'',placeholder:'説明',oninput:()=>{it.desc=ds.value;changed()}}),vl=h('input',{type:'number',inputmode:'numeric',value:it.value||0,style:'width:90px',oninput:()=>{it.value=Math.max(0,parseInt(vl.value,10)||0);changed()}});
-    const icn=G.icons.find(x=>x.id===it.icon);ic.append(h('div',{class:'list-row'},h('div',{style:'display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:48px'},h('span',{style:'color:var(--mut);font-size:13px'},pad3(it.id)),icn?thumb(icn.image):null),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,fSel('画像',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:()=>renderDB()}),h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
-  ic.append(h('div',{style:'margin-top:6px'},btn('＋ アイテム追加',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'アイテム'+id,desc:''});changed();renderDB()},'sm')));
+    const icn=G.icons.find(x=>x.id===it.icon);ic.append(h('div',{class:'list-row'},h('div',{style:'display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:48px'},h('span',{style:'color:var(--mut);font-size:13px'},pad3(it.id)),icn?thumb(icn.image):null),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,fSel('画像',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:()=>renderDB()}),fChk('プレゼントできる',it,'gift'),h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
+  ic.append(h('div',{style:'margin-top:6px'},btn('＋ アイテム追加',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'アイテム'+id,desc:'',gift:true});changed();renderDB()},'sm')));
   T.append(ic);T.scrollTop=sc;
 }
 

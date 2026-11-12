@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-12c';
+const GAME_VER='2026-11-12d';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -386,11 +386,15 @@ async function cmd(c,cx){
   switch(c.t){
     case'text':await showText(c);break;
     case'choice':{const i=await showChoice(c.options.map(o=>o.label));await exec(c.options[i].cmds,cx);break}
+    case'gift':{const L=G.items.filter(it=>it.gift!==false&&(S.it[it.id]||0)>0);let got=0;
+      if(!L.length){await showText({name:'',text:c.none||'渡せる物を持っていない。'})}
+      else{hideMsg();const i=await showChoice([...L.map(it=>`${it.name}（${S.it[it.id]}）`),'やめる']);if(i<L.length){got=L[i].id;if(c.take!==false)S.it[got]--}}
+      S.vr[c.var??12]=got;break}
     case'if':await exec(evalCond(c.cond,cx)?c.then:(c.hasElse?c.else:[]),cx);break;
     case'vcase':{const v=c.src==='day'?S.day:c.src==='slot'?S.slot:(S.vr[c.id]||0),k=(c.cases||[]).find(x=>+x.val===v);await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
     case'random':{const o=c.options||[];if(o.length)await exec(o[Math.floor(Math.random()*o.length)].cmds,cx);break}
     case'sw':S.sw[c.id]=!!c.val;placeScheduled();break;
-    case'var':{let v=S.vr[c.id]||0;const n=+c.val||0;v=c.op==='set'?n:c.op==='add'?v+n:c.op==='sub'?v-n:c.op==='rand'?Math.floor(Math.random()*(n+1)):v;S.vr[c.id]=v;placeScheduled();break}
+    case'var':{let v=S.vr[c.id]||0;const n=+c.val||0;v=c.op==='set'?n:c.op==='add'?v+n:c.op==='sub'?v-n:c.op==='rand'?Math.floor(Math.random()*(n+1)):v;const vc=((G.system&&G.system.varCfg)||{})[c.id];if(vc){if(vc.min!=null&&vc.min!=='')v=Math.max(+vc.min,v);if(vc.max!=null&&vc.max!=='')v=Math.min(+vc.max,v)}S.vr[c.id]=v;placeScheduled();break}
     case'self':S.ss[cx.ev.home+':'+cx.ev.d.id+':'+c.key]=!!c.val;refresh();break;
     case'time':{const n=G.system.slots.length;S.slot=c.op==='set'?Math.max(0,Math.min(n-1,+c.slot||0)):Math.min(n-1,S.slot+(+c.n||1));placeScheduled();updHud();break}
     case'sleep':await nextDay();break;
@@ -611,6 +615,7 @@ $('#menu').addEventListener('click',e=>{
 async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
 async function startNew(){
   const p=G.player;S={map:p.map,x:p.x,y:p.y,dir:p.dir||0,sw:{},vr:{},it:{},ss:{},once:{},day:G.system.startDay||1,slot:0,money:+G.shop.startMoney||0,buys:0,buyLimit:+G.shop.limit||1};S.shop=drawShop();
+  for(const [k,v] of Object.entries((G.system&&G.system.varCfg)||{}))if(v&&v.init!=null)S.vr[k]=+v.init;
   if(PREVIEW&&Q.has('map')){S.map=+Q.get('map');S.x=+Q.get('x')||0;S.y=+Q.get('y')||0}
   await loadMap(S.map,S.x,S.y,S.dir);
 }

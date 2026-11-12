@@ -83,81 +83,94 @@
    "id": 1,
    "name": "缶詰",
    "desc": "冷えたままの非常食",
-   "value": 3
+   "value": 3,
+   "gift": true
   },
   {
    "id": 2,
    "name": "工具セット",
    "desc": "船の修理に使える",
-   "value": 10
+   "value": 10,
+   "gift": true
   },
   {
    "id": 3,
    "name": "絵の具",
    "desc": "誰かが絵を描けるかもしれない",
-   "value": 4
+   "value": 4,
+   "gift": true
   },
   {
    "id": 4,
    "name": "石ころ",
    "desc": "ただの石……？",
-   "value": 1
+   "value": 1,
+   "gift": true
   },
   {
    "id": 5,
    "name": "宝石の原石",
    "desc": "目利きによれば本物",
-   "value": 40
+   "value": 40,
+   "gift": true
   },
   {
    "id": 6,
    "name": "謎のパーツ",
    "desc": "何かの装置の部品らしい",
-   "value": 15
+   "value": 15,
+   "gift": false
   },
   {
    "id": 7,
    "name": "変換器の説明書",
    "desc": "冷却の仕組みが書いてある",
-   "value": 5
+   "value": 5,
+   "gift": true
   },
   {
    "id": 8,
    "name": "ぬいぐるみ",
    "desc": "意味はない。でも心が落ち着く",
-   "value": 2
+   "value": 2,
+   "gift": true
   },
   {
    "id": 9,
    "name": "備蓄食品",
    "desc": "長持ちする保存食",
    "value": 250,
-   "icon": "ic_food"
+   "icon": "ic_food",
+   "gift": true
   },
   {
    "id": 10,
    "name": "薬",
    "desc": "ムロのポケットに入っていた薬",
    "value": 300,
-   "icon": "ic_med"
+   "icon": "ic_med",
+   "gift": true
   },
   {
    "id": 11,
    "name": "星間ワープ装置-E04 C02",
    "desc": "星間ワープ装置の部品",
-   "value": 0
+   "value": 0,
+   "gift": false
   },
   {
    "id": 12,
    "name": "星間ワープ装置-E04 C15",
    "desc": "星間ワープ装置の部品",
-   "value": 0
+   "value": 0,
+   "gift": false
   },
   {
    "id": 13,
    "name": "星間ワープ装置-E04 C33",
    "desc": "星間ワープ装置の部品",
-   "value": 0
+   "value": 0,
+   "gift": false
   }
  ],
  "switches": [
@@ -191,11 +204,11 @@
   "進行度",
   "エントランスに入った方向（1=左 2=右）",
   "",
-  "",
-  "",
-  "",
-  "",
-  "",
+  "正気度_ムロ",
+  "正気度_ネイサ",
+  "正気度_ニノマエ",
+  "正気度_ピヲラ",
+  "プレゼントしたアイテム",
   "",
   "",
   "",
@@ -1311,6 +1324,72 @@
              ]
             }
            ]
+          },
+          {
+           "label": "プレゼント",
+           "cmds": [
+            {
+             "t": "gift",
+             "var": 12,
+             "take": true
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 12,
+              "op": "!=",
+              "val": 0
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "vcase",
+               "src": "var",
+               "id": 12,
+               "hasElse": true,
+               "cases": [
+                {
+                 "val": 9,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（備蓄食品をもらったときの反応）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 10,
+                   "op": "add",
+                   "val": 10
+                  }
+                 ]
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（プレゼントをもらったときの反応）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 10,
+                 "op": "add",
+                 "val": 5
+                }
+               ]
+              }
+             ]
+            }
+           ]
           }
          ]
         }
@@ -2135,6 +2214,72 @@
                    "picPos": "C"
                   }
                  ]
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "label": "プレゼント",
+           "cmds": [
+            {
+             "t": "gift",
+             "var": 12,
+             "take": true
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 12,
+              "op": "!=",
+              "val": 0
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "vcase",
+               "src": "var",
+               "id": 12,
+               "hasElse": true,
+               "cases": [
+                {
+                 "val": 9,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（備蓄食品をもらったときの反応）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 9,
+                   "op": "add",
+                   "val": 10
+                  }
+                 ]
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（プレゼントをもらったときの反応）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 9,
+                 "op": "add",
+                 "val": 5
                 }
                ]
               }
@@ -4913,6 +5058,72 @@
              ]
             }
            ]
+          },
+          {
+           "label": "プレゼント",
+           "cmds": [
+            {
+             "t": "gift",
+             "var": 12,
+             "take": true
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 12,
+              "op": "!=",
+              "val": 0
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "vcase",
+               "src": "var",
+               "id": 12,
+               "hasElse": true,
+               "cases": [
+                {
+                 "val": 9,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（備蓄食品をもらったときの反応）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 11,
+                   "op": "add",
+                   "val": 10
+                  }
+                 ]
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（プレゼントをもらったときの反応）",
+                 "pic": "piwora_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 11,
+                 "op": "add",
+                 "val": 5
+                }
+               ]
+              }
+             ]
+            }
+           ]
           }
          ]
         }
@@ -6875,6 +7086,72 @@
              ]
             }
            ]
+          },
+          {
+           "label": "プレゼント",
+           "cmds": [
+            {
+             "t": "gift",
+             "var": 12,
+             "take": true
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 12,
+              "op": "!=",
+              "val": 0
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "vcase",
+               "src": "var",
+               "id": 12,
+               "hasElse": true,
+               "cases": [
+                {
+                 "val": 9,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（備蓄食品をもらったときの反応）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 8,
+                   "op": "add",
+                   "val": 10
+                  }
+                 ]
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（プレゼントをもらったときの反応）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 8,
+                 "op": "add",
+                 "val": 5
+                }
+               ]
+              }
+             ]
+            }
+           ]
           }
          ]
         }
@@ -8067,7 +8344,29 @@
    "ピヲラ": 9,
    "主人公": -1
   },
-  "bgm": "bgm_main"
+  "bgm": "bgm_main",
+  "varCfg": {
+   "8": {
+    "init": 100,
+    "min": 0,
+    "max": 200
+   },
+   "9": {
+    "init": 100,
+    "min": 0,
+    "max": 200
+   },
+   "10": {
+    "init": 100,
+    "min": 0,
+    "max": 200
+   },
+   "11": {
+    "init": 100,
+    "min": 0,
+    "max": 200
+   }
+  }
  },
  "icons": [
   {
