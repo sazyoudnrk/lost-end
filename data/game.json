@@ -675,12 +675,78 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "ニノマエ",
-         "text": "……何？",
-         "pic": "ninomae_normal",
-         "picPos": "C"
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 10,
+          "op": ">=",
+          "val": 150
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "ニノマエ",
+           "text": "（正気度150以上のときの一言）",
+           "pic": "ninomae_normal",
+           "picPos": "C"
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 10,
+            "op": ">=",
+            "val": 100
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ニノマエ",
+             "text": "……何？",
+             "pic": "ninomae_normal",
+             "picPos": "C"
+            }
+           ],
+           "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 10,
+              "op": ">=",
+              "val": 50
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ニノマエ",
+               "text": "（正気度50〜99のときの一言）",
+               "pic": "ninomae_normal",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ニノマエ",
+               "text": "（正気度49以下のときの一言）",
+               "pic": "ninomae_normal",
+               "picPos": "C"
+              }
+             ]
+            }
+           ]
+          }
+         ]
         },
         {
          "t": "choice",
@@ -1577,12 +1643,78 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "ネイサ",
-         "text": "やあ、どうしたんだい？",
-         "pic": "neisa_normal",
-         "picPos": "C"
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 9,
+          "op": ">=",
+          "val": 150
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "ネイサ",
+           "text": "（正気度150以上のときの一言）",
+           "pic": "neisa_normal",
+           "picPos": "C"
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 9,
+            "op": ">=",
+            "val": 100
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "text": "やあ、どうしたんだい？",
+             "pic": "neisa_normal",
+             "picPos": "C"
+            }
+           ],
+           "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 9,
+              "op": ">=",
+              "val": 50
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "（正気度50〜99のときの一言）",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "（正気度49以下のときの一言）",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              }
+             ]
+            }
+           ]
+          }
+         ]
         },
         {
          "t": "choice",
@@ -4432,12 +4564,78 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "ピヲラ",
-         "text": "なになに？",
-         "pic": "piwora_normal",
-         "picPos": "C"
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 11,
+          "op": ">=",
+          "val": 150
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "ピヲラ",
+           "text": "（正気度150以上のときの一言）",
+           "pic": "piwora_normal",
+           "picPos": "C"
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 11,
+            "op": ">=",
+            "val": 100
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "なになに？",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            }
+           ],
+           "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 11,
+              "op": ">=",
+              "val": 50
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ピヲラ",
+               "text": "（正気度50〜99のときの一言）",
+               "pic": "piwora_normal",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ピヲラ",
+               "text": "（正気度49以下のときの一言）",
+               "pic": "piwora_normal",
+               "picPos": "C"
+              }
+             ]
+            }
+           ]
+          }
+         ]
         },
         {
          "t": "choice",
@@ -6518,12 +6716,78 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "ムロ",
-         "text": "どうかしましたか？",
-         "pic": "muro_normal",
-         "picPos": "C"
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 8,
+          "op": ">=",
+          "val": 150
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "ムロ",
+           "text": "（正気度150以上のときの一言）",
+           "pic": "muro_normal",
+           "picPos": "C"
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 8,
+            "op": ">=",
+            "val": 100
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "text": "どうかしましたか？",
+             "pic": "muro_normal",
+             "picPos": "C"
+            }
+           ],
+           "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 8,
+              "op": ">=",
+              "val": 50
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ムロ",
+               "text": "（正気度50〜99のときの一言）",
+               "pic": "muro_normal",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ムロ",
+               "text": "（正気度49以下のときの一言）",
+               "pic": "muro_normal",
+               "picPos": "C"
+              }
+             ]
+            }
+           ]
+          }
+         ]
         },
         {
          "t": "choice",
