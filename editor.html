@@ -89,7 +89,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-12i';
+const APP_VER='2026-11-12j';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -893,7 +893,7 @@ function cmdForm(b,d,rr){
     case'turn':c.append(fSel('誰を',d,'target',tgtOpts()),fSel('向き',d,'dir',[['P','プレイヤーの方'],['A','プレイヤーと反対'],...DIRN.map((n,i)=>[String(i),n])]));break;
     case'time':c.append(fSel('',d,'op',[['next','進める'],['set','指定する']],{on:rr}),d.op==='set'?fSel('時間帯',d,'slot',slotOpts(),{num:true}):fNum('いくつ進めるか',d,'n',{min:1}),
       h('div',{class:'hint'},'最後の時間帯（夜）より先には進みません。日付を進めるのは「次の日へ」'));break;
-    case'nameinput':c.append(fNum('最大文字数',d,'max',{min:1,max:16}),fText('最初に入っている名前',d,'def',{ph:'空でOK'}),h('div',{class:'hint'},'入力した名前は、文章の本文に [pname]（「👤主人公の名前」ボタン）を入れるとその名前に置き換わります。名前を「主人公」にした台詞は名前欄を出しません'));break;
+    case'nameinput':c.append(fNum('最大文字数',d,'max',{min:1,max:16}),fText('最初に入っている名前',d,'def',{ph:'空でOK'}),h('div',{class:'hint'},'入力した名前は、文章の本文に [pname]（「👤主人公の名前」ボタン）を入れるとその名前に置き換わります。名前を「主人公」にした台詞は名前欄に入力した名前が出ます（入力前は「？」）'));break;
     case'money':c.append(h('div',{class:'row'},fSel('操作',d,'op',[['add','増やす'],['sub','減らす'],['set','にする']]),fNum('価値',d,'val',{min:0})));break;
     case'stock':{d.items=d.items||[];const w=card('必ず並ぶ品');
       d.items.forEach((f,i)=>w.append(h('div',{class:'row',style:'align-items:end'},fSel('アイテム',f,'item',itemOpts(),{num:true}),fChk('交換済み',f,'sold'),btn('✕',()=>{d.items.splice(i,1);changed();rr()},'sm dg'))));
