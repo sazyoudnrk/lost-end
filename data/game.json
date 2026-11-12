@@ -433,6 +433,11 @@
          "val": 0
         },
         {
+         "t": "buylimit",
+         "op": "empty",
+         "val": 0
+        },
+        {
          "t": "text",
          "face": "",
          "name": "ピヲラ",

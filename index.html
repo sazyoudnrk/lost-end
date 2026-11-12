@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-12e';
+const GAME_VER='2026-11-12f';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -399,7 +399,7 @@ async function cmd(c,cx){
     case'time':{const n=G.system.slots.length;S.slot=c.op==='set'?Math.max(0,Math.min(n-1,+c.slot||0)):Math.min(n-1,S.slot+(+c.n||1));placeScheduled();updHud();break}
     case'sleep':await nextDay();break;
     case'money':{const n=+c.val||0;S.money=Math.max(0,c.op==='set'?n:c.op==='sub'?S.money-n:S.money+n);updHud();refresh();break}
-    case'buylimit':if(c.op==='today'){S.buys=S.buyLimit;break}S.buyLimit=Math.max(0,c.op==='set'?+c.val||0:S.buyLimit+(+c.val||0));break;
+    case'buylimit':if(c.op==='today'){S.buys=S.buyLimit;break}if(c.op==='empty'){S.shop=[];break}S.buyLimit=Math.max(0,c.op==='set'?+c.val||0:S.buyLimit+(+c.val||0));break;
     case'shop':hideMsg();await openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,sell:c.sellOnly?(c.sell||[]):null,tutorial:c.tutorial===true?'buy':(c.tutorial||'')});break;
     case'shopview':if(c.show===false)closeShopView();else{hideMsg();clearPics();}if(c.show!==false)openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,sell:c.sellOnly?(c.sell||[]):null,view:true});break;
     case'nameinput':hideMsg();tapEl.style.display='none';await nameInput(c);tapEl.style.display='block';break;
