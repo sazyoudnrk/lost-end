@@ -428,6 +428,11 @@
          "tutorial": "buy"
         },
         {
+         "t": "buylimit",
+         "op": "today",
+         "val": 0
+        },
+        {
          "t": "text",
          "face": "",
          "name": "ピヲラ",
