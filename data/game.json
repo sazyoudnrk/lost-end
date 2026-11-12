@@ -6721,7 +6721,7 @@
           "type": "var",
           "id": 8,
           "op": ">=",
-          "val": 150
+          "val": 100
          },
          "hasElse": true,
          "then": [
@@ -6729,7 +6729,7 @@
            "t": "text",
            "face": "",
            "name": "ムロ",
-           "text": "（正気度150以上のときの一言）",
+           "text": "何かご用でしょうか？",
            "pic": "muro_normal",
            "picPos": "C"
           }
@@ -6741,7 +6741,7 @@
             "type": "var",
             "id": 8,
             "op": ">=",
-            "val": 100
+            "val": 75
            },
            "hasElse": true,
            "then": [
@@ -6749,7 +6749,7 @@
              "t": "text",
              "face": "",
              "name": "ムロ",
-             "text": "どうかしましたか？",
+             "text": "どうかしましたか",
              "pic": "muro_normal",
              "picPos": "C"
             }
@@ -6769,7 +6769,7 @@
                "t": "text",
                "face": "",
                "name": "ムロ",
-               "text": "（正気度50〜99のときの一言）",
+               "text": "……ごめんなさい、全然眠れていなくて",
                "pic": "muro_normal",
                "picPos": "C"
               }
@@ -6779,7 +6779,7 @@
                "t": "text",
                "face": "",
                "name": "ムロ",
-               "text": "（正気度49以下のときの一言）",
+               "text": "[pname]さん？ああ、幻聴じゃなかったんですね……",
                "pic": "muro_normal",
                "picPos": "C"
               }
