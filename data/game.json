@@ -680,7 +680,7 @@
           "type": "var",
           "id": 10,
           "op": ">=",
-          "val": 150
+          "val": 100
          },
          "hasElse": true,
          "then": [
@@ -688,9 +688,9 @@
            "t": "text",
            "face": "",
            "name": "ニノマエ",
-           "text": "（正気度150以上のときの一言）",
            "pic": "ninomae_normal",
-           "picPos": "C"
+           "picPos": "C",
+           "text": "（正気度100以上の一言）"
           }
          ],
          "else": [
@@ -700,7 +700,7 @@
             "type": "var",
             "id": 10,
             "op": ">=",
-            "val": 100
+            "val": 76
            },
            "hasElse": true,
            "then": [
@@ -708,9 +708,9 @@
              "t": "text",
              "face": "",
              "name": "ニノマエ",
-             "text": "……何？",
              "pic": "ninomae_normal",
-             "picPos": "C"
+             "picPos": "C",
+             "text": "……何？"
             }
            ],
            "else": [
@@ -720,7 +720,7 @@
               "type": "var",
               "id": 10,
               "op": ">=",
-              "val": 50
+              "val": 51
              },
              "hasElse": true,
              "then": [
@@ -728,19 +728,41 @@
                "t": "text",
                "face": "",
                "name": "ニノマエ",
-               "text": "（正気度50〜99のときの一言）",
                "pic": "ninomae_normal",
-               "picPos": "C"
+               "picPos": "C",
+               "text": "（正気度51〜75の一言）"
               }
              ],
              "else": [
               {
-               "t": "text",
-               "face": "",
-               "name": "ニノマエ",
-               "text": "（正気度49以下のときの一言）",
-               "pic": "ninomae_normal",
-               "picPos": "C"
+               "t": "if",
+               "cond": {
+                "type": "var",
+                "id": 10,
+                "op": ">=",
+                "val": 26
+               },
+               "hasElse": true,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "pic": "ninomae_normal",
+                 "picPos": "C",
+                 "text": "（正気度26〜50の一言）"
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "pic": "ninomae_normal",
+                 "picPos": "C",
+                 "text": "（正気度25以下の一言）"
+                }
+               ]
               }
              ]
             }
@@ -1648,7 +1670,7 @@
           "type": "var",
           "id": 9,
           "op": ">=",
-          "val": 150
+          "val": 100
          },
          "hasElse": true,
          "then": [
@@ -1656,9 +1678,9 @@
            "t": "text",
            "face": "",
            "name": "ネイサ",
-           "text": "（正気度150以上のときの一言）",
            "pic": "neisa_normal",
-           "picPos": "C"
+           "picPos": "C",
+           "text": "（正気度100以上の一言）"
           }
          ],
          "else": [
@@ -1668,7 +1690,7 @@
             "type": "var",
             "id": 9,
             "op": ">=",
-            "val": 100
+            "val": 76
            },
            "hasElse": true,
            "then": [
@@ -1676,9 +1698,9 @@
              "t": "text",
              "face": "",
              "name": "ネイサ",
-             "text": "やあ、どうしたんだい？",
              "pic": "neisa_normal",
-             "picPos": "C"
+             "picPos": "C",
+             "text": "やあ、どうしたんだい？"
             }
            ],
            "else": [
@@ -1688,7 +1710,7 @@
               "type": "var",
               "id": 9,
               "op": ">=",
-              "val": 50
+              "val": 51
              },
              "hasElse": true,
              "then": [
@@ -1696,19 +1718,41 @@
                "t": "text",
                "face": "",
                "name": "ネイサ",
-               "text": "（正気度50〜99のときの一言）",
                "pic": "neisa_normal",
-               "picPos": "C"
+               "picPos": "C",
+               "text": "（正気度51〜75の一言）"
               }
              ],
              "else": [
               {
-               "t": "text",
-               "face": "",
-               "name": "ネイサ",
-               "text": "（正気度49以下のときの一言）",
-               "pic": "neisa_normal",
-               "picPos": "C"
+               "t": "if",
+               "cond": {
+                "type": "var",
+                "id": 9,
+                "op": ">=",
+                "val": 26
+               },
+               "hasElse": true,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "pic": "neisa_normal",
+                 "picPos": "C",
+                 "text": "（正気度26〜50の一言）"
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "pic": "neisa_normal",
+                 "picPos": "C",
+                 "text": "（正気度25以下の一言）"
+                }
+               ]
               }
              ]
             }
@@ -4577,9 +4621,9 @@
            "t": "text",
            "face": "",
            "name": "ピヲラ",
-           "text": "（正気度150以上のときの一言）",
            "pic": "piwora_normal",
-           "picPos": "C"
+           "picPos": "C",
+           "text": "（正気度100以上の一言）"
           }
          ],
          "else": [
@@ -4589,7 +4633,7 @@
             "type": "var",
             "id": 11,
             "op": ">=",
-            "val": 75
+            "val": 76
            },
            "hasElse": true,
            "then": [
@@ -4597,9 +4641,9 @@
              "t": "text",
              "face": "",
              "name": "ピヲラ",
-             "text": "なになに？",
              "pic": "piwora_normal",
-             "picPos": "C"
+             "picPos": "C",
+             "text": "なになに？"
             }
            ],
            "else": [
@@ -4609,7 +4653,7 @@
               "type": "var",
               "id": 11,
               "op": ">=",
-              "val": 50
+              "val": 51
              },
              "hasElse": true,
              "then": [
@@ -4617,19 +4661,41 @@
                "t": "text",
                "face": "",
                "name": "ピヲラ",
-               "text": "（正気度50〜99のときの一言）",
                "pic": "piwora_normal",
-               "picPos": "C"
+               "picPos": "C",
+               "text": "（正気度51〜75の一言）"
               }
              ],
              "else": [
               {
-               "t": "text",
-               "face": "",
-               "name": "ピヲラ",
-               "text": "（正気度49以下のときの一言）",
-               "pic": "piwora_normal",
-               "picPos": "C"
+               "t": "if",
+               "cond": {
+                "type": "var",
+                "id": 11,
+                "op": ">=",
+                "val": 26
+               },
+               "hasElse": true,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "pic": "piwora_normal",
+                 "picPos": "C",
+                 "text": "（正気度26〜50の一言）"
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "pic": "piwora_normal",
+                 "picPos": "C",
+                 "text": "（正気度25以下の一言）"
+                }
+               ]
               }
              ]
             }
@@ -6729,9 +6795,9 @@
            "t": "text",
            "face": "",
            "name": "ムロ",
-           "text": "何かご用でしょうか？",
            "pic": "muro_normal",
-           "picPos": "C"
+           "picPos": "C",
+           "text": "何かご用でしょうか？"
           }
          ],
          "else": [
@@ -6740,8 +6806,8 @@
            "cond": {
             "type": "var",
             "id": 8,
-            "op": "<=",
-            "val": 75
+            "op": ">=",
+            "val": 76
            },
            "hasElse": true,
            "then": [
@@ -6749,9 +6815,9 @@
              "t": "text",
              "face": "",
              "name": "ムロ",
-             "text": "どうかしましたか",
              "pic": "muro_normal",
-             "picPos": "C"
+             "picPos": "C",
+             "text": "どうかしましたか？"
             }
            ],
            "else": [
@@ -6760,8 +6826,8 @@
              "cond": {
               "type": "var",
               "id": 8,
-              "op": "<=",
-              "val": 50
+              "op": ">=",
+              "val": 51
              },
              "hasElse": true,
              "then": [
@@ -6769,40 +6835,41 @@
                "t": "text",
                "face": "",
                "name": "ムロ",
-               "text": "……ごめんなさい、全然眠れていなくて",
                "pic": "muro_normal",
-               "picPos": "C"
-              },
+               "picPos": "C",
+               "text": "どうかしましたか"
+              }
+             ],
+             "else": [
               {
                "t": "if",
                "cond": {
                 "type": "var",
                 "id": 8,
-                "op": "<=",
-                "val": 25
+                "op": ">=",
+                "val": 26
                },
+               "hasElse": true,
                "then": [
                 {
                  "t": "text",
                  "face": "",
                  "name": "ムロ",
-                 "text": "[pname]さん？ああ、幻聴じゃなかったんですね……",
                  "pic": "muro_normal",
-                 "picPos": "C"
+                 "picPos": "C",
+                 "text": "……ごめんなさい、全然眠れていなくて"
                 }
                ],
-               "else": [],
-               "hasElse": false
-              }
-             ],
-             "else": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "ムロ",
-               "text": "どうかしましたか？",
-               "pic": "muro_normal",
-               "picPos": "C"
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "pic": "muro_normal",
+                 "picPos": "C",
+                 "text": "[pname]さん？ああ、幻聴じゃなかったんですね……"
+                }
+               ]
               }
              ]
             }
