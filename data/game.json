@@ -11076,6 +11076,52 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 28,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "外の騒ぎが気になって眠れない。エントランスに行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "隣の部屋の物音が気になって眠れない。ニノマエの部屋に行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ]
     },
