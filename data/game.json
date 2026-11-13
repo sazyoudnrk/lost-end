@@ -353,7 +353,7 @@
   "ピヲラと過ごした回数",
   "",
   "進行度",
-  "エントランスに入った方向（1=左 2=右）",
+  "エントランスに入った方向（1=左 2=右 3=ハッチ）",
   "",
   "正気度_ムロ",
   "正気度_ネイサ",
@@ -2248,6 +2248,20 @@
        "dir": 2
       },
       {
+       "from": 4,
+       "to": 9,
+       "slot": 0,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 7,
+       "map": 1,
+       "x": 4,
+       "y": 5,
+       "dir": 2
+      },
+      {
        "from": 1,
        "to": "",
        "slot": -1,
@@ -3862,6 +3876,20 @@
        "map": 5,
        "x": 6,
        "y": 5
+      },
+      {
+       "from": 4,
+       "to": 9,
+       "slot": 0,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 7,
+       "map": 1,
+       "x": 7,
+       "y": 4,
+       "dir": 0
       }
      ]
     },
@@ -4944,96 +4972,129 @@
          "ms": 400
         },
         {
+         "t": "comment",
+         "text": "入ってきた方向（変数6：1=西 2=東 3=ハッチ）で中央へ歩く"
+        },
+        {
          "t": "if",
          "cond": {
           "type": "var",
           "id": 6,
           "op": "==",
-          "val": 1
+          "val": 3
          },
+         "hasElse": true,
          "then": [
           {
-           "t": "if",
-           "cond": {
-            "type": "ppos",
-            "axis": "y",
-            "op": "==",
-            "val": 5
-           },
-           "then": [
-            {
-             "t": "route",
-             "target": "player",
-             "wait": true,
-             "through": false,
-             "speed": 1,
-             "route": [
-              "D",
-              "R",
-              "R",
-              "R"
-             ]
-            }
-           ],
-           "else": [
-            {
-             "t": "route",
-             "target": "player",
-             "wait": true,
-             "through": false,
-             "speed": 1,
-             "route": [
-              "R",
-              "R",
-              "R"
-             ]
-            }
-           ],
-           "hasElse": true
+           "t": "route",
+           "target": "player",
+           "wait": true,
+           "through": false,
+           "speed": 1,
+           "route": [
+            "U",
+            "U",
+            "U",
+            "R",
+            "R",
+            "U"
+           ]
           }
          ],
          "else": [
           {
            "t": "if",
            "cond": {
-            "type": "ppos",
-            "axis": "y",
+            "type": "var",
+            "id": 6,
             "op": "==",
-            "val": 5
+            "val": 1
            },
+           "hasElse": true,
            "then": [
             {
-             "t": "route",
-             "target": "player",
-             "wait": true,
-             "through": false,
-             "speed": 1,
-             "route": [
-              "D",
-              "L",
-              "L",
-              "L"
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "R",
+                "R",
+                "R"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "R",
+                "R",
+                "R"
+               ]
+              }
              ]
             }
            ],
            "else": [
             {
-             "t": "route",
-             "target": "player",
-             "wait": true,
-             "through": false,
-             "speed": 1,
-             "route": [
-              "L",
-              "L",
-              "L"
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "L",
+                "L",
+                "L"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "L",
+                "L",
+                "L"
+               ]
+              }
              ]
             }
-           ],
-           "hasElse": true
+           ]
           }
-         ],
-         "hasElse": true
+         ]
         },
         {
          "t": "text",
@@ -5217,6 +5278,337 @@
          "text": "ムロさんならなにか、解決策を持っているかもしれない。\n\n[p]\n自分は……帰らないといけないんだ。",
          "pic": "-",
          "picPos": "C"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 38,
+     "name": "全員集合（毎朝・4〜9日目）",
+     "x": 5,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": ">=",
+         "val": 4
+        },
+        {
+         "type": "day",
+         "op": "<=",
+         "val": 9
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 0
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "comment",
+         "text": "入ってきた方向（変数6：1=西 2=東 3=ハッチ）で中央へ歩く"
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 6,
+          "op": "==",
+          "val": 3
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "route",
+           "target": "player",
+           "wait": true,
+           "through": false,
+           "speed": 1,
+           "route": [
+            "U",
+            "U",
+            "U",
+            "R",
+            "R",
+            "U"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 6,
+            "op": "==",
+            "val": 1
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "R",
+                "R",
+                "R"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "R",
+                "R",
+                "R"
+               ]
+              }
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "L",
+                "L",
+                "L"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "L",
+                "L",
+                "L"
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "t": "vcase",
+         "src": "day",
+         "id": 0,
+         "cases": [
+          {
+           "val": 4,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（墜落まであと6日）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（4日目の朝の集合の会話）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          },
+          {
+           "val": 5,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（墜落まであと5日）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（5日目の朝の集合の会話）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          },
+          {
+           "val": 6,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（墜落まであと4日）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（6日目の朝の集合の会話）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          },
+          {
+           "val": 7,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（墜落まであと3日）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（7日目の朝の集合の会話）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          },
+          {
+           "val": 8,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（墜落まであと2日）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（8日目の朝の集合の会話）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          },
+          {
+           "val": 9,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（墜落まであと1日）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（9日目の朝の集合の会話）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          }
+         ],
+         "hasElse": false,
+         "else": []
+        },
+        {
+         "t": "fade",
+         "mode": "out",
+         "ms": 400
+        },
+        {
+         "t": "time",
+         "op": "set",
+         "n": 1,
+         "slot": 1
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "fade",
+         "mode": "in",
+         "ms": 400
         }
        ]
       }
@@ -7304,6 +7696,20 @@
        "x": 8,
        "y": 5,
        "dir": 1
+      },
+      {
+       "from": 4,
+       "to": 9,
+       "slot": 0,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 7,
+       "map": 1,
+       "x": 8,
+       "y": 5,
+       "dir": 1
       }
      ]
     },
@@ -9200,6 +9606,45 @@
          "face": "",
          "name": "",
          "text": "先にみんなにパーツ集めの協力をお願いしよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": ">=",
+         "val": 4
+        },
+        {
+         "type": "day",
+         "op": "<=",
+         "val": 9
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 0
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "まだ眠くない。先にエントランスに行こう。",
          "pic": "-",
          "picPos": "C"
         }
@@ -12178,6 +12623,20 @@
        "map": 4,
        "x": 6,
        "y": 5
+      },
+      {
+       "from": 4,
+       "to": 9,
+       "slot": 0,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 7,
+       "map": 1,
+       "x": 5,
+       "y": 4,
+       "dir": 0
       },
       {
        "from": 1,
