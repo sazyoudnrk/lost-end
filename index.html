@@ -96,7 +96,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <button id="menuBtn" class="ui-btn">☰</button>
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
-<div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="close">閉じる</button></div>
+<div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="opt">設定</button><button class="ui-btn" data-m="close">閉じる</button></div>
 <div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button></div>
 <div id="hud"></div>
 <div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="tip"></div><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
@@ -105,7 +105,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13i';
+const GAME_VER='2026-11-13j';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -136,7 +136,11 @@ function loadSnd(path){if(!path)return Promise.resolve(null);if(sndP[path])retur
     if(PREVIEW){const f=await idbGet(path);if(f)buf=f.buf.slice(0)}
     if(!buf){const r=await fetch(path+(PREVIEW?'?t='+Date.now():''));if(!r.ok)return null;buf=await r.arrayBuffer()}
     return await new Promise((res)=>a.decodeAudioData(buf,res,()=>res(null)))}catch(e){return null}})()}
-const BGM={id:null,src:null,gain:null};
+const BGM={id:null,src:null,gain:null,base:1};
+// 音量の設定（テストプレイは別に保存。テストプレイのBGMは最初オフ）
+const OPTKEY=()=>NS+(PREVIEW?'optPv':'opt');
+let OPT=(()=>{const d=PREVIEW?{bgm:0,se:80}:{bgm:80,se:80};try{return Object.assign(d,JSON.parse(localStorage.getItem(OPTKEY())||'{}'))}catch(e){return d}})();
+function saveOpt(){try{localStorage.setItem(OPTKEY(),JSON.stringify(OPT))}catch(e){}if(BGM.gain&&AC)BGM.gain.gain.setValueAtTime(BGM.base*OPT.bgm/100,AC.currentTime)}
 function stopBgm(ms=600){const b=BGM;if(!b.src)return;const a=audioCtx(),s=b.src,g=b.gain;BGM.id=null;BGM.src=null;BGM.gain=null;
   try{const t=a.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+ms/1000);s.stop(t+ms/1000+.05)}catch(e){try{s.stop()}catch(_){}}}
 async function playBgm(id,vol,ms=600){
@@ -144,7 +148,7 @@ async function playBgm(id,vol,ms=600){
   const s=(G.bgms||[]).find(x=>x.id===id);if(!s){stopBgm(ms);return}
   stopBgm(ms);BGM.id=id;const buf=await loadSnd(s.file);const a=audioCtx();if(!buf||!a||BGM.id!==id)return;
   const src=a.createBufferSource(),g=a.createGain();src.buffer=buf;src.loop=true;src.connect(g).connect(a.destination);
-  const v=(vol==null?(s.vol??80):+vol)/100,t=a.currentTime;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+ms/1000);src.start();BGM.src=src;BGM.gain=g}
+  BGM.base=(vol==null?(s.vol??80):+vol)/100;const v=BGM.base*OPT.bgm/100,t=a.currentTime;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+ms/1000);src.start();BGM.src=src;BGM.gain=g}
 async function flashScreen(c){const f=$('#flash'),ms=Math.max(60,+c.ms||400),n=Math.max(1,+c.times||1),a=(c.alpha??60)/100;f.style.background=c.color||'#ff0000';
   for(let i=0;i<n;i++){f.style.transition=`opacity ${ms/2}ms ease-out`;f.style.opacity=a;await sleep(ms/2);f.style.transition=`opacity ${ms/2}ms ease-in`;f.style.opacity=0;await sleep(ms/2)}}
 async function shakeScreen(c){
@@ -157,7 +161,7 @@ async function shakeScreen(c){
 function mapBgm(m){const v=m&&m.bgm;if(v==='-')return null;return v||(G.system&&G.system.bgm)||null}
 document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else AC.resume()});
 async function playSe(id,vol){const s=(G.sounds||[]).find(x=>x.id===id);if(!s)return;const b=await loadSnd(s.file);const a=audioCtx();if(!b||!a)return;
-  const src=a.createBufferSource(),g=a.createGain();g.gain.value=(vol==null?100:+vol)/100;src.buffer=b;src.connect(g).connect(a.destination);src.start()}
+  const src=a.createBufferSource(),g=a.createGain();g.gain.value=(vol==null?100:+vol)/100*OPT.se/100;src.buffer=b;src.connect(g).connect(a.destination);src.start()}
 function loadImg(path){
   if(!path)return Promise.resolve(null);
   if(imgP[path])return imgP[path];
@@ -634,6 +638,11 @@ $('#menu').addEventListener('click',e=>{
     it.style.display='block'}
   if(m==='save'){S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));e.target.textContent='セーブしました';setTimeout(()=>e.target.textContent='セーブ',1200)}
   if(m==='load')loadGame();
+  if(m==='opt'){const it=$('#items');it.innerHTML='';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
+      const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';
+      const show=()=>v.textContent=+s.value?s.value:'オフ';show();s.oninput=()=>{OPT[k]=+s.value;show();saveOpt()};const l=document.createElement('span');l.textContent=lab;l.style.width='3em';d.append(l,s,v);return d};
+    it.append(row('BGM','bgm'),row('効果音','se'));if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
+    it.style.display='block'}
 });
 async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
 async function startNew(){
