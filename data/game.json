@@ -372,10 +372,10 @@
   "交換機にない足りないパーツの数（判定用）",
   "一緒に過ごした相手の人数（判定用）",
   "いなくなった人（集合用 1=ムロ 2=ニノマエ 3=両方）",
-  "",
-  "",
-  "",
-  "",
+  "足りないパーツの値段の合計（判定用）",
+  "手持ちの価値（判定用）",
+  "今日あと取り出せる回数（判定用）",
+  "パーツを取り出せない（判定用 1=取り出せない）",
   "",
   "",
   "",
@@ -9706,6 +9706,14 @@
          "t": "text",
          "face": "",
          "name": "ムロ",
+         "pic": "muro_normal",
+         "picPos": "C",
+         "text": "それと……パーツは9日目の夜までに入手しないといけません。\n[p]\nワープ装置を直すのに半日、エンジンがかかるのに半日。丸一日時間が必要なんです。"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
          "text": "そのためにはまず価値が必要です。\n\n[p]\n僕は今朝、星間ワープ装置のパーツを一つ手に入れました。\n\n[p]\n運良く1番価値の低いパーツがでたので手に入れられましたが、持ってきたものを全部入れてやっと一つ買えるような状況です。\n\n[p]\nですので[pname]さん、どうにか皆さんに協力を仰いでみてください。\n\n[p]\n力を合わせればなんとかなるかもしれません！\n",
          "pic": "muro_normal",
          "picPos": "C"
@@ -9979,762 +9987,6 @@
    ],
    "events": [
     {
-     "id": 37,
-     "name": "10日目の判定（エンディング）",
-     "x": 4,
-     "y": 0,
-     "pages": [
-      {
-       "cond": [],
-       "image": null,
-       "trigger": "action",
-       "priority": "below",
-       "through": true,
-       "cmds": []
-      },
-      {
-       "cond": [
-        {
-         "type": "day",
-         "op": ">=",
-         "val": 10
-        },
-        {
-         "type": "slot",
-         "op": "==",
-         "val": 0
-        }
-       ],
-       "image": null,
-       "trigger": "auto",
-       "priority": "below",
-       "through": true,
-       "cmds": [
-        {
-         "t": "wait",
-         "ms": 400
-        },
-        {
-         "t": "comment",
-         "text": "パーツの判定：取り付け済みか持っていれば揃っている"
-        },
-        {
-         "t": "var",
-         "id": 21,
-         "op": "set",
-         "val": 0
-        },
-        {
-         "t": "var",
-         "id": 22,
-         "op": "set",
-         "val": 0
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "sw",
-          "id": 20,
-          "val": false
-         },
-         "hasElse": false,
-         "then": [
-          {
-           "t": "if",
-           "cond": {
-            "type": "item",
-            "id": 11,
-            "has": false
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "var",
-             "id": 21,
-             "op": "add",
-             "val": 1
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "stock",
-              "id": 11,
-              "val": false
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "var",
-               "id": 22,
-               "op": "add",
-               "val": 1
-              }
-             ],
-             "else": []
-            }
-           ],
-           "else": []
-          }
-         ],
-         "else": []
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "sw",
-          "id": 21,
-          "val": false
-         },
-         "hasElse": false,
-         "then": [
-          {
-           "t": "if",
-           "cond": {
-            "type": "item",
-            "id": 12,
-            "has": false
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "var",
-             "id": 21,
-             "op": "add",
-             "val": 1
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "stock",
-              "id": 12,
-              "val": false
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "var",
-               "id": 22,
-               "op": "add",
-               "val": 1
-              }
-             ],
-             "else": []
-            }
-           ],
-           "else": []
-          }
-         ],
-         "else": []
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "sw",
-          "id": 22,
-          "val": false
-         },
-         "hasElse": false,
-         "then": [
-          {
-           "t": "if",
-           "cond": {
-            "type": "item",
-            "id": 13,
-            "has": false
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "var",
-             "id": 21,
-             "op": "add",
-             "val": 1
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "stock",
-              "id": 13,
-              "val": false
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "var",
-               "id": 22,
-               "op": "add",
-               "val": 1
-              }
-             ],
-             "else": []
-            }
-           ],
-           "else": []
-          }
-         ],
-         "else": []
-        },
-        {
-         "t": "comment",
-         "text": "一緒に過ごした相手の人数"
-        },
-        {
-         "t": "var",
-         "id": 23,
-         "op": "set",
-         "val": 0
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "var",
-          "id": 0,
-          "op": ">",
-          "val": 0
-         },
-         "hasElse": false,
-         "then": [
-          {
-           "t": "var",
-           "id": 23,
-           "op": "add",
-           "val": 1
-          }
-         ],
-         "else": []
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "var",
-          "id": 1,
-          "op": ">",
-          "val": 0
-         },
-         "hasElse": false,
-         "then": [
-          {
-           "t": "var",
-           "id": 23,
-           "op": "add",
-           "val": 1
-          }
-         ],
-         "else": []
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "var",
-          "id": 2,
-          "op": ">",
-          "val": 0
-         },
-         "hasElse": false,
-         "then": [
-          {
-           "t": "var",
-           "id": 23,
-           "op": "add",
-           "val": 1
-          }
-         ],
-         "else": []
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "var",
-          "id": 3,
-          "op": ">",
-          "val": 0
-         },
-         "hasElse": false,
-         "then": [
-          {
-           "t": "var",
-           "id": 23,
-           "op": "add",
-           "val": 1
-          }
-         ],
-         "else": []
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "var",
-          "id": 21,
-          "op": "==",
-          "val": 0
-         },
-         "hasElse": true,
-         "then": [
-          {
-           "t": "if",
-           "cond": {
-            "type": "sw",
-            "id": 24,
-            "val": true
-           },
-           "hasElse": true,
-           "then": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（だが主人公の手には、ニノマエの血の感触が残っている）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "ending",
-             "id": "sinner"
-            }
-           ],
-           "else": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 23,
-              "op": "==",
-              "val": 1
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 0,
-                "op": ">",
-                "val": 0
-               },
-               "hasElse": false,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ずっとムロとだけ過ごしてきた）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "ending",
-                 "id": "balance_muro"
-                }
-               ],
-               "else": []
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 1,
-                "op": ">",
-                "val": 0
-               },
-               "hasElse": false,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ずっとネイサとだけ過ごしてきた）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "ending",
-                 "id": "balance_neisa"
-                }
-               ],
-               "else": []
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 2,
-                "op": ">",
-                "val": 0
-               },
-               "hasElse": false,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ずっとニノマエとだけ過ごしてきた）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "ending",
-                 "id": "balance_ninomae"
-                }
-               ],
-               "else": []
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 3,
-                "op": ">",
-                "val": 0
-               },
-               "hasElse": false,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ずっとピヲラとだけ過ごしてきた）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "ending",
-                 "id": "balance_piwora"
-                }
-               ],
-               "else": []
-              }
-             ],
-             "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 17,
-              "op": "<=",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "（主人公には、この船での日々が深い傷として残った）",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "ending",
-               "id": "trauma"
-              }
-             ],
-             "else": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "ending",
-               "id": "return"
-              }
-             ]
-            }
-           ]
-          }
-         ],
-         "else": [
-          {
-           "t": "comment",
-           "text": "パーツ不足"
-          },
-          {
-           "t": "if",
-           "cond": {
-            "type": "var",
-            "id": 22,
-            "op": "==",
-            "val": 0
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（等価交換機に、足りないパーツが並んでいる）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（自分を入れれば、取り出せるかもしれない）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "choice",
-             "options": [
-              {
-               "label": "等価交換機に入る",
-               "cmds": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（主人公は等価交換機に入った）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（装置は直り、残された4人は地球に生還した）",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "ending",
-                 "id": "sacrifice"
-                }
-               ]
-              },
-              {
-               "label": "入らない",
-               "cmds": []
-              }
-             ]
-            }
-           ],
-           "else": []
-          },
-          {
-           "t": "if",
-           "cond": {
-            "type": "var",
-            "id": 23,
-            "op": "==",
-            "val": 1
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 0,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "move",
-               "map": 4,
-               "x": 5,
-               "y": 8,
-               "dir": 3,
-               "fade": true
-              },
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "（ムロの客室で、ふたりで最期の時を迎えた）",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "ending",
-               "id": "peace_muro"
-              }
-             ],
-             "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 1,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "move",
-               "map": 5,
-               "x": 5,
-               "y": 8,
-               "dir": 3,
-               "fade": true
-              },
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "（ネイサの客室で、ふたりで最期の時を迎えた）",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "ending",
-               "id": "peace_neisa"
-              }
-             ],
-             "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 2,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "move",
-               "map": 3,
-               "x": 5,
-               "y": 8,
-               "dir": 3,
-               "fade": true
-              },
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "（ニノマエの客室で、ふたりで最期の時を迎えた）",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "ending",
-               "id": "peace_ninomae"
-              }
-             ],
-             "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 3,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "move",
-               "map": 7,
-               "x": 5,
-               "y": 8,
-               "dir": 3,
-               "fade": true
-              },
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "（ピヲラの客室で、ふたりで最期の時を迎えた）",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "ending",
-               "id": "peace_piwora"
-              }
-             ],
-             "else": []
-            }
-           ],
-           "else": []
-          },
-          {
-           "t": "text",
-           "face": "",
-           "name": "",
-           "text": "（パーツは揃わなかった）",
-           "pic": "-",
-           "picPos": "C"
-          },
-          {
-           "t": "text",
-           "face": "",
-           "name": "",
-           "text": "（船は墜落し、乗っていた全員が死亡した）",
-           "pic": "-",
-           "picPos": "C"
-          },
-          {
-           "t": "ending",
-           "id": "crash"
-          }
-         ]
-        }
-       ]
-      }
-     ]
-    },
-    {
      "id": 1,
      "name": "扉",
      "x": 5,
@@ -10869,6 +10121,907 @@
                 }
                ],
                "else": []
+              }
+             ],
+             "else": []
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "day",
+              "op": ">=",
+              "val": 9
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "comment",
+               "text": "9日目の夜：ここでエンディングが決まる"
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "眠ると、最後の朝を迎える。",
+               "pic": "-",
+               "picPos": "C"
+              },
+              {
+               "t": "choice",
+               "options": [
+                {
+                 "label": "眠る",
+                 "cmds": [
+                  {
+                   "t": "comment",
+                   "text": "最後の夜の判定：パーツは取り付け済みか持っていれば揃っている"
+                  },
+                  {
+                   "t": "var",
+                   "id": 21,
+                   "op": "set",
+                   "val": 0
+                  },
+                  {
+                   "t": "var",
+                   "id": 22,
+                   "op": "set",
+                   "val": 0
+                  },
+                  {
+                   "t": "var",
+                   "id": 25,
+                   "op": "set",
+                   "val": 0
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "sw",
+                    "id": 20,
+                    "val": false
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "item",
+                      "id": 11,
+                      "has": false
+                     },
+                     "hasElse": false,
+                     "then": [
+                      {
+                       "t": "var",
+                       "id": 21,
+                       "op": "add",
+                       "val": 1
+                      },
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "stock",
+                        "id": 11,
+                        "val": false
+                       },
+                       "hasElse": true,
+                       "then": [
+                        {
+                         "t": "var",
+                         "id": 22,
+                         "op": "add",
+                         "val": 1
+                        }
+                       ],
+                       "else": [
+                        {
+                         "t": "var",
+                         "id": 25,
+                         "op": "gameAdd",
+                         "src": "price",
+                         "val": 0,
+                         "item": 11
+                        }
+                       ]
+                      }
+                     ],
+                     "else": []
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "sw",
+                    "id": 21,
+                    "val": false
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "item",
+                      "id": 12,
+                      "has": false
+                     },
+                     "hasElse": false,
+                     "then": [
+                      {
+                       "t": "var",
+                       "id": 21,
+                       "op": "add",
+                       "val": 1
+                      },
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "stock",
+                        "id": 12,
+                        "val": false
+                       },
+                       "hasElse": true,
+                       "then": [
+                        {
+                         "t": "var",
+                         "id": 22,
+                         "op": "add",
+                         "val": 1
+                        }
+                       ],
+                       "else": [
+                        {
+                         "t": "var",
+                         "id": 25,
+                         "op": "gameAdd",
+                         "src": "price",
+                         "val": 0,
+                         "item": 12
+                        }
+                       ]
+                      }
+                     ],
+                     "else": []
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "sw",
+                    "id": 22,
+                    "val": false
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "item",
+                      "id": 13,
+                      "has": false
+                     },
+                     "hasElse": false,
+                     "then": [
+                      {
+                       "t": "var",
+                       "id": 21,
+                       "op": "add",
+                       "val": 1
+                      },
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "stock",
+                        "id": 13,
+                        "val": false
+                       },
+                       "hasElse": true,
+                       "then": [
+                        {
+                         "t": "var",
+                         "id": 22,
+                         "op": "add",
+                         "val": 1
+                        }
+                       ],
+                       "else": [
+                        {
+                         "t": "var",
+                         "id": 25,
+                         "op": "gameAdd",
+                         "src": "price",
+                         "val": 0,
+                         "item": 13
+                        }
+                       ]
+                      }
+                     ],
+                     "else": []
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "var",
+                   "id": 26,
+                   "op": "game",
+                   "src": "money",
+                   "val": 0
+                  },
+                  {
+                   "t": "var",
+                   "id": 27,
+                   "op": "game",
+                   "src": "buysLeft",
+                   "val": 0
+                  },
+                  {
+                   "t": "var",
+                   "id": 28,
+                   "op": "set",
+                   "val": 0
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 26,
+                    "op": "<",
+                    "val": 0,
+                    "ref": 25
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "var",
+                     "id": 28,
+                     "op": "set",
+                     "val": 1
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 27,
+                    "op": "<",
+                    "val": 0,
+                    "ref": 21
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "var",
+                     "id": 28,
+                     "op": "set",
+                     "val": 1
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "comment",
+                   "text": "ただ1人の犠牲：足りないパーツが全部今日の等価交換機に並んでいるのに、取り出せない"
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 21,
+                    "op": ">",
+                    "val": 0
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "var",
+                      "id": 22,
+                      "op": "==",
+                      "val": 0
+                     },
+                     "hasElse": false,
+                     "then": [
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 28,
+                        "op": "==",
+                        "val": 1
+                       },
+                       "hasElse": false,
+                       "then": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（等価交換機には、足りないパーツが並んでいる）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（だが、今の自分には取り出せない）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（……自分を入れれば、取り出せるかもしれない）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "choice",
+                         "options": [
+                          {
+                           "label": "等価交換機に入る",
+                           "cmds": [
+                            {
+                             "t": "text",
+                             "face": "",
+                             "name": "",
+                             "text": "（主人公は等価交換機に入った）",
+                             "pic": "-",
+                             "picPos": "C"
+                            },
+                            {
+                             "t": "text",
+                             "face": "",
+                             "name": "",
+                             "text": "（装置は直り、残された4人は地球に生還した）",
+                             "pic": "-",
+                             "picPos": "C"
+                            },
+                            {
+                             "t": "ending",
+                             "id": "sacrifice"
+                            }
+                           ]
+                          },
+                          {
+                           "label": "入らない",
+                           "cmds": []
+                          }
+                         ]
+                        }
+                       ],
+                       "else": []
+                      }
+                     ],
+                     "else": []
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "comment",
+                   "text": "一緒に過ごした相手の人数"
+                  },
+                  {
+                   "t": "var",
+                   "id": 23,
+                   "op": "set",
+                   "val": 0
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 0,
+                    "op": ">",
+                    "val": 0
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "var",
+                     "id": 23,
+                     "op": "add",
+                     "val": 1
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 1,
+                    "op": ">",
+                    "val": 0
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "var",
+                     "id": 23,
+                     "op": "add",
+                     "val": 1
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 2,
+                    "op": ">",
+                    "val": 0
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "var",
+                     "id": 23,
+                     "op": "add",
+                     "val": 1
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 3,
+                    "op": ">",
+                    "val": 0
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "var",
+                     "id": 23,
+                     "op": "add",
+                     "val": 1
+                    }
+                   ],
+                   "else": []
+                  },
+                  {
+                   "t": "fade",
+                   "mode": "out",
+                   "ms": 800
+                  },
+                  {
+                   "t": "sleep"
+                  },
+                  {
+                   "t": "wait",
+                   "ms": 600
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 21,
+                    "op": "==",
+                    "val": 0
+                   },
+                   "hasElse": true,
+                   "then": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "sw",
+                      "id": 24,
+                      "val": true
+                     },
+                     "hasElse": true,
+                     "then": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "",
+                       "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                       "pic": "-",
+                       "picPos": "C"
+                      },
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "",
+                       "text": "（だが主人公の手には、ニノマエの血の感触が残っている）",
+                       "pic": "-",
+                       "picPos": "C"
+                      },
+                      {
+                       "t": "ending",
+                       "id": "sinner"
+                      }
+                     ],
+                     "else": [
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 23,
+                        "op": "==",
+                        "val": 1
+                       },
+                       "hasElse": false,
+                       "then": [
+                        {
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 0,
+                          "op": ">",
+                          "val": 0
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（ずっとムロとだけ過ごしてきた）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "balance_muro"
+                          }
+                         ],
+                         "else": []
+                        },
+                        {
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 1,
+                          "op": ">",
+                          "val": 0
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（ずっとネイサとだけ過ごしてきた）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "balance_neisa"
+                          }
+                         ],
+                         "else": []
+                        },
+                        {
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 2,
+                          "op": ">",
+                          "val": 0
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（ずっとニノマエとだけ過ごしてきた）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "balance_ninomae"
+                          }
+                         ],
+                         "else": []
+                        },
+                        {
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 3,
+                          "op": ">",
+                          "val": 0
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（ずっとピヲラとだけ過ごしてきた）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "balance_piwora"
+                          }
+                         ],
+                         "else": []
+                        }
+                       ],
+                       "else": []
+                      },
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 17,
+                        "op": "<=",
+                        "val": 0
+                       },
+                       "hasElse": true,
+                       "then": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（主人公には、この船での日々が深い傷として残った）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "ending",
+                         "id": "trauma"
+                        }
+                       ],
+                       "else": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "ending",
+                         "id": "return"
+                        }
+                       ]
+                      }
+                     ]
+                    }
+                   ],
+                   "else": [
+                    {
+                     "t": "comment",
+                     "text": "パーツ不足"
+                    },
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "var",
+                      "id": 23,
+                      "op": "==",
+                      "val": 1
+                     },
+                     "hasElse": false,
+                     "then": [
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 0,
+                        "op": ">",
+                        "val": 0
+                       },
+                       "hasElse": false,
+                       "then": [
+                        {
+                         "t": "move",
+                         "map": 4,
+                         "x": 5,
+                         "y": 8,
+                         "dir": 3,
+                         "fade": true
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（ムロの客室で、ふたりで最期の時を迎えた）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "ending",
+                         "id": "peace_muro"
+                        }
+                       ],
+                       "else": []
+                      },
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 1,
+                        "op": ">",
+                        "val": 0
+                       },
+                       "hasElse": false,
+                       "then": [
+                        {
+                         "t": "move",
+                         "map": 5,
+                         "x": 5,
+                         "y": 8,
+                         "dir": 3,
+                         "fade": true
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（ネイサの客室で、ふたりで最期の時を迎えた）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "ending",
+                         "id": "peace_neisa"
+                        }
+                       ],
+                       "else": []
+                      },
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 2,
+                        "op": ">",
+                        "val": 0
+                       },
+                       "hasElse": false,
+                       "then": [
+                        {
+                         "t": "move",
+                         "map": 3,
+                         "x": 5,
+                         "y": 8,
+                         "dir": 3,
+                         "fade": true
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（ニノマエの客室で、ふたりで最期の時を迎えた）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "ending",
+                         "id": "peace_ninomae"
+                        }
+                       ],
+                       "else": []
+                      },
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 3,
+                        "op": ">",
+                        "val": 0
+                       },
+                       "hasElse": false,
+                       "then": [
+                        {
+                         "t": "move",
+                         "map": 7,
+                         "x": 5,
+                         "y": 8,
+                         "dir": 3,
+                         "fade": true
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（ピヲラの客室で、ふたりで最期の時を迎えた）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "ending",
+                         "id": "peace_piwora"
+                        }
+                       ],
+                       "else": []
+                      }
+                     ],
+                     "else": []
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "",
+                     "text": "（パーツは揃わなかった）",
+                     "pic": "-",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "",
+                     "text": "（船は墜落し、乗っていた全員が死亡した）",
+                     "pic": "-",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "ending",
+                     "id": "crash"
+                    }
+                   ]
+                  }
+                 ]
+                },
+                {
+                 "label": "やめる",
+                 "cmds": [
+                  {
+                   "t": "end"
+                  }
+                 ]
+                }
+               ]
               }
              ],
              "else": []
@@ -15545,73 +15698,73 @@
     "id": "crash",
     "name": "墜落",
     "desc": "パーツが集まらず墜落し、全員死亡した。",
-    "note": "10日目の朝：パーツ不足"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足"
    },
    {
     "id": "return",
     "name": "生還",
     "desc": "パーツを三つ揃え、地球に到着した。",
-    "note": "10日目の朝：パーツ3つ・誰も殺していない・主人公の正気度>0"
+    "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・主人公の正気度>0"
    },
    {
     "id": "balance_muro",
     "name": "天秤（ムロ）",
     "desc": "パーツを集め切り、ムロとだけ過ごし続けた。",
-    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がムロだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・一緒に過ごした相手がムロだけ"
    },
    {
     "id": "balance_neisa",
     "name": "天秤（ネイサ）",
     "desc": "パーツを集め切り、ネイサとだけ過ごし続けた。",
-    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がネイサだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・一緒に過ごした相手がネイサだけ"
    },
    {
     "id": "balance_ninomae",
     "name": "天秤（ニノマエ）",
     "desc": "パーツを集め切り、ニノマエとだけ過ごし続けた。",
-    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がニノマエだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・一緒に過ごした相手がニノマエだけ"
    },
    {
     "id": "balance_piwora",
     "name": "天秤（ピヲラ）",
     "desc": "パーツを集め切り、ピヲラとだけ過ごし続けた。",
-    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がピヲラだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・一緒に過ごした相手がピヲラだけ"
    },
    {
     "id": "peace_muro",
     "name": "穏やかな最期（ムロ）",
     "desc": "ムロとだけ過ごし続け、ムロの客室で墜落を迎えた。",
-    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がムロだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がムロだけ"
    },
    {
     "id": "peace_neisa",
     "name": "穏やかな最期（ネイサ）",
     "desc": "ネイサとだけ過ごし続け、ネイサの客室で墜落を迎えた。",
-    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がネイサだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がネイサだけ"
    },
    {
     "id": "peace_ninomae",
     "name": "穏やかな最期（ニノマエ）",
     "desc": "ニノマエとだけ過ごし続け、ニノマエの客室で墜落を迎えた。",
-    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がニノマエだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がニノマエだけ"
    },
    {
     "id": "peace_piwora",
     "name": "穏やかな最期（ピヲラ）",
     "desc": "ピヲラとだけ過ごし続け、ピヲラの客室で墜落を迎えた。",
-    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がピヲラだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がピヲラだけ"
    },
    {
     "id": "sacrifice",
     "name": "ただ1人の犠牲",
     "desc": "主人公が等価交換機に入り、4人だけが生還した。",
-    "note": "10日目の朝：足りないパーツが全部その日の等価交換機にある→主人公が入るを選ぶ"
+    "note": "9日目の夜（最後に眠るとき）：足りないパーツが全部その日の等価交換機に並んでいるが、価値か取り出し回数が足りない→主人公が入るを選ぶ"
    },
    {
     "id": "sinner",
     "name": "罪人",
     "desc": "パーツは集まったが、人を殺してしまった。",
-    "note": "10日目の朝：パーツ3つ・ニノマエを刺した"
+    "note": "9日目の夜（最後に眠るとき）：パーツ3つ・ニノマエを刺した"
    },
    {
     "id": "victim",
@@ -15629,7 +15782,7 @@
     "id": "trauma",
     "name": "トラウマ",
     "desc": "正気を失ったまま生還し、後遺症が残った。",
-    "note": "10日目の朝：パーツ3つ・誰も殺していない・主人公の正気度0"
+    "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・主人公の正気度0"
    }
   ]
  },

@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-13l';
+const APP_VER='2026-11-14a';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -709,6 +709,7 @@ function condSummary(c){
   if(c.type==='slot')return `時間帯が${slotN(c.val)}${c.op==='!='?'ではない':''}`;
   return '?';
 }
+const GSRC=[['money','手持ちの価値'],['buysLeft','今日あと取り出せる回数'],['day','日付'],['slot','時間帯（番号）'],['price','等価交換機での値段']];
 function cmdSummary(c){
   switch(c.t){
     case'text':{const f=G.faces.find(x=>x.id===c.face),pc=c.pic&&c.pic!=='-'&&G.pictures.find(x=>x.id===c.pic);return(c.name?`【${c.name}】`:'')+(f?`(${f.name}) `:'')+(pc?`[${pc.name}・${POSN[c.picPos||'C']}] `:c.pic==='-'?`[立ち絵消す・${POSN[c.picPos||'C']}] `:'')+(c.text||'')}
@@ -720,7 +721,7 @@ function cmdSummary(c){
     case'vcase':return `${c.src==='day'?'日付':c.src==='slot'?'時間帯':varName(c.id)} の値で分岐（${(c.cases||[]).map(x=>x.val).join(', ')}${c.hasElse?', それ以外':''}）`;
     case'random':return `${(c.options||[]).length}つの中からランダム`;
     case'sw':return `${swName(c.id)} = ${c.val?'ON':'OFF'}`;
-    case'var':return `${varName(c.id)} ${{set:'=',add:'+=',sub:'-=',rand:'= 乱数0〜'}[c.op]} ${c.val}`;
+    case'var':if(c.op==='game'||c.op==='gameAdd')return `${varName(c.id)} ${c.op==='game'?'=':'+='} ${(GSRC.find(x=>x[0]===c.src)||['','?'])[1]}${c.src==='price'?'（'+itemName(c.item)+'）':''}`;return `${varName(c.id)} ${{set:'=',add:'+=',sub:'-=',rand:'= 乱数0〜'}[c.op]} ${c.val}`;
     case'self':return `${c.key} = ${c.val?'ON':'OFF'}`;
     case'item':return `${itemName(c.id)} ${c.n>=0?'+':''}${c.n}`;
     case'move':return `${mapName(c.map)} (${c.x}, ${c.y})`+(c.fade===false?'（暗転なし）':'');
@@ -887,7 +888,9 @@ function cmdForm(b,d,rr){
         c.append(h('div',{class:'row',style:'align-items:center;margin:5px 0'},h('span',{style:'width:18px;color:var(--mut)'},i+1),inp,d.options.length>1?btn('✕',()=>{if(o.cmds.length&&!confirm('この中身も消えます'))return;d.options.splice(i,1);rr()},'sm dg'):null))});
       c.append(btn('＋ 候補を追加',()=>{d.options.push({label:String.fromCharCode(65+d.options.length),cmds:[]});rr()},'sm'));break;
     case'sw':c.append(h('div',{class:'row'},fSel('スイッチ',d,'id',swOpts(),{num:true}),fSel('状態',d,'val',BOOL,{bool:true})));break;
-    case'var':c.append(fSel('変数',d,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('操作',d,'op',[['set','代入 ='],['add','加算 +'],['sub','減算 −'],['rand','乱数 0〜値']]),fNum('値',d,'val')));break;
+    case'var':{const G2=d.op==='game'||d.op==='gameAdd';if(G2&&!d.src)d.src='money';
+      c.append(fSel('変数',d,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('操作',d,'op',[['set','代入 ='],['add','加算 +'],['sub','減算 −'],['rand','乱数 0〜値'],['game','ゲームの値を代入'],['gameAdd','ゲームの値を加算']],{on:rr}),G2?fSel('ゲームの値',d,'src',GSRC,{on:rr}):fNum('値',d,'val')),
+        h('div',{},G2&&d.src==='price'?fSel('アイテム',d,'item',itemOpts(),{num:true}):null,G2?h('div',{class:'hint'},'手持ちの価値・今日あと何回取り出せるか・日付・時間帯・等価交換機での値段を変数に入れます。条件で「別の変数」と比べるときに使います'):null));break}
     case'self':c.append(h('div',{class:'row'},fSel('セルフスイッチ',d,'key',['A','B','C','D'].map(k=>[k,k])),fSel('状態',d,'val',BOOL,{bool:true})),h('div',{class:'hint'},'このイベントだけのスイッチ（宝箱を開けた、など）'));break;
     case'item':if(!G.items.length)c.append(h('div',{class:'hint'},'「データ」タブでアイテムを作ってください'));c.append(h('div',{class:'row'},fSel('アイテム',d,'id',itemOpts(),{num:true}),fNum('増減',d,'n')));break;
     case'move':if(d.fade==null)d.fade=true;c.append(fChk('暗転する（オフにすると一瞬で移動）',d,'fade'),fSel('マップ',d,'map',mapOpts(),{num:true,on:rr}),h('div',{class:'row'},fNum('X',d,'x',{min:0}),fNum('Y',d,'y',{min:0}),fSel('向き',d,'dir',[[-1,'そのまま'],...DIRN.map((n,i)=>[i,n])],{num:true})),btn('マップで位置を指定',()=>mapPicker(d.map,(x,y)=>{d.x=x;d.y=y;rr()}),'sm'));break;
