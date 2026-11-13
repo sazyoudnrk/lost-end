@@ -4227,6 +4227,12 @@
          "val": true
         },
         {
+         "t": "time",
+         "op": "set",
+         "n": 1,
+         "slot": 1
+        },
+        {
          "t": "stock",
          "items": [
           {
