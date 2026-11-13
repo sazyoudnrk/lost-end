@@ -331,10 +331,10 @@
   "星間ワープ装置の修理完了",
   "ニノマエが動かなくなった",
   "ニノマエ失踪",
-  "",
-  "",
-  "",
-  "",
+  "ニノマエの異変（部屋へ向かう）",
+  "ムロの異変（深夜・エントランスへ）",
+  "ピヲラの騒ぎを聞いた",
+  "ネイサが部屋に来た",
   "",
   "",
   "",
@@ -415,6 +415,552 @@
     [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
    ],
    "events": [
+    {
+     "id": 43,
+     "name": "正気度0：ムロ（エントランス）",
+     "x": 7,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 27,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "comment",
+         "text": "入ってきた方向（変数6：1=西 2=東 3=ハッチ）で中央へ歩く"
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 6,
+          "op": "==",
+          "val": 3
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "route",
+           "target": "player",
+           "wait": true,
+           "through": false,
+           "speed": 1,
+           "route": [
+            "U",
+            "U",
+            "U",
+            "R",
+            "R",
+            "U"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 6,
+            "op": "==",
+            "val": 1
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "R",
+                "R",
+                "R"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "R",
+                "R",
+                "R"
+               ]
+              }
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "L",
+                "L",
+                "L"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "L",
+                "L",
+                "L"
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ムロが等価交換機の前に立っている）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "ムロさん……？",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "route",
+         "target": "ムロ（消失）",
+         "wait": true,
+         "through": true,
+         "speed": 1,
+         "route": [
+          "U"
+         ]
+        },
+        {
+         "t": "flash",
+         "color": "#ffffff",
+         "alpha": 80,
+         "ms": 400,
+         "times": 1,
+         "wait": true
+        },
+        {
+         "t": "sw",
+         "id": 27,
+         "val": false
+        },
+        {
+         "t": "wait",
+         "ms": 600
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ムロは等価交換機で自分自身を価値へと変換し、いなくなった）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（等価交換機に価値12000が残されていた）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "money",
+         "op": "add",
+         "val": 12000
+        },
+        {
+         "t": "sw",
+         "id": 13,
+         "val": true
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "……部屋に戻ろう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 42,
+     "name": "ムロ（消失）",
+     "x": 6,
+     "y": 4,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 27,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 3
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": true,
+       "cmds": []
+      }
+     ]
+    },
+    {
+     "id": 41,
+     "name": "正気度0：ピヲラ（エントランス）",
+     "x": 6,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 11,
+         "op": "<=",
+         "val": 0
+        },
+        {
+         "type": "sw",
+         "id": 14,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        },
+        {
+         "type": "sw",
+         "id": 26,
+         "val": false
+        },
+        {
+         "type": "sw",
+         "id": 27,
+         "val": false
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "comment",
+         "text": "入ってきた方向（変数6：1=西 2=東 3=ハッチ）で中央へ歩く"
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 6,
+          "op": "==",
+          "val": 3
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "route",
+           "target": "player",
+           "wait": true,
+           "through": false,
+           "speed": 1,
+           "route": [
+            "U",
+            "U",
+            "U",
+            "R",
+            "R",
+            "U"
+           ]
+          }
+         ],
+         "else": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 6,
+            "op": "==",
+            "val": 1
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "R",
+                "R",
+                "R"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "R",
+                "R",
+                "R"
+               ]
+              }
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "ppos",
+              "axis": "y",
+              "op": "==",
+              "val": 5
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "D",
+                "L",
+                "L",
+                "L"
+               ]
+              }
+             ],
+             "else": [
+              {
+               "t": "route",
+               "target": "player",
+               "wait": true,
+               "through": false,
+               "speed": 1,
+               "route": [
+                "L",
+                "L",
+                "L"
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ピヲラが食玩の斧を振り回している）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "flash",
+         "color": "#ff0000",
+         "alpha": 60,
+         "ms": 300,
+         "times": 2,
+         "wait": true
+        },
+        {
+         "t": "shake",
+         "power": 6,
+         "ms": 500,
+         "wait": true
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ピヲラが、そのとき生きていた全員を切りつけた）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "sw",
+          "id": 13,
+          "val": false
+         },
+         "hasElse": false,
+         "then": [
+          {
+           "t": "var",
+           "id": 8,
+           "op": "sub",
+           "val": 10
+          }
+         ],
+         "else": []
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "sw",
+          "id": 15,
+          "val": false
+         },
+         "hasElse": false,
+         "then": [
+          {
+           "t": "var",
+           "id": 10,
+           "op": "sub",
+           "val": 10
+          }
+         ],
+         "else": []
+        },
+        {
+         "t": "var",
+         "id": 9,
+         "op": "sub",
+         "val": 10
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（みんなの正気度が下がった）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 14,
+         "val": true
+        },
+        {
+         "t": "sw",
+         "id": 28,
+         "val": false
+        }
+       ]
+      }
+     ]
+    },
     {
      "id": 1,
      "name": "等価交換機",
@@ -2304,6 +2850,20 @@
        "x": 4,
        "y": 5,
        "dir": 2
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": 26,
+       "swv": true,
+       "vr": -1,
+       "vop": "==",
+       "vv": 0,
+       "map": 3,
+       "x": 6,
+       "y": 5,
+       "dir": 0
       },
       {
        "from": 1,
@@ -5988,6 +6548,39 @@
          "speed": 1
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にニノマエの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "wait": true,
+         "through": false,
+         "speed": 1,
+         "route": [
+          "D"
+         ]
+        }
+       ]
       }
      ]
     },
@@ -6044,6 +6637,39 @@
          "wait": true,
          "through": false,
          "speed": 1
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にニノマエの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "wait": true,
+         "through": false,
+         "speed": 1,
+         "route": [
+          "D"
+         ]
         }
        ]
       }
@@ -6104,6 +6730,39 @@
          "speed": 1
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にニノマエの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "wait": true,
+         "through": false,
+         "speed": 1,
+         "route": [
+          "D"
+         ]
+        }
+       ]
       }
      ]
     },
@@ -6162,12 +6821,45 @@
          "speed": 1
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にニノマエの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "wait": true,
+         "through": false,
+         "speed": 1,
+         "route": [
+          "D"
+         ]
+        }
+       ]
       }
      ]
     },
     {
      "id": 6,
-     "name": "客室Aの扉",
+     "name": "客室Aの扉（ネイサ）",
      "x": 7,
      "y": 7,
      "pages": [
@@ -6210,7 +6902,7 @@
         },
         {
          "t": "move",
-         "map": 3,
+         "map": 5,
          "x": 5,
          "y": 8,
          "dir": 3
@@ -6299,7 +6991,7 @@
     },
     {
      "id": 8,
-     "name": "客室Cの扉",
+     "name": "客室Cの扉（ニノマエ）",
      "x": 5,
      "y": 10,
      "pages": [
@@ -6342,7 +7034,7 @@
         },
         {
          "t": "move",
-         "map": 5,
+         "map": 3,
          "x": 5,
          "y": 8,
          "dir": 3
@@ -8161,6 +8853,39 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にニノマエの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "wait": true,
+         "through": false,
+         "speed": 1,
+         "route": [
+          "D"
+         ]
+        }
+       ]
       }
      ]
     },
@@ -8228,6 +8953,39 @@
          "text": "今はムロさんの部屋に行こう。",
          "pic": "-",
          "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "touch",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にニノマエの部屋に行こう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "wait": true,
+         "through": false,
+         "speed": 1,
+         "route": [
+          "D"
+         ]
         }
        ]
       }
@@ -8513,7 +9271,7 @@
   },
   {
    "id": 3,
-   "name": "客室A",
+   "name": "客室C（ニノマエ）",
    "w": 12,
    "h": 11,
    "tileset": "ship",
@@ -8546,9 +9304,9 @@
         {
          "t": "move",
          "map": 2,
-         "x": 7,
-         "y": 8,
-         "dir": 0
+         "x": 5,
+         "y": 9,
+         "dir": 3
         }
        ]
       }
@@ -8577,6 +9335,180 @@
          "text": "ニノマエのカバンだ。",
          "pic": "-",
          "picPos": "C"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 40,
+     "name": "正気度0：ニノマエ（部屋）",
+     "x": 0,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 26,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ニノマエが左腕を等価交換機に入れ、流れた血で海の絵を描いた）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（腕を治療しに来た主人公に、自分にナイフを刺してくれと懇願してくる）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "choice",
+         "options": [
+          {
+           "label": "受け入れる",
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公はニノマエの願いを受け入れた）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（ニノマエは動かなくなった）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "item",
+             "id": 32,
+             "n": 1
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "血の海の絵を手に入れた。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公は返り血を浴びた）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "pchar",
+             "charset": "hero_blood"
+            },
+            {
+             "t": "sw",
+             "id": 24,
+             "val": true
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 25
+           }
+          },
+          {
+           "label": "受け入れない",
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公はニノマエの願いを断った）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "sw",
+             "id": 25,
+             "val": true
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "t": "sw",
+         "id": 15,
+         "val": true
+        },
+        {
+         "t": "sw",
+         "id": 26,
+         "val": false
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 11,
+          "op": "<=",
+          "val": 0
+         },
+         "hasElse": false,
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 14,
+            "val": false
+           },
+           "hasElse": false,
+           "then": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（……今度はエントランスの方が騒がしい）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ],
+           "else": []
+          }
+         ],
+         "else": []
         }
        ]
       }
@@ -8956,7 +9888,7 @@
   },
   {
    "id": 5,
-   "name": "客室C",
+   "name": "客室A（ネイサ）",
    "w": 12,
    "h": 11,
    "tileset": "ship",
@@ -8989,9 +9921,9 @@
         {
          "t": "move",
          "map": 2,
-         "x": 5,
-         "y": 9,
-         "dir": 3
+         "x": 7,
+         "y": 8,
+         "dir": 0
         }
        ]
       }
@@ -9852,6 +10784,96 @@
            "label": "眠る",
            "cmds": [
             {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 8,
+              "op": "<=",
+              "val": 0
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 13,
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "var",
+                  "id": 5,
+                  "op": ">=",
+                  "val": 7
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "fade",
+                   "mode": "out",
+                   "ms": 600
+                  },
+                  {
+                   "t": "time",
+                   "op": "set",
+                   "n": 1,
+                   "slot": 3
+                  },
+                  {
+                   "t": "wait",
+                   "ms": 800
+                  },
+                  {
+                   "t": "fade",
+                   "mode": "in",
+                   "ms": 600
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "……",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "（物音で目が覚めた。エントランスの方からだ）",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "こんな時間に……？行ってみよう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "sw",
+                   "id": 27,
+                   "val": true
+                  },
+                  {
+                   "t": "end"
+                  }
+                 ],
+                 "else": []
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
+            {
              "t": "sw",
              "id": 4,
              "val": false
@@ -10031,6 +11053,29 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 27,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "物音が気になる。エントランスに行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ]
     },
@@ -10194,9 +11239,9 @@
      ]
     },
     {
-     "id": 32,
-     "name": "正気度0：ムロ",
-     "x": 0,
+     "id": 34,
+     "name": "正気度0：ニノマエ",
+     "x": 2,
      "y": 0,
      "pages": [
       {
@@ -10211,13 +11256,13 @@
        "cond": [
         {
          "type": "var",
-         "id": 8,
+         "id": 10,
          "op": "<=",
          "val": 0
         },
         {
          "type": "sw",
-         "id": 13,
+         "id": 15,
          "val": false
         },
         {
@@ -10225,6 +11270,16 @@
          "id": 5,
          "op": ">=",
          "val": 7
+        },
+        {
+         "type": "sw",
+         "id": 27,
+         "val": false
+        },
+        {
+         "type": "sw",
+         "id": 26,
+         "val": false
         }
        ],
        "image": null,
@@ -10237,10 +11292,16 @@
          "ms": 400
         },
         {
+         "t": "shake",
+         "power": 4,
+         "ms": 400,
+         "wait": true
+        },
+        {
          "t": "text",
          "face": "",
          "name": "",
-         "text": "（ムロが等価交換機で自分自身を価値へと変換し、いなくなった）",
+         "text": "……！",
          "pic": "-",
          "picPos": "C"
         },
@@ -10248,18 +11309,21 @@
          "t": "text",
          "face": "",
          "name": "",
-         "text": "（等価交換機に価値12000が残されていた）",
+         "text": "（隣の部屋から、何か大きな音がした）",
          "pic": "-",
          "picPos": "C"
         },
         {
-         "t": "money",
-         "op": "add",
-         "val": 12000
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "ニノマエの部屋だ。行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
         },
         {
          "t": "sw",
-         "id": 13,
+         "id": 26,
          "val": true
         }
        ]
@@ -10298,116 +11362,21 @@
          "id": 5,
          "op": ">=",
          "val": 7
-        }
-       ],
-       "image": null,
-       "trigger": "auto",
-       "priority": "below",
-       "through": true,
-       "cmds": [
-        {
-         "t": "wait",
-         "ms": 400
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "（ピヲラが食玩の斧を持ち出し、そのとき生きていた全員を切りつけた）",
-         "pic": "-",
-         "picPos": "C"
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "sw",
-          "id": 13,
-          "val": false
-         },
-         "hasElse": false,
-         "else": [],
-         "then": [
-          {
-           "t": "var",
-           "id": 8,
-           "op": "sub",
-           "val": 10
-          }
-         ]
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "sw",
-          "id": 15,
-          "val": false
-         },
-         "hasElse": false,
-         "else": [],
-         "then": [
-          {
-           "t": "var",
-           "id": 10,
-           "op": "sub",
-           "val": 10
-          }
-         ]
-        },
-        {
-         "t": "var",
-         "id": 9,
-         "op": "sub",
-         "val": 10
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "（ムロ・ニノマエ・ネイサの正気度が10下がった）",
-         "pic": "-",
-         "picPos": "C"
-        },
-        {
-         "t": "sw",
-         "id": 14,
-         "val": true
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "id": 34,
-     "name": "正気度0：ニノマエ",
-     "x": 2,
-     "y": 0,
-     "pages": [
-      {
-       "cond": [],
-       "image": null,
-       "trigger": "action",
-       "priority": "below",
-       "through": true,
-       "cmds": []
-      },
-      {
-       "cond": [
-        {
-         "type": "var",
-         "id": 10,
-         "op": "<=",
-         "val": 0
         },
         {
          "type": "sw",
-         "id": 15,
+         "id": 27,
          "val": false
         },
         {
-         "type": "var",
-         "id": 5,
-         "op": ">=",
-         "val": 7
+         "type": "sw",
+         "id": 26,
+         "val": false
+        },
+        {
+         "type": "sw",
+         "id": 28,
+         "val": false
         }
        ],
        "image": null,
@@ -10423,101 +11392,21 @@
          "t": "text",
          "face": "",
          "name": "",
-         "text": "（ニノマエが左腕を等価交換機に入れ、流れた血で海の絵を描いた）",
+         "text": "（部屋の外が騒がしい。エントランスの方からだ）",
          "pic": "-",
          "picPos": "C"
         },
         {
          "t": "text",
          "face": "",
-         "name": "",
-         "text": "（腕を治療しに来た主人公に、自分にナイフを刺してくれと懇願してくる）",
+         "name": "主人公",
+         "text": "エントランスに行ってみよう。",
          "pic": "-",
          "picPos": "C"
         },
         {
-         "t": "choice",
-         "options": [
-          {
-           "label": "受け入れる",
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（主人公はニノマエの願いを受け入れた）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（ニノマエは動かなくなった）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "item",
-             "id": 32,
-             "n": 1
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "血の海の絵を手に入れた。",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（主人公は返り血を浴びた）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "pchar",
-             "charset": "hero_blood"
-            },
-            {
-             "t": "sw",
-             "id": 24,
-             "val": true
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": "<=",
-            "val": 25
-           }
-          },
-          {
-           "label": "受け入れない",
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（主人公はニノマエの願いを断った）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "sw",
-             "id": 25,
-             "val": true
-            }
-           ]
-          }
-         ]
-        },
-        {
          "t": "sw",
-         "id": 15,
+         "id": 28,
          "val": true
         }
        ]
@@ -10556,6 +11445,21 @@
          "id": 5,
          "op": ">=",
          "val": 7
+        },
+        {
+         "type": "sw",
+         "id": 27,
+         "val": false
+        },
+        {
+         "type": "sw",
+         "id": 26,
+         "val": false
+        },
+        {
+         "type": "sw",
+         "id": 28,
+         "val": false
         }
        ],
        "image": null,
@@ -10566,6 +11470,47 @@
         {
          "t": "wait",
          "ms": 400
+        },
+        {
+         "t": "se",
+         "id": "se_knock",
+         "vol": 100
+        },
+        {
+         "t": "wait",
+         "ms": 900
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ノックの音がした）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 29,
+         "val": true
+        },
+        {
+         "t": "wait",
+         "ms": 300
+        },
+        {
+         "t": "route",
+         "target": "ネイサ（襲来）",
+         "wait": true,
+         "through": false,
+         "speed": 1,
+         "route": [
+          "U",
+          "U"
+         ]
+        },
+        {
+         "t": "wait",
+         "ms": 300
         },
         {
          "t": "text",
@@ -10830,6 +11775,39 @@
          "picPos": "C"
         }
        ]
+      }
+     ]
+    },
+    {
+     "id": 39,
+     "name": "ネイサ（襲来）",
+     "x": 5,
+     "y": 8,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 29,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "neisa",
+        "dir": 3
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": true,
+       "cmds": []
       }
      ]
     }
