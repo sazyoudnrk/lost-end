@@ -15801,14 +15801,14 @@
     "init": 100,
     "min": 0,
     "max": 200,
-    "daily": -10,
+    "daily": -13,
     "dailyFrom": 5
    },
    "11": {
     "init": 100,
     "min": 0,
     "max": 200,
-    "daily": -10,
+    "daily": -15,
     "dailyFrom": 5
    },
    "17": {
