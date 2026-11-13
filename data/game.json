@@ -75,6 +75,11 @@
    "name": "ピヲラのカバン",
    "image": "assets/characters/bags.png",
    "index": 4
+  },
+  {
+   "id": "hero_blood",
+   "name": "主人公・返り血（自作）",
+   "image": "assets/characters/hero_blood.png"
   }
  ],
  "faces": [],
@@ -3254,6 +3259,42 @@
          "text": "もう深夜だ。話しかけるのはやめておこう。",
          "pic": "-",
          "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 24,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "neisa",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "ニノマエを刺した後（返り血）：選択肢なし・話しかけるたび正気度が下がる"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ネイサ",
+         "pic": "neisa_normal",
+         "picPos": "C",
+         "text": "ひ、人殺し！近づくな！"
+        },
+        {
+         "t": "var",
+         "id": 9,
+         "op": "sub",
+         "val": 10
         }
        ]
       }
@@ -6489,6 +6530,42 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 24,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "piwora",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "ニノマエを刺した後（返り血）：選択肢なし・話しかけるたび正気度が下がる"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "pic": "piwora_normal",
+         "picPos": "C",
+         "text": "ひ、人殺し！近づくな！"
+        },
+        {
+         "t": "var",
+         "id": 11,
+         "op": "sub",
+         "val": 20
+        }
+       ]
       }
      ],
      "schedule": [
@@ -8171,6 +8248,18 @@
              "text": "血の海の絵を手に入れた。",
              "pic": "-",
              "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公は返り血を浴びた）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "pchar",
+             "charset": "hero_blood"
             },
             {
              "t": "sw",
@@ -10062,6 +10151,42 @@
          "text": "もう深夜だ。話しかけるのはやめておこう。",
          "pic": "-",
          "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 24,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "ニノマエを刺した後（返り血）：選択肢なし・話しかけるたび正気度が下がる"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "pic": "muro_normal",
+         "picPos": "C",
+         "text": "ひ、人殺し！近づくな！"
+        },
+        {
+         "t": "var",
+         "id": 8,
+         "op": "sub",
+         "val": 20
         }
        ]
       }

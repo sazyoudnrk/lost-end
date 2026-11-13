@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-13j';
+const APP_VER='2026-11-13k';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -682,6 +682,7 @@ const CT={
   shake:{n:'画面の揺れ',c:'#c0508f',make:()=>({t:'shake',power:6,ms:500,wait:true})},
   wish:{n:'祈る（明日の品ぞろえ）',c:'#2a9a9a',make:()=>({t:'wish',mult:10,parts:false,text:'「{item}」が明日並ぶように祈った。'})},
   gift:{n:'プレゼント',c:'#c98a2a',make:()=>({t:'gift',var:12,take:true})},
+  pchar:{n:'主人公の見た目',c:'#2a7ab0',make:()=>({t:'pchar',charset:''})},
   gameover:{n:'ゲームオーバー',c:'#b33',make:()=>({t:'gameover',text:'GAME OVER'})},
   se:{n:'効果音',c:'#777',make:()=>({t:'se',id:G.sounds[0]?G.sounds[0].id:'',vol:100})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
@@ -728,6 +729,7 @@ function cmdSummary(c){
     case'shake':return `強さ${c.power||6} ${c.ms||500}ms`+(c.beats?`／タイミング ${c.beats}（${c.period||0}ms×${c.repeat||1}回）`:'')+(c.wait===false?'（待たない）':'');
     case'wish':return `欲しい物を選ばせて明日の出やすさ×${c.mult||10}`+(c.parts?'（プレゼントできない物だけ）':'');
     case'gift':return `持ち物から選ばせて → ${varName(c.var??12)} にアイテム番号`+(c.take===false?'（渡しても減らない）':'');
+    case'pchar':{const cs=G.charsets.find(x=>x.id===c.charset);return c.charset?(cs?cs.name:c.charset)+' にする':'元に戻す'}
     case'gameover':return c.text||'GAME OVER';
     case'bgm':return c.op==='stop'?'止める':c.op==='map'?'マップのBGMに戻す':((G.bgms.find(x=>x.id===c.id)||{name:'（未選択）'}).name+'を流す');
     case'se':{const s=G.sounds.find(x=>x.id===c.id);return (s?s.name:'（未選択）')+(c.vol!=null&&+c.vol!==100?` 音量${c.vol}`:'')}
@@ -890,6 +892,7 @@ function cmdForm(b,d,rr){
     case'shake':c.append(h('div',{class:'row'},fNum('強さ（ドット）',d,'power',{min:1}),fNum('長さ（ミリ秒）',d,'ms',{min:50})),fChk('終わるまで待つ',d,'wait'),card('リズムに合わせて揺らす（任意）',fText('揺らすタイミング（ミリ秒、カンマ区切り）',d,'beats'),h('div',{class:'row'},fNum('1周の長さ（ミリ秒）',d,'period',{min:0}),fNum('繰り返す回数',d,'repeat',{min:1})),h('div',{class:'hint'},'例：0,250,700,950 と 1400ms×2回 → 音の鳴るタイミングで計8回揺れる。空なら1回だけ揺れます。直前に「BGM」で音を鳴らすと合わせやすい')),h('div',{class:'hint'},'マップの画面を揺らします（会話の窓は揺れません）'));break;
     case'wish':c.append(fNum('出やすさの倍率',d,'mult',{min:1}),fChk('候補をプレゼントできない物（パーツなど）だけにする',d,'parts'),fText('祈った後の文（{item} が物の名前になる）',d,'text'),h('div',{class:'hint'},'等価交換機の品ぞろえ表から、まだ並ぶ可能性がある物を選ばせます。選んだ物は次の日の品ぞろえで出やすくなります（1晩だけ）'));break;
     case'gift':if(d.take==null)d.take=true;c.append(fSel('選んだアイテムの番号を入れる変数',d,'var',varOpts(),{num:true}),fChk('渡したアイテムは持ち物から減る',d,'take'),h('div',{class:'hint'},'「プレゼントできる」にしたアイテムのうち持っている物が選択肢に出ます。やめたら変数は0。続けて「値で分岐」でこの変数を使うと、アイテムごとに反応を変えられます'));break;
+    case'pchar':c.append(fSel('歩行キャラ',d,'charset',[['','（元に戻す）'],...G.charsets.map(x=>[x.id,x.name])]),h('div',{class:'hint'},'主人公の歩行グラフィックを切り替えます。セーブにも残ります。「元に戻す」で「データ」の主人公設定の見た目に戻ります'));break;
     case'gameover':c.append(fText('黒い画面に出す文',d,'text'),h('div',{class:'hint'},'画面を暗くしてこの文を出し、タイトルに戻ります'));break;
     case'bgm':c.append(fSel('',d,'op',[['play','曲を流す'],['stop','止める'],['map','マップのBGMに戻す']],{on:rr}),d.op==='play'?fSel('曲',d,'id',[['','（未選択）'],...G.bgms.map(x=>[x.id,x.name])]):null,fNum('フェード（ミリ秒）',d,'ms',{min:0}),h('div',{class:'hint'},'「曲を流す」「止める」をすると、場所移動してもマップのBGMに切り替わりません。「マップのBGMに戻す」で元に戻ります'));break;
     case'se':c.append(h('div',{class:'row',style:'align-items:end'},fSel('効果音',d,'id',[['','（未選択）'],...G.sounds.map(x=>[x.id,x.name])]),btn('▶',()=>{const s=G.sounds.find(x=>x.id===d.id);if(s)playSnd(s.file)},'sm')),fNum('音量（0〜100）',d,'vol',{min:0,max:100}),h('div',{class:'hint'},'音は「素材」タブの「効果音（SE）」で追加します。鳴らしたらすぐ次へ進みます'));break;
