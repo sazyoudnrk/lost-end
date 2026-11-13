@@ -10344,6 +10344,11 @@
    "ネイサ": "neisa_normal",
    "ニノマエ": "ninomae_normal",
    "ピヲラ": "piwora_normal"
+  },
+  "dim": {
+   "var": 17,
+   "from": 50,
+   "max": 55
   }
  },
  "icons": [

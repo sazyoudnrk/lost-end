@@ -42,6 +42,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #title h1{font-size:28px;margin:0 20px 30px;text-align:center}
 #menu .ui-btn,#title .ui-btn{min-width:200px;text-align:center}
 #items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
+#dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:2;transition:opacity 1.2s}
 #flash{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:2;mix-blend-mode:multiply}
 #msg.onblack{z-index:21}
 #fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
@@ -99,11 +100,11 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <div id="hud"></div>
 <div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="tip"></div><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
 <div id="daycard"><b></b><span></span></div>
-<div id="fade"></div><div id="flash"></div>
+<div id="dim"></div><div id="fade"></div><div id="flash"></div>
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13c';
+const GAME_VER='2026-11-13d';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -244,7 +245,10 @@ const slotName=i=>G.system.slots[i]??'';
 // 表示条件：何日目から＋スイッチ（-1 は条件なし）
 const shown=c=>!!c&&S.day>=(c.from||1)&&(c.sw==null||c.sw<0||!!S.sw[c.sw]);
 function hudText(){const a=[];if(shown(G.system.hudDay))a.push(`${S.day}日目 ${slotName(S.slot)}`);if(shown(G.system.hudMoney))a.push(`価値 ${S.money}`);return a.join('　')}
-function updHud(){const h=$('#hud'),t=S&&G.system.hud?hudText():'';h.style.display=t?'block':'none';h.textContent=t}
+// 変数（主人公の正気度など）に合わせて画面を暗くする
+function updDim(){const d=G.system&&G.system.dim,el=$('#dim');if(!el)return;if(!S||!d||d.var==null||d.var<0){el.style.opacity=0;return}
+  const v=S.vr[d.var]||0,from=+d.from||50,mx=(+d.max||50)/100;el.style.opacity=from>0?Math.max(0,Math.min(1,(from-v)/from))*mx:0}
+function updHud(){updDim();const h=$('#hud'),t=S&&G.system.hud?hudText():'';h.style.display=t?'block':'none';h.textContent=t}
 // 日ごとの配置：下の行ほど優先。当てはまる行がなければ「いない」
 function placement(d){const L=d.schedule;for(let i=L.length-1;i>=0;i--){const r=L[i];
   if(S.day>=(r.from||1)&&(r.to==null||r.to===''||S.day<=r.to)&&(r.slot==null||r.slot<0||r.slot===S.slot)&&(r.sw==null||r.sw<0||!!S.sw[r.sw]===(r.swv!==false))&&(r.vr==null||r.vr<0||cmpOp(S.vr[r.vr]||0,r.vop||'==',+r.vv||0)))return r.map?r:null}return null}
@@ -396,7 +400,7 @@ async function cmd(c,cx){
     case'vcase':{const v=c.src==='day'?S.day:c.src==='slot'?S.slot:(S.vr[c.id]||0),k=(c.cases||[]).find(x=>+x.val===v);await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
     case'random':{const o=c.options||[];if(o.length)await exec(o[Math.floor(Math.random()*o.length)].cmds,cx);break}
     case'sw':S.sw[c.id]=!!c.val;placeScheduled();break;
-    case'var':{let v=S.vr[c.id]||0;const n=+c.val||0;v=c.op==='set'?n:c.op==='add'?v+n:c.op==='sub'?v-n:c.op==='rand'?Math.floor(Math.random()*(n+1)):v;const vc=((G.system&&G.system.varCfg)||{})[c.id];if(vc){if(vc.min!=null&&vc.min!=='')v=Math.max(+vc.min,v);if(vc.max!=null&&vc.max!=='')v=Math.min(+vc.max,v)}S.vr[c.id]=v;placeScheduled();break}
+    case'var':{let v=S.vr[c.id]||0;const n=+c.val||0;v=c.op==='set'?n:c.op==='add'?v+n:c.op==='sub'?v-n:c.op==='rand'?Math.floor(Math.random()*(n+1)):v;const vc=((G.system&&G.system.varCfg)||{})[c.id];if(vc){if(vc.min!=null&&vc.min!=='')v=Math.max(+vc.min,v);if(vc.max!=null&&vc.max!=='')v=Math.min(+vc.max,v)}S.vr[c.id]=v;updDim();placeScheduled();break}
     case'self':S.ss[cx.ev.home+':'+cx.ev.d.id+':'+c.key]=!!c.val;refresh();break;
     case'time':{const n=G.system.slots.length;S.slot=c.op==='set'?Math.max(0,Math.min(n-1,+c.slot||0)):Math.min(n-1,S.slot+(+c.n||1));placeScheduled();updHud();break}
     case'sleep':await nextDay();break;
