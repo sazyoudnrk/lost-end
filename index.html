@@ -104,7 +104,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13f';
+const GAME_VER='2026-11-13g';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -266,13 +266,13 @@ function drawShop(count,ex){
   const out=[];
   // 必ず並ぶ日（日付の数字、または変数に入った日付）
   pool.forEach(r=>{const fd=r.forceVar!=null&&r.forceVar>=0?(S.vr[r.forceVar]||0):(+r.forceDay||0);if(fd&&S.day===fd)out.push({p:G.shop.pool.indexOf(r),sold:false})});
-  const forced=new Set(out.map(o=>o.p)),cand=pool.filter(r=>!forced.has(G.shop.pool.indexOf(r))).map(r=>({r,w:Math.max(0,r.weight==null?1:+r.weight)})).filter(c=>c.w>0);
+  const forced=new Set(out.map(o=>o.p)),cand=pool.filter(r=>!forced.has(G.shop.pool.indexOf(r))).map(r=>{const i=G.shop.pool.indexOf(r);let w=Math.max(0,r.weight==null?1:+r.weight);if(S.wish!=null&&S.wish.p===i)w=Math.max(w,1)*(+S.wish.mult||10);return{r,w}}).filter(c=>c.w>0);
   for(let n=out.length;n<(count??(G.shop.count||3))&&cand.length;n++){const tot=cand.reduce((a,c)=>a+c.w,0);let x=Math.random()*tot,k=0;for(;k<cand.length-1;k++){x-=cand[k].w;if(x<0)break}
     out.push({p:G.shop.pool.indexOf(cand[k].r),sold:false});cand.splice(k,1)}
   return out;
 }
 async function nextDay(){
-  hideMsg();await fade(1);S.day++;S.slot=0;S.buys=0;S.shop=drawShop();
+  hideMsg();await fade(1);S.day++;S.slot=0;S.buys=0;S.shop=drawShop();S.wish=null;
   // 毎日変わる変数（正気度など）
   for(const [k,v] of Object.entries((G.system&&G.system.varCfg)||{})){if(!v||!+v.daily||S.day<(+v.dailyFrom||1))continue;let x=(S.vr[k]||0)+(+v.daily);if(v.min!==''&&v.min!=null)x=Math.max(+v.min,x);if(v.max!==''&&v.max!=null)x=Math.min(+v.max,x);S.vr[k]=x}
   const dc=$('#daycard');dc.querySelector('b').textContent=`${S.day}日目`;dc.querySelector('span').textContent=slotName(0);dc.classList.add('show');
@@ -395,6 +395,9 @@ async function cmd(c,cx){
   switch(c.t){
     case'text':await showText(c);break;
     case'choice':{const op=c.options.filter(o=>!o.cond||evalCond(o.cond,cx));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
+    case'wish':{const L=G.shop.pool.map((r,i)=>({r,i,it:G.items.find(x=>x.id===r.item)})).filter(o=>o.it&&!(o.r.once&&S.once[o.i])&&(o.r.sw==null||o.r.sw<0||S.sw[o.r.sw])&&(c.parts?o.it.gift===false:true));
+      const names=[...new Set(L.map(o=>o.it.name))],pick=names.map(n=>L.find(o=>o.it.name===n));
+      hideMsg();const k=await showChoice([...names,'やめる']);if(k<names.length){S.wish={p:pick[k].i,mult:+c.mult||10};await showText({name:'',text:(c.text||'「{item}」が明日並ぶように祈った。').replace('{item}',names[k]),pic:'-'})}break}
     case'gift':{const L=G.items.filter(it=>it.gift!==false&&(S.it[it.id]||0)>0);let got=0;
       if(!L.length){await showText({name:'',text:c.none||'渡せる物を持っていない。'})}
       else{hideMsg();const i=await showChoice([...L.map(it=>`${it.name}（${S.it[it.id]}）`),'やめる']);if(i<L.length){got=L[i].id;if(c.take!==false)S.it[got]--}}

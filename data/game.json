@@ -213,6 +213,13 @@
    "desc": "等価交換機の冷却部品。1日に取り出せる回数が2回になる",
    "value": 0,
    "gift": false
+  },
+  {
+   "id": 21,
+   "name": "幸運のお守り",
+   "desc": "欲しい物を思って祈ると、次の日それが等価交換機に並びやすくなる",
+   "value": 0,
+   "gift": false
   }
  ],
  "switches": [
@@ -233,7 +240,7 @@
   "ピヲラ崩壊済",
   "ニノマエ崩壊済",
   "ネイサ崩壊済",
-  "",
+  "お守りをもらった",
   "",
   ""
  ],
@@ -7143,6 +7150,46 @@
              "val": false
             },
             {
+             "t": "if",
+             "cond": {
+              "type": "item",
+              "id": 21,
+              "has": true
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "幸運のお守りがある。眠る前に祈りますか？",
+               "pic": "-",
+               "picPos": "C"
+              },
+              {
+               "t": "choice",
+               "options": [
+                {
+                 "label": "祈る",
+                 "cmds": [
+                  {
+                   "t": "wish",
+                   "mult": 10,
+                   "parts": false,
+                   "text": "「{item}」が明日並ぶように祈った。"
+                  }
+                 ]
+                },
+                {
+                 "label": "祈らない",
+                 "cmds": []
+                }
+               ]
+              }
+             ]
+            },
+            {
              "t": "sleep"
             },
             {
@@ -9027,8 +9074,42 @@
                  "picPos": "C"
                 },
                 {
-                 "t": "comment",
-                 "text": "（喜んだときの効果は未定：イベントや価値の入手などをここに）"
+                 "t": "if",
+                 "cond": {
+                  "type": "sw",
+                  "id": 17,
+                  "val": false
+                 },
+                 "hasElse": false,
+                 "else": [],
+                 "then": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（お礼に幸運のお守りを渡してくれるムロ）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "item",
+                   "id": 21,
+                   "n": 1
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "幸運のお守りを手に入れた。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "sw",
+                   "id": 17,
+                   "val": true
+                  }
+                 ]
                 }
                ],
                "else": [
