@@ -367,7 +367,7 @@
   "正気度_主人公",
   "主人公の好きな物（アイテム番号）",
   "ヒートシンクが並ぶ日",
-  "",
+  "乱数（一時用）",
   "",
   "",
   "",
@@ -3280,7 +3280,7 @@
        "cmds": [
         {
          "t": "comment",
-         "text": "ニノマエを刺した後（返り血）：選択肢なし・話しかけるたび正気度が下がる"
+         "text": "ニノマエを刺した後、初めて話しかけた時（1回だけ・正気度が下がる）"
         },
         {
          "t": "text",
@@ -3295,6 +3295,91 @@
          "id": 9,
          "op": "sub",
          "val": 10
+        },
+        {
+         "t": "self",
+         "key": "A",
+         "val": true
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 24,
+         "val": true
+        },
+        {
+         "type": "self",
+         "key": "A",
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "neisa",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "返り血を見た後の反応（2回目以降・ランダム3種・選択肢なし）"
+        },
+        {
+         "t": "var",
+         "id": 20,
+         "op": "rand",
+         "val": 2
+        },
+        {
+         "t": "vcase",
+         "id": 20,
+         "cases": [
+          {
+           "val": 0,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "pic": "neisa_normal",
+             "picPos": "C",
+             "text": "……それ以上近づいたら、本気で怒るよ。"
+            }
+           ]
+          },
+          {
+           "val": 1,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "pic": "neisa_normal",
+             "picPos": "C",
+             "text": "血、まだ乾いてないじゃん……。"
+            }
+           ]
+          },
+          {
+           "val": 2,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（ネイサは黙って距離をとった）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          }
+         ],
+         "hasElse": false,
+         "else": []
         }
        ]
       }
@@ -6549,7 +6634,7 @@
        "cmds": [
         {
          "t": "comment",
-         "text": "ニノマエを刺した後（返り血）：選択肢なし・話しかけるたび正気度が下がる"
+         "text": "ニノマエを刺した後、初めて話しかけた時（1回だけ・正気度が下がる）"
         },
         {
          "t": "text",
@@ -6564,6 +6649,91 @@
          "id": 11,
          "op": "sub",
          "val": 20
+        },
+        {
+         "t": "self",
+         "key": "A",
+         "val": true
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 24,
+         "val": true
+        },
+        {
+         "type": "self",
+         "key": "A",
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "piwora",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "返り血を見た後の反応（2回目以降・ランダム3種・選択肢なし）"
+        },
+        {
+         "t": "var",
+         "id": 20,
+         "op": "rand",
+         "val": 2
+        },
+        {
+         "t": "vcase",
+         "id": 20,
+         "cases": [
+          {
+           "val": 0,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "pic": "piwora_normal",
+             "picPos": "C",
+             "text": "やだ……こっち来ないで……！"
+            }
+           ]
+          },
+          {
+           "val": 1,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（ピヲラは震えて声も出ない）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          },
+          {
+           "val": 2,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "pic": "piwora_normal",
+             "picPos": "C",
+             "text": "……ニノマエさんのこと、忘れないから。"
+            }
+           ]
+          }
+         ],
+         "hasElse": false,
+         "else": []
         }
        ]
       }
@@ -10172,7 +10342,7 @@
        "cmds": [
         {
          "t": "comment",
-         "text": "ニノマエを刺した後（返り血）：選択肢なし・話しかけるたび正気度が下がる"
+         "text": "ニノマエを刺した後、初めて話しかけた時（1回だけ・正気度が下がる）"
         },
         {
          "t": "text",
@@ -10187,6 +10357,91 @@
          "id": 8,
          "op": "sub",
          "val": 20
+        },
+        {
+         "t": "self",
+         "key": "A",
+         "val": true
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 24,
+         "val": true
+        },
+        {
+         "type": "self",
+         "key": "A",
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "返り血を見た後の反応（2回目以降・ランダム3種・選択肢なし）"
+        },
+        {
+         "t": "var",
+         "id": 20,
+         "op": "rand",
+         "val": 2
+        },
+        {
+         "t": "vcase",
+         "id": 20,
+         "cases": [
+          {
+           "val": 0,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "pic": "muro_normal",
+             "picPos": "C",
+             "text": "……来ないでくれ。"
+            }
+           ]
+          },
+          {
+           "val": 1,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "pic": "muro_normal",
+             "picPos": "C",
+             "text": "頼む、そっとしておいてくれ……。"
+            }
+           ]
+          },
+          {
+           "val": 2,
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（ムロは目を合わせようとしない）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ]
+          }
+         ],
+         "hasElse": false,
+         "else": []
         }
        ]
       }
