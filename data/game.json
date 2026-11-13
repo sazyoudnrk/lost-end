@@ -1066,9 +1066,11 @@
                  },
                  "then": [
                   {
-                   "t": "sw",
-                   "id": 4,
-                   "val": true
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
                   },
                   {
                    "t": "text",
@@ -1865,6 +1867,37 @@
          ]
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 3,
+         "val": true
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 3
+        }
+       ],
+       "image": {
+        "charset": "ninomae",
+        "dir": 2
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "もう深夜だ。話しかけるのはやめておこう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ],
      "schedule": [
@@ -2299,9 +2332,11 @@
                  },
                  "then": [
                   {
-                   "t": "sw",
-                   "id": 4,
-                   "val": true
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
                   },
                   {
                    "t": "text",
@@ -3089,6 +3124,37 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 3,
+         "val": true
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 3
+        }
+       ],
+       "image": {
+        "charset": "neisa",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "もう深夜だ。話しかけるのはやめておこう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ],
      "schedule": [
@@ -3234,6 +3300,20 @@
        "from": 2,
        "to": 2,
        "slot": 2,
+       "sw": -1,
+       "swv": false,
+       "vr": 5,
+       "vop": ">=",
+       "vv": 5,
+       "dir": 0,
+       "map": 5,
+       "x": 6,
+       "y": 5
+      },
+      {
+       "from": 2,
+       "to": 2,
+       "slot": 3,
        "sw": -1,
        "swv": false,
        "vr": 5,
@@ -5469,9 +5549,11 @@
                  },
                  "then": [
                   {
-                   "t": "sw",
-                   "id": 4,
-                   "val": true
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
                   },
                   {
                    "t": "text",
@@ -6257,6 +6339,37 @@
          "text": "ねえ、真ん中のあの機械なにかしら？",
          "picPos": "C",
          "pic": "piwora_normal"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 3,
+         "val": true
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 3
+        }
+       ],
+       "image": {
+        "charset": "piwora",
+        "dir": 1
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "もう深夜だ。話しかけるのはやめておこう。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -8716,9 +8829,11 @@
                  },
                  "then": [
                   {
-                   "t": "sw",
-                   "id": 4,
-                   "val": true
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
                   },
                   {
                    "t": "text",
@@ -9592,6 +9707,37 @@
          "text": "真ん中の機械、なんでしょうね……",
          "picPos": "C",
          "pic": "muro_normal"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 3,
+         "val": true
+        },
+        {
+         "type": "slot",
+         "op": "==",
+         "val": 3
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 3
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "もう深夜だ。話しかけるのはやめておこう。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -10851,7 +10997,8 @@
   "slots": [
    "朝",
    "昼",
-   "夜"
+   "夜",
+   "深夜"
   ],
   "startDay": 1,
   "hud": true,
