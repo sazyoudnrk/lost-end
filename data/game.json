@@ -220,6 +220,76 @@
    "desc": "欲しい物を思って祈ると、次の日それが等価交換機に並びやすくなる",
    "value": 0,
    "gift": false
+  },
+  {
+   "id": 22,
+   "name": "古い写真",
+   "desc": "色あせた紙の写真。誰が写っているのかはわからない",
+   "value": 10,
+   "gift": true
+  },
+  {
+   "id": 23,
+   "name": "フィルム",
+   "desc": "現像されていないフィルム",
+   "value": 12,
+   "gift": true
+  },
+  {
+   "id": 24,
+   "name": "砂時計",
+   "desc": "落ちきると止まってしまう時計",
+   "value": 15,
+   "gift": true
+  },
+  {
+   "id": 25,
+   "name": "ドライフルーツ",
+   "desc": "乾かしてあるが、いつかは傷む果物",
+   "value": 6,
+   "gift": true
+  },
+  {
+   "id": 26,
+   "name": "錆びたネジ",
+   "desc": "錆びている。ロストエンドでは見ない状態",
+   "value": 3,
+   "gift": true
+  },
+  {
+   "id": 27,
+   "name": "万年筆",
+   "desc": "インクが減っていくペン",
+   "value": 18,
+   "gift": true
+  },
+  {
+   "id": 28,
+   "name": "紙の地図",
+   "desc": "どこかの星の古い紙の地図",
+   "value": 15,
+   "gift": true
+  },
+  {
+   "id": 29,
+   "name": "貝殻",
+   "desc": "海があった星の貝殻",
+   "value": 9,
+   "gift": true
+  },
+  {
+   "id": 30,
+   "name": "古いレコード",
+   "desc": "針で音を鳴らす円盤",
+   "value": 20,
+   "gift": true
+  },
+  {
+   "id": 31,
+   "name": "ろうそく",
+   "desc": "燃えるとなくなる明かり",
+   "value": 5,
+   "gift": true
   }
  ],
  "switches": [
@@ -10467,6 +10537,116 @@
     "forceVar": 19,
     "forceDay": 0,
     "showOnce": false
+   },
+   {
+    "item": 22,
+    "price": 15,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 23,
+    "price": 20,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 24,
+    "price": 25,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 25,
+    "price": 10,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 26,
+    "price": 5,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 27,
+    "price": 30,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 28,
+    "price": 25,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 29,
+    "price": 15,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 30,
+    "price": 35,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 31,
+    "price": 8,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
    }
   ],
   "noRepeatFrom": 4
