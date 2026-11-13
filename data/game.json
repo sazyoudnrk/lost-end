@@ -312,6 +312,26 @@
   "ネイサ崩壊済",
   "お守りをもらった",
   "日付表示",
+  "メモを書いた",
+  "C02取り付け",
+  "C15取り付け",
+  "C33取り付け",
+  "星間ワープ装置の修理完了",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
   ""
  ],
  "variables": [
@@ -334,7 +354,27 @@
   "協力依頼の残り人数",
   "正気度_主人公",
   "主人公の好きな物（アイテム番号）",
-  "ヒートシンクが並ぶ日"
+  "ヒートシンクが並ぶ日",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  ""
  ],
  "player": {
   "charset": "sample1",
@@ -7214,6 +7254,67 @@
          "picPos": "C"
         },
         {
+         "t": "text",
+         "face": "",
+         "name": "主人公",
+         "text": "忘れないうちに、ムロさんが言っていたパーツの型番を書き留めておこう。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "route",
+         "target": "player",
+         "route": [
+          "L",
+          "L",
+          "L",
+          "L",
+          "L",
+          "D"
+         ],
+         "wait": true,
+         "through": false,
+         "speed": 1
+        },
+        {
+         "t": "turn",
+         "target": "player",
+         "dir": 0
+        },
+        {
+         "t": "wait",
+         "ms": 300
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "机に向かい、メモ帳にパーツの型番を書き留めた。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "星間ワープ装置-E04 C02\n星間ワープ装置-E04 C15\n星間ワープ装置-E04 C33",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 19,
+         "val": true
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（メニューの「メモ」でいつでも確認できる）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
          "t": "var",
          "id": 13,
          "op": "set",
@@ -8030,6 +8131,54 @@
         {
          "t": "gameover",
          "text": "GAME OVER"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 36,
+     "name": "机",
+     "x": 3,
+     "y": 6,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "机だ。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 19,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "パーツの型番を書いたメモがある。（メニューの「メモ」で確認できる）",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       }
@@ -10399,6 +10548,247 @@
          ]
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 19,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "星間ワープ装置だ。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "item",
+          "id": 11,
+          "has": true
+         },
+         "hasElse": false,
+         "else": [],
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 20,
+            "val": false
+           },
+           "hasElse": false,
+           "else": [],
+           "then": [
+            {
+             "t": "item",
+             "id": 11,
+             "n": -1
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "星間ワープ装置-E04 C02を取り付けた。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "sw",
+             "id": 20,
+             "val": true
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "item",
+          "id": 12,
+          "has": true
+         },
+         "hasElse": false,
+         "else": [],
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 21,
+            "val": false
+           },
+           "hasElse": false,
+           "else": [],
+           "then": [
+            {
+             "t": "item",
+             "id": 12,
+             "n": -1
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "星間ワープ装置-E04 C15を取り付けた。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "sw",
+             "id": 21,
+             "val": true
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "item",
+          "id": 13,
+          "has": true
+         },
+         "hasElse": false,
+         "else": [],
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 22,
+            "val": false
+           },
+           "hasElse": false,
+           "else": [],
+           "then": [
+            {
+             "t": "item",
+             "id": 13,
+             "n": -1
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "星間ワープ装置-E04 C33を取り付けた。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "sw",
+             "id": 22,
+             "val": true
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "sw",
+          "id": 20,
+          "val": true
+         },
+         "hasElse": true,
+         "else": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "",
+           "text": "まだ足りないパーツがある。（メニューの「メモ」で確認できる）",
+           "pic": "-",
+           "picPos": "C"
+          }
+         ],
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 21,
+            "val": true
+           },
+           "hasElse": true,
+           "else": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "まだ足りないパーツがある。（メニューの「メモ」で確認できる）",
+             "pic": "-",
+             "picPos": "C"
+            }
+           ],
+           "then": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 22,
+              "val": true
+             },
+             "hasElse": true,
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "まだ足りないパーツがある。（メニューの「メモ」で確認できる）",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 23,
+                "val": false
+               },
+               "hasElse": false,
+               "else": [],
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "3つのパーツをすべて取り付けた。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "sw",
+                 "id": 23,
+                 "val": true
+                },
+                {
+                 "t": "comment",
+                 "text": "（ここから脱出・エンディングのイベント）"
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
       }
      ]
     },
@@ -11120,6 +11510,27 @@
    "var": -1,
    "from": 50,
    "max": 55
+  },
+  "memo": {
+   "sw": 19,
+   "title": "ムロさんが言っていたパーツ（操縦室の星間ワープ装置に取り付ける）",
+   "lines": [
+    {
+     "text": "星間ワープ装置-E04 C02",
+     "sw": 20,
+     "doneText": "取り付け済み"
+    },
+    {
+     "text": "星間ワープ装置-E04 C15",
+     "sw": 21,
+     "doneText": "取り付け済み"
+    },
+    {
+     "text": "星間ワープ装置-E04 C33",
+     "sw": 22,
+     "doneText": "取り付け済み"
+    }
+   ]
   }
  },
  "icons": [

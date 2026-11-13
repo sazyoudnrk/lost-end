@@ -96,7 +96,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <button id="menuBtn" class="ui-btn">☰</button>
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
-<div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="opt">設定</button><button class="ui-btn" data-m="close">閉じる</button></div>
+<div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="memo" style="display:none">メモ</button><button class="ui-btn" data-m="opt">設定</button><button class="ui-btn" data-m="close">閉じる</button></div>
 <div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button></div>
 <div id="hud"></div>
 <div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="tip"></div><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
@@ -105,7 +105,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13l';
+const GAME_VER='2026-11-13m';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -632,7 +632,8 @@ function draw(){
 function loop(){update();draw();requestAnimationFrame(loop)}
 
 /* ---------- メニュー・タイトル ---------- */
-function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';$('#items').style.display='none';if(menuOpen){$('#menu').querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));navMove($('#menu'),0)}}
+function memoOn(){const M=G.system&&G.system.memo;return !!(M&&S&&(M.sw==null||M.sw<0||S.sw[M.sw]))}
+function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';$('#items').style.display='none';$('#menu [data-m=memo]').style.display=memoOn()?'':'none';if(menuOpen){$('#menu').querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));navMove($('#menu'),0)}}
 $('#menuBtn').addEventListener('click',()=>toggleMenu(true));
 $('#menu').addEventListener('click',e=>{
   const m=e.target.dataset&&e.target.dataset.m;if(!m)return;
@@ -643,6 +644,9 @@ $('#menu').addEventListener('click',e=>{
     for(const i of own){const d=document.createElement('div');d.textContent=`${i.name} ×${S.it[i.id]}`+(i.desc?`　${i.desc}`:'');it.append(d)}
     it.style.display='block'}
   if(m==='save'){S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));e.target.textContent='セーブしました';setTimeout(()=>e.target.textContent='セーブ',1200)}
+  if(m==='memo'){const M=G.system.memo,it=$('#items');it.innerHTML='';const hd=document.createElement('div');hd.textContent=M.title||'メモ';hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd);
+    for(const L of M.lines||[]){const d=document.createElement('div');const done=L.sw!=null&&L.sw>=0&&S.sw[L.sw];d.textContent=(done?'☑ ':'☐ ')+L.text+(done&&L.doneText?`　${L.doneText}`:'');if(done)d.style.opacity=.6;it.append(d)}
+    it.style.display='block'}
   if(m==='load')loadGame();
   if(m==='opt'){const it=$('#items');it.innerHTML='';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
       const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';

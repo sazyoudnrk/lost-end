@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-13i';
+const APP_VER='2026-11-13j';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1046,6 +1046,10 @@ function renderDB(){
     h('div',{class:'hint'},'文章の名前をこの人にすると、この立ち絵が自動で選ばれます（あとで表情を変えられます）'),
     h('div',{class:'card-t',style:'margin-top:6px'},'名前の公開'),...(SY.names||[]).map(n=>{if(SY.nameSw[n]==null)SY.nameSw[n]=-1;return fSel(n,SY.nameSw,n,[[-1,'最初から表示'],...swOpts()],{num:true})}),
     h('div',{class:'hint'},'スイッチを選ぶと、そのスイッチがONになるまで名前欄が「？」になります（自己紹介の会話の後で「スイッチ」コマンドでONにする）')));
+  {SY.memo=SY.memo||{sw:-1,title:'メモ',lines:[]};const M=SY.memo,c=card('メモ帳（メニューの「メモ」）');
+    c.append(fSel('メニューに出す条件（スイッチ）',M,'sw',[[-1,'いつも出す'],...swOpts()],{num:true}),fText('見出し',M,'title'));
+    M.lines.forEach((L,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},fText('書いてあること',L,'text'),fSel('チェックが付く条件（スイッチ）',L,'sw',[[-1,'なし'],...swOpts()],{num:true}),fText('チェック後に添える文（任意）',L,'doneText')),btn('✕',()=>{M.lines.splice(i,1);changed();renderDB()},'sm dg'))));
+    c.append(btn('＋ 行を追加',()=>{M.lines.push({text:'',sw:-1,doneText:''});changed();renderDB()},'sm'),h('div',{class:'hint'},'スイッチがONになった行は ☑ になります'));T.append(c)}
   SY.dim=SY.dim||{var:-1,from:50,max:50};
   T.append(card('画面の暗さ',fSel('この変数が下がると暗くなる',SY.dim,'var',[[-1,'使わない'],...varOpts()],{num:true}),h('div',{class:'row'},fNum('暗くなり始める値',SY.dim,'from',{min:1}),fNum('0のときの暗さ（%）',SY.dim,'max',{min:0,max:100})),
     h('div',{class:'hint'},'変数がこの値より下がるほど、マップが少しずつ暗くなります（0で一番暗い）。立ち絵と会話の窓は暗くなりません')));
