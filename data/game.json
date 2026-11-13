@@ -6445,6 +6445,26 @@
            ],
            "hasElse": false,
            "else": []
+          },
+          {
+           "t": "if",
+           "cond": {
+            "type": "day",
+            "op": "==",
+            "val": 9
+           },
+           "hasElse": false,
+           "else": [],
+           "then": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "text": "今夜が期限だ。パーツは今日中に揃えよう。",
+             "pic": "neisa_normal",
+             "picPos": "C"
+            }
+           ]
           }
          ]
         },
