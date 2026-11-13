@@ -104,7 +104,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13d';
+const GAME_VER='2026-11-13e';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -344,7 +344,7 @@ async function loadMap(id,x,y,dir){
 function evalCond(c,cx){
   switch(c.type){
     case'sw':return !!S.sw[c.id]===!!c.val;
-    case'var':{const a=S.vr[c.id]||0,b=+c.val||0;return c.op==='=='?a===b:c.op==='!='?a!==b:c.op==='>='?a>=b:c.op==='<='?a<=b:c.op==='>'?a>b:a<b}
+    case'var':{const a=S.vr[c.id]||0,b=c.ref!=null&&c.ref>=0?(S.vr[c.ref]||0):(+c.val||0);return c.op==='=='?a===b:c.op==='!='?a!==b:c.op==='>='?a>=b:c.op==='<='?a<=b:c.op==='>'?a>b:a<b}
     case'item':return((S.it[c.id]||0)>0)===!!c.has;
     case'self':return !!S.ss[cx.ev.home+':'+cx.ev.d.id+':'+c.key]===!!c.val;
     case'day':case'money':{const a=c.type==='day'?S.day:S.money,b=+c.val||0;return c.op==='=='?a===b:c.op==='!='?a!==b:c.op==='>='?a>=b:c.op==='<='?a<=b:c.op==='>'?a>b:a<b}
@@ -625,7 +625,7 @@ $('#menu').addEventListener('click',e=>{
 async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
 async function startNew(){
   const p=G.player;S={map:p.map,x:p.x,y:p.y,dir:p.dir||0,sw:{},vr:{},it:{},ss:{},once:{},day:G.system.startDay||1,slot:0,money:+G.shop.startMoney||0,buys:0,buyLimit:+G.shop.limit||1};S.shop=drawShop();
-  for(const [k,v] of Object.entries((G.system&&G.system.varCfg)||{}))if(v&&v.init!=null)S.vr[k]=+v.init;
+  for(const [k,v] of Object.entries((G.system&&G.system.varCfg)||{})){if(!v)continue;if(v.init!=null&&v.init!=='')S.vr[k]=+v.init;if(v.pick){const L=String(v.pick).split(/[,、\s]+/).filter(x=>x!=='').map(Number);if(L.length)S.vr[k]=L[Math.floor(Math.random()*L.length)]}}
   if(PREVIEW&&Q.has('map')){S.map=+Q.get('map');S.x=+Q.get('x')||0;S.y=+Q.get('y')||0}
   await loadMap(S.map,S.x,S.y,S.dir);
 }
