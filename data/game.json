@@ -1075,6 +1075,162 @@
                      "picPos": "C"
                     }
                    ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（4回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 4,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（5回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 5,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（6回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 6,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（7回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 7,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（8回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 8,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（9回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 9,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 10,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（11回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 11,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（12回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 12,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（13回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 13,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（14回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 14,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（15回目に過ごしたときの会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
                   }
                  ],
                  "hasElse": true,
@@ -2391,6 +2547,162 @@
                      "face": "",
                      "name": "ネイサ",
                      "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（4回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 4,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（5回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 5,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（6回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 6,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（7回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 7,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（8回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 8,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（9回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 9,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 10,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（11回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 11,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（12回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 12,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（13回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 13,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（14回目に過ごしたときの会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 14,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（15回目に過ごしたときの会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -5745,6 +6057,162 @@
                      "face": "",
                      "name": "ピヲラ",
                      "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（4回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 4,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（5回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 5,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（6回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 6,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（7回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 7,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（8回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 8,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（9回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 9,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 10,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（11回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 11,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（12回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 12,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（13回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 13,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（14回目に過ごしたときの会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 14,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（15回目に過ごしたときの会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -10321,6 +10789,162 @@
                      "face": "",
                      "name": "ムロ",
                      "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（4回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 4,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（5回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 5,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（6回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 6,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（7回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 7,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（8回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 8,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（9回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 9,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 10,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（11回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 11,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（12回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 12,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（13回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 13,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（14回目に過ごしたときの会話）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 14,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（15回目に過ごしたときの会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
