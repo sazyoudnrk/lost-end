@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-13k';
+const APP_VER='2026-11-13l';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -683,6 +683,7 @@ const CT={
   wish:{n:'祈る（明日の品ぞろえ）',c:'#2a9a9a',make:()=>({t:'wish',mult:10,parts:false,text:'「{item}」が明日並ぶように祈った。'})},
   gift:{n:'プレゼント',c:'#c98a2a',make:()=>({t:'gift',var:12,take:true})},
   pchar:{n:'主人公の見た目',c:'#2a7ab0',make:()=>({t:'pchar',charset:''})},
+  ending:{n:'エンディング',c:'#b33',make:()=>({t:'ending',id:((G.system.endings||[])[0]||{}).id||''})},
   gameover:{n:'ゲームオーバー',c:'#b33',make:()=>({t:'gameover',text:'GAME OVER'})},
   se:{n:'効果音',c:'#777',make:()=>({t:'se',id:G.sounds[0]?G.sounds[0].id:'',vol:100})},
   erase:{n:'一時消去',c:'#777',make:()=>({t:'erase'})},
@@ -702,6 +703,7 @@ function condSummary(c){
   if(c.type==='self')return `セルフ${c.key} が ${c.val?'ON':'OFF'}`;
   if(c.type==='day')return `日付 ${c.op} ${c.val}日目`;
   if(c.type==='money')return `価値 ${c.op} ${c.val}`;
+  if(c.type==='stock')return `今日の等価交換機に ${itemName(c.id)} が${c.val?'ある':'ない'}`;
   if(c.type==='pdir')return `プレイヤーが${DIRN[c.val]}向き`;
   if(c.type==='ppos')return `プレイヤーの${c.axis==='x'?'X':'Y'}座標 ${c.op} ${c.val}`;
   if(c.type==='slot')return `時間帯が${slotN(c.val)}${c.op==='!='?'ではない':''}`;
@@ -730,6 +732,7 @@ function cmdSummary(c){
     case'wish':return `欲しい物を選ばせて明日の出やすさ×${c.mult||10}`+(c.parts?'（プレゼントできない物だけ）':'');
     case'gift':return `持ち物から選ばせて → ${varName(c.var??12)} にアイテム番号`+(c.take===false?'（渡しても減らない）':'');
     case'pchar':{const cs=G.charsets.find(x=>x.id===c.charset);return c.charset?(cs?cs.name:c.charset)+' にする':'元に戻す'}
+    case'ending':{const E=(G.system.endings||[]).find(x=>x.id===c.id);return 'END「'+(E?E.name:'（未選択）')+'」'}
     case'gameover':return c.text||'GAME OVER';
     case'bgm':return c.op==='stop'?'止める':c.op==='map'?'マップのBGMに戻す':((G.bgms.find(x=>x.id===c.id)||{name:'（未選択）'}).name+'を流す');
     case'se':{const s=G.sounds.find(x=>x.id===c.id);return (s?s.name:'（未選択）')+(c.vol!=null&&+c.vol!==100?` 音量${c.vol}`:'')}
@@ -745,14 +748,15 @@ function cmdSummary(c){
   }return '';
 }
 function condForm(c,rr){
-  const out=[fSel('種類',c,'type',[['sw','スイッチ'],['var','変数'],['item','アイテム'],['self','セルフスイッチ'],['day','日付'],['slot','時間帯'],['money','価値'],['pdir','プレイヤーの向き'],['ppos','プレイヤーの位置']],{on:()=>{
+  const out=[fSel('種類',c,'type',[['sw','スイッチ'],['var','変数'],['item','アイテム'],['self','セルフスイッチ'],['day','日付'],['slot','時間帯'],['money','価値'],['stock','今日の等価交換機'],['pdir','プレイヤーの向き'],['ppos','プレイヤーの位置']],{on:()=>{
     const t=c.type;for(const k of Object.keys(c))if(k!=='type')delete c[k];
-    Object.assign(c,t==='sw'?{id:0,val:true}:t==='var'?{id:0,op:'>=',val:0}:t==='item'?{id:G.items[0]?G.items[0].id:0,has:true}:t==='day'?{op:'==',val:1}:t==='slot'?{op:'==',val:0}:t==='money'?{op:'>=',val:0}:t==='pdir'?{val:3}:t==='ppos'?{axis:'y',op:'==',val:0}:{key:'A',val:true});rr()}})];
+    Object.assign(c,t==='sw'?{id:0,val:true}:t==='var'?{id:0,op:'>=',val:0}:t==='item'?{id:G.items[0]?G.items[0].id:0,has:true}:t==='day'?{op:'==',val:1}:t==='slot'?{op:'==',val:0}:t==='money'?{op:'>=',val:0}:t==='stock'?{id:G.items[0]?G.items[0].id:0,val:true}:t==='pdir'?{val:3}:t==='ppos'?{axis:'y',op:'==',val:0}:{key:'A',val:true});rr()}})];
   if(c.type==='sw')out.push(h('div',{class:'row'},fSel('スイッチ',c,'id',swOpts(),{num:true}),fSel('状態',c,'val',BOOL,{bool:true})));
   if(c.type==='var'){const K={v:c.ref!=null&&c.ref>=0?'var':'num'};out.push(fSel('変数',c,'id',varOpts(),{num:true}),h('div',{class:'row'},fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fSel('相手',K,'v',[['num','数値'],['var','別の変数']],{on:()=>{if(K.v==='var')c.ref=0;else delete c.ref;rr()}}),K.v==='var'?fSel('変数',c,'ref',varOpts(),{num:true}):fNum('値',c,'val')))}
   if(c.type==='item')out.push(h('div',{class:'row'},fSel('アイテム',c,'id',itemOpts(),{num:true}),fSel('',c,'has',[[true,'持っている'],[false,'持っていない']],{bool:true})));
   if(c.type==='self')out.push(h('div',{class:'row'},fSel('キー',c,'key',['A','B','C','D'].map(k=>[k,k])),fSel('状態',c,'val',BOOL,{bool:true})));
   if(c.type==='day'||c.type==='money')out.push(h('div',{class:'row'},fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum(c.type==='day'?'日目':'価値',c,'val')));
+  if(c.type==='stock')out.push(h('div',{class:'row'},fSel('アイテム',c,'id',itemOpts(),{num:true}),fSel('',c,'val',[[true,'並んでいる'],[false,'並んでいない']],{bool:true})),h('div',{class:'hint'},'今日の品ぞろえにあって、まだ取り出していないか'));
   if(c.type==='pdir')out.push(fSel('向き',c,'val',DIRN.map((n,i)=>[i,n]),{num:true}));
   if(c.type==='ppos')out.push(h('div',{class:'row'},fSel('',c,'axis',[['x','X座標（横）'],['y','Y座標（縦）']]),fSel('比較',c,'op',[['==','＝'],['!=','≠'],['>=','≧'],['<=','≦'],['>','＞'],['<','＜']]),fNum('値',c,'val',{min:0})));
   if(c.type==='slot')out.push(h('div',{class:'row'},fSel('',c,'op',[['==','が'],['!=','ではない']]),fSel('時間帯',c,'val',slotOpts(),{num:true})));
@@ -893,6 +897,7 @@ function cmdForm(b,d,rr){
     case'wish':c.append(fNum('出やすさの倍率',d,'mult',{min:1}),fChk('候補をプレゼントできない物（パーツなど）だけにする',d,'parts'),fText('祈った後の文（{item} が物の名前になる）',d,'text'),h('div',{class:'hint'},'等価交換機の品ぞろえ表から、まだ並ぶ可能性がある物を選ばせます。選んだ物は次の日の品ぞろえで出やすくなります（1晩だけ）'));break;
     case'gift':if(d.take==null)d.take=true;c.append(fSel('選んだアイテムの番号を入れる変数',d,'var',varOpts(),{num:true}),fChk('渡したアイテムは持ち物から減る',d,'take'),h('div',{class:'hint'},'「プレゼントできる」にしたアイテムのうち持っている物が選択肢に出ます。やめたら変数は0。続けて「値で分岐」でこの変数を使うと、アイテムごとに反応を変えられます'));break;
     case'pchar':c.append(fSel('歩行キャラ',d,'charset',[['','（元に戻す）'],...G.charsets.map(x=>[x.id,x.name])]),h('div',{class:'hint'},'主人公の歩行グラフィックを切り替えます。セーブにも残ります。「元に戻す」で「データ」の主人公設定の見た目に戻ります'));break;
+    case'ending':c.append(fSel('エンディング',d,'id',[['','（未選択）'],...(G.system.endings||[]).map(x=>[x.id,x.name])]),h('div',{class:'hint'},'画面を暗くして END「名前」を出し、エンディングリストに記録してタイトルに戻ります。エンディングは「データ」タブの「エンディングリスト」で作ります'));break;
     case'gameover':c.append(fText('黒い画面に出す文',d,'text'),h('div',{class:'hint'},'画面を暗くしてこの文を出し、タイトルに戻ります'));break;
     case'bgm':c.append(fSel('',d,'op',[['play','曲を流す'],['stop','止める'],['map','マップのBGMに戻す']],{on:rr}),d.op==='play'?fSel('曲',d,'id',[['','（未選択）'],...G.bgms.map(x=>[x.id,x.name])]):null,fNum('フェード（ミリ秒）',d,'ms',{min:0}),h('div',{class:'hint'},'「曲を流す」「止める」をすると、場所移動してもマップのBGMに切り替わりません。「マップのBGMに戻す」で元に戻ります'));break;
     case'se':c.append(h('div',{class:'row',style:'align-items:end'},fSel('効果音',d,'id',[['','（未選択）'],...G.sounds.map(x=>[x.id,x.name])]),btn('▶',()=>{const s=G.sounds.find(x=>x.id===d.id);if(s)playSnd(s.file)},'sm')),fNum('音量（0〜100）',d,'vol',{min:0,max:100}),h('div',{class:'hint'},'音は「素材」タブの「効果音（SE）」で追加します。鳴らしたらすぐ次へ進みます'));break;
@@ -1053,6 +1058,9 @@ function renderDB(){
     c.append(fSel('メニューに出す条件（スイッチ）',M,'sw',[[-1,'いつも出す'],...swOpts()],{num:true}),fText('見出し',M,'title'));
     M.lines.forEach((L,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},fText('書いてあること',L,'text'),fSel('チェックが付く条件（スイッチ）',L,'sw',[[-1,'なし'],...swOpts()],{num:true}),fText('チェック後に添える文（任意）',L,'doneText')),btn('✕',()=>{M.lines.splice(i,1);changed();renderDB()},'sm dg'))));
     c.append(btn('＋ 行を追加',()=>{M.lines.push({text:'',sw:-1,doneText:''});changed();renderDB()},'sm'),h('div',{class:'hint'},'スイッチがONになった行は ☑ になります'));T.append(c)}
+  {SY.endings=SY.endings||[];const EL=SY.endings,c=card('エンディングリスト（メニューの「設定」で見られる）');
+    EL.forEach((x,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},h('div',{class:'row'},fText('名前',x,'name'),fText('ID（英数字）',x,'id')),fText('説明（見たあとリストに出る）',x,'desc'),fText('メモ（条件など・ゲームには出ない）',x,'note')),btn('✕',()=>{EL.splice(i,1);changed();renderDB()},'sm dg'))));
+    c.append(btn('＋ エンディングを追加',()=>{EL.push({id:'end'+(EL.length+1),name:'',desc:'',note:''});changed();renderDB()},'sm'),h('div',{class:'hint'},'「エンディング」コマンドで到達すると記録されます。記録は遊んでいる端末に残り、セーブデータとは別です'));T.append(c)}
   SY.dim=SY.dim||{var:-1,from:50,max:50};
   T.append(card('画面の暗さ',fSel('この変数が下がると暗くなる',SY.dim,'var',[[-1,'使わない'],...varOpts()],{num:true}),h('div',{class:'row'},fNum('暗くなり始める値',SY.dim,'from',{min:1}),fNum('0のときの暗さ（%）',SY.dim,'max',{min:0,max:100})),
     h('div',{class:'hint'},'変数がこの値より下がるほど、マップが少しずつ暗くなります（0で一番暗い）。立ち絵と会話の窓は暗くなりません')));

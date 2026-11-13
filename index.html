@@ -105,7 +105,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13n';
+const GAME_VER='2026-11-13o';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -113,6 +113,8 @@ const NS='rpgmk:'+location.pathname.replace(/[^/]*$/,'');
 const Q=new URLSearchParams(location.search);
 const PREVIEW=Q.has('preview');
 const SAVEKEY=NS+(PREVIEW?'save_preview':'save');
+const ENDKEY=NS+(PREVIEW?'endings_preview':'endings');
+function gotEnds(){try{return JSON.parse(localStorage.getItem(ENDKEY)||'[]')}catch(e){return[]}}
 const DIRS=[[0,1],[-1,0],[1,0],[0,-1]]; // 下 左 右 上（歩行グラの行順）
 const $=s=>document.querySelector(s);
 const cv=$('#cv'), ctx=cv.getContext('2d');
@@ -360,6 +362,7 @@ function evalCond(c,cx){
     case'sw':return !!S.sw[c.id]===!!c.val;
     case'var':{const a=S.vr[c.id]||0,b=c.ref!=null&&c.ref>=0?(S.vr[c.ref]||0):(+c.val||0);return c.op==='=='?a===b:c.op==='!='?a!==b:c.op==='>='?a>=b:c.op==='<='?a<=b:c.op==='>'?a>b:a<b}
     case'item':return((S.it[c.id]||0)>0)===!!c.has;
+    case'stock':return (S.shop||[]).some(sl=>!sl.sold&&G.shop.pool[sl.p]&&+G.shop.pool[sl.p].item===+c.id)===!!c.val;
     case'self':return !!S.ss[cx.ev.home+':'+cx.ev.d.id+':'+c.key]===!!c.val;
     case'day':case'money':{const a=c.type==='day'?S.day:S.money,b=+c.val||0;return c.op==='=='?a===b:c.op==='!='?a!==b:c.op==='>='?a>=b:c.op==='<='?a<=b:c.op==='>'?a>b:a<b}
     case'slot':return(S.slot===+c.val)===(c.op!=='!=');
@@ -451,6 +454,8 @@ async function cmd(c,cx){
     case'erase':cx.ev.erased=true;break;
     case'end':throw END;
     case'pchar':{S.pchar=c.charset||null;charImg(pcs());break}
+    case'ending':{const E=((G.system&&G.system.endings)||[]).find(x=>x.id===c.id);try{const a=gotEnds();if(!a.includes(c.id)){a.push(c.id);localStorage.setItem(ENDKEY,JSON.stringify(a))}}catch(e){}
+      hideMsg();clearPics();await fade(1);await showText({name:'',text:'END「'+(E?E.name:c.id)+'」',pic:'-'});hideMsg();showTitle();throw END}
     case'gameover':{hideMsg();clearPics();await fade(1);await showText({name:'',text:c.text||'GAME OVER',pic:'-'});hideMsg();showTitle();throw END}
   }
 }
@@ -653,7 +658,9 @@ $('#menu').addEventListener('click',e=>{
   if(m==='opt'){const it=$('#items');it.innerHTML='';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
       const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';
       const show=()=>v.textContent=+s.value?s.value:'オフ';show();s.oninput=()=>{OPT[k]=+s.value;show();saveOpt()};const l=document.createElement('span');l.textContent=lab;l.style.width='3em';d.append(l,s,v);return d};
-    it.append(row('BGM','bgm'),row('効果音','se'));if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
+    it.append(row('BGM','bgm'),row('効果音','se'));
+    {const EL=(G.system&&G.system.endings)||[];if(EL.length){const got=gotEnds();const hd=document.createElement('div');hd.textContent=`エンディング（${EL.filter(x=>got.includes(x.id)).length}/${EL.length}）`;hd.style.cssText='border-bottom:1px solid #fff;margin:12px 0 4px';it.append(hd);
+      for(const x of EL){const d=document.createElement('div');d.style.margin='4px 0';const ok=got.includes(x.id);d.textContent=ok?`★ ${x.name}`+(x.desc?`　${x.desc}`:''):'☆ ？？？';if(!ok)d.style.opacity=.5;it.append(d)}}}if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
     it.style.display='block'}
 });
 async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
