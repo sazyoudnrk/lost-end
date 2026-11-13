@@ -10342,7 +10342,8 @@
     "to": "",
     "sw": -1,
     "once": false,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": true
    },
    {
     "item": 3,
@@ -10352,7 +10353,8 @@
     "to": "",
     "sw": -1,
     "once": false,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": true
    },
    {
     "item": 4,
@@ -10362,7 +10364,8 @@
     "to": "",
     "sw": -1,
     "once": false,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": true
    },
    {
     "item": 8,
@@ -10372,7 +10375,8 @@
     "to": "",
     "sw": -1,
     "once": false,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": true
    },
    {
     "item": 2,
@@ -10382,7 +10386,8 @@
     "to": "",
     "sw": -1,
     "once": true,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": true
    },
    {
     "item": 6,
@@ -10392,7 +10397,8 @@
     "to": "",
     "sw": -1,
     "once": false,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": true
    },
    {
     "item": 11,
@@ -10402,7 +10408,8 @@
     "to": "",
     "sw": 12,
     "once": true,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": false
    },
    {
     "item": 12,
@@ -10412,7 +10419,8 @@
     "to": "",
     "sw": 12,
     "once": true,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": false
    },
    {
     "item": 13,
@@ -10422,7 +10430,8 @@
     "to": "",
     "sw": 12,
     "once": true,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": false
    },
    {
     "item": 14,
@@ -10432,7 +10441,8 @@
     "to": "",
     "sw": -1,
     "once": true,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": false
    },
    {
     "item": 15,
@@ -10442,7 +10452,8 @@
     "to": "",
     "sw": -1,
     "once": true,
-    "limitUp": 0
+    "limitUp": 0,
+    "showOnce": true
    },
    {
     "item": 20,
@@ -10454,9 +10465,11 @@
     "once": true,
     "limitUp": 1,
     "forceVar": 19,
-    "forceDay": 0
+    "forceDay": 0,
+    "showOnce": false
    }
-  ]
+  ],
+  "noRepeatFrom": 4
  },
  "system": {
   "slots": [
