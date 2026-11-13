@@ -255,7 +255,7 @@
   "協力依頼_ニノマエ（1=まだ 2=済）",
   "協力依頼_ネイサ（1=まだ 2=済）",
   "協力依頼の残り人数",
-  "",
+  "正気度_主人公",
   "",
   ""
  ],
@@ -996,7 +996,13 @@
               }
              ]
             }
-           ]
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
           },
           {
            "label": "話す",
@@ -1647,6 +1653,111 @@
               }
              ]
             }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
+          },
+          {
+           "label": "殴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がニノマエを殴った）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ニノマエ",
+             "text": "（殴られたときのニノマエの反応）",
+             "pic": "ninomae_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 10,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "泣く",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がニノマエの前で泣き出した）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ニノマエ",
+             "text": "（泣かれたときのニノマエの反応）",
+             "pic": "ninomae_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 10,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "怒鳴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がニノマエを怒鳴りつけた）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ニノマエ",
+             "text": "（怒鳴られたときのニノマエの反応）",
+             "pic": "ninomae_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 10,
+             "op": "sub",
+             "val": 10
+            }
            ]
           },
           {
@@ -2102,7 +2213,13 @@
               }
              ]
             }
-           ]
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
           },
           {
            "label": "話す",
@@ -2716,6 +2833,111 @@
                ]
               }
              ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
+          },
+          {
+           "label": "殴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がネイサを殴った）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "text": "（殴られたときのネイサの反応）",
+             "pic": "neisa_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 9,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "泣く",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がネイサの前で泣き出した）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "text": "（泣かれたときのネイサの反応）",
+             "pic": "neisa_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 9,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "怒鳴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がネイサを怒鳴りつけた）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ネイサ",
+             "text": "（怒鳴られたときのネイサの反応）",
+             "pic": "neisa_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 9,
+             "op": "sub",
+             "val": 10
             }
            ]
           },
@@ -5139,7 +5361,13 @@
               }
              ]
             }
-           ]
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
           },
           {
            "label": "話す",
@@ -5753,6 +5981,111 @@
                ]
               }
              ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
+          },
+          {
+           "label": "殴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がピヲラを殴った）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "（殴られたときのピヲラの反応）",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 11,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "泣く",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がピヲラの前で泣き出した）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "（泣かれたときのピヲラの反応）",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 11,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "怒鳴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がピヲラを怒鳴りつけた）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "（怒鳴られたときのピヲラの反応）",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 11,
+             "op": "sub",
+             "val": 10
             }
            ]
           },
@@ -6648,6 +6981,12 @@
         {
          "t": "var",
          "id": 11,
+         "op": "set",
+         "val": 50
+        },
+        {
+         "t": "var",
+         "id": 17,
          "op": "set",
          "val": 50
         }
@@ -8005,7 +8344,13 @@
               }
              ]
             }
-           ]
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
           },
           {
            "label": "話す",
@@ -8619,6 +8964,111 @@
                ]
               }
              ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
+          },
+          {
+           "label": "殴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がムロを殴った）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "text": "（殴られたときのムロの反応）",
+             "pic": "muro_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 8,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "泣く",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がムロの前で泣き出した）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "text": "（泣かれたときのムロの反応）",
+             "pic": "muro_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 8,
+             "op": "sub",
+             "val": 10
+            }
+           ]
+          },
+          {
+           "label": "怒鳴る",
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": "<=",
+            "val": 0
+           },
+           "cmds": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "（主人公がムロを怒鳴りつけた）",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ムロ",
+             "text": "（怒鳴られたときのムロの反応）",
+             "pic": "muro_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 8,
+             "op": "sub",
+             "val": 10
             }
            ]
           },
@@ -9875,6 +10325,13 @@
     "dailyFrom": 5
    },
    "11": {
+    "init": 100,
+    "min": 0,
+    "max": 200,
+    "daily": -10,
+    "dailyFrom": 5
+   },
+   "17": {
     "init": 100,
     "min": 0,
     "max": 200,
