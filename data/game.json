@@ -229,10 +229,10 @@
   "2日目の集合が終わった",
   "3日目の集合が終わった",
   "パーツ探し開始",
-  "",
-  "",
-  "",
-  "",
+  "ムロ消失",
+  "ピヲラ崩壊済",
+  "ニノマエ崩壊済",
+  "ネイサ崩壊済",
   "",
   "",
   ""
@@ -960,6 +960,12 @@
                  "id": 2,
                  "op": "add",
                  "val": 1
+                },
+                {
+                 "t": "var",
+                 "id": 10,
+                 "op": "add",
+                 "val": 5
                 },
                 {
                  "t": "if",
@@ -2060,6 +2066,12 @@
                  "id": 1,
                  "op": "add",
                  "val": 1
+                },
+                {
+                 "t": "var",
+                 "id": 9,
+                 "op": "add",
+                 "val": 5
                 },
                 {
                  "t": "if",
@@ -5093,6 +5105,12 @@
                  "val": 1
                 },
                 {
+                 "t": "var",
+                 "id": 11,
+                 "op": "add",
+                 "val": 5
+                },
+                {
                  "t": "if",
                  "cond": {
                   "type": "slot",
@@ -6608,6 +6626,30 @@
          "id": 16,
          "op": "set",
          "val": 3
+        },
+        {
+         "t": "var",
+         "id": 8,
+         "op": "set",
+         "val": 50
+        },
+        {
+         "t": "var",
+         "id": 9,
+         "op": "set",
+         "val": 50
+        },
+        {
+         "t": "var",
+         "id": 10,
+         "op": "set",
+         "val": 50
+        },
+        {
+         "t": "var",
+         "id": 11,
+         "op": "set",
+         "val": 50
         }
        ]
       }
@@ -6919,6 +6961,324 @@
          "text": "自分のカバンだ。",
          "pic": "-",
          "picPos": "C"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 32,
+     "name": "正気度0：ムロ",
+     "x": 0,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 8,
+         "op": "<=",
+         "val": 0
+        },
+        {
+         "type": "sw",
+         "id": 13,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ムロが等価交換機で自分自身を価値へと変換し、いなくなった）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（等価交換機に価値12000が残されていた）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "money",
+         "op": "add",
+         "val": 12000
+        },
+        {
+         "t": "sw",
+         "id": 13,
+         "val": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 33,
+     "name": "正気度0：ピヲラ",
+     "x": 1,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 11,
+         "op": "<=",
+         "val": 0
+        },
+        {
+         "type": "sw",
+         "id": 14,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ピヲラが食玩の斧を持ち出し、そのとき生きていた全員を切りつけた）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "sw",
+          "id": 13,
+          "val": false
+         },
+         "hasElse": false,
+         "else": [],
+         "then": [
+          {
+           "t": "var",
+           "id": 8,
+           "op": "sub",
+           "val": 10
+          }
+         ]
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "sw",
+          "id": 15,
+          "val": false
+         },
+         "hasElse": false,
+         "else": [],
+         "then": [
+          {
+           "t": "var",
+           "id": 10,
+           "op": "sub",
+           "val": 10
+          }
+         ]
+        },
+        {
+         "t": "var",
+         "id": 9,
+         "op": "sub",
+         "val": 10
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ムロ・ニノマエ・ネイサの正気度が10下がった）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 14,
+         "val": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 34,
+     "name": "正気度0：ニノマエ",
+     "x": 2,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 10,
+         "op": "<=",
+         "val": 0
+        },
+        {
+         "type": "sw",
+         "id": 15,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ニノマエが左腕を等価交換機に入れ、流れた血で海の絵を描いた）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（腕を治療しに来た主人公に、自分にナイフを刺してくれと懇願してくる）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 15,
+         "val": true
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": 35,
+     "name": "正気度0：ネイサ",
+     "x": 3,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 9,
+         "op": "<=",
+         "val": 0
+        },
+        {
+         "type": "sw",
+         "id": 16,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（ネイサが「どうせここで死ぬのなら、今まで知らなかったことを知りたい！」と言い、主人公の腹を割こうとしてくる）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（主人公はネイサに殺された）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "gameover",
+         "text": "GAME OVER"
         }
        ]
       }
@@ -7609,6 +7969,12 @@
                  "id": 0,
                  "op": "add",
                  "val": 1
+                },
+                {
+                 "t": "var",
+                 "id": 8,
+                 "op": "add",
+                 "val": 5
                 },
                 {
                  "t": "if",
@@ -8471,6 +8837,20 @@
        "map": 4,
        "x": 6,
        "y": 5
+      },
+      {
+       "from": 1,
+       "to": "",
+       "slot": -1,
+       "sw": 13,
+       "swv": true,
+       "vr": -1,
+       "vop": "==",
+       "vv": 0,
+       "map": null,
+       "x": 0,
+       "y": 0,
+       "dir": -1
       }
      ]
     },
@@ -9476,22 +9856,30 @@
    "8": {
     "init": 100,
     "min": 0,
-    "max": 200
+    "max": 200,
+    "daily": -10,
+    "dailyFrom": 5
    },
    "9": {
     "init": 100,
     "min": 0,
-    "max": 200
+    "max": 200,
+    "daily": -5,
+    "dailyFrom": 5
    },
    "10": {
     "init": 100,
     "min": 0,
-    "max": 200
+    "max": 200,
+    "daily": -10,
+    "dailyFrom": 5
    },
    "11": {
     "init": 100,
     "min": 0,
-    "max": 200
+    "max": 200,
+    "daily": -10,
+    "dailyFrom": 5
    }
   },
   "charPics": {

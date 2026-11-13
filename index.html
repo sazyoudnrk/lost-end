@@ -103,7 +103,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13a';
+const GAME_VER='2026-11-13c';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -266,6 +266,8 @@ function drawShop(count,ex){
 }
 async function nextDay(){
   hideMsg();await fade(1);S.day++;S.slot=0;S.buys=0;S.shop=drawShop();
+  // 毎日変わる変数（正気度など）
+  for(const [k,v] of Object.entries((G.system&&G.system.varCfg)||{})){if(!v||!+v.daily||S.day<(+v.dailyFrom||1))continue;let x=(S.vr[k]||0)+(+v.daily);if(v.min!==''&&v.min!=null)x=Math.max(+v.min,x);if(v.max!==''&&v.max!=null)x=Math.min(+v.max,x);S.vr[k]=x}
   const dc=$('#daycard');dc.querySelector('b').textContent=`${S.day}日目`;dc.querySelector('span').textContent=slotName(0);dc.classList.add('show');
   await sleep(1300);placeScheduled();updHud();dc.classList.remove('show');await sleep(500);await fade(0);
 }
@@ -372,7 +374,7 @@ function checkAction(){
   if(e){runEvent(e);return true}return false;
 }
 function checkBump(x,y){const e=evAt(x,y,e=>e.page.priority!=='below'&&e.page.trigger==='touch');if(e){runEvent(e);return true}return false}
-function checkAuto(){const e=events.find(e=>!e.erased&&e.page&&e.page.trigger==='auto');if(e)runEvent(e)}
+function checkAuto(){if($('#title').style.display==='flex')return;const e=events.find(e=>!e.erased&&e.page&&e.page.trigger==='auto');if(e)runEvent(e)}
 
 /* ---------- イベント実行 ---------- */
 async function runEvent(ev){
@@ -421,6 +423,7 @@ async function cmd(c,cx){
     case'still':await showStill(c.id||null,c.fade!==false);break;
     case'erase':cx.ev.erased=true;break;
     case'end':throw END;
+    case'gameover':{hideMsg();clearPics();await fade(1);await showText({name:'',text:c.text||'GAME OVER',pic:'-'});hideMsg();showTitle();throw END}
   }
 }
 const msgEl=$('#msg'),faceEl=$('#face'),nameEl=$('#mname'),textEl=$('#mtext'),arrowEl=$('#arrow'),chEl=$('#choices');
