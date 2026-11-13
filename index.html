@@ -105,7 +105,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-13k';
+const GAME_VER='2026-11-13l';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -420,11 +420,11 @@ async function cmd(c,cx){
     case'var':{let v=S.vr[c.id]||0;const n=+c.val||0;v=c.op==='set'?n:c.op==='add'?v+n:c.op==='sub'?v-n:c.op==='rand'?Math.floor(Math.random()*(n+1)):v;const vc=((G.system&&G.system.varCfg)||{})[c.id];if(vc){if(vc.min!=null&&vc.min!=='')v=Math.max(+vc.min,v);if(vc.max!=null&&vc.max!=='')v=Math.min(+vc.max,v)}S.vr[c.id]=v;updDim();updDbgHud();placeScheduled();break}
     case'self':S.ss[cx.ev.home+':'+cx.ev.d.id+':'+c.key]=!!c.val;refresh();break;
     case'time':{const n=G.system.slots.length,ns=c.op==='set'?Math.max(0,Math.min(n-1,+c.slot||0)):Math.min(n-1,S.slot+(+c.n||1));
-      // すでに暗転中なら静かに切り替え、明るいときは一度暗くして時間帯の札を出す
+      // すでに暗転中なら静かに切り替え、明るいときは一度暗くしてから切り替える
       const fx=c.fx!==false&&ns!==S.slot&&+getComputedStyle($('#fade')).opacity<.99;
       if(fx){hideMsg();clearPics();await fade(1)}
       S.slot=ns;placeScheduled();updHud();
-      if(fx){const dc=$('#daycard');dc.querySelector('b').textContent=`${S.day}日目`;dc.querySelector('span').textContent=slotName(S.slot);dc.classList.add('show');await sleep(1100);dc.classList.remove('show');await sleep(400);await fade(0)}
+      if(fx){await sleep(500);await fade(0)}
       break}
     case'sleep':await nextDay();break;
     case'money':{const n=+c.val||0;S.money=Math.max(0,c.op==='set'?n:c.op==='sub'?S.money-n:S.money+n);updHud();refresh();break}
