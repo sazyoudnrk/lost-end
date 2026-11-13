@@ -7987,6 +7987,92 @@
          "else": []
         },
         {
+         "t": "comment",
+         "text": "一緒に過ごした相手の人数"
+        },
+        {
+         "t": "var",
+         "id": 23,
+         "op": "set",
+         "val": 0
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 0,
+          "op": ">",
+          "val": 0
+         },
+         "hasElse": false,
+         "then": [
+          {
+           "t": "var",
+           "id": 23,
+           "op": "add",
+           "val": 1
+          }
+         ],
+         "else": []
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 1,
+          "op": ">",
+          "val": 0
+         },
+         "hasElse": false,
+         "then": [
+          {
+           "t": "var",
+           "id": 23,
+           "op": "add",
+           "val": 1
+          }
+         ],
+         "else": []
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 2,
+          "op": ">",
+          "val": 0
+         },
+         "hasElse": false,
+         "then": [
+          {
+           "t": "var",
+           "id": 23,
+           "op": "add",
+           "val": 1
+          }
+         ],
+         "else": []
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 3,
+          "op": ">",
+          "val": 0
+         },
+         "hasElse": false,
+         "then": [
+          {
+           "t": "var",
+           "id": 23,
+           "op": "add",
+           "val": 1
+          }
+         ],
+         "else": []
+        },
+        {
          "t": "if",
          "cond": {
           "type": "var",
@@ -8027,6 +8113,151 @@
             }
            ],
            "else": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 23,
+              "op": "==",
+              "val": 1
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "var",
+                "id": 0,
+                "op": ">",
+                "val": 0
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（ずっとムロとだけ過ごしてきた）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "ending",
+                 "id": "balance_muro"
+                }
+               ],
+               "else": []
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "var",
+                "id": 1,
+                "op": ">",
+                "val": 0
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（ずっとネイサとだけ過ごしてきた）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "ending",
+                 "id": "balance_neisa"
+                }
+               ],
+               "else": []
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "var",
+                "id": 2,
+                "op": ">",
+                "val": 0
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（ずっとニノマエとだけ過ごしてきた）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "ending",
+                 "id": "balance_ninomae"
+                }
+               ],
+               "else": []
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "var",
+                "id": 3,
+                "op": ">",
+                "val": 0
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "（ずっとピヲラとだけ過ごしてきた）",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "ending",
+                 "id": "balance_piwora"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
             {
              "t": "if",
              "cond": {
@@ -8145,92 +8376,6 @@
            "else": []
           },
           {
-           "t": "comment",
-           "text": "一緒に過ごした相手が1人だけなら穏やかな最期"
-          },
-          {
-           "t": "var",
-           "id": 23,
-           "op": "set",
-           "val": 0
-          },
-          {
-           "t": "if",
-           "cond": {
-            "type": "var",
-            "id": 0,
-            "op": ">",
-            "val": 0
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "var",
-             "id": 23,
-             "op": "add",
-             "val": 1
-            }
-           ],
-           "else": []
-          },
-          {
-           "t": "if",
-           "cond": {
-            "type": "var",
-            "id": 1,
-            "op": ">",
-            "val": 0
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "var",
-             "id": 23,
-             "op": "add",
-             "val": 1
-            }
-           ],
-           "else": []
-          },
-          {
-           "t": "if",
-           "cond": {
-            "type": "var",
-            "id": 2,
-            "op": ">",
-            "val": 0
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "var",
-             "id": 23,
-             "op": "add",
-             "val": 1
-            }
-           ],
-           "else": []
-          },
-          {
-           "t": "if",
-           "cond": {
-            "type": "var",
-            "id": 3,
-            "op": ">",
-            "val": 0
-           },
-           "hasElse": false,
-           "then": [
-            {
-             "t": "var",
-             "id": 23,
-             "op": "add",
-             "val": 1
-            }
-           ],
-           "else": []
-          },
-          {
            "t": "if",
            "cond": {
             "type": "var",
@@ -8268,7 +8413,7 @@
               },
               {
                "t": "ending",
-               "id": "peace"
+               "id": "peace_muro"
               }
              ],
              "else": []
@@ -8301,7 +8446,7 @@
               },
               {
                "t": "ending",
-               "id": "peace"
+               "id": "peace_neisa"
               }
              ],
              "else": []
@@ -8334,7 +8479,7 @@
               },
               {
                "t": "ending",
-               "id": "peace"
+               "id": "peace_ninomae"
               }
              ],
              "else": []
@@ -8367,7 +8512,7 @@
               },
               {
                "t": "ending",
-               "id": "peace"
+               "id": "peace_piwora"
               }
              ],
              "else": []
@@ -12876,10 +13021,52 @@
     "note": "10日目の朝：パーツ3つ・誰も殺していない・主人公の正気度>0"
    },
    {
-    "id": "peace",
-    "name": "穏やかな最期",
-    "desc": "ひとりだけと過ごし続け、その人の客室で墜落を迎えた。",
-    "note": "10日目の朝：パーツ不足・一緒に過ごした相手が1人だけ"
+    "id": "balance_muro",
+    "name": "天秤（ムロ）",
+    "desc": "パーツを集め切り、ムロとだけ過ごし続けた。",
+    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がムロだけ"
+   },
+   {
+    "id": "balance_neisa",
+    "name": "天秤（ネイサ）",
+    "desc": "パーツを集め切り、ネイサとだけ過ごし続けた。",
+    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がネイサだけ"
+   },
+   {
+    "id": "balance_ninomae",
+    "name": "天秤（ニノマエ）",
+    "desc": "パーツを集め切り、ニノマエとだけ過ごし続けた。",
+    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がニノマエだけ"
+   },
+   {
+    "id": "balance_piwora",
+    "name": "天秤（ピヲラ）",
+    "desc": "パーツを集め切り、ピヲラとだけ過ごし続けた。",
+    "note": "10日目の朝：パーツ3つ・誰も殺していない・一緒に過ごした相手がピヲラだけ"
+   },
+   {
+    "id": "peace_muro",
+    "name": "穏やかな最期（ムロ）",
+    "desc": "ムロとだけ過ごし続け、ムロの客室で墜落を迎えた。",
+    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がムロだけ"
+   },
+   {
+    "id": "peace_neisa",
+    "name": "穏やかな最期（ネイサ）",
+    "desc": "ネイサとだけ過ごし続け、ネイサの客室で墜落を迎えた。",
+    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がネイサだけ"
+   },
+   {
+    "id": "peace_ninomae",
+    "name": "穏やかな最期（ニノマエ）",
+    "desc": "ニノマエとだけ過ごし続け、ニノマエの客室で墜落を迎えた。",
+    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がニノマエだけ"
+   },
+   {
+    "id": "peace_piwora",
+    "name": "穏やかな最期（ピヲラ）",
+    "desc": "ピヲラとだけ過ごし続け、ピヲラの客室で墜落を迎えた。",
+    "note": "10日目の朝：パーツ不足・一緒に過ごした相手がピヲラだけ"
    },
    {
     "id": "sacrifice",
