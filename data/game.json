@@ -1804,6 +1804,12 @@
                  "val": 5
                 },
                 {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
                  "t": "text",
                  "face": "",
                  "name": "",
@@ -2492,6 +2498,12 @@
                    "id": 10,
                    "op": "add",
                    "val": 10
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
                   }
                  ]
                 },
@@ -2528,6 +2540,12 @@
                    "id": 10,
                    "op": "add",
                    "val": 5
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
                   }
                  ]
                 }
@@ -2544,6 +2562,12 @@
                 {
                  "t": "var",
                  "id": 10,
+                 "op": "add",
+                 "val": 5
+                },
+                {
+                 "t": "var",
+                 "id": 17,
                  "op": "add",
                  "val": 5
                 }
@@ -3352,6 +3376,12 @@
                  "val": 5
                 },
                 {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
                  "t": "text",
                  "face": "",
                  "name": "",
@@ -4080,6 +4110,12 @@
                    "id": 9,
                    "op": "add",
                    "val": 10
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
                   }
                  ]
                 }
@@ -4096,6 +4132,12 @@
                 {
                  "t": "var",
                  "id": 9,
+                 "op": "add",
+                 "val": 5
+                },
+                {
+                 "t": "var",
+                 "id": 17,
                  "op": "add",
                  "val": 5
                 }
@@ -7646,6 +7688,12 @@
                  "val": 5
                 },
                 {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
                  "t": "text",
                  "face": "",
                  "name": "",
@@ -8374,6 +8422,12 @@
                    "id": 11,
                    "op": "add",
                    "val": 10
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
                   }
                  ]
                 }
@@ -8390,6 +8444,12 @@
                 {
                  "t": "var",
                  "id": 11,
+                 "op": "add",
+                 "val": 5
+                },
+                {
+                 "t": "var",
+                 "id": 17,
                  "op": "add",
                  "val": 5
                 }
@@ -9734,9 +9794,14 @@
          "t": "text",
          "face": "",
          "name": "ムロ",
-         "text": "そのためにはまず価値が必要です。\n\n[p]\n僕は今朝、星間ワープ装置のパーツを一つ手に入れました。\n\n[p]\n運良く1番価値の低いパーツがでたので手に入れられましたが、持ってきたものを全部入れてやっと一つ買えるような状況です。\n\n[p]\nですので[pname]さん、どうにか皆さんに協力を仰いでみてください。\n\n[p]\n力を合わせればなんとかなるかもしれません！\n",
+         "text": "そのためにはまず価値が必要です。\n\n[p]\n僕は今朝、星間ワープ装置のパーツを一つ手に入れました。\n\n[p]\n運良く1番価値の低いパーツがでたので手に入れられました。C02はもう取り付けてあります。\n\n[p]\n……でも、持ってきたものを全部入れてやっと一つ買えるような状況です。\n\n[p]\nですので[pname]さん、どうにか皆さんに協力を仰いでみてください。\n\n[p]\n力を合わせればなんとかなるかもしれません！\n",
          "pic": "muro_normal",
          "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 20,
+         "val": true
         },
         {
          "t": "sw",
@@ -10686,24 +10751,36 @@
                          "hasElse": false,
                          "then": [
                           {
-                           "t": "text",
-                           "face": "",
-                           "name": "",
-                           "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-                           "pic": "-",
-                           "picPos": "C"
-                          },
-                          {
-                           "t": "text",
-                           "face": "",
-                           "name": "",
-                           "text": "（ずっとムロとだけ過ごしてきた）",
-                           "pic": "-",
-                           "picPos": "C"
-                          },
-                          {
-                           "t": "ending",
-                           "id": "balance_muro"
+                           "t": "if",
+                           "cond": {
+                            "type": "sw",
+                            "id": 13,
+                            "val": false
+                           },
+                           "hasElse": false,
+                           "then": [
+                            {
+                             "t": "text",
+                             "face": "",
+                             "name": "",
+                             "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                             "pic": "-",
+                             "picPos": "C"
+                            },
+                            {
+                             "t": "text",
+                             "face": "",
+                             "name": "",
+                             "text": "（ずっとムロとだけ過ごしてきた）",
+                             "pic": "-",
+                             "picPos": "C"
+                            },
+                            {
+                             "t": "ending",
+                             "id": "balance_muro"
+                            }
+                           ],
+                           "else": []
                           }
                          ],
                          "else": []
@@ -10752,24 +10829,48 @@
                          "hasElse": false,
                          "then": [
                           {
-                           "t": "text",
-                           "face": "",
-                           "name": "",
-                           "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-                           "pic": "-",
-                           "picPos": "C"
-                          },
-                          {
-                           "t": "text",
-                           "face": "",
-                           "name": "",
-                           "text": "（ずっとニノマエとだけ過ごしてきた）",
-                           "pic": "-",
-                           "picPos": "C"
-                          },
-                          {
-                           "t": "ending",
-                           "id": "balance_ninomae"
+                           "t": "if",
+                           "cond": {
+                            "type": "sw",
+                            "id": 24,
+                            "val": false
+                           },
+                           "hasElse": false,
+                           "then": [
+                            {
+                             "t": "if",
+                             "cond": {
+                              "type": "sw",
+                              "id": 25,
+                              "val": false
+                             },
+                             "hasElse": false,
+                             "then": [
+                              {
+                               "t": "text",
+                               "face": "",
+                               "name": "",
+                               "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                               "pic": "-",
+                               "picPos": "C"
+                              },
+                              {
+                               "t": "text",
+                               "face": "",
+                               "name": "",
+                               "text": "（ずっとニノマエとだけ過ごしてきた）",
+                               "pic": "-",
+                               "picPos": "C"
+                              },
+                              {
+                               "t": "ending",
+                               "id": "balance_ninomae"
+                              }
+                             ],
+                             "else": []
+                            }
+                           ],
+                           "else": []
                           }
                          ],
                          "else": []
@@ -10885,24 +10986,36 @@
                        "hasElse": false,
                        "then": [
                         {
-                         "t": "move",
-                         "map": 4,
-                         "x": 5,
-                         "y": 8,
-                         "dir": 3,
-                         "fade": true
-                        },
-                        {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（ムロの客室で、ふたりで最期の時を迎えた）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "ending",
-                         "id": "peace_muro"
+                         "t": "if",
+                         "cond": {
+                          "type": "sw",
+                          "id": 13,
+                          "val": false
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "move",
+                           "map": 4,
+                           "x": 5,
+                           "y": 8,
+                           "dir": 3,
+                           "fade": true
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（ムロの客室で、ふたりで最期の時を迎えた）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "peace_muro"
+                          }
+                         ],
+                         "else": []
                         }
                        ],
                        "else": []
@@ -10951,24 +11064,48 @@
                        "hasElse": false,
                        "then": [
                         {
-                         "t": "move",
-                         "map": 3,
-                         "x": 5,
-                         "y": 8,
-                         "dir": 3,
-                         "fade": true
-                        },
-                        {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（ニノマエの客室で、ふたりで最期の時を迎えた）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "ending",
-                         "id": "peace_ninomae"
+                         "t": "if",
+                         "cond": {
+                          "type": "sw",
+                          "id": 24,
+                          "val": false
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "if",
+                           "cond": {
+                            "type": "sw",
+                            "id": 25,
+                            "val": false
+                           },
+                           "hasElse": false,
+                           "then": [
+                            {
+                             "t": "move",
+                             "map": 3,
+                             "x": 5,
+                             "y": 8,
+                             "dir": 3,
+                             "fade": true
+                            },
+                            {
+                             "t": "text",
+                             "face": "",
+                             "name": "",
+                             "text": "（ニノマエの客室で、ふたりで最期の時を迎えた）",
+                             "pic": "-",
+                             "picPos": "C"
+                            },
+                            {
+                             "t": "ending",
+                             "id": "peace_ninomae"
+                            }
+                           ],
+                           "else": []
+                          }
+                         ],
+                         "else": []
                         }
                        ],
                        "else": []
@@ -13000,6 +13137,12 @@
                  "val": 5
                 },
                 {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
                  "t": "text",
                  "face": "",
                  "name": "",
@@ -13747,6 +13890,12 @@
                      "id": 8,
                      "op": "add",
                      "val": 10
+                    },
+                    {
+                     "t": "var",
+                     "id": 17,
+                     "op": "add",
+                     "val": 5
                     }
                    ]
                   }
@@ -13763,6 +13912,12 @@
                   {
                    "t": "var",
                    "id": 8,
+                   "op": "add",
+                   "val": 5
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
                    "op": "add",
                    "val": 5
                   }
@@ -15418,17 +15573,6 @@
     "once": false,
     "limitUp": 0,
     "showOnce": true
-   },
-   {
-    "item": 11,
-    "price": 300,
-    "weight": 1,
-    "from": 1,
-    "to": "",
-    "sw": 12,
-    "once": true,
-    "limitUp": 0,
-    "showOnce": false
    },
    {
     "item": 12,
