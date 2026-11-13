@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-13g';
+const APP_VER='2026-11-13h';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -731,7 +731,7 @@ function cmdSummary(c){
     case'gameover':return c.text||'GAME OVER';
     case'bgm':return c.op==='stop'?'止める':c.op==='map'?'マップのBGMに戻す':((G.bgms.find(x=>x.id===c.id)||{name:'（未選択）'}).name+'を流す');
     case'se':{const s=G.sounds.find(x=>x.id===c.id);return (s?s.name:'（未選択）')+(c.vol!=null&&+c.vol!==100?` 音量${c.vol}`:'')}
-    case'time':return c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`;
+    case'time':return (c.op==='set'?`「${slotN(c.slot)}」にする`:`${c.n||1}つ進める`)+(c.fx===false?'（暗転なし）':'');
     case'sleep':return '日付+1、朝に戻す';
     case'money':return c.op==='set'?`= ${c.val}`:`${c.op==='sub'?'−':'+'} ${c.val}`;
     case'shop':return '交換画面を開く'+(c.fixed&&c.fixed.length?`（${fixedSum(c.fixed)}）`:'')+(c.tutorial?(c.tutorial==='sell'?'・いれるチュートリアル':'・とりだすチュートリアル'):'');
@@ -907,7 +907,7 @@ function cmdForm(b,d,rr){
         fChk('歩き終わるまで次に進まない',d,'wait'),fChk('すり抜け（壁や人を通り抜ける）',d,'through'),
         h('div',{class:'hint'},'通れないマスに当たった歩はとばします。待つ＝0.3秒'));break}
     case'turn':c.append(fSel('誰を',d,'target',tgtOpts()),fSel('向き',d,'dir',[['P','プレイヤーの方'],['A','プレイヤーと反対'],...DIRN.map((n,i)=>[String(i),n])]));break;
-    case'time':c.append(fSel('',d,'op',[['next','進める'],['set','指定する']],{on:rr}),d.op==='set'?fSel('時間帯',d,'slot',slotOpts(),{num:true}):fNum('いくつ進めるか',d,'n',{min:1}),
+    case'time':c.append(fSel('',d,'op',[['next','進める'],['set','指定する']],{on:rr}),d.op==='set'?fSel('時間帯',d,'slot',slotOpts(),{num:true}):fNum('いくつ進めるか',d,'n',{min:1}),(()=>{if(d.fx==null)d.fx=true;return fChk('一度暗くして時間帯を表示する（暗転中ならそのまま切り替え）',d,'fx')})(),
       h('div',{class:'hint'},'最後の時間帯（夜）より先には進みません。日付を進めるのは「次の日へ」'));break;
     case'nameinput':c.append(fNum('最大文字数',d,'max',{min:1,max:16}),fText('最初に入っている名前',d,'def',{ph:'空でOK'}),h('div',{class:'hint'},'入力した名前は、文章の本文に [pname]（「👤主人公の名前」ボタン）を入れるとその名前に置き換わります。名前を「主人公」にした台詞は名前欄に入力した名前が出ます（入力前は「？」）'));break;
     case'money':c.append(h('div',{class:'row'},fSel('操作',d,'op',[['add','増やす'],['sub','減らす'],['set','にする']]),fNum('価値',d,'val',{min:0})));break;
