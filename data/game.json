@@ -1862,6 +1862,126 @@
             "id": 17,
             "op": ">",
             "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 10,
+            "op": ">",
+            "val": 25
+           }
+          },
+          {
+           "label": "慰める",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（慰められたときのニノマエの会話）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 10,
+                 "op": "add",
+                 "val": 25
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ニノマエは少し落ち着いたようだ。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "もう遅い。部屋に戻ろう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
+                }
+               ],
+               "hasElse": true
+              }
+             ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 10,
+            "op": "<=",
+            "val": 25
            }
           },
           {
@@ -3448,6 +3568,126 @@
             "id": 17,
             "op": ">",
             "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 9,
+            "op": ">",
+            "val": 25
+           }
+          },
+          {
+           "label": "慰める",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（慰められたときのネイサの会話）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 9,
+                 "op": "add",
+                 "val": 25
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ネイサは少し落ち着いたようだ。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "もう遅い。部屋に戻ろう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
+                }
+               ],
+               "hasElse": true
+              }
+             ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 9,
+            "op": "<=",
+            "val": 25
            }
           },
           {
@@ -7774,6 +8014,126 @@
             "id": 17,
             "op": ">",
             "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 11,
+            "op": ">",
+            "val": 25
+           }
+          },
+          {
+           "label": "慰める",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（慰められたときのピヲラの会話）",
+                 "pic": "piwora_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 11,
+                 "op": "add",
+                 "val": 25
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ピヲラは少し落ち着いたようだ。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "もう遅い。部屋に戻ろう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
+                }
+               ],
+               "hasElse": true
+              }
+             ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 11,
+            "op": "<=",
+            "val": 25
            }
           },
           {
@@ -13550,6 +13910,126 @@
             "id": 17,
             "op": ">",
             "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 8,
+            "op": ">",
+            "val": 25
+           }
+          },
+          {
+           "label": "慰める",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（慰められたときのムロの会話）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 8,
+                 "op": "add",
+                 "val": 25
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ムロは少し落ち着いたようだ。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "もう遅い。部屋に戻ろう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
+                }
+               ],
+               "hasElse": true
+              }
+             ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           },
+           "cond2": {
+            "type": "var",
+            "id": 8,
+            "op": "<=",
+            "val": 25
            }
           },
           {

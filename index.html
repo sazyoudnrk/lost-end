@@ -105,7 +105,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-14a';
+const GAME_VER='2026-11-14b';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -408,7 +408,7 @@ async function exec(list,cx){for(const c of list||[])await cmd(c,cx)}
 async function cmd(c,cx){
   switch(c.t){
     case'text':await showText(c);break;
-    case'choice':{const op=c.options.filter(o=>!o.cond||evalCond(o.cond,cx));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
+    case'choice':{const op=c.options.filter(o=>(!o.cond||evalCond(o.cond,cx))&&(!o.cond2||evalCond(o.cond2,cx)));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
     case'wish':{const L=G.shop.pool.map((r,i)=>({r,i,it:G.items.find(x=>x.id===r.item)})).filter(o=>o.it&&!(o.r.once&&S.once[o.i])&&(o.r.sw==null||o.r.sw<0||S.sw[o.r.sw])&&(c.parts?o.it.gift===false:true));
       const names=[...new Set(L.map(o=>o.it.name))],pick=names.map(n=>L.find(o=>o.it.name===n));
       hideMsg();const k=await showChoice([...names,'やめる']);if(k<names.length){S.wish={p:pick[k].i,mult:+c.mult||10};await showText({name:'',text:(c.text||'「{item}」が明日並ぶように祈った。').replace('{item}',names[k]),pic:'-'})}break}
