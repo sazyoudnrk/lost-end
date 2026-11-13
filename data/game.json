@@ -381,11 +381,11 @@
   "",
   "",
   "",
-  "",
-  "",
-  "",
-  "",
-  "",
+  "ムロを最後に慰めた日",
+  "ネイサを最後に慰めた日",
+  "ニノマエを最後に慰めた日",
+  "ピヲラを最後に慰めた日",
+  "今日の日付（一時用）",
   ""
  ],
  "player": {
@@ -1910,60 +1910,63 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ニノマエ",
-                 "text": "（慰められたときのニノマエの会話）",
-                 "pic": "ninomae_normal",
-                 "picPos": "C"
-                },
-                {
                  "t": "var",
-                 "id": 10,
-                 "op": "add",
-                 "val": 25
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "ニノマエは少し落ち着いたようだ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "id": 38,
+                 "op": "game",
+                 "src": "day",
+                 "val": 0
                 },
                 {
                  "t": "if",
                  "cond": {
-                  "type": "slot",
+                  "type": "var",
+                  "id": 36,
                   "op": "==",
-                  "val": 2
+                  "val": 0,
+                  "ref": 38
                  },
+                 "hasElse": true,
                  "then": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0,
-                   "fx": true
-                  },
                   {
                    "t": "text",
                    "face": "",
-                   "name": "主人公",
-                   "text": "もう遅い。部屋に戻ろう。",
+                   "name": "",
+                   "text": "今日はもうニノマエを慰めた。",
                    "pic": "-",
                    "picPos": "C"
                   }
                  ],
                  "else": [
                   {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（慰められたときのニノマエの会話）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 10,
+                   "op": "add",
+                   "val": 25
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ニノマエは少し落ち着いたようだ。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 36,
+                   "op": "game",
+                   "src": "day",
+                   "val": 0
                   }
-                 ],
-                 "hasElse": true
+                 ]
                 }
                ],
                "hasElse": true
@@ -3616,60 +3619,63 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ネイサ",
-                 "text": "（慰められたときのネイサの会話）",
-                 "pic": "neisa_normal",
-                 "picPos": "C"
-                },
-                {
                  "t": "var",
-                 "id": 9,
-                 "op": "add",
-                 "val": 25
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "ネイサは少し落ち着いたようだ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "id": 38,
+                 "op": "game",
+                 "src": "day",
+                 "val": 0
                 },
                 {
                  "t": "if",
                  "cond": {
-                  "type": "slot",
+                  "type": "var",
+                  "id": 35,
                   "op": "==",
-                  "val": 2
+                  "val": 0,
+                  "ref": 38
                  },
+                 "hasElse": true,
                  "then": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0,
-                   "fx": true
-                  },
                   {
                    "t": "text",
                    "face": "",
-                   "name": "主人公",
-                   "text": "もう遅い。部屋に戻ろう。",
+                   "name": "",
+                   "text": "今日はもうネイサを慰めた。",
                    "pic": "-",
                    "picPos": "C"
                   }
                  ],
                  "else": [
                   {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（慰められたときのネイサの会話）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 9,
+                   "op": "add",
+                   "val": 25
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ネイサは少し落ち着いたようだ。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 35,
+                   "op": "game",
+                   "src": "day",
+                   "val": 0
                   }
-                 ],
-                 "hasElse": true
+                 ]
                 }
                ],
                "hasElse": true
@@ -8062,60 +8068,63 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ピヲラ",
-                 "text": "（慰められたときのピヲラの会話）",
-                 "pic": "piwora_normal",
-                 "picPos": "C"
-                },
-                {
                  "t": "var",
-                 "id": 11,
-                 "op": "add",
-                 "val": 25
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "ピヲラは少し落ち着いたようだ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "id": 38,
+                 "op": "game",
+                 "src": "day",
+                 "val": 0
                 },
                 {
                  "t": "if",
                  "cond": {
-                  "type": "slot",
+                  "type": "var",
+                  "id": 37,
                   "op": "==",
-                  "val": 2
+                  "val": 0,
+                  "ref": 38
                  },
+                 "hasElse": true,
                  "then": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0,
-                   "fx": true
-                  },
                   {
                    "t": "text",
                    "face": "",
-                   "name": "主人公",
-                   "text": "もう遅い。部屋に戻ろう。",
+                   "name": "",
+                   "text": "今日はもうピヲラを慰めた。",
                    "pic": "-",
                    "picPos": "C"
                   }
                  ],
                  "else": [
                   {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（慰められたときのピヲラの会話）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 11,
+                   "op": "add",
+                   "val": 25
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ピヲラは少し落ち着いたようだ。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 37,
+                   "op": "game",
+                   "src": "day",
+                   "val": 0
                   }
-                 ],
-                 "hasElse": true
+                 ]
                 }
                ],
                "hasElse": true
@@ -13958,60 +13967,63 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "text": "（慰められたときのムロの会話）",
-                 "pic": "muro_normal",
-                 "picPos": "C"
-                },
-                {
                  "t": "var",
-                 "id": 8,
-                 "op": "add",
-                 "val": 25
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "ムロは少し落ち着いたようだ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "id": 38,
+                 "op": "game",
+                 "src": "day",
+                 "val": 0
                 },
                 {
                  "t": "if",
                  "cond": {
-                  "type": "slot",
+                  "type": "var",
+                  "id": 34,
                   "op": "==",
-                  "val": 2
+                  "val": 0,
+                  "ref": 38
                  },
+                 "hasElse": true,
                  "then": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0,
-                   "fx": true
-                  },
                   {
                    "t": "text",
                    "face": "",
-                   "name": "主人公",
-                   "text": "もう遅い。部屋に戻ろう。",
+                   "name": "",
+                   "text": "今日はもうムロを慰めた。",
                    "pic": "-",
                    "picPos": "C"
                   }
                  ],
                  "else": [
                   {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（慰められたときのムロの会話）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 8,
+                   "op": "add",
+                   "val": 25
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ムロは少し落ち着いたようだ。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 34,
+                   "op": "game",
+                   "src": "day",
+                   "val": 0
                   }
-                 ],
-                 "hasElse": true
+                 ]
                 }
                ],
                "hasElse": true
