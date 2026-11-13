@@ -371,7 +371,7 @@
   "足りないパーツの数（判定用）",
   "交換機にない足りないパーツの数（判定用）",
   "一緒に過ごした相手の人数（判定用）",
-  "",
+  "いなくなった人（集合用 1=ムロ 2=ニノマエ 3=両方）",
   "",
   "",
   "",
@@ -1315,6 +1315,50 @@
           {
            "label": "話す",
            "cmds": [
+            {
+             "t": "comment",
+             "text": "誰かがいなくなった後、最初に話したときだけ専用セリフ（言ったら中断）"
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 13,
+              "val": true
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "self",
+                "key": "B",
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ニノマエ",
+                 "text": "（ムロがいなくなったことについてのニノマエの会話）",
+                 "pic": "ninomae_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "self",
+                 "key": "B",
+                 "val": true
+                },
+                {
+                 "t": "end"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
             {
              "t": "vcase",
              "src": "day",
@@ -2805,6 +2849,90 @@
           {
            "label": "話す",
            "cmds": [
+            {
+             "t": "comment",
+             "text": "誰かがいなくなった後、最初に話したときだけ専用セリフ（言ったら中断）"
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 13,
+              "val": true
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "self",
+                "key": "B",
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（ムロがいなくなったことについてのネイサの会話）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "self",
+                 "key": "B",
+                 "val": true
+                },
+                {
+                 "t": "end"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 25,
+              "val": true
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "self",
+                "key": "C",
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ネイサ",
+                 "text": "（ニノマエがいなくなったことについてのネイサの会話）",
+                 "pic": "neisa_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "self",
+                 "key": "C",
+                 "val": true
+                },
+                {
+                 "t": "end"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
             {
              "t": "vcase",
              "src": "day",
@@ -5456,139 +5584,309 @@
          ]
         },
         {
-         "t": "vcase",
-         "src": "day",
-         "id": 0,
-         "cases": [
+         "t": "if",
+         "cond": {
+          "type": "day",
+          "op": "==",
+          "val": 4
+         },
+         "hasElse": true,
+         "then": [
           {
-           "val": 4,
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（墜落まであと6日）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（4日目の朝の集合の会話）",
-             "pic": "-",
-             "picPos": "C"
-            }
-           ]
+           "t": "text",
+           "face": "",
+           "name": "ニノマエ",
+           "text": "悪い夢の中のようだな。",
+           "pic": "ninomae_normal",
+           "picPos": "C"
           },
           {
-           "val": 5,
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（墜落まであと5日）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（5日目の朝の集合の会話）",
-             "pic": "-",
-             "picPos": "C"
-            }
-           ]
+           "t": "text",
+           "face": "",
+           "name": "ムロ",
+           "text": "あ、あの……[pname]さんと話したのですが、もしかしたらそこの等価交換機を使って星間ワープ装置を直せるかもしれないんです。",
+           "pic": "muro_normal",
+           "picPos": "C"
           },
           {
-           "val": 6,
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（墜落まであと4日）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（6日目の朝の集合の会話）",
-             "pic": "-",
-             "picPos": "C"
-            }
-           ]
+           "t": "text",
+           "face": "",
+           "name": "ピヲラ",
+           "text": "それって本当！？",
+           "pic": "piwora_normal",
+           "picPos": "C"
           },
           {
-           "val": 7,
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（墜落まであと3日）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（7日目の朝の集合の会話）",
-             "pic": "-",
-             "picPos": "C"
-            }
-           ]
+           "t": "text",
+           "face": "",
+           "name": "ムロ",
+           "text": "ただ、交換元となる価値が現状手に入りません。皆さんに協力してほしくて",
+           "pic": "muro_normal",
+           "picPos": "C"
           },
           {
-           "val": 8,
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（墜落まであと2日）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（8日目の朝の集合の会話）",
-             "pic": "-",
-             "picPos": "C"
-            }
-           ]
-          },
-          {
-           "val": 9,
-           "cmds": [
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（墜落まであと1日）",
-             "pic": "-",
-             "picPos": "C"
-            },
-            {
-             "t": "text",
-             "face": "",
-             "name": "",
-             "text": "（9日目の朝の集合の会話）",
-             "pic": "-",
-             "picPos": "C"
-            }
-           ]
+           "t": "text",
+           "face": "",
+           "name": "ネイサ",
+           "text": "ふむ、個別で話を聞こう。",
+           "pic": "neisa_normal",
+           "picPos": "C"
           }
          ],
-         "hasElse": false,
-         "else": []
+         "else": [
+          {
+           "t": "comment",
+           "text": "5日目以降：いなくなった人と残りパーツ数（変数22＝足りないパーツの数）"
+          },
+          {
+           "t": "var",
+           "id": 21,
+           "op": "set",
+           "val": 0
+          },
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 20,
+            "val": false
+           },
+           "hasElse": false,
+           "then": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "item",
+              "id": 11,
+              "has": false
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "var",
+               "id": 21,
+               "op": "add",
+               "val": 1
+              }
+             ],
+             "else": []
+            }
+           ],
+           "else": []
+          },
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 21,
+            "val": false
+           },
+           "hasElse": false,
+           "then": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "item",
+              "id": 12,
+              "has": false
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "var",
+               "id": 21,
+               "op": "add",
+               "val": 1
+              }
+             ],
+             "else": []
+            }
+           ],
+           "else": []
+          },
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 22,
+            "val": false
+           },
+           "hasElse": false,
+           "then": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "item",
+              "id": 13,
+              "has": false
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "var",
+               "id": 21,
+               "op": "add",
+               "val": 1
+              }
+             ],
+             "else": []
+            }
+           ],
+           "else": []
+          },
+          {
+           "t": "var",
+           "id": 24,
+           "op": "set",
+           "val": 0
+          },
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 13,
+            "val": true
+           },
+           "hasElse": false,
+           "then": [
+            {
+             "t": "var",
+             "id": 24,
+             "op": "add",
+             "val": 1
+            }
+           ],
+           "else": []
+          },
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 24,
+            "val": true
+           },
+           "hasElse": false,
+           "then": [
+            {
+             "t": "var",
+             "id": 24,
+             "op": "add",
+             "val": 2
+            }
+           ],
+           "else": []
+          },
+          {
+           "t": "if",
+           "cond": {
+            "type": "sw",
+            "id": 25,
+            "val": true
+           },
+           "hasElse": false,
+           "then": [
+            {
+             "t": "var",
+             "id": 24,
+             "op": "add",
+             "val": 2
+            }
+           ],
+           "else": []
+          },
+          {
+           "t": "vcase",
+           "id": 24,
+           "cases": [
+            {
+             "val": 0,
+             "cmds": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "全員いるね。必要パーツは残り[v=22]個。",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "今日も気を強く持っていこう",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              }
+             ]
+            },
+            {
+             "val": 1,
+             "cmds": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "ムロがいなくなってしまった。必要パーツは残り[v=22]個。",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "弔うためにも、機械を直さねば",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              }
+             ]
+            },
+            {
+             "val": 2,
+             "cmds": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "ニノマエがいなくなってしまった。必要パーツは残り[v=22]個。",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "弔うためにも、機械を直さねば",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              }
+             ]
+            },
+            {
+             "val": 3,
+             "cmds": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "ムロとニノマエがいなくなってしまった。必要パーツは残り[v=22]個。",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "弔うためにも、機械を直さねば",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              }
+             ]
+            }
+           ],
+           "hasElse": false,
+           "else": []
+          }
+         ]
         },
         {
          "t": "fade",
@@ -6693,6 +6991,90 @@
           {
            "label": "話す",
            "cmds": [
+            {
+             "t": "comment",
+             "text": "誰かがいなくなった後、最初に話したときだけ専用セリフ（言ったら中断）"
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 13,
+              "val": true
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "self",
+                "key": "B",
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（ムロがいなくなったことについてのピヲラの会話）",
+                 "pic": "piwora_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "self",
+                 "key": "B",
+                 "val": true
+                },
+                {
+                 "t": "end"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 25,
+              "val": true
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "self",
+                "key": "C",
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（ニノマエがいなくなったことについてのピヲラの会話）",
+                 "pic": "piwora_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "self",
+                 "key": "C",
+                 "val": true
+                },
+                {
+                 "t": "end"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
             {
              "t": "vcase",
              "src": "day",
@@ -11478,6 +11860,50 @@
           {
            "label": "話す",
            "cmds": [
+            {
+             "t": "comment",
+             "text": "誰かがいなくなった後、最初に話したときだけ専用セリフ（言ったら中断）"
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 25,
+              "val": true
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "self",
+                "key": "C",
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（ニノマエがいなくなったことについてのムロの会話）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "self",
+                 "key": "C",
+                 "val": true
+                },
+                {
+                 "t": "end"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
             {
              "t": "vcase",
              "src": "day",
