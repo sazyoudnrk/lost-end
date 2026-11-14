@@ -12391,6 +12391,34 @@
          "picPos": "C"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "day",
+         "op": "==",
+         "val": 3
+        },
+        {
+         "type": "sw",
+         "id": 11,
+         "val": false
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "まだ眠くない。先にエントランスに行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ]
     },
