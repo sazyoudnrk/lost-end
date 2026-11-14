@@ -87,9 +87,9 @@
  "items": [
   {
    "id": 1,
-   "name": "缶詰",
-   "desc": "冷えたままの非常食",
-   "value": 3,
+   "name": "スノードーム",
+   "desc": "ロストエンドの街並みが精巧につくられている。",
+   "value": 10,
    "gift": true
   },
   {
@@ -108,7 +108,7 @@
   },
   {
    "id": 4,
-   "name": "石ころ",
+   "name": "綺麗な石",
    "desc": "ただの石……？",
    "value": 1,
    "gift": true
@@ -131,7 +131,7 @@
    "id": 8,
    "name": "ぬいぐるみ",
    "desc": "意味はない。でも心が落ち着く",
-   "value": 2,
+   "value": 10,
    "gift": true
   },
   {
@@ -257,9 +257,9 @@
   },
   {
    "id": 26,
-   "name": "錆びたネジ",
-   "desc": "錆びている。ロストエンドでは見ない状態",
-   "value": 3,
+   "name": "普通の時計",
+   "desc": "普通の時計。made in lostendと書いてある。",
+   "value": 10,
    "gift": true
   },
   {
@@ -292,8 +292,8 @@
   },
   {
    "id": 31,
-   "name": "ろうそく",
-   "desc": "燃えるとなくなる明かり",
+   "name": "お気に入りのN-CD",
+   "desc": "古代のCDの形を模した、ロストエンド製の永遠に残る音楽データN-CD お気に入りのアルバム。",
    "value": 5,
    "gift": true
   },
@@ -17003,6 +17003,17 @@
   "pool": [
    {
     "item": 1,
+    "price": 20,
+    "weight": 0,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": false,
+    "limitUp": 0,
+    "showOnce": true
+   },
+   {
+    "item": 3,
     "price": 5,
     "weight": 1,
     "from": 1,
@@ -17013,20 +17024,9 @@
     "showOnce": true
    },
    {
-    "item": 3,
-    "price": 8,
-    "weight": 2,
-    "from": 1,
-    "to": "",
-    "sw": -1,
-    "once": false,
-    "limitUp": 0,
-    "showOnce": true
-   },
-   {
     "item": 4,
-    "price": 1,
-    "weight": 2,
+    "price": 30,
+    "weight": 1,
     "from": 1,
     "to": "",
     "sw": -1,
@@ -17036,8 +17036,8 @@
    },
    {
     "item": 8,
-    "price": 6,
-    "weight": 2,
+    "price": 20,
+    "weight": 0,
     "from": 1,
     "to": "",
     "sw": -1,
@@ -17181,8 +17181,8 @@
    },
    {
     "item": 26,
-    "price": 5,
-    "weight": 1,
+    "price": 20,
+    "weight": 0,
     "from": 1,
     "to": "",
     "sw": -1,
@@ -17237,7 +17237,7 @@
    {
     "item": 31,
     "price": 8,
-    "weight": 1,
+    "weight": 0,
     "from": 1,
     "to": "",
     "sw": -1,
