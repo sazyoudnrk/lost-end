@@ -79,7 +79,8 @@
   {
    "id": "hero_blood",
    "name": "主人公・返り血（自作）",
-   "image": "assets/characters/hero_blood.png"
+   "image": "assets/characters/denryoku_chars.png",
+   "index": 5
   }
  ],
  "faces": [],
