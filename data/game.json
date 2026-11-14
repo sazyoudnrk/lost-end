@@ -1538,17 +1538,17 @@
             {
              "t": "text",
              "face": "",
-             "name": "",
-             "text": "聖地に連れて行こうとしてたオブジェ……",
-             "pic": "",
+             "name": "ニノマエ",
+             "text": "聖地巡礼に連れて行こうとしてたオブジェ……",
+             "pic": "ninomae_normal",
              "picPos": "C"
             },
             {
              "t": "text",
              "face": "",
-             "name": "",
+             "name": "ニノマエ",
              "text": "たいした価値ないかもしれないけど、ほかは画材しか入ってないから……",
-             "pic": "",
+             "pic": "ninomae_normal",
              "picPos": "C"
             },
             {
