@@ -1275,6 +1275,61 @@
          "t": "shop"
         }
        ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 7
+        },
+        {
+         "type": "sw",
+         "id": 31,
+         "val": false
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "4日目：協力のお願いとムロへの報告が終わるまでは開けない"
+        },
+        {
+         "t": "if",
+         "cond": {
+          "type": "var",
+          "id": 16,
+          "op": ">",
+          "val": 0
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "",
+           "text": "先にみんなにパーツ集めの協力をお願いしよう。",
+           "pic": "-",
+           "picPos": "C"
+          }
+         ],
+         "else": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "",
+           "text": "先にムロさんに報告しよう。",
+           "pic": "-",
+           "picPos": "C"
+          }
+         ]
+        }
+       ]
       }
      ]
     },
