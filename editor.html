@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14k';
+const APP_VER='2026-11-14n';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1499,12 +1499,15 @@ async function openPixelEditor(o){
       const b=h('button',{class:'pe-sw'+(on?' on':''),title:isT?'透明':hx,style:isT?'background:repeating-conic-gradient(#d6c8ec 0 25%,#f1ebf9 0 50%) 0 0/12px 12px':'background:'+hx,onclick:()=>{st.tone=null;st.col=isT?[0,0,0,0]:hex2c(hx);if(st.tool==='erase'||st.tool==='pick'||st.tool==='select'||st.tool==='hand')st.tool='pen';refreshUI()}});swBox.prepend(b)}
     colInp.value=cur;
     bar2.innerHTML='';const f=st.float,s=st.sel,B=(l,k,cls)=>btn(l,()=>selAct(k),'sm '+(cls||''));
-    const add=(...a)=>bar2.append(...a.filter(Boolean));
+    // 上の段：移動・反転／下の段：操作
+    const row=(lab,...a)=>{const r=h('div',{class:'bar',style:'gap:5px;flex-wrap:wrap;overflow:visible'},lab?h('span',{class:'hint',style:'white-space:nowrap;width:2.6em;flex:none'},lab):null,...a.filter(Boolean));bar2.append(r)};
     const arrows=()=>[B('←','L','ar'),B('↑','U','ar'),B('↓','D','ar'),B('→','R','ar')];
-    if(f)add(B('確定','ok','pri'),...arrows(),B(`→レイヤー${2-li}へ`,'movelayer'),B('⇋反転','fliph'),B('⇅反転','flipv'),B('スタンプ','stamp'),B('複製','dup'),B('コピー','copy'),B('取消','drop','dg'),h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`移動中 (${f.x},${f.y})`));
-    else if(s)add(B('選択解除','none','pri'),h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`${s.w}×${s.h}`+(st.tool==='fill'?'（この中だけ塗る）':'')),...arrows(),B('複製','dup'),B(`レイヤー${2-li}へコピー`,'tolayer'),B('コピー','copy'),B('切り取り','cut'),st.clip?B('貼り付け','paste'):null,B('⇋反転','fliph'),B('⇅反転','flipv'),B('塗る','fill'),B('消す','del','dg'));
-    else add(h('span',{class:'hint',style:'margin:0 4px'},st.tool==='select'?'ドラッグで範囲選択（選択内をドラッグで移動）':'1本指で描く／2本指で拡大・移動'),st.clip?B('貼り付け','paste'):null,st.tool==='select'?B('全選択','all'):null);
-    bar2.style.display='flex';
+    if(f){row('移動',...arrows(),B('⇋反転','fliph'),B('⇅反転','flipv'),h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`(${f.x},${f.y})`));
+      row('操作',B('確定','ok','pri'),B('スタンプ','stamp'),B('複製','dup'),B('コピー','copy'),B(li?'→下のレイヤーへ':'→上のレイヤーへ','movelayer'),B('取消','drop','dg'))}
+    else if(s){row('移動',...arrows(),B('⇋反転','fliph'),B('⇅反転','flipv'),h('span',{class:'hint',style:'margin:0 4px;white-space:nowrap'},`${s.w}×${s.h}`));
+      row('操作',B('選択解除','none','pri'),B('複製','dup'),B('コピー','copy'),B('切り取り','cut'),st.clip?B('貼り付け','paste'):null,B(li?'下のレイヤーへコピー':'上のレイヤーへコピー','tolayer'),B('塗る','fill'),B('消す','del','dg'),st.tool==='fill'?h('span',{class:'hint',style:'white-space:nowrap'},'（この中だけ塗る）'):null)}
+    else row(null,h('span',{class:'hint',style:'margin:0 4px'},st.tool==='select'?'ドラッグで範囲選択（選択内をドラッグで移動）':'1本指で描く／2本指で拡大・移動'),st.clip?B('貼り付け','paste'):null,st.tool==='select'?B('全選択','all'):null);
+    bar2.style.display='block';
   }
   const api=sheet((o.isNew?'新規：':'')+(o.asset?o.asset.name:o.name||'ドット絵'),(b)=>{
     b.style.cssText='display:flex;flex-direction:column;overflow:hidden;padding:0 0 env(safe-area-inset-bottom)';
@@ -1513,7 +1516,7 @@ async function openPixelEditor(o){
     if(o.kind==='charsets'){pvCv=h('canvas',{width:144,height:144,style:'position:absolute;right:6px;top:6px;width:72px;height:72px;background:#fffd;border:1px solid var(--bd);border-radius:8px;image-rendering:pixelated',onclick:()=>{st.pdir=(st.pdir+1)%4}});wrap.append(pvCv)}
     colInp=h('input',{type:'color',style:'width:40px;height:34px;padding:0;border:0;background:none;flex:none',onchange:()=>{const hx=colInp.value;st.tone=null;st.col=hex2c(hx);if(!PE_SW.includes(hx)&&!peRecent.includes(hx)){peRecent.unshift(hx);peRecent=peRecent.slice(0,6)}if(!['pen','fill','line','rect','ellipse'].includes(st.tool))st.tool='pen';refreshUI()}});
     swBox=h('div',{style:'display:flex;gap:6px'});toneBox=h('div',{class:'bar',style:'gap:6px'});
-    bar2=h('div',{class:'bar',style:'border-top:1px solid var(--bd)'});
+    bar2=h('div',{style:'border-top:1px solid var(--bd);flex:none'});
     b.append(wrap,bar2,
       h('div',{class:'bar',style:'gap:4px'},...TOOLS.map(([k,l])=>h('button',{class:'btn','data-pt':k,style:'padding:6px 9px;min-width:0',onclick:()=>{if(k!=='select'&&k!=='hand')commitFloat();st.tool=k;refreshUI();req()}},l))),
       h('div',{class:'bar'},h('span',{class:'hint',style:'align-self:center;white-space:nowrap'},'太さ'),h('div',{class:'seg'},...[1,2,3,4].map(n=>h('button',{'data-ps':n,onclick:()=>{st.size=n;refreshUI()}},n))),
