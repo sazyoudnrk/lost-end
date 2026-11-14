@@ -41,6 +41,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #title{background:#000}
 #title h1{font-size:28px;margin:0 20px 30px;text-align:center}
 #menu .ui-btn,#title .ui-btn{min-width:200px;text-align:center}
+#tEndList{max-height:50%;overflow:auto;min-width:240px;max-width:90%;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8;color:#fff}
 #items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
 #dbgHud{position:absolute;left:calc(10px + env(safe-area-inset-left));top:calc(56px + env(safe-area-inset-top));z-index:45;background:rgba(0,0,0,.72);color:#fff;font-size:12px;line-height:1.5;padding:5px 8px;border-radius:6px;pointer-events:none;white-space:pre}
 #dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:2;transition:opacity 1.2s}
@@ -96,8 +97,8 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <button id="menuBtn" class="ui-btn">☰</button>
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
-<div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="memo" style="display:none">メモ</button><button class="ui-btn" data-m="opt">設定</button><button class="ui-btn" data-m="close">閉じる</button></div>
-<div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button></div>
+<div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="memo" style="display:none">メモ</button><button class="ui-btn" data-m="end">エンディング</button><button class="ui-btn" data-m="opt">設定</button><button class="ui-btn" data-m="close">閉じる</button></div>
+<div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button><button class="ui-btn" id="tEnd">エンディング</button><div id="tEndList"></div></div>
 <div id="hud"></div>
 <div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="tip"></div><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
 <div id="daycard"><b></b><span></span></div>
@@ -105,7 +106,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-14b';
+const GAME_VER='2026-11-14c';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -141,7 +142,7 @@ function loadSnd(path){if(!path)return Promise.resolve(null);if(sndP[path])retur
 const BGM={id:null,src:null,gain:null,base:1};
 // 音量の設定（テストプレイは別に保存。テストプレイのBGMは最初オフ）
 const OPTKEY=()=>NS+(PREVIEW?'optPv':'opt');
-let OPT=(()=>{const d=PREVIEW?{bgm:0,se:80}:{bgm:80,se:80};try{return Object.assign(d,JSON.parse(localStorage.getItem(OPTKEY())||'{}'))}catch(e){return d}})();
+let OPT=(()=>{const d=PREVIEW?{bgm:0,se:80,dash:0,tspd:1}:{bgm:80,se:80,dash:0,tspd:1};try{return Object.assign(d,JSON.parse(localStorage.getItem(OPTKEY())||'{}'))}catch(e){return d}})();
 function saveOpt(){try{localStorage.setItem(OPTKEY(),JSON.stringify(OPT))}catch(e){}if(BGM.gain&&AC)BGM.gain.gain.setValueAtTime(BGM.base*OPT.bgm/100,AC.currentTime)}
 function stopBgm(ms=600){const b=BGM;if(!b.src)return;const a=audioCtx(),s=b.src,g=b.gain;BGM.id=null;BGM.src=null;BGM.gain=null;
   try{const t=a.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+ms/1000);s.stop(t+ms/1000+.05)}catch(e){try{s.stop()}catch(_){}}}
@@ -528,7 +529,7 @@ async function showText(c){
     for(const tk of tokenize(page)){
       if(tk.w!=null){if(!skip)await waitMs(tk.w,()=>skip)}
       else if(tk.shake){if(!skip){msgEl.classList.remove('shake');void msgEl.offsetWidth;msgEl.classList.add('shake')}}
-      else{textEl.textContent+=tk.s;if(!skip)await waitMs(28,()=>skip)}
+      else{textEl.textContent+=tk.s;const dl=[50,28,12,0][OPT.tspd??1];if(!skip&&dl)await waitMs(dl,()=>skip)}
     }
     typing=false;arrowEl.style.display='block';
     await done;arrowEl.style.display='none';
@@ -571,7 +572,7 @@ cv.addEventListener('pointerdown',e=>{
 /* ---------- 更新・描画 ---------- */
 function update(){
   if(!map||!S)return;
-  const ts=G.tileSize,sp=Math.max(1,ts/8)*(dash&&!busy?2:1)*(P.spd||1);
+  const ts=G.tileSize,sp=Math.max(1,ts/8)*((dash!==!!OPT.dash)&&!busy?2:1)*(P.spd||1);
   // イベント（キャラ）の歩きアニメ
   for(const e of events){if(!e.moving)continue;const gx=e.tx*ts,gy=e.ty*ts,s2=Math.max(1,ts/8)*(e.spd||1);
     e.px+=Math.sign(gx-e.px)*Math.min(s2,Math.abs(gx-e.px));e.py+=Math.sign(gy-e.py)*Math.min(s2,Math.abs(gy-e.py));e.anim=(e.anim||0)+1;
@@ -641,6 +642,9 @@ function loop(){update();draw();requestAnimationFrame(loop)}
 
 /* ---------- メニュー・タイトル ---------- */
 function memoOn(){const M=G.system&&G.system.memo;return !!(M&&S&&(M.sw==null||M.sw<0||S.sw[M.sw]))}
+function fillEndings(it){const EL=(G.system&&G.system.endings)||[];const got=gotEnds();it.innerHTML='';const hd=document.createElement('div');hd.textContent=`エンディング（${EL.filter(x=>got.includes(x.id)).length}/${EL.length}）`;hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd);
+  if(!EL.length){it.append('（エンディングはまだありません）');return}
+  for(const x of EL){const d=document.createElement('div');d.style.margin='4px 0';const ok=got.includes(x.id);d.textContent=ok?`★ ${x.name}`+(x.desc?`　${x.desc}`:''):'☆ ？？？';if(!ok)d.style.opacity=.5;it.append(d)}}
 function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';$('#items').style.display='none';$('#menu [data-m=memo]').style.display=memoOn()?'':'none';if(menuOpen){$('#menu').querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));navMove($('#menu'),0)}}
 $('#menuBtn').addEventListener('click',()=>toggleMenu(true));
 $('#menu').addEventListener('click',e=>{
@@ -656,12 +660,13 @@ $('#menu').addEventListener('click',e=>{
     for(const L of M.lines||[]){const d=document.createElement('div');const done=L.sw!=null&&L.sw>=0&&S.sw[L.sw];d.textContent=(done?'☑ ':'☐ ')+L.text+(done&&L.doneText?`　${L.doneText}`:'');if(done)d.style.opacity=.6;it.append(d)}
     it.style.display='block'}
   if(m==='load')loadGame();
+  if(m==='end'){const it=$('#items');fillEndings(it);it.style.display='block'}
   if(m==='opt'){const it=$('#items');it.innerHTML='';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
       const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';
       const show=()=>v.textContent=+s.value?s.value:'オフ';show();s.oninput=()=>{OPT[k]=+s.value;show();saveOpt()};const l=document.createElement('span');l.textContent=lab;l.style.width='3em';d.append(l,s,v);return d};
-    it.append(row('BGM','bgm'),row('効果音','se'));
-    {const EL=(G.system&&G.system.endings)||[];if(EL.length){const got=gotEnds();const hd=document.createElement('div');hd.textContent=`エンディング（${EL.filter(x=>got.includes(x.id)).length}/${EL.length}）`;hd.style.cssText='border-bottom:1px solid #fff;margin:12px 0 4px';it.append(hd);
-      for(const x of EL){const d=document.createElement('div');d.style.margin='4px 0';const ok=got.includes(x.id);d.textContent=ok?`★ ${x.name}`+(x.desc?`　${x.desc}`:''):'☆ ？？？';if(!ok)d.style.opacity=.5;it.append(d)}}}if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
+    const cyc=(lab,k,vals)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';const l=document.createElement('span');l.textContent=lab;l.style.flex='1';
+      const b=document.createElement('button');b.className='ui-btn';b.style.cssText='min-width:96px;padding:4px 10px';const show=()=>b.textContent=vals[OPT[k]??0];show();b.onclick=ev=>{ev.stopPropagation();OPT[k]=((OPT[k]??0)+1)%vals.length;show();saveOpt()};d.append(l,b);return d};
+    it.append(cyc('常時ダッシュ','dash',['オフ','オン']),cyc('文字の速さ','tspd',['遅い','普通','速い','瞬間']),row('BGM','bgm'),row('効果音','se'));if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
     it.style.display='block'}
 });
 async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
@@ -676,6 +681,8 @@ function showTitle(){stopBgm(300);
   $('#tCont').classList.toggle('hide',!localStorage.getItem(SAVEKEY));
   $('#tNew').onclick=async()=>{$('#title').style.display='none';await startNew()};
   $('#tCont').onclick=loadGame;
+  $('#tEndList').style.display='none';$('#tEnd').classList.toggle('hide',!((G.system&&G.system.endings)||[]).length);
+  $('#tEnd').onclick=()=>{const L=$('#tEndList');if(L.style.display==='block'){L.style.display='none';return}fillEndings(L);L.style.display='block'};
   $('#title').querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));navMove($('#title'),0);
 }
 (async()=>{
