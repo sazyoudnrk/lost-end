@@ -11182,19 +11182,23 @@
                   {
                    "t": "if",
                    "cond": {
-                    "type": "var",
-                    "id": 21,
-                    "op": ">",
-                    "val": 0
+                    "type": "sw",
+                    "id": 24,
+                    "val": false
                    },
                    "hasElse": false,
+                   "else": [],
                    "then": [
+                    {
+                     "t": "comment",
+                     "text": "ニノマエを刺していたら犠牲の選択肢は出ない"
+                    },
                     {
                      "t": "if",
                      "cond": {
                       "type": "var",
-                      "id": 22,
-                      "op": "==",
+                      "id": 21,
+                      "op": ">",
                       "val": 0
                      },
                      "hasElse": false,
@@ -11203,69 +11207,82 @@
                        "t": "if",
                        "cond": {
                         "type": "var",
-                        "id": 28,
+                        "id": 22,
                         "op": "==",
-                        "val": 1
+                        "val": 0
                        },
                        "hasElse": false,
                        "then": [
                         {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（等価交換機には、足りないパーツが並んでいる）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（だが、今の自分には取り出せない）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（……自分を入れれば、取り出せるかもしれない）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "choice",
-                         "options": [
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 28,
+                          "op": "==",
+                          "val": 1
+                         },
+                         "hasElse": false,
+                         "then": [
                           {
-                           "label": "等価交換機に入る",
-                           "cmds": [
-                            {
-                             "t": "text",
-                             "face": "",
-                             "name": "",
-                             "text": "（主人公は等価交換機に入った）",
-                             "pic": "-",
-                             "picPos": "C"
-                            },
-                            {
-                             "t": "text",
-                             "face": "",
-                             "name": "",
-                             "text": "（装置は直り、残された4人は地球に生還した）",
-                             "pic": "-",
-                             "picPos": "C"
-                            },
-                            {
-                             "t": "ending",
-                             "id": "sacrifice"
-                            }
-                           ]
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（等価交換機には、足りないパーツが並んでいる）",
+                           "pic": "-",
+                           "picPos": "C"
                           },
                           {
-                           "label": "入らない",
-                           "cmds": []
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（だが、今の自分には取り出せない）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（……自分を入れれば、取り出せるかもしれない）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "choice",
+                           "options": [
+                            {
+                             "label": "等価交換機に入る",
+                             "cmds": [
+                              {
+                               "t": "text",
+                               "face": "",
+                               "name": "",
+                               "text": "（主人公は等価交換機に入った）",
+                               "pic": "-",
+                               "picPos": "C"
+                              },
+                              {
+                               "t": "text",
+                               "face": "",
+                               "name": "",
+                               "text": "（装置は直り、残された4人は地球に生還した）",
+                               "pic": "-",
+                               "picPos": "C"
+                              },
+                              {
+                               "t": "ending",
+                               "id": "sacrifice"
+                              }
+                             ]
+                            },
+                            {
+                             "label": "入らない",
+                             "cmds": []
+                            }
+                           ]
                           }
-                         ]
+                         ],
+                         "else": []
                         }
                        ],
                        "else": []
@@ -11273,8 +11290,7 @@
                      ],
                      "else": []
                     }
-                   ],
-                   "else": []
+                   ]
                   },
                   {
                    "t": "comment",
@@ -11653,107 +11669,34 @@
                     {
                      "t": "if",
                      "cond": {
-                      "type": "var",
-                      "id": 23,
-                      "op": "==",
-                      "val": 1
+                      "type": "sw",
+                      "id": 24,
+                      "val": false
                      },
                      "hasElse": false,
+                     "else": [],
                      "then": [
                       {
+                       "t": "comment",
+                       "text": "ニノマエを刺していたら穏やかな最期にはならない（墜落）"
+                      },
+                      {
                        "t": "if",
                        "cond": {
                         "type": "var",
-                        "id": 0,
-                        "op": ">",
-                        "val": 0
+                        "id": 23,
+                        "op": "==",
+                        "val": 1
                        },
                        "hasElse": false,
                        "then": [
                         {
                          "t": "if",
                          "cond": {
-                          "type": "sw",
-                          "id": 13,
-                          "val": false
-                         },
-                         "hasElse": false,
-                         "then": [
-                          {
-                           "t": "move",
-                           "map": 4,
-                           "x": 5,
-                           "y": 8,
-                           "dir": 3,
-                           "fade": true
-                          },
-                          {
-                           "t": "text",
-                           "face": "",
-                           "name": "",
-                           "text": "（ムロの客室で、ふたりで最期の時を迎えた）",
-                           "pic": "-",
-                           "picPos": "C"
-                          },
-                          {
-                           "t": "ending",
-                           "id": "peace_muro"
-                          }
-                         ],
-                         "else": []
-                        }
-                       ],
-                       "else": []
-                      },
-                      {
-                       "t": "if",
-                       "cond": {
-                        "type": "var",
-                        "id": 1,
-                        "op": ">",
-                        "val": 0
-                       },
-                       "hasElse": false,
-                       "then": [
-                        {
-                         "t": "move",
-                         "map": 5,
-                         "x": 5,
-                         "y": 8,
-                         "dir": 3,
-                         "fade": true
-                        },
-                        {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（ネイサの客室で、ふたりで最期の時を迎えた）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "ending",
-                         "id": "peace_neisa"
-                        }
-                       ],
-                       "else": []
-                      },
-                      {
-                       "t": "if",
-                       "cond": {
-                        "type": "var",
-                        "id": 2,
-                        "op": ">",
-                        "val": 0
-                       },
-                       "hasElse": false,
-                       "then": [
-                        {
-                         "t": "if",
-                         "cond": {
-                          "type": "sw",
-                          "id": 24,
-                          "val": false
+                          "type": "var",
+                          "id": 0,
+                          "op": ">",
+                          "val": 0
                          },
                          "hasElse": false,
                          "then": [
@@ -11761,14 +11704,14 @@
                            "t": "if",
                            "cond": {
                             "type": "sw",
-                            "id": 25,
+                            "id": 13,
                             "val": false
                            },
                            "hasElse": false,
                            "then": [
                             {
                              "t": "move",
-                             "map": 3,
+                             "map": 4,
                              "x": 5,
                              "y": 8,
                              "dir": 3,
@@ -11778,58 +11721,147 @@
                              "t": "text",
                              "face": "",
                              "name": "",
-                             "text": "（ニノマエの客室で、ふたりで最期の時を迎えた）",
+                             "text": "（ムロの客室で、ふたりで最期の時を迎えた）",
                              "pic": "-",
                              "picPos": "C"
                             },
                             {
                              "t": "ending",
-                             "id": "peace_ninomae"
+                             "id": "peace_muro"
                             }
                            ],
                            "else": []
                           }
                          ],
                          "else": []
-                        }
-                       ],
-                       "else": []
-                      },
-                      {
-                       "t": "if",
-                       "cond": {
-                        "type": "var",
-                        "id": 3,
-                        "op": ">",
-                        "val": 0
-                       },
-                       "hasElse": false,
-                       "then": [
-                        {
-                         "t": "move",
-                         "map": 7,
-                         "x": 5,
-                         "y": 8,
-                         "dir": 3,
-                         "fade": true
                         },
                         {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（ピヲラの客室で、ふたりで最期の時を迎えた）",
-                         "pic": "-",
-                         "picPos": "C"
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 1,
+                          "op": ">",
+                          "val": 0
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "move",
+                           "map": 5,
+                           "x": 5,
+                           "y": 8,
+                           "dir": 3,
+                           "fade": true
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（ネイサの客室で、ふたりで最期の時を迎えた）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "peace_neisa"
+                          }
+                         ],
+                         "else": []
                         },
                         {
-                         "t": "ending",
-                         "id": "peace_piwora"
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 2,
+                          "op": ">",
+                          "val": 0
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "if",
+                           "cond": {
+                            "type": "sw",
+                            "id": 24,
+                            "val": false
+                           },
+                           "hasElse": false,
+                           "then": [
+                            {
+                             "t": "if",
+                             "cond": {
+                              "type": "sw",
+                              "id": 25,
+                              "val": false
+                             },
+                             "hasElse": false,
+                             "then": [
+                              {
+                               "t": "move",
+                               "map": 3,
+                               "x": 5,
+                               "y": 8,
+                               "dir": 3,
+                               "fade": true
+                              },
+                              {
+                               "t": "text",
+                               "face": "",
+                               "name": "",
+                               "text": "（ニノマエの客室で、ふたりで最期の時を迎えた）",
+                               "pic": "-",
+                               "picPos": "C"
+                              },
+                              {
+                               "t": "ending",
+                               "id": "peace_ninomae"
+                              }
+                             ],
+                             "else": []
+                            }
+                           ],
+                           "else": []
+                          }
+                         ],
+                         "else": []
+                        },
+                        {
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 3,
+                          "op": ">",
+                          "val": 0
+                         },
+                         "hasElse": false,
+                         "then": [
+                          {
+                           "t": "move",
+                           "map": 7,
+                           "x": 5,
+                           "y": 8,
+                           "dir": 3,
+                           "fade": true
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（ピヲラの客室で、ふたりで最期の時を迎えた）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "peace_piwora"
+                          }
+                         ],
+                         "else": []
                         }
                        ],
                        "else": []
                       }
-                     ],
-                     "else": []
+                     ]
                     },
                     {
                      "t": "text",
@@ -16895,7 +16927,7 @@
     "id": "crash",
     "name": "墜落",
     "desc": "パーツが集まらず墜落し、全員死亡した。",
-    "note": "9日目の夜（最後に眠るとき）：パーツ不足"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足（ニノマエを刺していたらパーツ不足は必ずここ）"
    },
    {
     "id": "return",
@@ -16931,31 +16963,31 @@
     "id": "peace_muro",
     "name": "穏やかな最期（ムロ）",
     "desc": "ムロとだけ過ごし続け、ムロの客室で墜落を迎えた。",
-    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がムロだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がムロだけ（ニノマエを刺していたら成立しない）"
    },
    {
     "id": "peace_neisa",
     "name": "穏やかな最期（ネイサ）",
     "desc": "ネイサとだけ過ごし続け、ネイサの客室で墜落を迎えた。",
-    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がネイサだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がネイサだけ（ニノマエを刺していたら成立しない）"
    },
    {
     "id": "peace_ninomae",
     "name": "穏やかな最期（ニノマエ）",
     "desc": "ニノマエとだけ過ごし続け、ニノマエの客室で墜落を迎えた。",
-    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がニノマエだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がニノマエだけ（ニノマエを刺していたら成立しない）"
    },
    {
     "id": "peace_piwora",
     "name": "穏やかな最期（ピヲラ）",
     "desc": "ピヲラとだけ過ごし続け、ピヲラの客室で墜落を迎えた。",
-    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がピヲラだけ"
+    "note": "9日目の夜（最後に眠るとき）：パーツ不足・一緒に過ごした相手がピヲラだけ（ニノマエを刺していたら成立しない）"
    },
    {
     "id": "sacrifice",
     "name": "ただ1人の犠牲",
     "desc": "主人公が等価交換機に入り、4人だけが生還した。",
-    "note": "9日目の夜（最後に眠るとき）：足りないパーツが全部その日の等価交換機に並んでいるが、価値か取り出し回数が足りない→主人公が入るを選ぶ"
+    "note": "9日目の夜（最後に眠るとき）：足りないパーツが全部その日の等価交換機に並んでいるが、価値か取り出し回数が足りない→主人公が入るを選ぶ（ニノマエを刺していたら成立しない）"
    },
    {
     "id": "sinner",
