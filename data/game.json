@@ -4575,7 +4575,7 @@
              "t": "text",
              "face": "",
              "name": "ネイサ",
-             "text": "人殺し！",
+             "text": "人殺し",
              "pic": "neisa_normal",
              "picPos": "C"
             }
@@ -4588,7 +4588,7 @@
              "t": "text",
              "face": "",
              "name": "ネイサ",
-             "text": "近寄るな！",
+             "text": "近寄るな",
              "pic": "neisa_normal",
              "picPos": "C"
             }
@@ -4601,7 +4601,7 @@
              "t": "text",
              "face": "",
              "name": "ネイサ",
-             "text": "それ以上近づいたら、ただじゃおかない！",
+             "text": "それ以上近づくなら、俺にも考えがあるぞ",
              "pic": "neisa_normal",
              "picPos": "C"
             }
@@ -9048,6 +9048,14 @@
          "picPos": "C"
         },
         {
+         "t": "text",
+         "face": "",
+         "name": "ピヲラ",
+         "text": "他の人たちを傷つけたかったわけじゃないの……",
+         "pic": "piwora_normal",
+         "picPos": "C"
+        },
+        {
          "t": "choice",
          "options": [
           {
@@ -9056,8 +9064,48 @@
             {
              "t": "text",
              "face": "",
+             "name": "主人公",
+             "text": "みんな精神的に参っている。ピヲラさんが取り乱したことも仕方ないことだよ。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
              "name": "ピヲラ",
-             "text": "（慰められたときのピヲラの会話）",
+             "text": "あの斧は、食玩なのよ。\nわたし、私が大好きなもので人を傷つけてしまったわ……",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "主人公",
+             "text": "ちゃんと謝ろう\n間違いは取り消せないけど、償うことはできる。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "……",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "ありがとう、そうよね\nもし許してもらえなくても、みんなに謝ろうと思うわ",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "まずは[pname]、傷つけてごめんなさい\n話に来てくれてありがとう",
              "pic": "piwora_normal",
              "picPos": "C"
             },
@@ -9071,7 +9119,7 @@
              "t": "text",
              "face": "",
              "name": "",
-             "text": "ピヲラは少し落ち着いたようだ。",
+             "text": "ピヲラさんは少し落ち着いたようだ。",
              "pic": "-",
              "picPos": "C"
             }
@@ -14928,7 +14976,7 @@
              "t": "text",
              "face": "",
              "name": "",
-             "text": "（ムロは震えながら後ずさった）",
+             "text": "（ムロさんは震えながら後ずさっていく）",
              "pic": "-",
              "picPos": "C"
             }
