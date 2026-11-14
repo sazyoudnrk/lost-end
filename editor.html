@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14c';
+const APP_VER='2026-11-14d';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1110,13 +1110,22 @@ function passageEditor(t){
     imgAsync(t.image).then(i=>{im=i;draw()});
   },{onClose:()=>reqDraw()});
 }
-// タイルの整理：使用状況・入れ替え（マップ等も付け替え）・未使用を消す
+// タイルの整理：使用状況・選択（複数・範囲）と移動（マップ等も付け替え）・未使用を消す
 function tileOrganizer(t){
-  const ts=G.tileSize;let wc=null,cols=0,rows=0,pos=[],sel=-1,dirty=false;const cleared=new Set();
+  const ts=G.tileSize;let wc=null,cols=0,rows=0,pos=[],dirty=false,mode='sel',corner=-1;const sel=new Set();
   const maps=G.maps.filter(m=>m.tileset===t.id);
   const count=new Map();const add=i=>{if(i!=null&&i>=0)count.set(i,(count.get(i)||0)+1)};
   for(const m of maps){for(const L of m.layers)for(const v of L)add(v);for(const e of m.events)for(const p of e.pages)if(p.image&&p.image.tile!=null)add(p.image.tile)}
   const used=slot=>(count.get(pos[slot])||0);
+  function moveTo(dst){const L=[...sel];const minC=Math.min(...L.map(i=>i%cols)),minR=Math.min(...L.map(i=>Math.floor(i/cols)));
+    const dc=dst%cols-minC,dr=Math.floor(dst/cols)-minR;const T=new Map();
+    for(const s0 of L){const c=s0%cols+dc,r=Math.floor(s0/cols)+dr;if(c<0||c>=cols||r<0||r>=rows){toast('はみ出すので移動できません');return false}T.set(s0,r*cols+c)}
+    const tgt=new Set(T.values()),freed=L.filter(x=>!tgt.has(x)).sort((a,b)=>a-b),disp=[...tgt].filter(x=>!sel.has(x)).sort((a,b)=>a-b);
+    const from=[...Array(cols*rows).keys()];for(const [s0,d] of T)from[d]=s0;freed.forEach((f,k)=>from[f]=disp[k]);
+    const snap=document.createElement('canvas');snap.width=wc.width;snap.height=wc.height;snap.getContext('2d').drawImage(wc,0,0);
+    const x=wc.getContext('2d');const np=pos.slice();
+    for(let k=0;k<cols*rows;k++){if(from[k]===k)continue;np[k]=pos[from[k]];x.clearRect((k%cols)*ts,Math.floor(k/cols)*ts,ts,ts);x.drawImage(snap,(from[k]%cols)*ts,Math.floor(from[k]/cols)*ts,ts,ts,(k%cols)*ts,Math.floor(k/cols)*ts,ts,ts)}
+    pos=np;sel.clear();tgt.forEach(v=>sel.add(v));dirty=true;return true}
   const api=sheet('タイルの整理: '+t.name,(b,api)=>{
     const cv=h('canvas',{style:'display:block;touch-action:manipulation'}),S=palS();
     const nUsed=pos.filter((o,i)=>used(i)>0).length;
@@ -1124,26 +1133,35 @@ function tileOrganizer(t){
       for(let i=0;i<cols*rows;i++){const x=(i%cols)*S,y=Math.floor(i/cols)*S,n=used(i);
         if(!n){c.fillStyle='rgba(0,0,0,.55)';c.fillRect(x,y,S,S)}
         else{c.fillStyle='rgba(0,0,0,.7)';const w=c.measureText(n).width+6;c.fillRect(x+S-w,y+S-14,w,14);c.fillStyle='#ffd34d';c.fillText(n,x+S-3,y+S-1)}
-        if(i===sel){c.strokeStyle='#5bc0ff';c.lineWidth=3;c.strokeRect(x+1.5,y+1.5,S-3,S-3)}}})};
+        if(sel.has(i)){c.fillStyle='rgba(91,192,255,.28)';c.fillRect(x,y,S,S);c.strokeStyle='#5bc0ff';c.lineWidth=3;c.strokeRect(x+1.5,y+1.5,S-3,S-3)}
+        if(i===corner){c.strokeStyle='#ffd34d';c.lineWidth=3;c.setLineDash([5,4]);c.strokeRect(x+1.5,y+1.5,S-3,S-3);c.setLineDash([])}}})};
     cv.onclick=e=>{if(!wc)return;const r=cv.getBoundingClientRect(),i=Math.floor((e.clientY-r.top)/S)*cols+Math.floor((e.clientX-r.left)/S);if(i<0||i>=cols*rows)return;
-      if(sel<0){sel=i}else if(sel===i){sel=-1}else{swap(sel,i);sel=-1}draw();api.rerender()};
-    function swap(a,c2){const x=wc.getContext('2d'),ax=(a%cols)*ts,ay=Math.floor(a/cols)*ts,bx=(c2%cols)*ts,by=Math.floor(c2/cols)*ts;
-      const A=x.getImageData(ax,ay,ts,ts),B=x.getImageData(bx,by,ts,ts);x.putImageData(B,ax,ay);x.putImageData(A,bx,by);[pos[a],pos[c2]]=[pos[c2],pos[a]];dirty=true}
-    b.append(h('div',{class:'hint',style:'padding:8px 12px'},sel<0?'数字＝マップ・イベントで使われている数。暗いマスは未使用。タイルをタップで選択 → 移動先をタップで入れ替え（マップも自動で付け替え）':'移動先のマスをタップ（同じマスで選択解除）'),
+      if(mode==='move'){if(moveTo(i))mode='sel'}
+      else if(mode==='rect'){if(corner<0)corner=i;else{const c1=Math.min(corner%cols,i%cols),c2=Math.max(corner%cols,i%cols),r1=Math.min(Math.floor(corner/cols),Math.floor(i/cols)),r2=Math.max(Math.floor(corner/cols),Math.floor(i/cols));
+        for(let rr=r1;rr<=r2;rr++)for(let cc=c1;cc<=c2;cc++)sel.add(rr*cols+cc);corner=-1;mode='sel'}}
+      else{sel.has(i)?sel.delete(i):sel.add(i)}
+      api.rerender()};
+    const hint=mode==='move'?'移動先をタップ：選んだタイルの左上がそこに来ます（並びはそのまま。押し出されたタイルは空いた場所へ）'
+      :mode==='rect'?(corner<0?'範囲の1つ目の角をタップ':'範囲のもう1つの角をタップ')
+      :'数字＝マップ・イベントで使われている数。暗いマスは未使用。タップで選択（複数可）→「移動」→ 移動先をタップ。マップも自動で付け替えます';
+    b.append(h('div',{class:'hint',style:'padding:8px 12px'},hint),
+      h('div',{class:'bar',style:'background:none;flex-wrap:wrap;gap:6px'},
+        btn(mode==='rect'?'範囲選択をやめる':'範囲で選ぶ',()=>{mode=mode==='rect'?'sel':'rect';corner=-1;api.rerender()},'sm'+(mode==='rect'?' pri':'')),
+        btn(mode==='move'?'移動をやめる':`移動（${sel.size}）`,()=>{if(!sel.size){toast('先にタイルを選んでください');return}mode=mode==='move'?'sel':'move';api.rerender()},'sm'+(mode==='move'?' pri':'')),
+        btn('選択解除',()=>{sel.clear();mode='sel';corner=-1;api.rerender()},'sm')),
       h('div',{style:'overflow:auto;padding:8px'},cv),
-      h('div',{class:'hint',style:'padding:0 12px'},`使用中 ${nUsed} / ${cols*rows} マス`+(dirty?'　●未保存':'')),
+      h('div',{class:'hint',style:'padding:0 12px'},`使用中 ${nUsed} / ${cols*rows} マス`+(dirty?'　●未保存（保存せずに閉じると取り消し）':'')),
       h('div',{class:'bar',style:'background:none'},btn('未使用を消す',()=>{const L=[];for(let i=0;i<cols*rows;i++)if(!used(i))L.push(i);
         if(!confirm(`使われていない ${L.length} マスの絵を消しますか？\n（保存するまで画像は変わりません）`))return;
-        const x=wc.getContext('2d');for(const i of L){x.clearRect((i%cols)*ts,Math.floor(i/cols)*ts,ts,ts);cleared.add(i)}dirty=true;draw();api.rerender()},'sm dg')));
+        const x=wc.getContext('2d');for(const i of L)x.clearRect((i%cols)*ts,Math.floor(i/cols)*ts,ts,ts);dirty=true;api.rerender()},'sm dg')));
     draw();
   },{back:'‹ 閉じる',actions:[['保存',async api=>{if(!dirty){api.close();return}
       const nw=new Map();pos.forEach((o,slot)=>nw.set(o,slot));const f=v=>(v!=null&&v>=0&&nw.has(v))?nw.get(v):v;
       for(const m of maps){m.layers=m.layers.map(L=>L.map(f));for(const e of m.events)for(const p of e.pages)if(p.image&&p.image.tile!=null)p.image.tile=f(p.image.tile)}
       t.blocked=[...new Set((t.blocked||[]).map(f))].sort((a,b)=>a-b);
-      const bl=await canvasBlob(wc);await storeFile(bl,t.image);dirty=false;changed();toast('タイルを整理しました（プッシュで反映）');api.close();renderAssets();reqDraw();drawPalette()}]],
-    onClose:()=>{}});
+      const bl=await canvasBlob(wc);await storeFile(bl,t.image);dirty=false;changed();toast('タイルを整理しました（プッシュで反映）');api.close();renderAssets();reqDraw();drawPalette()}]]});
   imgAsync(t.image).then(im=>{if(!im)return;cols=Math.floor(im.width/ts);rows=Math.floor(im.height/ts);wc=document.createElement('canvas');wc.width=im.width;wc.height=im.height;
-    const x=wc.getContext('2d');x.drawImage(im,0,0);pos=[...Array(cols*rows).keys()];api.rerender()});
+    wc.getContext('2d').drawImage(im,0,0);pos=[...Array(cols*rows).keys()];api.rerender()});
 }
 // 画像のふち（上・左・右）からつながった白を透明にする（下端は体が切れていることが多いので起点にしない）
 function whiteFlood(data,W,H){const A=new Uint32Array(data.buffer),seen=new Uint8Array(W*H),stk=[];
