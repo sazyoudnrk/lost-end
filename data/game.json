@@ -384,8 +384,8 @@
   "",
   "",
   "",
-  "",
-  "",
+  "ニノマエを刺した日",
+  "今日の日付（一時用）",
   ""
  ],
  "player": {
@@ -6443,77 +6443,239 @@
            "then": [
             {
              "t": "comment",
-             "text": "ニノマエを刺した後の集合（通常の集合とは別ルート）"
+             "text": "ニノマエを刺した後：刺した日は専用、以降は最低限しか話さない"
             },
             {
-             "t": "vcase",
+             "t": "var",
+             "id": 38,
+             "op": "game",
              "src": "day",
-             "id": 0,
-             "hasElse": false,
-             "else": [],
-             "cases": [
+             "val": 0
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 37,
+              "op": "==",
+              "val": 0,
+              "ref": 38
+             },
+             "hasElse": true,
+             "then": [
               {
-               "val": 5,
-               "cmds": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ニノマエを刺した後、5日目の集合の会話）",
-                 "pic": "-",
-                 "picPos": "C"
-                }
-               ]
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "その血だらけの姿、まさかキミがニノマエ君を殺したのか……？",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "var",
+               "id": 21,
+               "op": "set",
+               "val": 0
               },
               {
-               "val": 6,
-               "cmds": [
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 20,
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ニノマエを刺した後、6日目の集合の会話）",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "if",
+                 "cond": {
+                  "type": "item",
+                  "id": 11,
+                  "has": false
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "var",
+                   "id": 21,
+                   "op": "add",
+                   "val": 1
+                  }
+                 ],
+                 "else": []
                 }
-               ]
+               ],
+               "else": []
               },
               {
-               "val": 7,
-               "cmds": [
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 21,
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ニノマエを刺した後、7日目の集合の会話）",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "if",
+                 "cond": {
+                  "type": "item",
+                  "id": 12,
+                  "has": false
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "var",
+                   "id": 21,
+                   "op": "add",
+                   "val": 1
+                  }
+                 ],
+                 "else": []
                 }
-               ]
+               ],
+               "else": []
               },
               {
-               "val": 8,
-               "cmds": [
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 22,
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ニノマエを刺した後、8日目の集合の会話）",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "if",
+                 "cond": {
+                  "type": "item",
+                  "id": 13,
+                  "has": false
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "var",
+                   "id": 21,
+                   "op": "add",
+                   "val": 1
+                  }
+                 ],
+                 "else": []
                 }
-               ]
+               ],
+               "else": []
               },
               {
-               "val": 9,
-               "cmds": [
+               "t": "var",
+               "id": 24,
+               "op": "set",
+               "val": 0
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 13,
+                "val": true
+               },
+               "hasElse": false,
+               "then": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "（ニノマエを刺した後、9日目の集合の会話）",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "var",
+                 "id": 24,
+                 "op": "add",
+                 "val": 1
+                }
+               ],
+               "else": []
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 24,
+                "val": true
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "var",
+                 "id": 24,
+                 "op": "add",
+                 "val": 2
+                }
+               ],
+               "else": []
+              },
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 25,
+                "val": true
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "var",
+                 "id": 24,
+                 "op": "add",
+                 "val": 2
+                }
+               ],
+               "else": []
+              },
+              {
+               "t": "vcase",
+               "id": 24,
+               "hasElse": false,
+               "else": [],
+               "cases": [
+                {
+                 "val": 2,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "ニノマエがいなくなった。パーツは後[v=22]個。",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "……。",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "val": 3,
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "ムロとニノマエがいなくなった。パーツは後[v=22]個。",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "……。",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
                 }
                ]
               }
@@ -10039,6 +10201,13 @@
              "t": "sw",
              "id": 24,
              "val": true
+            },
+            {
+             "t": "var",
+             "id": 37,
+             "op": "game",
+             "src": "day",
+             "val": 0
             }
            ],
            "cond": {
