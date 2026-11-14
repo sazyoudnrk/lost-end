@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14b';
+const APP_VER='2026-11-14c';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1110,6 +1110,41 @@ function passageEditor(t){
     imgAsync(t.image).then(i=>{im=i;draw()});
   },{onClose:()=>reqDraw()});
 }
+// タイルの整理：使用状況・入れ替え（マップ等も付け替え）・未使用を消す
+function tileOrganizer(t){
+  const ts=G.tileSize;let wc=null,cols=0,rows=0,pos=[],sel=-1,dirty=false;const cleared=new Set();
+  const maps=G.maps.filter(m=>m.tileset===t.id);
+  const count=new Map();const add=i=>{if(i!=null&&i>=0)count.set(i,(count.get(i)||0)+1)};
+  for(const m of maps){for(const L of m.layers)for(const v of L)add(v);for(const e of m.events)for(const p of e.pages)if(p.image&&p.image.tile!=null)add(p.image.tile)}
+  const used=slot=>(count.get(pos[slot])||0);
+  const api=sheet('タイルの整理: '+t.name,(b,api)=>{
+    const cv=h('canvas',{style:'display:block;touch-action:manipulation'}),S=palS();
+    const nUsed=pos.filter((o,i)=>used(i)>0).length;
+    const draw=()=>{if(!wc)return;drawTileset(cv,wc,S,c=>{c.font='bold 11px system-ui';c.textAlign='right';c.textBaseline='bottom';
+      for(let i=0;i<cols*rows;i++){const x=(i%cols)*S,y=Math.floor(i/cols)*S,n=used(i);
+        if(!n){c.fillStyle='rgba(0,0,0,.55)';c.fillRect(x,y,S,S)}
+        else{c.fillStyle='rgba(0,0,0,.7)';const w=c.measureText(n).width+6;c.fillRect(x+S-w,y+S-14,w,14);c.fillStyle='#ffd34d';c.fillText(n,x+S-3,y+S-1)}
+        if(i===sel){c.strokeStyle='#5bc0ff';c.lineWidth=3;c.strokeRect(x+1.5,y+1.5,S-3,S-3)}}})};
+    cv.onclick=e=>{if(!wc)return;const r=cv.getBoundingClientRect(),i=Math.floor((e.clientY-r.top)/S)*cols+Math.floor((e.clientX-r.left)/S);if(i<0||i>=cols*rows)return;
+      if(sel<0){sel=i}else if(sel===i){sel=-1}else{swap(sel,i);sel=-1}draw();api.rerender()};
+    function swap(a,c2){const x=wc.getContext('2d'),ax=(a%cols)*ts,ay=Math.floor(a/cols)*ts,bx=(c2%cols)*ts,by=Math.floor(c2/cols)*ts;
+      const A=x.getImageData(ax,ay,ts,ts),B=x.getImageData(bx,by,ts,ts);x.putImageData(B,ax,ay);x.putImageData(A,bx,by);[pos[a],pos[c2]]=[pos[c2],pos[a]];dirty=true}
+    b.append(h('div',{class:'hint',style:'padding:8px 12px'},sel<0?'数字＝マップ・イベントで使われている数。暗いマスは未使用。タイルをタップで選択 → 移動先をタップで入れ替え（マップも自動で付け替え）':'移動先のマスをタップ（同じマスで選択解除）'),
+      h('div',{style:'overflow:auto;padding:8px'},cv),
+      h('div',{class:'hint',style:'padding:0 12px'},`使用中 ${nUsed} / ${cols*rows} マス`+(dirty?'　●未保存':'')),
+      h('div',{class:'bar',style:'background:none'},btn('未使用を消す',()=>{const L=[];for(let i=0;i<cols*rows;i++)if(!used(i))L.push(i);
+        if(!confirm(`使われていない ${L.length} マスの絵を消しますか？\n（保存するまで画像は変わりません）`))return;
+        const x=wc.getContext('2d');for(const i of L){x.clearRect((i%cols)*ts,Math.floor(i/cols)*ts,ts,ts);cleared.add(i)}dirty=true;draw();api.rerender()},'sm dg')));
+    draw();
+  },{back:'‹ 閉じる',actions:[['保存',async api=>{if(!dirty){api.close();return}
+      const nw=new Map();pos.forEach((o,slot)=>nw.set(o,slot));const f=v=>(v!=null&&v>=0&&nw.has(v))?nw.get(v):v;
+      for(const m of maps){m.layers=m.layers.map(L=>L.map(f));for(const e of m.events)for(const p of e.pages)if(p.image&&p.image.tile!=null)p.image.tile=f(p.image.tile)}
+      t.blocked=[...new Set((t.blocked||[]).map(f))].sort((a,b)=>a-b);
+      const bl=await canvasBlob(wc);await storeFile(bl,t.image);dirty=false;changed();toast('タイルを整理しました（プッシュで反映）');api.close();renderAssets();reqDraw();drawPalette()}]],
+    onClose:()=>{}});
+  imgAsync(t.image).then(im=>{if(!im)return;cols=Math.floor(im.width/ts);rows=Math.floor(im.height/ts);wc=document.createElement('canvas');wc.width=im.width;wc.height=im.height;
+    const x=wc.getContext('2d');x.drawImage(im,0,0);pos=[...Array(cols*rows).keys()];api.rerender()});
+}
 // 画像のふち（上・左・右）からつながった白を透明にする（下端は体が切れていることが多いので起点にしない）
 function whiteFlood(data,W,H){const A=new Uint32Array(data.buffer),seen=new Uint8Array(W*H),stk=[];
   const isW=i=>{const u=A[i];return(u>>>24)>0&&(u&255)>=235&&((u>>>8)&255)>=235&&((u>>>16)&255)>=235};
@@ -1127,7 +1162,7 @@ function renderAssets(){
       const n=h('input',{type:'text',value:a.name,oninput:()=>{a.name=n.value;changed()}});
       c.append(h('div',{class:'list-row'},k==='charsets'?charPreview({charset:a.id,dir:0}):thumb(a.image),
         h('div',{style:'flex:1;min-width:0'},n,k==='charsets'?charIndexSel(a):null,h('div',{class:'hint',style:'overflow:hidden;text-overflow:ellipsis;white-space:nowrap'},a.image+(pending.has(a.image)?'  ●未プッシュ':''))),
-        h('div',{style:'display:flex;flex-direction:column;gap:4px'},k==='tilesets'?btn('通行',()=>passageEditor(a),'sm'):null,
+        h('div',{style:'display:flex;flex-direction:column;gap:4px'},k==='tilesets'?btn('通行',()=>passageEditor(a),'sm'):null,k==='tilesets'?btn('整理',()=>tileOrganizer(a),'sm'):null,
           btn('描く',()=>openPixelEditor({kind:k,path:a.image,asset:a}),'sm pri'),btn('差替',()=>pickFiles(false,async fs=>{await storeFile(fs[0],a.image);renderAssets();reqDraw();drawPalette()}),'sm'),btn('削除',()=>delAsset(k,a),'sm dg'))));
     }
     c.append(h('div',{style:'margin-top:8px;display:flex;gap:6px'},btn('＋ 新規で描く',()=>newDrawing(k),'sm'),btn('＋ 画像を追加',()=>pickFiles(true,async fs=>{
