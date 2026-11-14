@@ -303,6 +303,41 @@
    "desc": "ニノマエが自分の血で描いた海の絵",
    "value": 20000,
    "gift": false
+  },
+  {
+   "id": 33,
+   "name": "綺麗な宝石",
+   "desc": "ネイサが磨いてくれた石。きらきら光っている。",
+   "value": 150,
+   "gift": true
+  },
+  {
+   "id": 34,
+   "name": "ガラスの小瓶",
+   "desc": "中に砂が少しだけ入っている。",
+   "value": 8,
+   "gift": true
+  },
+  {
+   "id": 35,
+   "name": "錆びた鍵",
+   "desc": "どこの鍵かはわからない。",
+   "value": 6,
+   "gift": true
+  },
+  {
+   "id": 36,
+   "name": "古い切手",
+   "desc": "知らない星の切手。",
+   "value": 12,
+   "gift": true
+  },
+  {
+   "id": 37,
+   "name": "毛糸玉",
+   "desc": "やわらかい。",
+   "value": 7,
+   "gift": true
   }
  ],
  "switches": [
@@ -4388,20 +4423,28 @@
                    "t": "text",
                    "face": "",
                    "name": "ネイサ",
-                   "text": "（綺麗な石をもらったときの反応：価値のある石だと教えてくれる）",
+                   "text": "（綺麗な石をもらったときの反応）",
                    "pic": "neisa_normal",
                    "picPos": "C"
-                  },
-                  {
-                   "t": "money",
-                   "op": "add",
-                   "val": 150
                   },
                   {
                    "t": "text",
                    "face": "",
                    "name": "",
-                   "text": "価値が150増えた。",
+                   "text": "（ネイサが鞄から研磨セットを取り出して、石を磨いてくれた）",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "item",
+                   "id": 33,
+                   "n": 1
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "綺麗な宝石を受け取った。",
                    "pic": "-",
                    "picPos": "C"
                   },
@@ -17125,6 +17168,50 @@
    {
     "item": 30,
     "price": 35,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 34,
+    "price": 12,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 35,
+    "price": 10,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 36,
+    "price": 18,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 37,
+    "price": 10,
     "weight": 1,
     "from": 1,
     "to": "",
