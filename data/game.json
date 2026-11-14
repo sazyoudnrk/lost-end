@@ -1566,330 +1566,6 @@
            ]
           },
           {
-           "label": "一緒に過ごす",
-           "cmds": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 16,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "sw",
-                "id": 4,
-                "val": true
-               },
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "もう遅い。今日は部屋に戻って休もう。"
-                }
-               ],
-               "else": [
-                {
-                 "t": "vcase",
-                 "id": 2,
-                 "cases": [
-                  {
-                   "val": 0,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（1回目の会話：3日の航海に触れる）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 1,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（2回目の会話：3日の航海に触れる）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 2,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（3回目の会話：3日の航海に触れる）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 3,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（4回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 4,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（5回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 5,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（6回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 6,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（7回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 7,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（8回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 8,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（9回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 9,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（10回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 10,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（11回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 11,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（12回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 12,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（13回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 13,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（14回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 14,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（15回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ],
-                 "hasElse": true,
-                 "else": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ニノマエ",
-                   "text": "（話すことがなくなったときの会話）",
-                   "pic": "ninomae_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "t": "var",
-                 "id": 2,
-                 "op": "add",
-                 "val": 1
-                },
-                {
-                 "t": "var",
-                 "id": 10,
-                 "op": "add",
-                 "val": 10
-                },
-                {
-                 "t": "var",
-                 "id": 17,
-                 "op": "add",
-                 "val": 5
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "ニノマエと少し仲良くなれたようだ。",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "slot",
-                  "op": "==",
-                  "val": 2
-                 },
-                 "then": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0,
-                   "fx": true
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "主人公",
-                   "text": "もう遅い。部屋に戻ろう。",
-                   "pic": "-",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0
-                  }
-                 ],
-                 "hasElse": true
-                }
-               ],
-               "hasElse": true
-              }
-             ]
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": ">",
-            "val": 0
-           }
-          },
-          {
            "label": "話す",
            "cmds": [
             {
@@ -2481,6 +2157,330 @@
              ]
             }
            ]
+          },
+          {
+           "label": "一緒に過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
+                {
+                 "t": "vcase",
+                 "id": 2,
+                 "cases": [
+                  {
+                   "val": 0,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（1回目の会話：3日の航海に触れる）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（2回目の会話：3日の航海に触れる）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（3回目の会話：3日の航海に触れる）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（4回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 4,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（5回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 5,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（6回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 6,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（7回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 7,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（8回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 8,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（9回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 9,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 10,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（11回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 11,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（12回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 12,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（13回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 13,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（14回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 14,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（15回目の会話）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ],
+                 "hasElse": true,
+                 "else": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（話すことがなくなったときの会話）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "t": "var",
+                 "id": 2,
+                 "op": "add",
+                 "val": 1
+                },
+                {
+                 "t": "var",
+                 "id": 10,
+                 "op": "add",
+                 "val": 10
+                },
+                {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ニノマエと少し仲良くなれたようだ。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "もう遅い。部屋に戻ろう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
+                }
+               ],
+               "hasElse": true
+              }
+             ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
           },
           {
            "label": "プレゼント",
@@ -3248,330 +3248,6 @@
            ]
           },
           {
-           "label": "一緒に過ごす",
-           "cmds": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 16,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "sw",
-                "id": 4,
-                "val": true
-               },
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "もう遅い。今日は部屋に戻って休もう。"
-                }
-               ],
-               "else": [
-                {
-                 "t": "vcase",
-                 "id": 1,
-                 "cases": [
-                  {
-                   "val": 0,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（1回目の会話：3日の航海に触れる）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 1,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（2回目の会話：3日の航海に触れる）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 2,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（3回目の会話：3日の航海に触れる）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 3,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（4回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 4,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（5回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 5,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（6回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 6,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（7回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 7,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（8回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 8,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（9回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 9,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（10回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 10,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（11回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 11,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（12回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 12,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（13回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 13,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（14回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 14,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（15回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ],
-                 "hasElse": true,
-                 "else": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ネイサ",
-                   "text": "（話すことがなくなったときの会話）",
-                   "pic": "neisa_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "t": "var",
-                 "id": 1,
-                 "op": "add",
-                 "val": 1
-                },
-                {
-                 "t": "var",
-                 "id": 9,
-                 "op": "add",
-                 "val": 10
-                },
-                {
-                 "t": "var",
-                 "id": 17,
-                 "op": "add",
-                 "val": 5
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "ネイサと少し仲良くなれたようだ。",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "slot",
-                  "op": "==",
-                  "val": 2
-                 },
-                 "then": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0,
-                   "fx": true
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "主人公",
-                   "text": "もう遅い。部屋に戻ろう。",
-                   "pic": "-",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0
-                  }
-                 ],
-                 "hasElse": true
-                }
-               ],
-               "hasElse": true
-              }
-             ]
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": ">",
-            "val": 0
-           }
-          },
-          {
            "label": "話す",
            "cmds": [
             {
@@ -4203,6 +3879,330 @@
              ]
             }
            ]
+          },
+          {
+           "label": "一緒に過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
+                {
+                 "t": "vcase",
+                 "id": 1,
+                 "cases": [
+                  {
+                   "val": 0,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（1回目の会話：3日の航海に触れる）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（2回目の会話：3日の航海に触れる）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（3回目の会話：3日の航海に触れる）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（4回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 4,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（5回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 5,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（6回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 6,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（7回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 7,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（8回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 8,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（9回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 9,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 10,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（11回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 11,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（12回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 12,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（13回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 13,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（14回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 14,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（15回目の会話）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ],
+                 "hasElse": true,
+                 "else": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（話すことがなくなったときの会話）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "t": "var",
+                 "id": 1,
+                 "op": "add",
+                 "val": 1
+                },
+                {
+                 "t": "var",
+                 "id": 9,
+                 "op": "add",
+                 "val": 10
+                },
+                {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ネイサと少し仲良くなれたようだ。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "もう遅い。部屋に戻ろう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
+                }
+               ],
+               "hasElse": true
+              }
+             ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
           },
           {
            "label": "プレゼント",
@@ -7923,330 +7923,6 @@
            ]
           },
           {
-           "label": "一緒に過ごす",
-           "cmds": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 16,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "sw",
-                "id": 4,
-                "val": true
-               },
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "もう遅い。今日は部屋に戻って休もう。"
-                }
-               ],
-               "else": [
-                {
-                 "t": "vcase",
-                 "id": 3,
-                 "cases": [
-                  {
-                   "val": 0,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（1回目の会話：3日の航海に触れる）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 1,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（2回目の会話：3日の航海に触れる）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 2,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（3回目の会話：3日の航海に触れる）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 3,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（4回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 4,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（5回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 5,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（6回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 6,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（7回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 7,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（8回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 8,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（9回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 9,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（10回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 10,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（11回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 11,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（12回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 12,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（13回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 13,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（14回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 14,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（15回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ],
-                 "hasElse": true,
-                 "else": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（話すことがなくなったときの会話）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "t": "var",
-                 "id": 3,
-                 "op": "add",
-                 "val": 1
-                },
-                {
-                 "t": "var",
-                 "id": 11,
-                 "op": "add",
-                 "val": 15
-                },
-                {
-                 "t": "var",
-                 "id": 17,
-                 "op": "add",
-                 "val": 5
-                },
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "ピヲラと少し仲良くなれたようだ。",
-                 "pic": "-",
-                 "picPos": "C"
-                },
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "slot",
-                  "op": "==",
-                  "val": 2
-                 },
-                 "then": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0,
-                   "fx": true
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "主人公",
-                   "text": "もう遅い。部屋に戻ろう。",
-                   "pic": "-",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "time",
-                   "op": "next",
-                   "n": 1,
-                   "slot": 0
-                  }
-                 ],
-                 "hasElse": true
-                }
-               ],
-               "hasElse": true
-              }
-             ]
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": ">",
-            "val": 0
-           }
-          },
-          {
            "label": "話す",
            "cmds": [
             {
@@ -8878,6 +8554,330 @@
              ]
             }
            ]
+          },
+          {
+           "label": "一緒に過ごす",
+           "cmds": [
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": ">",
+              "val": 0
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 4,
+                "val": true
+               },
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "もう遅い。今日は部屋に戻って休もう。"
+                }
+               ],
+               "else": [
+                {
+                 "t": "vcase",
+                 "id": 3,
+                 "cases": [
+                  {
+                   "val": 0,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（1回目の会話：3日の航海に触れる）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（2回目の会話：3日の航海に触れる）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（3回目の会話：3日の航海に触れる）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（4回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 4,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（5回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 5,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（6回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 6,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（7回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 7,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（8回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 8,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（9回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 9,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 10,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（11回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 11,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（12回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 12,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（13回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 13,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（14回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 14,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（15回目の会話）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ],
+                 "hasElse": true,
+                 "else": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（話すことがなくなったときの会話）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "t": "var",
+                 "id": 3,
+                 "op": "add",
+                 "val": 1
+                },
+                {
+                 "t": "var",
+                 "id": 11,
+                 "op": "add",
+                 "val": 15
+                },
+                {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ピヲラと少し仲良くなれたようだ。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "slot",
+                  "op": "==",
+                  "val": 2
+                 },
+                 "then": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0,
+                   "fx": true
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "主人公",
+                   "text": "もう遅い。部屋に戻ろう。",
+                   "pic": "-",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "time",
+                   "op": "next",
+                   "n": 1,
+                   "slot": 0
+                  }
+                 ],
+                 "hasElse": true
+                }
+               ],
+               "hasElse": true
+              }
+             ]
+            }
+           ],
+           "cond": {
+            "type": "var",
+            "id": 17,
+            "op": ">",
+            "val": 0
+           }
           },
           {
            "label": "プレゼント",
@@ -13591,6 +13591,599 @@
          "t": "choice",
          "options": [
           {
+           "label": "話す",
+           "cmds": [
+            {
+             "t": "comment",
+             "text": "誰かがいなくなった後、最初に話したときだけ専用セリフ（言ったら中断）"
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 25,
+              "val": true
+             },
+             "hasElse": false,
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "self",
+                "key": "C",
+                "val": false
+               },
+               "hasElse": false,
+               "then": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ムロ",
+                 "text": "（ニノマエがいなくなったことについてのムロの会話）",
+                 "pic": "muro_normal",
+                 "picPos": "C"
+                },
+                {
+                 "t": "self",
+                 "key": "C",
+                 "val": true
+                },
+                {
+                 "t": "end"
+                }
+               ],
+               "else": []
+              }
+             ],
+             "else": []
+            },
+            {
+             "t": "vcase",
+             "src": "day",
+             "id": 0,
+             "cases": [
+              {
+               "val": 1,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "僕は結構長く生きてる方ですが、星間旅行で不具合に遭うのは初めてです。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "なぜ旅程が6時間から3日間になるんでしょう。低出力モードでもそんな時間かからないはずなんですが……",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "こんなに人と喋ったの久しぶりです。たまには悪くないですね。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 2,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "通信ができればいいのですが……この辺は中継機が全くないから難しいですかね。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "みんな一人旅だったのが不幸中の幸いでしたね。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "みなさん退屈には慣れているんでしょうか。3日も外部と通信が取れないのはきっと苦痛ですよね……。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 3,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "墜落したら流石にみんな死んじゃいますかね。\nでも、完全義体で墜落事故を生き延びた人の話を昔聞いた気がします。\n\n[p]\n立派な義体なら衝突に耐えられるかもしれません\n落ちる惑星がガスの惑星の可能性もありますが……\nさらにその惑星で生きて暮らせる可能性も限りなく低そうですが……",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "終わりってどんな感じなんだろう",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "計器の情報が２日目で怪しいと思った時点で伝えれば良かったかな。ごめんね……",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 4,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（4日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（4日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（4日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 5,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（5日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（5日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（5日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 6,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（6日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（6日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（6日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 7,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（7日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（7日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（7日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 8,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（8日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（8日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（8日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 9,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（9日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（9日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（9日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              },
+              {
+               "val": 10,
+               "cmds": [
+                {
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               ]
+              }
+             ],
+             "hasElse": true,
+             "else": [
+              {
+               "t": "random",
+               "options": [
+                {
+                 "label": "A",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（どうでもいい会話A：3日の航海の話題）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "B",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（どうでもいい会話B：3日の航海の話題）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                },
+                {
+                 "label": "C",
+                 "cmds": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（どうでもいい会話C：3日の航海の話題）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            }
+           ]
+          },
+          {
            "label": "一緒に過ごす",
            "cmds": [
             {
@@ -14284,599 +14877,6 @@
             "op": ">",
             "val": 0
            }
-          },
-          {
-           "label": "話す",
-           "cmds": [
-            {
-             "t": "comment",
-             "text": "誰かがいなくなった後、最初に話したときだけ専用セリフ（言ったら中断）"
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "sw",
-              "id": 25,
-              "val": true
-             },
-             "hasElse": false,
-             "then": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "self",
-                "key": "C",
-                "val": false
-               },
-               "hasElse": false,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "text": "（ニノマエがいなくなったことについてのムロの会話）",
-                 "pic": "muro_normal",
-                 "picPos": "C"
-                },
-                {
-                 "t": "self",
-                 "key": "C",
-                 "val": true
-                },
-                {
-                 "t": "end"
-                }
-               ],
-               "else": []
-              }
-             ],
-             "else": []
-            },
-            {
-             "t": "vcase",
-             "src": "day",
-             "id": 0,
-             "cases": [
-              {
-               "val": 1,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "僕は結構長く生きてる方ですが、星間旅行で不具合に遭うのは初めてです。",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "なぜ旅程が6時間から3日間になるんでしょう。低出力モードでもそんな時間かからないはずなんですが……",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "こんなに人と喋ったの久しぶりです。たまには悪くないですね。",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 2,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "通信ができればいいのですが……この辺は中継機が全くないから難しいですかね。",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "みんな一人旅だったのが不幸中の幸いでしたね。",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "みなさん退屈には慣れているんでしょうか。3日も外部と通信が取れないのはきっと苦痛ですよね……。",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 3,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "墜落したら流石にみんな死んじゃいますかね。\nでも、完全義体で墜落事故を生き延びた人の話を昔聞いた気がします。\n\n[p]\n立派な義体なら衝突に耐えられるかもしれません\n落ちる惑星がガスの惑星の可能性もありますが……\nさらにその惑星で生きて暮らせる可能性も限りなく低そうですが……",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "終わりってどんな感じなんだろう",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "計器の情報が２日目で怪しいと思った時点で伝えれば良かったかな。ごめんね……",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 4,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（4日目のどうでもいい会話A）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（4日目のどうでもいい会話B）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（4日目のどうでもいい会話C）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 5,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（5日目のどうでもいい会話A）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（5日目のどうでもいい会話B）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（5日目のどうでもいい会話C）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 6,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（6日目のどうでもいい会話A）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（6日目のどうでもいい会話B）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（6日目のどうでもいい会話C）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 7,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（7日目のどうでもいい会話A）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（7日目のどうでもいい会話B）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（7日目のどうでもいい会話C）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 8,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（8日目のどうでもいい会話A）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（8日目のどうでもいい会話B）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（8日目のどうでもいい会話C）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 9,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（9日目のどうでもいい会話A）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（9日目のどうでもいい会話B）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（9日目のどうでもいい会話C）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "val": 10,
-               "cmds": [
-                {
-                 "t": "random",
-                 "options": [
-                  {
-                   "label": "A",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（10日目のどうでもいい会話A）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "B",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（10日目のどうでもいい会話B）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "label": "C",
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（10日目のどうでもいい会話C）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              }
-             ],
-             "hasElse": true,
-             "else": [
-              {
-               "t": "random",
-               "options": [
-                {
-                 "label": "A",
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "（どうでもいい会話A：3日の航海の話題）",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "label": "B",
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "（どうでもいい会話B：3日の航海の話題）",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                },
-                {
-                 "label": "C",
-                 "cmds": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "（どうでもいい会話C：3日の航海の話題）",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  }
-                 ]
-                }
-               ]
-              }
-             ]
-            }
-           ]
           },
           {
            "label": "プレゼント",
