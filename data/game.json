@@ -12042,6 +12042,62 @@
       {
        "cond": [
         {
+         "type": "var",
+         "id": 5,
+         "op": "<",
+         "val": 5
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "1日目、変換器のチュートリアルが終わるまでは眠れない"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "今は眠っている場合じゃない。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "var",
+         "id": 5,
+         "op": "==",
+         "val": 6
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "3日目、ムロに相談するまでは眠れない"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にムロさんの部屋に行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
          "type": "day",
          "op": "==",
          "val": 2
