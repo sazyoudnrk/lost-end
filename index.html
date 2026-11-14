@@ -117,7 +117,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-14g';
+const GAME_VER='2026-11-14h';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -684,9 +684,11 @@ $('#menu').addEventListener('click',e=>{
     it.append(cyc('常時ダッシュ','dash',['オフ','オン']),cyc('文字の速さ','tspd',['遅い','普通','速い','瞬間']),row('BGM','bgm'),row('効果音','se'));if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
     it.style.display='block'}
 });
-async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
+// 真エンドなどの解放：指定したエンディングを全部見ていれば、そのスイッチをONにする（周回をまたいで残る）
+function applyUnlock(){const U=G.system&&G.system.unlock;if(!U||!(U.sw>=0)||!S)return;const L=U.endings||[],got=gotEnds();S.sw[U.sw]=L.length>0&&L.every(id=>got.includes(id))}
+async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();applyUnlock();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
 async function startNew(){
-  const p=G.player;S={map:p.map,x:p.x,y:p.y,dir:p.dir||0,sw:{},vr:{},it:{},ss:{},once:{},day:G.system.startDay||1,slot:0,money:+G.shop.startMoney||0,buys:0,buyLimit:+G.shop.limit||1};S.shop=drawShop();
+  const p=G.player;S={map:p.map,x:p.x,y:p.y,dir:p.dir||0,sw:{},vr:{},it:{},ss:{},once:{},day:G.system.startDay||1,slot:0,money:+G.shop.startMoney||0,buys:0,buyLimit:+G.shop.limit||1};S.shop=drawShop();applyUnlock();
   for(const [k,v] of Object.entries((G.system&&G.system.varCfg)||{})){if(!v)continue;if(v.init!=null&&v.init!=='')S.vr[k]=+v.init;if(v.pick){const L=String(v.pick).split(/[,、\s]+/).filter(x=>x!=='').map(Number);if(L.length)S.vr[k]=L[Math.floor(Math.random()*L.length)]}}
   if(PREVIEW&&Q.has('map')){S.map=+Q.get('map');S.x=+Q.get('x')||0;S.y=+Q.get('y')||0}
   await loadMap(S.map,S.x,S.y,S.dir);

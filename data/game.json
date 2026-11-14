@@ -408,8 +408,8 @@
   "ネイサが部屋に来た",
   "ムロに報告する（協力のお願いが終わった）",
   "ムロに報告した",
-  "",
-  "",
+  "真エンド解放（4人の天秤を見た）",
+  "真ルートに入った（仮）",
   "",
   "",
   "",
@@ -12101,6 +12101,54 @@
                      "t": "if",
                      "cond": {
                       "type": "sw",
+                      "id": 33,
+                      "val": true
+                     },
+                     "hasElse": false,
+                     "else": [],
+                     "then": [
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "sw",
+                        "id": 24,
+                        "val": false
+                       },
+                       "hasElse": false,
+                       "else": [],
+                       "then": [
+                        {
+                         "t": "comment",
+                         "text": "真エンド（仮）"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "",
+                         "text": "（真エンドの本文をここに）",
+                         "pic": "-",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "ending",
+                         "id": "true"
+                        }
+                       ]
+                      }
+                     ]
+                    },
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "sw",
                       "id": 24,
                       "val": true
                      },
@@ -13845,6 +13893,69 @@
        "priority": "same",
        "through": true,
        "cmds": []
+      }
+     ]
+    },
+    {
+     "id": 44,
+     "name": "真ルートの入口（仮）",
+     "x": 5,
+     "y": 0,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "below",
+       "through": true,
+       "cmds": []
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 32,
+         "val": true
+        },
+        {
+         "type": "sw",
+         "id": 33,
+         "val": false
+        },
+        {
+         "type": "var",
+         "id": 5,
+         "op": ">=",
+         "val": 5
+        }
+       ],
+       "image": null,
+       "trigger": "auto",
+       "priority": "below",
+       "through": true,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "真エンド解放後の周回だけ起きる。ここに新しい展開の始まりを書く（仮）。スイッチ34で真ルートに入る"
+        },
+        {
+         "t": "wait",
+         "ms": 400
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（真ルートの始まり：解放後の周回だけの新しい展開をここに書く）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "sw",
+         "id": 33,
+         "val": true
+        }
+       ]
       }
      ]
     }
@@ -17910,12 +18021,27 @@
     "name": "トラウマ",
     "desc": "正気を失ったまま生還し、後遺症が残った。",
     "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・主人公の正気度0"
+   },
+   {
+    "id": "true",
+    "name": "真エンド（仮）",
+    "desc": "（真エンドの説明）",
+    "note": "4人の天秤を見たあとの周回で真ルートに入り、9日目の夜にパーツが揃っていて、ニノマエを刺していない"
    }
   ],
   "titleSub": "",
   "titleFoot": "© 砂上電力",
   "titleImage": "",
-  "credits": "ゲーム\nClaude\n砂上電力\n\n絵\n砂上電力\n\n音楽\n砂上電力\n\n素材\n砂上電力\n\nthank you for the playing"
+  "credits": "ゲーム\nClaude\n砂上電力\n\n絵\n砂上電力\n\n音楽\n砂上電力\n\n素材\n砂上電力\n\nthank you for the playing",
+  "unlock": {
+   "sw": 32,
+   "endings": [
+    "balance_muro",
+    "balance_neisa",
+    "balance_ninomae",
+    "balance_piwora"
+   ]
+  }
  },
  "icons": [
   {

@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14o';
+const APP_VER='2026-11-14p';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1068,6 +1068,9 @@ function renderDB(){
     c.append(fSel('メニューに出す条件（スイッチ）',M,'sw',[[-1,'いつも出す'],...swOpts()],{num:true}),fText('見出し',M,'title'));
     M.lines.forEach((L,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},fText('書いてあること',L,'text'),fSel('チェックが付く条件（スイッチ）',L,'sw',[[-1,'なし'],...swOpts()],{num:true}),fText('チェック後に添える文（任意）',L,'doneText')),btn('✕',()=>{M.lines.splice(i,1);changed();renderDB()},'sm dg'))));
     c.append(btn('＋ 行を追加',()=>{M.lines.push({text:'',sw:-1,doneText:''});changed();renderDB()},'sm'),h('div',{class:'hint'},'スイッチがONになった行は ☑ になります'));T.append(c)}
+  {SY.unlock=SY.unlock||{sw:-1,endings:[]};const U=SY.unlock,c=card('解放（周回をまたぐ）');
+    c.append(fSel('ONにするスイッチ',U,'sw',[[-1,'（使わない）'],...swOpts()],{num:true}),h('div',{class:'hint'},'下のエンディングを全部見ていると、はじめから・つづきから始めたときにこのスイッチがONになります（真ルートの分岐などに使う）'),
+      ...(SY.endings||[]).map(x=>{const o={on:U.endings.includes(x.id)};return fChk(x.name||x.id,o,'on',{on:()=>{U.endings=U.endings.filter(i=>i!==x.id);if(o.on)U.endings.push(x.id)}})}));T.append(c)}
   {const c=card('タイトル画面とスタッフロール');
     c.append(fSel('タイトルの絵（一枚絵・立ち絵から）',SY,'titleImage',[['','（なし：星空だけ）'],...(G.stills||[]).map(x=>[x.id,'一枚絵: '+x.name]),...G.pictures.map(x=>[x.id,'立ち絵: '+x.name])]),
       fText('タイトルの下の小さい文字',SY,'titleSub',{ph:'例：墜落まで、あと7日'}),fText('画面下の文字',SY,'titleFoot',{ph:'例：© 砂上電力'}),
