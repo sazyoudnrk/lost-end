@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14n';
+const APP_VER='2026-11-14o';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1068,6 +1068,11 @@ function renderDB(){
     c.append(fSel('メニューに出す条件（スイッチ）',M,'sw',[[-1,'いつも出す'],...swOpts()],{num:true}),fText('見出し',M,'title'));
     M.lines.forEach((L,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},fText('書いてあること',L,'text'),fSel('チェックが付く条件（スイッチ）',L,'sw',[[-1,'なし'],...swOpts()],{num:true}),fText('チェック後に添える文（任意）',L,'doneText')),btn('✕',()=>{M.lines.splice(i,1);changed();renderDB()},'sm dg'))));
     c.append(btn('＋ 行を追加',()=>{M.lines.push({text:'',sw:-1,doneText:''});changed();renderDB()},'sm'),h('div',{class:'hint'},'スイッチがONになった行は ☑ になります'));T.append(c)}
+  {const c=card('タイトル画面とスタッフロール');
+    c.append(fSel('タイトルの絵（一枚絵・立ち絵から）',SY,'titleImage',[['','（なし：星空だけ）'],...(G.stills||[]).map(x=>[x.id,'一枚絵: '+x.name]),...G.pictures.map(x=>[x.id,'立ち絵: '+x.name])]),
+      fText('タイトルの下の小さい文字',SY,'titleSub',{ph:'例：墜落まで、あと7日'}),fText('画面下の文字',SY,'titleFoot',{ph:'例：© 砂上電力'}),
+      fArea('スタッフロール（空行で区切った1かたまりずつ表示。1行目が役割、2行目から名前。最後のかたまりは大きく出ます）',SY,'credits',{rows:10}),
+      h('div',{class:'hint'},'スタッフロールはエンディングの END「名前」のあとに流れて、タイトルに戻ります。タップで次へ'));T.append(c)}
   {SY.endings=SY.endings||[];const EL=SY.endings,c=card('エンディングリスト（メニューの「設定」で見られる）');
     EL.forEach((x,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},h('div',{class:'row'},fText('名前',x,'name'),fText('ID（英数字）',x,'id')),fText('説明（見たあとリストに出る）',x,'desc'),fText('メモ（条件など・ゲームには出ない）',x,'note')),btn('✕',()=>{EL.splice(i,1);changed();renderDB()},'sm dg'))));
     c.append(btn('＋ エンディングを追加',()=>{EL.push({id:'end'+(EL.length+1),name:'',desc:'',note:''});changed();renderDB()},'sm'),h('div',{class:'hint'},'「エンディング」コマンドで到達すると記録されます。記録は遊んでいる端末に残り、セーブデータとは別です'));T.append(c)}

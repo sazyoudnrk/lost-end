@@ -6885,6 +6885,14 @@
           {
            "t": "text",
            "face": "",
+           "name": "ムロ",
+           "text": "船が墜落するのは、10日目の朝です。\n[p]\nそれまでにパーツを集めないと……",
+           "pic": "muro_normal",
+           "picPos": "C"
+          },
+          {
+           "t": "text",
+           "face": "",
            "name": "ネイサ",
            "text": "ふむ、個別で話を聞こう。",
            "pic": "neisa_normal",
@@ -17903,7 +17911,11 @@
     "desc": "正気を失ったまま生還し、後遺症が残った。",
     "note": "9日目の夜（最後に眠るとき）：パーツ3つ・誰も殺していない・主人公の正気度0"
    }
-  ]
+  ],
+  "titleSub": "",
+  "titleFoot": "© 砂上電力",
+  "titleImage": "",
+  "credits": "ゲーム\nClaude\n砂上電力\n\n絵\n砂上電力\n\n音楽\n砂上電力\n\n素材\n砂上電力\n\nthank you for the playing"
  },
  "icons": [
   {

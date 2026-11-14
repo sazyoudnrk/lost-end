@@ -41,7 +41,16 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #menuBtn{position:absolute;right:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 14px}
 #menu,#title{position:absolute;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.75)}
 #title{background:#000}
-#title h1{font-size:28px;margin:0 20px 30px;text-align:center}
+#title h1{font-size:34px;font-weight:300;letter-spacing:.42em;margin:0 0 6px .42em;text-align:center;position:relative;text-shadow:0 0 18px rgba(255,255,255,.35)}
+#title>*{position:relative;z-index:1}#title #tStars{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#tSub{font-size:12px;letter-spacing:.3em;color:#9a9ab0;min-height:1em;text-align:center}#tGap{height:34px}
+#tImg{display:none;max-width:86%;max-height:38vh;object-fit:contain;image-rendering:pixelated;margin-bottom:14px}
+#title .ui-btn{background:transparent;border:0;box-shadow:none;color:#ddd;font-size:17px;letter-spacing:.25em;padding:8px 18px}
+#title .ui-btn::before{content:'▶';display:inline-block;width:1.4em;margin-left:-1.4em;opacity:0;font-size:12px;vertical-align:2px}
+#title .ui-btn.kf{background:transparent;color:#fff;box-shadow:none}#title .ui-btn.kf::before,#title .ui-btn:active::before{opacity:1}
+#tFoot{position:absolute!important;bottom:calc(14px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:11px;letter-spacing:.2em;color:#666}
+#credits{position:absolute;inset:0;z-index:30;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:2}
+#credits .cb{opacity:0;transition:opacity .7s}#credits .cb.on{opacity:1}#credits .role{font-size:12px;letter-spacing:.3em;color:#8a8aa0}#credits .nm{font-size:20px;letter-spacing:.15em}#credits .last{font-size:18px;letter-spacing:.2em}
 #menu .ui-btn,#title .ui-btn{min-width:200px;text-align:center}
 #tEndList{max-height:50%;overflow:auto;min-width:240px;max-width:90%;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8;color:#fff}
 #items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
@@ -100,7 +109,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
 <div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="memo" style="display:none">メモ</button><button class="ui-btn" data-m="end">エンディング</button><button class="ui-btn" data-m="opt">設定</button><button class="ui-btn" data-m="close">閉じる</button></div>
-<div id="title"><h1 id="ttl"></h1><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button><button class="ui-btn" id="tEnd">エンディング</button><div id="tEndList"></div></div>
+<div id="title"><canvas id="tStars"></canvas><img id="tImg" alt=""><h1 id="ttl"></h1><div id="tSub"></div><div id="tGap"></div><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button><button class="ui-btn" id="tEnd">エンディング</button><div id="tEndList"></div><div id="tFoot"></div></div><div id="credits"></div>
 <div id="hud"></div>
 <div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="tip"></div><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
 <div id="daycard"><b></b><span></span></div>
@@ -108,7 +117,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-14f';
+const GAME_VER='2026-11-14g';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -461,7 +470,7 @@ async function cmd(c,cx){
     case'end':throw END;
     case'pchar':{S.pchar=c.charset||null;charImg(pcs());break}
     case'ending':{const E=((G.system&&G.system.endings)||[]).find(x=>x.id===c.id);try{const a=gotEnds();if(!a.includes(c.id)){a.push(c.id);localStorage.setItem(ENDKEY,JSON.stringify(a))}}catch(e){}
-      hideMsg();clearPics();await fade(1);await showText({name:'',text:'END「'+(E?E.name:c.id)+'」',pic:'-'});hideMsg();showTitle();throw END}
+      hideMsg();clearPics();await fade(1);await showText({name:'',text:'END「'+(E?E.name:c.id)+'」',pic:'-'});hideMsg();await playCredits();showTitle();throw END}
     case'gameover':{hideMsg();clearPics();await fade(1);await showText({name:'',text:c.text||'GAME OVER',pic:'-'});hideMsg();showTitle();throw END}
   }
 }
@@ -682,8 +691,30 @@ async function startNew(){
   if(PREVIEW&&Q.has('map')){S.map=+Q.get('map');S.x=+Q.get('x')||0;S.y=+Q.get('y')||0}
   await loadMap(S.map,S.x,S.y,S.dir);
 }
+// タイトルの星空（タイトルが出ている間だけ動く）
+let starRun=false;
+function startStars(){const cv=$('#tStars');if(!cv||starRun)return;starRun=true;const ctx=cv.getContext('2d');let st=[];
+  const reset=()=>{const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);cv.width=r.width*d;cv.height=r.height*d;st=Array.from({length:Math.round(r.width*r.height/5000)},()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,z:Math.random()*.9+.1,t:Math.random()*6}))};reset();
+  let last=performance.now();const step=now=>{if($('#title').style.display!=='flex'){starRun=false;return}const dt=Math.min(50,now-last);last=now;
+    if(Math.abs(cv.width-cv.getBoundingClientRect().width*Math.min(2,devicePixelRatio||1))>2)reset();
+    ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+    for(const s of st){s.x-=s.z*dt*.02*cv.width/400;s.t+=dt*.002;if(s.x<0){s.x=cv.width;s.y=Math.random()*cv.height}
+      const a=(.35+.65*s.z)*(.75+.25*Math.sin(s.t));ctx.fillStyle=`rgba(255,255,255,${a})`;const sz=s.z>.8?2:1;ctx.fillRect(s.x|0,s.y|0,sz*Math.min(2,devicePixelRatio||1),sz*Math.min(2,devicePixelRatio||1))}
+    requestAnimationFrame(step)};requestAnimationFrame(step)}
+const DEF_CREDITS='ゲーム\nClaude\n砂上電力\n\n絵\n砂上電力\n\n音楽\n砂上電力\n\n素材\n砂上電力\n\nthank you for the playing';
+async function playCredits(){const box=$('#credits');const txt=((G.system&&G.system.credits)??DEF_CREDITS).trim();if(!txt)return;
+  const blocks=txt.split(/\n\s*\n/).map(b=>b.split('\n').map(x=>x.trim()).filter(Boolean)).filter(b=>b.length);
+  box.innerHTML='';box.style.display='flex';let skip=null;const tap=()=>{skip&&skip()};box.addEventListener('pointerdown',tap);const key=e=>{if(['Enter',' ','z','Z','x','Escape'].includes(e.key))tap()};addEventListener('keydown',key);
+  const hold=ms=>new Promise(r=>{const t=setTimeout(r,ms);skip=()=>{clearTimeout(t);r()}});
+  for(let i=0;i<blocks.length;i++){const b=blocks[i],last=i===blocks.length-1,d=document.createElement('div');d.className='cb';
+    if(last||b.length===1)d.innerHTML=b.map(x=>`<div class="last">${x.replace(/[<&]/g,c=>c==='<'?'&lt;':'&amp;')}</div>`).join('');
+    else d.innerHTML=`<div class="role">${b[0].replace(/[<&]/g,c=>c==='<'?'&lt;':'&amp;')}</div>`+b.slice(1).map(x=>`<div class="nm">${x.replace(/[<&]/g,c=>c==='<'?'&lt;':'&amp;')}</div>`).join('');
+    box.innerHTML='';box.append(d);await sleep(60);d.classList.add('on');await hold(last?5000:2400);d.classList.remove('on');await sleep(750)}
+  box.removeEventListener('pointerdown',tap);removeEventListener('keydown',key);box.style.display='none'}
 function showTitle(){stopBgm(300);
-  $('#ttl').textContent=G.title||'';$('#title').style.display='flex';
+  const SY=G.system||{};$('#ttl').textContent=G.title||'';$('#tSub').textContent=SY.titleSub||'';$('#tFoot').textContent=SY.titleFoot??'';
+  {const im=$('#tImg'),a=[...(G.stills||[]),...(G.pictures||[])].find(x=>x.id===SY.titleImage);if(a){loadImg(a.image).then(x=>{if(x){im.src=x.src;im.style.display='block'}})}else im.style.display='none'}
+  $('#title').style.display='flex';startStars();
   $('#tCont').classList.toggle('hide',!localStorage.getItem(SAVEKEY));
   $('#tNew').onclick=async()=>{$('#title').style.display='none';await startNew()};
   $('#tCont').onclick=loadGame;
