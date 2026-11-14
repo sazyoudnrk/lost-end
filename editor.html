@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14h';
+const APP_VER='2026-11-14i';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1264,6 +1264,23 @@ function fnv32(d){let h=0x811c9dc5;for(let i=0;i<d.length;i++){h^=d[i];h=Math.im
 let _peDb=null;function peDb(){return _peDb||(_peDb=new Promise((res,rej)=>{const r=indexedDB.open('pe-layers',1);r.onupgradeneeded=()=>r.result.createObjectStore('l');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))}
 function peLayerGet(k){return peDb().then(d=>new Promise(res=>{const q=d.transaction('l').objectStore('l').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>res(null)}))}
 function peLayerPut(k,v){return peDb().then(d=>new Promise(res=>{const t=d.transaction('l','readwrite'),s2=t.objectStore('l');v?s2.put(v,k):s2.delete(k);t.oncomplete=()=>res();t.onerror=()=>res()}))}
+// 保存してあるレイヤー分け（前の絵のとき）を、変わった絵に合わせて作り直す。
+// タイルセットはマス単位で同じ絵を探して付け替え（整理で移動した場合）、それ以外は同じ場所の色が同じならそのまま、違えば下のレイヤーに入れる
+function recoverLayers(sv,img,W,H,ts){
+  const l0=new Uint32Array(sv.l0.slice(0)),l1=new Uint32Array(sv.l1.slice(0));
+  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  for(const l of[l0,l1]){const t=document.createElement('canvas');t.width=W;t.height=H;t.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(l.buffer),W,H),0,0);x.drawImage(t,0,0)}
+  const oc=new Uint32Array(x.getImageData(0,0,W,H).data.buffer),nc=new Uint32Array(img.data.buffer.slice(0));
+  const n0=new Uint32Array(W*H),n1=new Uint32Array(W*H);
+  const cellKey=(arr,cx,cy)=>{let h=0x811c9dc5;for(let y=0;y<ts;y++){const r=(cy*ts+y)*W+cx*ts;for(let k=0;k<ts;k++){h^=arr[r+k];h=Math.imul(h,16777619)}}return h>>>0};
+  const done=new Uint8Array(W*H);
+  if(ts&&W%ts===0&&H%ts===0){const cols=W/ts,rows=H/ts,idx=new Map();
+    for(let cy=0;cy<rows;cy++)for(let cx=0;cx<cols;cx++){const k=cellKey(oc,cx,cy);if(!idx.has(k))idx.set(k,[cx,cy])}
+    for(let cy=0;cy<rows;cy++)for(let cx=0;cx<cols;cx++){const hit=idx.get(cellKey(nc,cx,cy));if(!hit)continue;const[ox,oy]=hit;
+      for(let y=0;y<ts;y++){const s0=(oy*ts+y)*W+ox*ts,d0=(cy*ts+y)*W+cx*ts;for(let k=0;k<ts;k++){if(oc[s0+k]!==nc[d0+k])continue;n0[d0+k]=l0[s0+k];n1[d0+k]=l1[s0+k];done[d0+k]=1}}}}
+  for(let i=0;i<W*H;i++){if(done[i])continue;if(oc[i]===nc[i]){n0[i]=l0[i];n1[i]=l1[i]}else{n0[i]=nc[i];n1[i]=0}}
+  return[new ImageData(new Uint8ClampedArray(n0.buffer),W,H),new ImageData(new Uint8ClampedArray(n1.buffer),W,H)];
+}
 async function openPixelEditor(o){
   let W,H,img;
   if(o.isNew){W=o.w;H=o.h;img=new ImageData(W,H)}
@@ -1277,7 +1294,9 @@ async function openPixelEditor(o){
   // レイヤー（2枚）。img/A はいま選んでいるレイヤーを指す
   const mkL=im=>{const c=document.createElement('canvas');c.width=im.width;c.height=im.height;return{img:im,A:new Uint32Array(im.data.buffer),cv:c,ctx:c.getContext('2d')}};
   const L=[mkL(img),mkL(new ImageData(W,H))];let li=0;
-  if(!o.isNew&&o.path){try{const sv=await peLayerGet(o.path);if(sv&&sv.W===W&&sv.H===H&&sv.sum===fnv32(img.data)){L[0]=mkL(new ImageData(new Uint8ClampedArray(sv.l0),W,H));L[1]=mkL(new ImageData(new Uint8ClampedArray(sv.l1),W,H));img=L[0].img;A=L[0].A}}catch(e){}}
+  if(!o.isNew&&o.path){try{const sv=await peLayerGet(o.path);if(sv&&sv.W===W&&sv.H===H){
+    if(sv.sum===fnv32(img.data)){L[0]=mkL(new ImageData(new Uint8ClampedArray(sv.l0),W,H));L[1]=mkL(new ImageData(new Uint8ClampedArray(sv.l1),W,H));img=L[0].img;A=L[0].A}
+    else{const r=recoverLayers(sv,img,W,H,o.kind==='tilesets'?G.tileSize:0);if(r){L[0]=mkL(r[0]);L[1]=mkL(r[1]);img=L[0].img;A=L[0].A;setTimeout(()=>toast('絵が変わっていたので、レイヤー分けを新しい絵に合わせて復元しました'),300)}}}}catch(e){}}
   function useLayer(i){li=i;img=L[i].img;A=L[i].A}
   function compose(){for(const l of L)l.ctx.putImageData(l.img,0,0);dctx.clearRect(0,0,W,H);for(const l of L)dctx.drawImage(l.cv,0,0);st.dirty=false}
   const fcv=document.createElement('canvas'),fctx=fcv.getContext('2d');
