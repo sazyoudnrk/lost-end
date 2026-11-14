@@ -108,7 +108,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-14e';
+const GAME_VER='2026-11-14f';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -521,7 +521,7 @@ async function showStill(id,fade){const box=$('#still'),img=box.querySelector('i
 async function showText(c){
   if(c.pic==='-')setPic(c.picPos||'C',null);
   else if(c.pic){await setPic(c.picPos||'C',c.pic);setActive(c.picPos||'C')}
-  msgEl.classList.toggle('onblack',+getComputedStyle($('#fade')).opacity>=.99);msgEl.classList.add('show');
+  msgEl.classList.remove('shake');msgEl.classList.toggle('onblack',+getComputedStyle($('#fade')).opacity>=.99);msgEl.classList.add('show');
   const f=G.faces.find(x=>x.id===c.face);
   const fim=f?await loadImg(f.image):null;
   if(fim){faceEl.src=fim.src;faceEl.style.display='block'}else faceEl.style.display='none';
@@ -548,7 +548,8 @@ function showChoice(labels){
     chEl.style.display='flex';navMove(chEl,0);
   });
 }
-function hideMsg(){msgEl.classList.remove('show');chEl.style.display='none';onAdvance=null}
+msgEl.addEventListener('animationend',()=>msgEl.classList.remove('shake'));
+function hideMsg(){msgEl.classList.remove('show','shake');chEl.style.display='none';onAdvance=null}
 function fade(v){$('#fade').style.opacity=v;return sleep(270)}
 
 /* ---------- タップ（クリック）で移動 ---------- */
