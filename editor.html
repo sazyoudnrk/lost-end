@@ -90,7 +90,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14d';
+const APP_VER='2026-11-14e';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1144,11 +1144,11 @@ function tileOrganizer(t){
     const hint=mode==='move'?'移動先をタップ：選んだタイルの左上がそこに来ます（並びはそのまま。押し出されたタイルは空いた場所へ）'
       :mode==='rect'?(corner<0?'範囲の1つ目の角をタップ':'範囲のもう1つの角をタップ')
       :'数字＝マップ・イベントで使われている数。暗いマスは未使用。タップで選択（複数可）→「移動」→ 移動先をタップ。マップも自動で付け替えます';
-    b.append(h('div',{class:'hint',style:'padding:8px 12px'},hint),
+    b.append(h('div',{style:'position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--bd)'},h('div',{class:'hint',style:'padding:8px 12px'},hint),
       h('div',{class:'bar',style:'background:none;flex-wrap:wrap;gap:6px'},
         btn(mode==='rect'?'範囲選択をやめる':'範囲で選ぶ',()=>{mode=mode==='rect'?'sel':'rect';corner=-1;api.rerender()},'sm'+(mode==='rect'?' pri':'')),
         btn(mode==='move'?'移動をやめる':`移動（${sel.size}）`,()=>{if(!sel.size){toast('先にタイルを選んでください');return}mode=mode==='move'?'sel':'move';api.rerender()},'sm'+(mode==='move'?' pri':'')),
-        btn('選択解除',()=>{sel.clear();mode='sel';corner=-1;api.rerender()},'sm')),
+        btn('選択解除',()=>{sel.clear();mode='sel';corner=-1;api.rerender()},'sm'))),
       h('div',{style:'overflow:auto;padding:8px'},cv),
       h('div',{class:'hint',style:'padding:0 12px'},`使用中 ${nUsed} / ${cols*rows} マス`+(dirty?'　●未保存（保存せずに閉じると取り消し）':'')),
       h('div',{class:'bar',style:'background:none'},btn('未使用を消す',()=>{const L=[];for(let i=0;i<cols*rows;i++)if(!used(i))L.push(i);
