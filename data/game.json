@@ -336,8 +336,8 @@
   "ムロの異変（深夜・エントランスへ）",
   "ピヲラの騒ぎを聞いた",
   "ネイサが部屋に来た",
-  "",
-  "",
+  "ムロに報告する（協力のお願いが終わった）",
+  "ムロに報告した",
   "",
   "",
   "",
@@ -1562,6 +1562,32 @@
              "id": 16,
              "op": "sub",
              "val": 1
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": "==",
+              "val": 0
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "ムロさんに報告してみよう。",
+               "pic": "-",
+               "picPos": "C"
+              },
+              {
+               "t": "sw",
+               "id": 30,
+               "val": true
+              }
+             ]
             }
            ]
           },
@@ -3250,6 +3276,32 @@
              "id": 16,
              "op": "sub",
              "val": 1
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": "==",
+              "val": 0
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "ムロさんに報告してみよう。",
+               "pic": "-",
+               "picPos": "C"
+              },
+              {
+               "t": "sw",
+               "id": 30,
+               "val": true
+              }
+             ]
             }
            ]
           },
@@ -7931,6 +7983,32 @@
              "id": 16,
              "op": "sub",
              "val": 1
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 16,
+              "op": "==",
+              "val": 0
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "ムロさんに報告してみよう。",
+               "pic": "-",
+               "picPos": "C"
+              },
+              {
+               "t": "sw",
+               "id": 30,
+               "val": true
+              }
+             ]
             }
            ]
           },
@@ -10511,7 +10589,7 @@
          "fixed": [
           {
            "item": 11,
-           "price": 300
+           "price": 600
           },
           {
            "item": 12,
@@ -10519,7 +10597,7 @@
           },
           {
            "item": 13,
-           "price": 300
+           "price": 450
           }
          ]
         },
@@ -12268,6 +12346,29 @@
          "face": "",
          "name": "",
          "text": "隣の部屋の物音が気になって眠れない。ニノマエの部屋に行ってみよう。",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 30,
+         "val": true
+        }
+       ],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "先にムロさんに報告しよう。",
          "pic": "-",
          "picPos": "C"
         }
@@ -15414,6 +15515,102 @@
          ],
          "hasElse": false,
          "else": []
+        }
+       ]
+      },
+      {
+       "cond": [
+        {
+         "type": "sw",
+         "id": 30,
+         "val": true
+        }
+       ],
+       "image": {
+        "charset": "sample2",
+        "dir": 0
+       },
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "comment",
+         "text": "3人に協力をお願いし終えたあとの報告（4日目）"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "皆さんから価値のあるものを提供してもらったんですね。\n[p]\nただ、やっぱりこれだけだと全てのパーツは交換できない気がします。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "みなさんと話したり、等価交換機のパーツ以外のものを皆さんに渡したりすると、価値を得るアイデアがいただけるかも知れませんね。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "説明書を見たところ、例のパーツの価値は300、450、600……\n合計で1350の価値が必要です。",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "さらには等価交換機は毎日異なる三つのラインナップが並びます。\n[p]\nここに品物が並んでくれなければ僕達は……",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "………………",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "ムロ",
+         "text": "ま、まずは今日のラインナップを見てみましょう！",
+         "pic": "muro_normal",
+         "picPos": "C"
+        },
+        {
+         "t": "shopview",
+         "show": true
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "（今日の等価交換機のラインナップだ）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "shopview",
+         "show": false
+        },
+        {
+         "t": "sw",
+         "id": 30,
+         "val": false
+        },
+        {
+         "t": "sw",
+         "id": 31,
+         "val": true
         }
        ]
       }
