@@ -1590,7 +1590,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（1回目の会話：3日の航海に触れる）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1603,7 +1603,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（2回目の会話：3日の航海に触れる）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1616,7 +1616,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（3回目の会話：3日の航海に触れる）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1629,7 +1629,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（4回目に過ごしたときの会話）",
+                     "text": "（4回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1642,7 +1642,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（5回目に過ごしたときの会話）",
+                     "text": "（5回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1655,7 +1655,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（6回目に過ごしたときの会話）",
+                     "text": "（6回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1668,7 +1668,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（7回目に過ごしたときの会話）",
+                     "text": "（7回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1681,7 +1681,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（8回目に過ごしたときの会話）",
+                     "text": "（8回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1694,7 +1694,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（9回目に過ごしたときの会話）",
+                     "text": "（9回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1707,7 +1707,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（10回目に過ごしたときの会話）",
+                     "text": "（10回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1720,7 +1720,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（11回目に過ごしたときの会話）",
+                     "text": "（11回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1733,7 +1733,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（12回目に過ごしたときの会話）",
+                     "text": "（12回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1746,7 +1746,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（13回目に過ごしたときの会話）",
+                     "text": "（13回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1759,7 +1759,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（14回目に過ごしたときの会話）",
+                     "text": "（14回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -1772,7 +1772,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（15回目に過ごしたときの会話）",
+                     "text": "（15回目の会話）",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
@@ -3176,7 +3176,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（1回目の会話：3日の航海に触れる）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3189,7 +3189,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（2回目の会話：3日の航海に触れる）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3202,7 +3202,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（3回目の会話：3日の航海に触れる）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3215,7 +3215,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（4回目に過ごしたときの会話）",
+                     "text": "（4回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3228,7 +3228,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（5回目に過ごしたときの会話）",
+                     "text": "（5回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3241,7 +3241,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（6回目に過ごしたときの会話）",
+                     "text": "（6回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3254,7 +3254,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（7回目に過ごしたときの会話）",
+                     "text": "（7回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3267,7 +3267,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（8回目に過ごしたときの会話）",
+                     "text": "（8回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3280,7 +3280,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（9回目に過ごしたときの会話）",
+                     "text": "（9回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3293,7 +3293,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（10回目に過ごしたときの会話）",
+                     "text": "（10回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3306,7 +3306,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（11回目に過ごしたときの会話）",
+                     "text": "（11回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3319,7 +3319,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（12回目に過ごしたときの会話）",
+                     "text": "（12回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3332,7 +3332,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（13回目に過ごしたときの会話）",
+                     "text": "（13回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3345,7 +3345,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（14回目に過ごしたときの会話）",
+                     "text": "（14回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3358,7 +3358,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（15回目に過ごしたときの会話）",
+                     "text": "（15回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -7502,7 +7502,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（1回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（1回目の会話：3日の航海に触れる）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7515,7 +7515,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（2回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（2回目の会話：3日の航海に触れる）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7528,7 +7528,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（3回目の会話：3日の航海に触れる）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7541,7 +7541,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（4回目に過ごしたときの会話）",
+                     "text": "（4回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7554,7 +7554,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（5回目に過ごしたときの会話）",
+                     "text": "（5回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7567,7 +7567,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（6回目に過ごしたときの会話）",
+                     "text": "（6回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7580,7 +7580,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（7回目に過ごしたときの会話）",
+                     "text": "（7回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7593,7 +7593,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（8回目に過ごしたときの会話）",
+                     "text": "（8回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7606,7 +7606,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（9回目に過ごしたときの会話）",
+                     "text": "（9回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7619,7 +7619,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（10回目に過ごしたときの会話）",
+                     "text": "（10回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7632,7 +7632,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（11回目に過ごしたときの会話）",
+                     "text": "（11回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7645,7 +7645,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（12回目に過ごしたときの会話）",
+                     "text": "（12回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7658,7 +7658,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（13回目に過ごしたときの会話）",
+                     "text": "（13回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7671,7 +7671,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（14回目に過ごしたときの会話）",
+                     "text": "（14回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -7684,7 +7684,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ピヲラ",
-                     "text": "（15回目に過ごしたときの会話）",
+                     "text": "（15回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -13344,7 +13344,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（3回目に過ごしたときの会話：3日の航海に触れる）",
+                     "text": "（3回目の会話：3日の航海に触れる）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13357,7 +13357,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（4回目に過ごしたときの会話）",
+                     "text": "（4回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13370,7 +13370,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（5回目に過ごしたときの会話）",
+                     "text": "（5回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13383,7 +13383,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（6回目に過ごしたときの会話）",
+                     "text": "（6回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13396,7 +13396,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（7回目に過ごしたときの会話）",
+                     "text": "（7回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13409,7 +13409,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（8回目に過ごしたときの会話）",
+                     "text": "（8回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13422,7 +13422,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（9回目に過ごしたときの会話）",
+                     "text": "（9回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13435,7 +13435,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（10回目に過ごしたときの会話）",
+                     "text": "（10回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13448,7 +13448,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（11回目に過ごしたときの会話）",
+                     "text": "（11回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13461,7 +13461,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（12回目に過ごしたときの会話）",
+                     "text": "（12回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13474,7 +13474,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（13回目に過ごしたときの会話）",
+                     "text": "（13回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13487,7 +13487,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（14回目に過ごしたときの会話）",
+                     "text": "（14回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
@@ -13500,7 +13500,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ムロ",
-                     "text": "（15回目に過ごしたときの会話）",
+                     "text": "（15回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
