@@ -2589,32 +2589,6 @@
                      "picPos": "C"
                     }
                    ]
-                  },
-                  {
-                   "val": 16,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（17回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 17,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（18回目の会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ]
                   }
                  ],
                  "hasElse": true,
@@ -4470,32 +4444,6 @@
                      "face": "",
                      "name": "ネイサ",
                      "text": "（16回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 16,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（17回目の会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 17,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（18回目の会話）",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -9364,32 +9312,6 @@
                      "face": "",
                      "name": "ピヲラ",
                      "text": "（16回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 16,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（17回目の会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 17,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（18回目の会話）",
                      "pic": "piwora_normal",
                      "picPos": "C"
                     }
@@ -15727,32 +15649,6 @@
                      "face": "",
                      "name": "ムロ",
                      "text": "（16回目の会話）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 16,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（17回目の会話）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ]
-                  },
-                  {
-                   "val": 17,
-                   "cmds": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（18回目の会話）",
                      "pic": "muro_normal",
                      "picPos": "C"
                     }
