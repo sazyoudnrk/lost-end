@@ -381,9 +381,9 @@
   "",
   "",
   "",
-  "ムロを最後に慰めた日",
-  "ネイサを最後に慰めた日",
-  "ニノマエを最後に慰めた日",
+  "",
+  "",
+  "",
   "ピヲラを最後に慰めた日",
   "今日の日付（一時用）",
   ""
@@ -1862,129 +1862,6 @@
             "id": 17,
             "op": ">",
             "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 10,
-            "op": ">",
-            "val": 25
-           }
-          },
-          {
-           "label": "慰める",
-           "cmds": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 16,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "sw",
-                "id": 4,
-                "val": true
-               },
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "もう遅い。今日は部屋に戻って休もう。"
-                }
-               ],
-               "else": [
-                {
-                 "t": "var",
-                 "id": 38,
-                 "op": "game",
-                 "src": "day",
-                 "val": 0
-                },
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 36,
-                  "op": "==",
-                  "val": 0,
-                  "ref": 38
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "今日はもうニノマエを慰めた。",
-                   "pic": "-",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ニノマエ",
-                   "text": "（慰められたときのニノマエの会話）",
-                   "pic": "ninomae_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 10,
-                   "op": "add",
-                   "val": 25
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "ニノマエは少し落ち着いたようだ。",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 36,
-                   "op": "game",
-                   "src": "day",
-                   "val": 0
-                  }
-                 ]
-                }
-               ],
-               "hasElse": true
-              }
-             ]
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": ">",
-            "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 10,
-            "op": "<=",
-            "val": 25
            }
           },
           {
@@ -3571,129 +3448,6 @@
             "id": 17,
             "op": ">",
             "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 9,
-            "op": ">",
-            "val": 25
-           }
-          },
-          {
-           "label": "慰める",
-           "cmds": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 16,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "sw",
-                "id": 4,
-                "val": true
-               },
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "もう遅い。今日は部屋に戻って休もう。"
-                }
-               ],
-               "else": [
-                {
-                 "t": "var",
-                 "id": 38,
-                 "op": "game",
-                 "src": "day",
-                 "val": 0
-                },
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 35,
-                  "op": "==",
-                  "val": 0,
-                  "ref": 38
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "今日はもうネイサを慰めた。",
-                   "pic": "-",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ネイサ",
-                   "text": "（慰められたときのネイサの会話）",
-                   "pic": "neisa_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 9,
-                   "op": "add",
-                   "val": 25
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "ネイサは少し落ち着いたようだ。",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 35,
-                   "op": "game",
-                   "src": "day",
-                   "val": 0
-                  }
-                 ]
-                }
-               ],
-               "hasElse": true
-              }
-             ]
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": ">",
-            "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 9,
-            "op": "<=",
-            "val": 25
            }
           },
           {
@@ -8020,129 +7774,6 @@
             "id": 17,
             "op": ">",
             "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 11,
-            "op": ">",
-            "val": 25
-           }
-          },
-          {
-           "label": "慰める",
-           "cmds": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 16,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "sw",
-                "id": 4,
-                "val": true
-               },
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "もう遅い。今日は部屋に戻って休もう。"
-                }
-               ],
-               "else": [
-                {
-                 "t": "var",
-                 "id": 38,
-                 "op": "game",
-                 "src": "day",
-                 "val": 0
-                },
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 37,
-                  "op": "==",
-                  "val": 0,
-                  "ref": 38
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "今日はもうピヲラを慰めた。",
-                   "pic": "-",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（慰められたときのピヲラの会話）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 11,
-                   "op": "add",
-                   "val": 25
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "ピヲラは少し落ち着いたようだ。",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 37,
-                   "op": "game",
-                   "src": "day",
-                   "val": 0
-                  }
-                 ]
-                }
-               ],
-               "hasElse": true
-              }
-             ]
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": ">",
-            "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 11,
-            "op": "<=",
-            "val": 25
            }
           },
           {
@@ -9154,6 +8785,12 @@
          "type": "sw",
          "id": 14,
          "val": true
+        },
+        {
+         "type": "var",
+         "id": 11,
+         "op": "<=",
+         "val": 25
         }
        ],
        "image": {
@@ -9166,7 +8803,7 @@
        "cmds": [
         {
          "t": "comment",
-         "text": "斧のあと：泣いて謝るだけ"
+         "text": "斧のあと（正気度25以下の間）：泣いて謝る。慰めると1日1回+25、時間は使わない。25を超えたら普段どおりに戻る"
         },
         {
          "t": "text",
@@ -9177,12 +8814,77 @@
          "picPos": "C"
         },
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "（ピヲラは泣き続けている）",
-         "pic": "-",
-         "picPos": "C"
+         "t": "choice",
+         "options": [
+          {
+           "label": "慰める",
+           "cmds": [
+            {
+             "t": "var",
+             "id": 38,
+             "op": "game",
+             "src": "day",
+             "val": 0
+            },
+            {
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 37,
+              "op": "==",
+              "val": 0,
+              "ref": 38
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "今日はもうピヲラを慰めた。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ピヲラ",
+               "text": "（慰められたときのピヲラの会話）",
+               "pic": "piwora_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 11,
+               "op": "add",
+               "val": 25
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "ピヲラは少し落ち着いたようだ。",
+               "pic": "-",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 37,
+               "op": "game",
+               "src": "day",
+               "val": 0
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "label": "やめる",
+           "cmds": []
+          }
+         ]
         }
        ]
       }
@@ -9292,9 +8994,9 @@
        "slot": -1,
        "sw": 14,
        "swv": true,
-       "vr": -1,
-       "vop": "==",
-       "vv": 0,
+       "vr": 11,
+       "vop": "<=",
+       "vv": 25,
        "map": 7,
        "x": 6,
        "y": 5,
@@ -13919,129 +13621,6 @@
             "id": 17,
             "op": ">",
             "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 8,
-            "op": ">",
-            "val": 25
-           }
-          },
-          {
-           "label": "慰める",
-           "cmds": [
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 16,
-              "op": ">",
-              "val": 0
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今は先に、みんなにパーツ集めの協力をお願いしよう。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "if",
-               "cond": {
-                "type": "sw",
-                "id": 4,
-                "val": true
-               },
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "",
-                 "text": "もう遅い。今日は部屋に戻って休もう。"
-                }
-               ],
-               "else": [
-                {
-                 "t": "var",
-                 "id": 38,
-                 "op": "game",
-                 "src": "day",
-                 "val": 0
-                },
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 34,
-                  "op": "==",
-                  "val": 0,
-                  "ref": 38
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "今日はもうムロを慰めた。",
-                   "pic": "-",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "（慰められたときのムロの会話）",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 8,
-                   "op": "add",
-                   "val": 25
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "ムロは少し落ち着いたようだ。",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 34,
-                   "op": "game",
-                   "src": "day",
-                   "val": 0
-                  }
-                 ]
-                }
-               ],
-               "hasElse": true
-              }
-             ]
-            }
-           ],
-           "cond": {
-            "type": "var",
-            "id": 17,
-            "op": ">",
-            "val": 0
-           },
-           "cond2": {
-            "type": "var",
-            "id": 8,
-            "op": "<=",
-            "val": 25
            }
           },
           {
