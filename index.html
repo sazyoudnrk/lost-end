@@ -36,6 +36,8 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #pad b.on{background:rgba(255,255,255,.45)}
 #abtn{position:absolute;right:22px;bottom:calc(40px + env(safe-area-inset-bottom));width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);z-index:4;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;touch-action:none}
 #abtn.on{background:rgba(255,255,255,.45)}
+#bbtn{position:absolute;right:108px;bottom:calc(16px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.35);z-index:4;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;touch-action:none}
+#bbtn.on{background:rgba(255,255,255,.4)}
 #menuBtn{position:absolute;right:10px;top:calc(10px + env(safe-area-inset-top));z-index:4;padding:6px 14px}
 #menu,#title{position:absolute;inset:0;z-index:10;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.75)}
 #title{background:#000}
@@ -81,7 +83,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #screen{position:fixed;left:0;top:0;overflow:hidden;background:#000;transform-origin:0 0}
 .ui-btn.kf{background:#fff;color:#000;box-shadow:0 0 0 2px #000,0 0 0 4px #fff}
 .ui-btn:disabled{opacity:.5}
-body.notouch #pad,body.notouch #abtn{display:none}
+body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </style>
 </head>
 <body>
@@ -93,7 +95,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 <div id="msg"><div id="mname"></div><img id="face" alt=""><div id="mtext"></div><div id="arrow">▼</div></div>
 <div id="choices"></div>
 <div id="pad"><b data-d="3" style="left:50px;top:0"></b><b data-d="1" style="left:0;top:50px"></b><b data-d="2" style="left:100px;top:50px"></b><b data-d="0" style="left:50px;top:100px"></b></div>
-<div id="abtn">A</div>
+<div id="abtn">A</div><div id="bbtn">B</div>
 <button id="menuBtn" class="ui-btn">☰</button>
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
@@ -106,7 +108,7 @@ body.notouch #pad,body.notouch #abtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-14c';
+const GAME_VER='2026-11-14d';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -241,12 +243,15 @@ function setPad(d){if(padD===d)return;if(padD!=null)release(padD);padD=d;if(d!=n
 pad.addEventListener('pointerdown',e=>{e.preventDefault();pad.setPointerCapture(e.pointerId);setPad(padAt(e))});
 pad.addEventListener('pointermove',e=>{if(pad.hasPointerCapture(e.pointerId))setPad(padAt(e))});
 pad.addEventListener('pointerup',()=>setPad(null));pad.addEventListener('pointercancel',()=>setPad(null));
-const abtn=$('#abtn');
+const abtn=$('#abtn'),bbtn=$('#bbtn');
+// B：押している間ダッシュ（常時ダッシュがオンなら押している間は歩き）
+bbtn.addEventListener('pointerdown',e=>{e.preventDefault();bbtn.classList.add('on');dash=true});
+for(const ev of ['pointerup','pointercancel','pointerleave'])bbtn.addEventListener(ev,()=>{bbtn.classList.remove('on');dash=false});
 abtn.addEventListener('pointerdown',e=>{e.preventDefault();abtn.classList.add('on');if(busy)advance();else aPressed=true});
 abtn.addEventListener('pointerup',()=>abtn.classList.remove('on'));abtn.addEventListener('pointercancel',()=>abtn.classList.remove('on'));
 const tapEl=$('#tap');
 tapEl.addEventListener('pointerdown',e=>{e.preventDefault();advance()});
-function showControls(v){for(const el of[pad,abtn,$('#menuBtn')])el.classList.toggle('hide',!v);if(PREVIEW){$('#pvBack').classList.toggle('hide',!v);$('#dbgBtn').classList.toggle('hide',!v)}}
+function showControls(v){for(const el of[pad,abtn,bbtn,$('#menuBtn')])el.classList.toggle('hide',!v);if(PREVIEW){$('#pvBack').classList.toggle('hide',!v);$('#dbgBtn').classList.toggle('hide',!v)}}
 
 /* ---------- 日付・時間帯・価値 ---------- */
 const slotName=i=>G.system.slots[i]??'';
