@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-14j';
+const APP_VER='2026-11-14k';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1307,6 +1307,18 @@ async function openPixelEditor(o){
   function brush(x,y,u){const s=st.size,o2=Math.floor((s-1)/2),r=st.sel;for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++){const px=x-o2+dx,py=y-o2+dy;if(r&&(px<r.x||py<r.y||px>=r.x+r.w||py>=r.y+r.h))continue;setPx(px,py,u)}}
   function lineEach(a,b,fn){let x0=a.x,y0=a.y;const dx=Math.abs(b.x-x0),dy=-Math.abs(b.y-y0),sx=x0<b.x?1:-1,sy=y0<b.y?1:-1;let e=dx+dy;
     for(;;){fn(x0,y0);if(x0===b.x&&y0===b.y)break;const e2=2*e;if(e2>=dy){e+=dy;x0+=sx}if(e2<=dx){e+=dx;y0+=sy}}}
+  // 四角・楕円：a〜b を囲む枠（fill=true なら中も）。枠は今の太さで描く
+  function shapePts(a,b,kind,fill){const x0=Math.min(a.x,b.x),x1=Math.max(a.x,b.x),y0=Math.min(a.y,b.y),y1=Math.max(a.y,b.y),out=[];
+    if(kind==='rect'){for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)if(fill||x===x0||x===x1||y===y0||y===y1)out.push([x,y]);return out}
+    const cx=(x0+x1+1)/2,cy=(y0+y1+1)/2,rx=(x1-x0+1)/2,ry=(y1-y0+1)/2,inE=(x,y)=>x>=x0&&x<=x1&&y>=y0&&y<=y1&&((x+.5-cx)/rx)**2+((y+.5-cy)/ry)**2<=1;
+    for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)if(inE(x,y)&&(fill||!inE(x-1,y)||!inE(x+1,y)||!inE(x,y-1)||!inE(x,y+1)))out.push([x,y]);return out}
+  function drawShape(sh,u){const pts=shapePts(sh.a,sh.b,sh.kind,st.sfill);if(st.sfill){const r=st.sel;for(const[x,y]of pts){if(r&&(x<r.x||y<r.y||x>=r.x+r.w||y>=r.y+r.h))continue;setPx(x,y,u)}}else for(const[x,y]of pts)brush(x,y,u)}
+  // 輪郭をなぞる：絵のまわりの透明なマス（上下左右がとなり）を今の色で塗る。選択範囲があればその中だけ
+  function outline(){commitFloat();const u=cmap();if(typeof u!=='function'&&!(u>>>24)){toast('透明以外の色を選んでください');return}
+    const r=st.sel||{x:0,y:0,w:W,h:H},b=snap(),B=new Uint32Array(b.buffer),L2=[];
+    for(let y=r.y;y<r.y+r.h;y++)for(let x=r.x;x<r.x+r.w;x++){if(B[y*W+x]>>>24)continue;
+      const op=(xx,yy)=>xx>=0&&yy>=0&&xx<W&&yy<H&&(B[yy*W+xx]>>>24);if(op(x-1,y)||op(x+1,y)||op(x,y-1)||op(x,y+1))L2.push([x,y])}
+    if(!L2.length){toast('なぞる絵がありません');return}for(const[x,y]of L2)setPx(x,y,u);pushPatch(b);req();toast('輪郭をなぞりました')}
   // 選択範囲があればその中だけを塗る
   function flood(x,y,u){const r=st.sel||{x:0,y:0,w:W,h:H},X0=r.x,Y0=r.y,X1=r.x+r.w-1,Y1=r.y+r.h-1;
     if(x<X0||y<Y0||x>X1||y>Y1)return false;const t=A[y*W+x],fn=typeof u==='function';if(!fn&&t===u)return true;const seen=new Uint8Array(W*H),stk=[y*W+x];
@@ -1337,6 +1349,8 @@ async function openPixelEditor(o){
     c.fillStyle=checker;c.fillRect(st.ox,st.oy,W*z,H*z);
     c.imageSmoothingEnabled=false;L.forEach((l,i)=>{const a=i===li?1:st.other==='hide'?0:st.other==='dim'?.3:1;if(!a)return;c.globalAlpha=a;c.drawImage(l.cv,st.ox,st.oy,W*z,H*z)});c.globalAlpha=1;
     const f=st.float;if(f){c.drawImage(fcv,st.ox+f.x*z,st.oy+f.y*z,f.d.width*z,f.d.height*z)}
+    if(st.shape){const tf=st.tone!=null?TONES[st.tone][1]:null,sz=st.sfill?1:st.size,o2=Math.floor((sz-1)/2);c.fillStyle=st.col[3]?c2hex(st.col):'rgba(214,200,236,.9)';
+      for(const[x,y]of shapePts(st.shape.a,st.shape.b,st.shape.kind,st.sfill)){if(tf)c.fillStyle=tf(x,y)?'#000':'#fff';c.fillRect(st.ox+(x-o2)*z,st.oy+(y-o2)*z,sz*z,sz*z)}}
     if(st.line){const s=st.size,o2=Math.floor((s-1)/2),tf=st.tone!=null?TONES[st.tone][1]:null;c.fillStyle=st.col[3]?c2hex(st.col):'rgba(214,200,236,.9)';
       lineEach(st.line.a,st.line.b,(x,y)=>{if(!tf){c.fillRect(st.ox+(x-o2)*z,st.oy+(y-o2)*z,s*z,s*z);return}for(let dy=0;dy<s;dy++)for(let dx=0;dx<s;dx++){const X=x-o2+dx,Y=y-o2+dy;c.fillStyle=tf(X,Y)?'#000':'#fff';c.fillRect(st.ox+X*z,st.oy+Y*z,z,z)}})}
     const x0=Math.max(0,Math.floor(-st.ox/z)),y0=Math.max(0,Math.floor(-st.oy/z)),x1=Math.min(W,Math.ceil((cw-st.ox)/z)),y1=Math.min(H,Math.ceil((ch-st.oy)/z));
@@ -1379,6 +1393,7 @@ async function openPixelEditor(o){
     if(t==='fill'){const b=snap();if(!flood(p.x,p.y,cmap())){if(st.sel)toast('選択範囲の中をタップしてください（解除は「解除」）');return}pushPatch(b);req();return}
     const u=cmap();
     if(t==='line'){stroke={t:'line',b:snap(),u};st.line={a:p,b:p};req();return}
+    if(t==='rect'||t==='ellipse'){stroke={t:'shape',b:snap(),u};st.shape={kind:t,a:p,b:p};req();return}
     stroke={t:'pen',b:snap(),u,last:p};brush(p.x,p.y,u);st.dirty=true;req();
   }
   function updSel(p){const a=stroke.a,x0=Math.min(a.x,p.x),y0=Math.min(a.y,p.y),x1=Math.max(a.x,p.x)+1,y1=Math.max(a.y,p.y)+1;
@@ -1387,13 +1402,15 @@ async function openPixelEditor(o){
     if(!stroke)return;
     if(stroke.t==='pen'){lineEach(stroke.last,p,(x,y)=>brush(x,y,stroke.u));stroke.last=p;st.dirty=true;req()}
     else if(stroke.t==='line'){st.line.b=p;req()}
+    else if(stroke.t==='shape'){st.shape.b=p;req()}
     else if(stroke.t==='sel')updSel(p);
     else if(stroke.t==='move'){const f=st.float;let nx=stroke.fx+p.x-stroke.p0.x,ny=stroke.fy+p.y-stroke.p0.y;const[gw,gh]=gridWH();
       if(st.snap&&gw){nx=Math.round(nx/gw)*gw;ny=Math.round(ny/gh)*gh}f.x=nx;f.y=ny;req()}
   }
   function end(cancel){
     const s=stroke;stroke=null;if(!s)return;
-    if(cancel&&(s.t==='pen'||s.t==='line')){img.data.set(s.b);st.line=null;st.dirty=true;req();return}
+    if(cancel&&(s.t==='pen'||s.t==='line'||s.t==='shape')){img.data.set(s.b);st.line=null;st.shape=null;st.dirty=true;req();return}
+    if(s.t==='shape'){drawShape(st.shape,s.u);st.shape=null;pushPatch(s.b)}
     if(s.t==='pen')pushPatch(s.b);
     if(s.t==='line'){lineEach(st.line.a,st.line.b,(x,y)=>brush(x,y,s.u));st.line=null;pushPatch(s.b)}
     if(s.t==='sel'){if(st.sel&&st.sel.w*st.sel.h<=1&&!st.snap)st.sel=null;pushSel()}
@@ -1466,11 +1483,11 @@ async function openPixelEditor(o){
     st.changed=false;delete imgs[st.path];reqDraw();drawPalette();if(curTab==='assets')renderAssets();toast('保存しました（☁でプッシュ）');
   }
   /* --- UI --- */
-  const TOOLS=[['pen','✏️'],['fill','🪣'],['line','／'],['pick','💧'],['select','⬚'],['hand','✋']];
+  const TOOLS=[['pen','✏️'],['fill','🪣'],['line','／'],['rect','▭'],['ellipse','◯'],['pick','💧'],['select','⬚'],['hand','✋']];
   function refreshUI(){
     if(!area)return;
     area.querySelectorAll('[data-pt]').forEach(b=>b.classList.toggle('on',b.dataset.pt===st.tool));
-    area.querySelectorAll('[data-ps]').forEach(b=>b.classList.toggle('on',+b.dataset.ps===st.size));
+    area.querySelectorAll('[data-ps]').forEach(b=>b.classList.toggle('on',+b.dataset.ps===st.size));{const sf=area.querySelector('#peSfill');if(sf){sf.textContent=st.sfill?'■ 塗り':'□ 枠';sf.classList.toggle('on',!!st.sfill)}}
     area.querySelectorAll('[data-pl]').forEach(b=>b.classList.toggle('on',+b.dataset.pl===li));area.querySelector('#peOther').textContent={show:'👁 もう1枚：表示',dim:'👁 もう1枚：薄く',hide:'👁 もう1枚：隠す'}[st.other];
     area.querySelector('#peGrid').classList.toggle('on',st.grid);area.querySelector('#peSnap').classList.toggle('on',st.snap);
     swBox.innerHTML='';toneBox.innerHTML='';toneBox.append(h('span',{class:'hint',style:'align-self:center;margin-right:2px;white-space:nowrap'},'トーン'));const cur=c2hex(st.col);
@@ -1494,12 +1511,14 @@ async function openPixelEditor(o){
     area=b;
     const wrap=h('div',{style:'flex:1;position:relative;min-height:120px;overflow:hidden'},cv=h('canvas',{style:'position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block'}));
     if(o.kind==='charsets'){pvCv=h('canvas',{width:144,height:144,style:'position:absolute;right:6px;top:6px;width:72px;height:72px;background:#fffd;border:1px solid var(--bd);border-radius:8px;image-rendering:pixelated',onclick:()=>{st.pdir=(st.pdir+1)%4}});wrap.append(pvCv)}
-    colInp=h('input',{type:'color',style:'width:40px;height:34px;padding:0;border:0;background:none;flex:none',onchange:()=>{const hx=colInp.value;st.tone=null;st.col=hex2c(hx);if(!PE_SW.includes(hx)&&!peRecent.includes(hx)){peRecent.unshift(hx);peRecent=peRecent.slice(0,6)}if(st.tool!=='pen'&&st.tool!=='fill'&&st.tool!=='line')st.tool='pen';refreshUI()}});
+    colInp=h('input',{type:'color',style:'width:40px;height:34px;padding:0;border:0;background:none;flex:none',onchange:()=>{const hx=colInp.value;st.tone=null;st.col=hex2c(hx);if(!PE_SW.includes(hx)&&!peRecent.includes(hx)){peRecent.unshift(hx);peRecent=peRecent.slice(0,6)}if(!['pen','fill','line','rect','ellipse'].includes(st.tool))st.tool='pen';refreshUI()}});
     swBox=h('div',{style:'display:flex;gap:6px'});toneBox=h('div',{class:'bar',style:'gap:6px'});
     bar2=h('div',{class:'bar',style:'border-top:1px solid var(--bd)'});
     b.append(wrap,bar2,
-      h('div',{class:'bar'},...TOOLS.map(([k,l])=>h('button',{class:'btn','data-pt':k,onclick:()=>{if(k!=='select'&&k!=='hand')commitFloat();st.tool=k;refreshUI();req()}},l)),
-        h('div',{class:'seg'},...[1,2,3,4].map(n=>h('button',{'data-ps':n,onclick:()=>{st.size=n;refreshUI()}},n))),
+      h('div',{class:'bar',style:'gap:4px'},...TOOLS.map(([k,l])=>h('button',{class:'btn','data-pt':k,style:'padding:6px 9px;min-width:0',onclick:()=>{if(k!=='select'&&k!=='hand')commitFloat();st.tool=k;refreshUI();req()}},l))),
+      h('div',{class:'bar'},h('span',{class:'hint',style:'align-self:center;white-space:nowrap'},'太さ'),h('div',{class:'seg'},...[1,2,3,4].map(n=>h('button',{'data-ps':n,onclick:()=>{st.size=n;refreshUI()}},n))),
+        h('button',{class:'btn sm',id:'peSfill',title:'四角・楕円の中も塗る',onclick:()=>{st.sfill=!st.sfill;if(st.tool!=='rect'&&st.tool!=='ellipse')st.tool='rect';refreshUI()}},''),
+        btn('輪郭',outline,'sm'),
       ),
       h('div',{class:'bar'},h('span',{class:'hint',style:'align-self:center;white-space:nowrap'},'レイヤー'),h('div',{class:'seg'},...[0,1].map(i=>h('button',{'data-pl':i,onclick:()=>setLayer(i)},['1 下','2 上'][i]))),
         h('button',{class:'btn sm',id:'peOther',onclick:()=>{st.other={show:'dim',dim:'hide',hide:'show'}[st.other];refreshUI();req()}},''),
