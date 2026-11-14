@@ -8814,71 +8814,55 @@
          "picPos": "C"
         },
         {
+         "t": "var",
+         "id": 38,
+         "op": "game",
+         "src": "day",
+         "val": 0
+        },
+        {
          "t": "choice",
          "options": [
           {
            "label": "慰める",
            "cmds": [
             {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "（慰められたときのピヲラの会話）",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
              "t": "var",
-             "id": 38,
+             "id": 11,
+             "op": "add",
+             "val": 25
+            },
+            {
+             "t": "text",
+             "face": "",
+             "name": "",
+             "text": "ピヲラは少し落ち着いたようだ。",
+             "pic": "-",
+             "picPos": "C"
+            },
+            {
+             "t": "var",
+             "id": 37,
              "op": "game",
              "src": "day",
              "val": 0
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 37,
-              "op": "==",
-              "val": 0,
-              "ref": 38
-             },
-             "hasElse": true,
-             "then": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "今日はもうピヲラを慰めた。",
-               "pic": "-",
-               "picPos": "C"
-              }
-             ],
-             "else": [
-              {
-               "t": "text",
-               "face": "",
-               "name": "ピヲラ",
-               "text": "（慰められたときのピヲラの会話）",
-               "pic": "piwora_normal",
-               "picPos": "C"
-              },
-              {
-               "t": "var",
-               "id": 11,
-               "op": "add",
-               "val": 25
-              },
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "ピヲラは少し落ち着いたようだ。",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "var",
-               "id": 37,
-               "op": "game",
-               "src": "day",
-               "val": 0
-              }
-             ]
             }
-           ]
+           ],
+           "cond": {
+            "type": "var",
+            "id": 37,
+            "op": "!=",
+            "val": 0,
+            "ref": 38
+           }
           },
           {
            "label": "やめる",
