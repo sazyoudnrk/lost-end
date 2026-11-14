@@ -2732,10 +2732,9 @@
             "val": 0
            },
            "cond2": {
-            "type": "var",
-            "id": 16,
-            "op": "==",
-            "val": 0
+            "type": "sw",
+            "id": 31,
+            "val": true
            }
           },
           {
@@ -4496,10 +4495,9 @@
             "val": 0
            },
            "cond2": {
-            "type": "var",
-            "id": 16,
-            "op": "==",
-            "val": 0
+            "type": "sw",
+            "id": 31,
+            "val": true
            }
           },
           {
@@ -9211,10 +9209,9 @@
             "val": 0
            },
            "cond2": {
-            "type": "var",
-            "id": 16,
-            "op": "==",
-            "val": 0
+            "type": "sw",
+            "id": 31,
+            "val": true
            }
           },
           {
@@ -15219,10 +15216,9 @@
             "val": 0
            },
            "cond2": {
-            "type": "var",
-            "id": 16,
-            "op": "==",
-            "val": 0
+            "type": "sw",
+            "id": 31,
+            "val": true
            }
           },
           {
