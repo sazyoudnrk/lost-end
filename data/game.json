@@ -373,6 +373,34 @@
    "desc": "ピヲラが貝殻で作ってくれたブローチ。",
    "value": 200,
    "gift": true
+  },
+  {
+   "id": 43,
+   "name": "手編みのひざ掛け",
+   "desc": "あたたかい。年を重ねた人にやさしい。",
+   "value": 10,
+   "gift": true
+  },
+  {
+   "id": 44,
+   "name": "未知の鉱石標本",
+   "desc": "どの図鑑にも載っていない鉱石。",
+   "value": 10,
+   "gift": true
+  },
+  {
+   "id": 45,
+   "name": "上質なスケッチブック",
+   "desc": "どこまでも描けそうな、白くて厚い紙。",
+   "value": 10,
+   "gift": true
+  },
+  {
+   "id": 46,
+   "name": "食玩の新シリーズ",
+   "desc": "まだ誰も開けていない、新しいシリーズの食玩。",
+   "value": 10,
+   "gift": true
   }
  ],
  "switches": [
@@ -409,7 +437,7 @@
   "ムロに報告する（協力のお願いが終わった）",
   "ムロに報告した",
   "真エンド解放（4人の天秤を見た）",
-  "真ルートに入った（仮）",
+  "",
   "",
   "",
   "",
@@ -452,7 +480,7 @@
   "",
   "",
   "",
-  "",
+  "乗客4人が9日目の夜に正気度100以上（判定用 1=全員）",
   "",
   "",
   "ニノマエを刺した日",
@@ -2821,6 +2849,43 @@
                    "val": 5
                   }
                  ]
+                },
+                {
+                 "val": 45,
+                 "cmds": [
+                  {
+                   "t": "comment",
+                   "text": "真エンド解放後だけ手に入る、ニノマエがとても喜ぶプレゼント（正気度+75）"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（上質なスケッチブックをもらって、心から喜ぶニノマエ）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ニノマエはとても喜んでいる。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 10,
+                   "op": "add",
+                   "val": 75
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
+                  }
+                 ]
                 }
                ],
                "else": [
@@ -4665,6 +4730,43 @@
                    "id": 9,
                    "op": "add",
                    "val": 10
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
+                  }
+                 ]
+                },
+                {
+                 "val": 44,
+                 "cmds": [
+                  {
+                   "t": "comment",
+                   "text": "真エンド解放後だけ手に入る、ネイサがとても喜ぶプレゼント（正気度+75）"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（未知の鉱石標本をもらって、心から喜ぶネイサ）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ネイサはとても喜んでいる。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 9,
+                   "op": "add",
+                   "val": 75
                   },
                   {
                    "t": "var",
@@ -9534,6 +9636,43 @@
                    "val": 5
                   }
                  ]
+                },
+                {
+                 "val": 46,
+                 "cmds": [
+                  {
+                   "t": "comment",
+                   "text": "真エンド解放後だけ手に入る、ピヲラがとても喜ぶプレゼント（正気度+75）"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（食玩の新シリーズをもらって、心から喜ぶピヲラ）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "ピヲラはとても喜んでいる。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 11,
+                   "op": "add",
+                   "val": 75
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
+                  }
+                 ]
                 }
                ],
                "else": [
@@ -12081,6 +12220,70 @@
                    ]
                   },
                   {
+                   "t": "var",
+                   "id": 34,
+                   "op": "set",
+                   "val": 0
+                  },
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 8,
+                    "op": ">=",
+                    "val": 100
+                   },
+                   "hasElse": false,
+                   "else": [],
+                   "then": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "var",
+                      "id": 9,
+                      "op": ">=",
+                      "val": 100
+                     },
+                     "hasElse": false,
+                     "else": [],
+                     "then": [
+                      {
+                       "t": "if",
+                       "cond": {
+                        "type": "var",
+                        "id": 10,
+                        "op": ">=",
+                        "val": 100
+                       },
+                       "hasElse": false,
+                       "else": [],
+                       "then": [
+                        {
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 11,
+                          "op": ">=",
+                          "val": 100
+                         },
+                         "hasElse": false,
+                         "else": [],
+                         "then": [
+                          {
+                           "t": "var",
+                           "id": 34,
+                           "op": "set",
+                           "val": 1
+                          }
+                         ]
+                        }
+                       ]
+                      }
+                     ]
+                    }
+                   ]
+                  },
+                  {
                    "t": "sleep"
                   },
                   {
@@ -12101,7 +12304,7 @@
                      "t": "if",
                      "cond": {
                       "type": "sw",
-                      "id": 33,
+                      "id": 32,
                       "val": true
                      },
                      "hasElse": false,
@@ -12118,28 +12321,41 @@
                        "else": [],
                        "then": [
                         {
-                         "t": "comment",
-                         "text": "真エンド（仮）"
-                        },
-                        {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（星間ワープ装置が起動し、船は地球に到着した）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "text",
-                         "face": "",
-                         "name": "",
-                         "text": "（真エンドの本文をここに）",
-                         "pic": "-",
-                         "picPos": "C"
-                        },
-                        {
-                         "t": "ending",
-                         "id": "true"
+                         "t": "if",
+                         "cond": {
+                          "type": "var",
+                          "id": 34,
+                          "op": "==",
+                          "val": 1
+                         },
+                         "hasElse": false,
+                         "else": [],
+                         "then": [
+                          {
+                           "t": "comment",
+                           "text": "真エンド（仮）"
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（星間ワープ装置が起動し、船は地球に到着した）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "text",
+                           "face": "",
+                           "name": "",
+                           "text": "（真エンドの本文をここに）",
+                           "pic": "-",
+                           "picPos": "C"
+                          },
+                          {
+                           "t": "ending",
+                           "id": "true"
+                          }
+                         ]
                         }
                        ]
                       }
@@ -13893,69 +14109,6 @@
        "priority": "same",
        "through": true,
        "cmds": []
-      }
-     ]
-    },
-    {
-     "id": 44,
-     "name": "真ルートの入口（仮）",
-     "x": 5,
-     "y": 0,
-     "pages": [
-      {
-       "cond": [],
-       "image": null,
-       "trigger": "action",
-       "priority": "below",
-       "through": true,
-       "cmds": []
-      },
-      {
-       "cond": [
-        {
-         "type": "sw",
-         "id": 32,
-         "val": true
-        },
-        {
-         "type": "sw",
-         "id": 33,
-         "val": false
-        },
-        {
-         "type": "var",
-         "id": 5,
-         "op": ">=",
-         "val": 5
-        }
-       ],
-       "image": null,
-       "trigger": "auto",
-       "priority": "below",
-       "through": true,
-       "cmds": [
-        {
-         "t": "comment",
-         "text": "真エンド解放後の周回だけ起きる。ここに新しい展開の始まりを書く（仮）。スイッチ34で真ルートに入る"
-        },
-        {
-         "t": "wait",
-         "ms": 400
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "（真ルートの始まり：解放後の周回だけの新しい展開をここに書く）",
-         "pic": "-",
-         "picPos": "C"
-        },
-        {
-         "t": "sw",
-         "id": 33,
-         "val": true
-        }
-       ]
       }
      ]
     }
@@ -15770,6 +15923,43 @@
                      "id": 8,
                      "op": "add",
                      "val": 10
+                    },
+                    {
+                     "t": "var",
+                     "id": 17,
+                     "op": "add",
+                     "val": 5
+                    }
+                   ]
+                  },
+                  {
+                   "val": 43,
+                   "cmds": [
+                    {
+                     "t": "comment",
+                     "text": "真エンド解放後だけ手に入る、ムロがとても喜ぶプレゼント（正気度+75）"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（手編みのひざ掛けをもらって、心から喜ぶムロ）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "",
+                     "text": "ムロはとても喜んでいる。",
+                     "pic": "-",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "var",
+                     "id": 8,
+                     "op": "add",
+                     "val": 75
                     },
                     {
                      "t": "var",
@@ -17814,6 +18004,50 @@
     "once": true,
     "showOnce": true,
     "limitUp": 0
+   },
+   {
+    "item": 43,
+    "price": 50,
+    "weight": 2,
+    "from": 4,
+    "to": "",
+    "sw": 32,
+    "once": true,
+    "showOnce": false,
+    "limitUp": 0
+   },
+   {
+    "item": 44,
+    "price": 50,
+    "weight": 2,
+    "from": 4,
+    "to": "",
+    "sw": 32,
+    "once": true,
+    "showOnce": false,
+    "limitUp": 0
+   },
+   {
+    "item": 45,
+    "price": 50,
+    "weight": 2,
+    "from": 4,
+    "to": "",
+    "sw": 32,
+    "once": true,
+    "showOnce": false,
+    "limitUp": 0
+   },
+   {
+    "item": 46,
+    "price": 50,
+    "weight": 2,
+    "from": 4,
+    "to": "",
+    "sw": 32,
+    "once": true,
+    "showOnce": false,
+    "limitUp": 0
    }
   ],
   "noRepeatFrom": 4
@@ -18026,7 +18260,7 @@
     "id": "true",
     "name": "真エンド（仮）",
     "desc": "（真エンドの説明）",
-    "note": "4人の天秤を見たあとの周回で真ルートに入り、9日目の夜にパーツが揃っていて、ニノマエを刺していない"
+    "note": "真エンド解放後の周回で、9日目の夜にパーツが揃っていて、ニノマエを刺しておらず、乗客4人全員の正気度が100以上"
    }
   ],
   "titleSub": "",
