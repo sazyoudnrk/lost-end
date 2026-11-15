@@ -142,7 +142,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-15f';
+const GAME_VER='2026-11-15g';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -440,7 +440,7 @@ function checkAuto(){if($('#title').style.display==='flex')return;const e=events
 
 /* ---------- イベント実行 ---------- */
 async function runEvent(ev){
-  busy=true;aPressed=false;setPad(null);held.length=0;clearPath();showControls(false);tapEl.style.display='block';
+  busy=true;aPressed=false;setPad(null);if(!P.moving)P.anim=0;held.length=0;clearPath();showControls(false);tapEl.style.display='block';
   const cx={ev,mapId:map.id};
   try{await exec(ev.page.cmds,cx)}catch(e){if(e!==END)console.error(e)}
   hideMsg();clearPics();showStill(null,false);closeShopView();if(+$('#fade').style.opacity>0)await fade(0);busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
