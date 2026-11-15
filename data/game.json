@@ -190,7 +190,7 @@
    "name": "ニノマエの鉛筆画",
    "desc": "ニノマエが鉛筆で描いた絵",
    "value": 300,
-   "gift": true
+   "gift": false
   },
   {
    "id": 17,
@@ -302,7 +302,7 @@
    "name": "綺麗な宝石",
    "desc": "ネイサが磨いてくれた石。きらきら光っている。",
    "value": 300,
-   "gift": true
+   "gift": false
   },
   {
    "id": 34,
@@ -337,28 +337,28 @@
    "name": "ピヲラの編みぐるみ",
    "desc": "ピヲラが編んでくれた小さな人形。",
    "value": 250,
-   "gift": true
+   "gift": false
   },
   {
    "id": 39,
    "name": "直したレコード",
    "desc": "ムロが傷を直してくれたレコード。また音が鳴る。",
    "value": 200,
-   "gift": true
+   "gift": false
   },
   {
    "id": 40,
    "name": "ニノマエの水彩画",
    "desc": "ニノマエが水彩絵の具で描いた絵。",
    "value": 300,
-   "gift": true
+   "gift": false
   },
   {
    "id": 41,
    "name": "鑑定済みの切手",
    "desc": "ネイサが調べてくれた珍しい切手。メモ付き。",
    "value": 200,
-   "gift": true
+   "gift": false
   },
   {
    "id": 43,
@@ -430,7 +430,7 @@
    "name": "キャラメル",
    "desc": "ピヲラが練乳缶を煮て作ってくれたキャラメル。",
    "value": 100,
-   "gift": true
+   "gift": false
   },
   {
    "id": 50,
@@ -444,7 +444,7 @@
    "name": "べっこう飴",
    "desc": "ピヲラが砂糖を溶かして作ってくれたべっこう飴。",
    "value": 100,
-   "gift": true
+   "gift": false
   },
   {
    "id": 52,
@@ -458,7 +458,7 @@
    "name": "ロストエンドの歴史",
    "desc": "ムロが書いてくれた、ロストエンドの歴史。",
    "value": 300,
-   "gift": true
+   "gift": false
   }
  ],
  "switches": [
