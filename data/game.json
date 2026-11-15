@@ -277,6 +277,13 @@
    "gift": true
   },
   {
+   "id": 29,
+   "name": "貝殻",
+   "desc": "海があった星の貝殻",
+   "value": 9,
+   "gift": true
+  },
+  {
    "id": 30,
    "name": "古いレコード",
    "desc": "針で音を鳴らす円盤",
@@ -361,6 +368,13 @@
    "gift": true
   },
   {
+   "id": 42,
+   "name": "貝殻のブローチ",
+   "desc": "ピヲラが貝殻で作ってくれたブローチ。",
+   "value": 200,
+   "gift": true
+  },
+  {
    "id": 43,
    "name": "手編みのひざ掛け",
    "desc": "あたたかい。年を重ねた人にやさしい。",
@@ -386,64 +400,6 @@
    "name": "食玩の新シリーズ",
    "desc": "まだ誰も開けていない、新しいシリーズの食玩。",
    "value": 10,
-   "gift": true
-  },
-  {
-   "id": 47,
-   "name": "缶詰",
-   "desc": "みんなの備蓄食品から1つもらった缶詰。",
-   "value": 1,
-   "icon": "ic_food",
-   "gift": true,
-   "use": [
-    {
-     "t": "item",
-     "id": 47,
-     "n": -1
-    },
-    {
-     "t": "text",
-     "face": "",
-     "name": "",
-     "text": "缶詰を食べた。少しだけ落ち着いた。",
-     "pic": "-",
-     "picPos": "C"
-    },
-    {
-     "t": "var",
-     "id": 17,
-     "op": "add",
-     "val": 5
-    }
-   ],
-   "useLabel": "食べる"
-  },
-  {
-   "id": 48,
-   "name": "練乳缶",
-   "desc": "甘い練乳の缶詰。",
-   "value": 8,
-   "gift": true
-  },
-  {
-   "id": 49,
-   "name": "キャラメル",
-   "desc": "ピヲラが練乳缶を煮て作ってくれたキャラメル。",
-   "value": 100,
-   "gift": true
-  },
-  {
-   "id": 50,
-   "name": "砂糖",
-   "desc": "袋に入った砂糖。",
-   "value": 5,
-   "gift": true
-  },
-  {
-   "id": 51,
-   "name": "べっこう飴",
-   "desc": "ピヲラが砂糖を溶かして作ってくれたべっこう飴。",
-   "value": 100,
    "gift": true
   }
  ],
@@ -529,7 +485,7 @@
   "",
   "ニノマエを刺した日",
   "今日の日付（一時用）",
-  "缶詰をもらった回数"
+  ""
  ],
  "player": {
   "charset": "sample1",
@@ -2751,13 +2707,13 @@
                "hasElse": true,
                "cases": [
                 {
-                 "val": 47,
+                 "val": 9,
                  "cmds": [
                   {
                    "t": "text",
                    "face": "",
                    "name": "ニノマエ",
-                   "text": "（缶詰をもらったときの反応）",
+                   "text": "（備蓄食品をもらったときの反応）",
                    "pic": "ninomae_normal",
                    "picPos": "C"
                   },
@@ -3837,7 +3793,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "考えるのやめて、寝ちゃおうかな",
+                     "text": "こんな時、知識があれば\n[p]\n咄嗟の時役に立つのは定着した知識だけだ。\n共有された情報に今まで頼りすぎていた……",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3886,7 +3842,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "ピヲラ君は調理ができるらしい、彼女は器用そうだ",
+                     "text": "ピヲラ君は調理ができるらしい、彼女は器用そうだ。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3909,7 +3865,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（5日目のどうでもいい会話A）",
+                     "text": "俺は古いものを手入れすることはできる。古いものの方が価値があることもあるしな。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3922,7 +3878,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（5日目のどうでもいい会話B）",
+                     "text": "ムロ君はその身一つできたような男だな。\nそして知識量が凄まじい。彼、かなり長く生きていそうだ。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -3935,7 +3891,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（5日目のどうでもいい会話C）",
+                     "text": "キミも酔狂なやつだよ。チキュウに観光なんて、滅多にいないだろ。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -4609,13 +4565,13 @@
                "hasElse": true,
                "cases": [
                 {
-                 "val": 47,
+                 "val": 9,
                  "cmds": [
                   {
                    "t": "text",
                    "face": "",
                    "name": "ネイサ",
-                   "text": "（缶詰をもらったときの反応）",
+                   "text": "（備蓄食品をもらったときの反応）",
                    "pic": "neisa_normal",
                    "picPos": "C"
                   },
@@ -6155,61 +6111,6 @@
          "text": "みんなの備蓄食品が置いてある。",
          "pic": "-",
          "picPos": "C"
-        },
-        {
-         "t": "if",
-         "cond": {
-          "type": "var",
-          "id": 39,
-          "op": ">=",
-          "val": 4
-         },
-         "hasElse": true,
-         "then": [
-          {
-           "t": "text",
-           "face": "",
-           "name": "主人公",
-           "text": "……これ以上はやめておこう。",
-           "pic": "-",
-           "picPos": "C"
-          }
-         ],
-         "else": [
-          {
-           "t": "choice",
-           "options": [
-            {
-             "label": "缶詰を1つもらう",
-             "cmds": [
-              {
-               "t": "item",
-               "id": 47,
-               "n": 1
-              },
-              {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "缶詰を1つもらった。",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "var",
-               "id": 39,
-               "op": "add",
-               "val": 1
-              }
-             ]
-            },
-            {
-             "label": "やめる",
-             "cmds": []
-            }
-           ]
-          }
-         ]
         }
        ]
       }
@@ -9549,13 +9450,13 @@
                "hasElse": true,
                "cases": [
                 {
-                 "val": 47,
+                 "val": 9,
                  "cmds": [
                   {
                    "t": "text",
                    "face": "",
                    "name": "ピヲラ",
-                   "text": "（缶詰をもらったときの反応）",
+                   "text": "（備蓄食品をもらったときの反応）",
                    "pic": "piwora_normal",
                    "picPos": "C"
                   },
@@ -9624,6 +9525,56 @@
                  ]
                 },
                 {
+                 "val": 29,
+                 "cmds": [
+                  {
+                   "t": "comment",
+                   "text": "仮：貝殻を渡すと貝殻のブローチ（価値200）になって返ってくる"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（貝殻をもらったときのピヲラの反応）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "（ピヲラが貝殻でブローチを作ってくれた）",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "item",
+                   "id": 42,
+                   "n": 1
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "貝殻のブローチを受け取った。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 11,
+                   "op": "add",
+                   "val": 10
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
+                  }
+                 ]
+                },
+                {
                  "val": 46,
                  "cmds": [
                   {
@@ -9651,106 +9602,6 @@
                    "id": 11,
                    "op": "add",
                    "val": 75
-                  },
-                  {
-                   "t": "var",
-                   "id": 17,
-                   "op": "add",
-                   "val": 5
-                  }
-                 ]
-                },
-                {
-                 "val": 48,
-                 "cmds": [
-                  {
-                   "t": "comment",
-                   "text": "仮：練乳缶を渡すとキャラメル（価値100）になって返ってくる"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（練乳缶をもらったときのピヲラの反応）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "（ピヲラが練乳缶を煮てキャラメルにしてくれた）",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "item",
-                   "id": 49,
-                   "n": 1
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "キャラメルを受け取った。",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 11,
-                   "op": "add",
-                   "val": 10
-                  },
-                  {
-                   "t": "var",
-                   "id": 17,
-                   "op": "add",
-                   "val": 5
-                  }
-                 ]
-                },
-                {
-                 "val": 50,
-                 "cmds": [
-                  {
-                   "t": "comment",
-                   "text": "仮：砂糖を渡すとべっこう飴（価値100）になって返ってくる"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（砂糖をもらったときのピヲラの反応）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "（ピヲラが砂糖を溶かしてべっこう飴にしてくれた）",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "item",
-                   "id": 51,
-                   "n": 1
-                  },
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "",
-                   "text": "べっこう飴を受け取った。",
-                   "pic": "-",
-                   "picPos": "C"
-                  },
-                  {
-                   "t": "var",
-                   "id": 11,
-                   "op": "add",
-                   "val": 10
                   },
                   {
                    "t": "var",
@@ -18154,6 +18005,17 @@
     "limitUp": 0
    },
    {
+    "item": 29,
+    "price": 15,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
     "item": 30,
     "price": 35,
     "weight": 1,
@@ -18250,28 +18112,6 @@
     "sw": 32,
     "once": true,
     "showOnce": false,
-    "limitUp": 0
-   },
-   {
-    "item": 48,
-    "price": 10,
-    "weight": 1,
-    "from": 1,
-    "to": "",
-    "sw": -1,
-    "once": true,
-    "showOnce": true,
-    "limitUp": 0
-   },
-   {
-    "item": 50,
-    "price": 10,
-    "weight": 1,
-    "from": 1,
-    "to": "",
-    "sw": -1,
-    "once": true,
-    "showOnce": true,
     "limitUp": 0
    }
   ],
