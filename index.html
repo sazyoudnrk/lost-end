@@ -53,7 +53,24 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #credits .cb{opacity:0;transition:opacity .7s}#credits .cb.on{opacity:1}#credits .role{font-size:12px;letter-spacing:.3em;color:#8a8aa0}#credits .nm{font-size:20px;letter-spacing:.15em}#credits .last{font-size:18px;letter-spacing:.2em}
 #menu .ui-btn,#title .ui-btn{min-width:200px;text-align:center}
 #tEndList{max-height:50%;overflow:auto;min-width:240px;max-width:90%;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8;color:#fff}
-#items{max-height:50%;overflow:auto;min-width:240px;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;display:none;line-height:1.8}
+#items{display:none}
+#menu{justify-content:flex-start;align-items:stretch;gap:0;padding:calc(10px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));background:rgba(4,5,16,.88);backdrop-filter:blur(2px)}
+#menu .mhd{display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.4)}
+#menu .mhd .ui-btn{min-width:0;padding:6px 14px}#menu .mhd #mTitle{flex:1;font-size:17px;letter-spacing:.15em}#menu .mhd #mHud{font-size:13px;color:#ccd;text-align:right;white-space:pre-line}
+#mBody{flex:1;overflow:auto;padding:12px 2px;min-height:0}
+#mBody .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:420px;margin:8px auto 0}#mBody .mgrid .ui-btn{min-width:0;padding:16px 8px;font-size:16px;text-align:center;letter-spacing:.1em}
+#mBody .igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:480px;margin:0 auto}
+#mBody .panel{max-width:480px;margin:0 auto;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 12px;line-height:1.8}
+#mBody .empty{text-align:center;color:#aab;margin-top:30px}
+.icard .cnt{font-size:12px;text-align:right;color:#ccd}.icard.sel .cnt{color:#333}
+#mDetail{position:absolute;left:0;right:0;bottom:0;top:0;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45);padding:0 10px calc(12px + env(safe-area-inset-bottom))}
+#mDetail .sheet{width:100%;max-width:480px;background:rgba(12,14,34,.97);border:2px solid #fff;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+#mDetail .top{display:flex;gap:12px;align-items:flex-start}#mDetail .im{width:104px;height:104px;flex:none;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}#mDetail .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#mDetail b{font-size:17px;display:block;margin-bottom:4px}#mDetail .ds{font-size:14px;line-height:1.6;color:#dde;white-space:pre-line}#mDetail .vl{font-size:13px;color:#aab;margin-top:4px}
+#mDetail .bar{display:flex;gap:8px}#mDetail .bar .ui-btn{flex:1;min-width:0;text-align:center;padding:10px}
+#getcard{position:absolute;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translate(-50%,10px) scale(.96);width:min(220px,62vw);background:rgba(12,14,34,.96);border:2px solid #fff;border-radius:10px;padding:10px;z-index:6;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+#getcard.show{opacity:1;transform:translate(-50%,0) scale(1)}#getcard .im{aspect-ratio:1;width:60%;margin:0 auto;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}#getcard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#getcard b{text-align:center;font-size:15px}#getcard small{font-size:12px;line-height:1.5;color:#ccd}
 #dbgHud{position:absolute;left:calc(10px + env(safe-area-inset-left));top:calc(56px + env(safe-area-inset-top));z-index:45;background:rgba(0,0,0,.72);color:#fff;font-size:12px;line-height:1.5;padding:5px 8px;border-radius:6px;pointer-events:none;white-space:pre}
 #dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:2;transition:opacity 1.2s}
 #flash{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:2;mix-blend-mode:multiply}
@@ -73,15 +90,15 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #shop .frame{flex:1;min-height:0;border:2px solid #fff;border-radius:10px;padding:8px;background:rgba(12,14,34,.92);overflow:auto;-webkit-overflow-scrolling:touch}
 #shop .list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:start}
 #shop .list>p{grid-column:1/-1;text-align:center;color:#bbb;margin:24px 0}
-#shop .icard{display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:6px;border-radius:8px;text-align:left;min-width:0;font-size:14px}
-#shop .icard b{font-size:13px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-all;min-height:2.6em}
-#shop .icard .im{aspect-ratio:1;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#shop .icard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
-#shop .icard small{color:#bbb;font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3.9em}
-#shop .icard .pr{font-size:13px;text-align:right}
-#shop .icard.sel{background:#fff;color:#000}#shop .icard.sel small{color:#333}#shop .icard.sel .im{outline:2px solid #000}
-#shop .icard.sold{opacity:.35}
-#shop .icard.kf:not(.sel){background:rgba(12,14,34,.92);color:#fff;outline:3px dashed #fff;outline-offset:1px}#shop .icard.kf:not(.sel) small{color:#bbb}
+#shop .icard,#menu .icard{display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:6px;border-radius:8px;text-align:left;min-width:0;font-size:14px}
+#shop .icard b,#menu .icard b{font-size:13px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-all;min-height:2.6em}
+#shop .icard .im,#menu .icard .im{aspect-ratio:1;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#shop .icard .im img,#menu .icard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#shop .icard small,#menu .icard small{color:#bbb;font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3.9em}
+#shop .icard .pr,#menu .icard .pr{font-size:13px;text-align:right}
+#shop .icard.sel,#menu .icard.sel{background:#fff;color:#000}#shop .icard.sel small,#menu .icard.sel small{color:#333}#shop .icard.sel .im,#menu .icard.sel .im{outline:2px solid #000}
+#shop .icard.sold,#menu .icard.sold{opacity:.35}
+#shop .icard.kf:not(.sel),#menu .icard.kf:not(.sel){background:rgba(12,14,34,.92);color:#fff;outline:3px dashed #fff;outline-offset:1px}#shop .icard.kf:not(.sel) small,#menu .icard.kf:not(.sel) small{color:#bbb}
 #shop .st{display:flex;justify-content:space-between;font-size:14px;color:#ccc;margin:8px 4px 0}
 #shop .msg{min-height:22px;text-align:center;font-size:14px;margin:4px 0}
 #shop.lock{z-index:2;pointer-events:none}
@@ -108,7 +125,8 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 <button id="menuBtn" class="ui-btn">☰</button>
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
-<div id="menu"><div id="items"></div><button class="ui-btn" data-m="items">アイテム</button><button class="ui-btn" data-m="save">セーブ</button><button class="ui-btn" data-m="load">ロード</button><button class="ui-btn" data-m="memo" style="display:none">メモ</button><button class="ui-btn" data-m="end">エンディング</button><button class="ui-btn" data-m="opt">設定</button><button class="ui-btn" data-m="close">閉じる</button></div>
+<div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><span id="mTitle">メニュー</span><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div>
+<div id="getcard"><div class="im"></div><b></b><small></small></div>
 <div id="title"><canvas id="tStars"></canvas><img id="tImg" alt=""><h1 id="ttl"></h1><div id="tSub"></div><div id="tGap"></div><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button><button class="ui-btn" id="tEnd">エンディング</button><div id="tEndList"></div><div id="tFoot"></div></div><div id="credits"></div>
 <div id="hud"></div>
 <div id="shop"><div class="tabs"><button class="ui-btn on" data-tab="buy">とりだす</button><button class="ui-btn" data-tab="sell">いれる</button></div><div class="frame"><div class="tip"></div><div class="list"></div></div><div class="st"><span id="shopMoney"></span><span id="shopLimit"></span></div><div class="msg"></div><div class="bar"><button class="ui-btn" id="shopOk" disabled>えらぶ</button><button class="ui-btn" id="shopClose">閉じる</button></div></div>
@@ -117,7 +135,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-15b';
+const GAME_VER='2026-11-15c';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -233,7 +251,7 @@ addEventListener('keydown',e=>{
     if(e.key==='ArrowDown'||e.key==='s'){e.preventDefault();navMove(box,1);return}
     if(box.id==='shop'&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();const t=box.querySelector('[data-tab]:not(.on)');if(t){t.click();navMove(box,0)}return}
     if(OK_KEYS.includes(e.key)){e.preventDefault();if(!e.repeat)navOk(box);return}
-    if(CANCEL_KEYS.includes(e.key)){e.preventDefault();if(box.id==='shop')$('#shopClose').click();else if(box.id==='menu'){if($('#items').style.display==='block')$('#items').style.display='none';else toggleMenu(false)}return}
+    if(CANCEL_KEYS.includes(e.key)){e.preventDefault();if(box.id==='shop')$('#shopClose').click();else if(box.id==='menu')menuBack();return}
     return}
   if(e.key in KEY){press(KEY[e.key]);e.preventDefault()}
   else if(OK_KEYS.includes(e.key)){e.preventDefault();if(e.repeat)return;if(busy)advance();else aPressed=true}
@@ -420,7 +438,8 @@ async function runEvent(ev){
   hideMsg();clearPics();showStill(null,false);closeShopView();if(+$('#fade').style.opacity>0)await fade(0);busy=false;tapEl.style.display='none';showControls(true);needRelease=true;refresh();
 }
 async function exec(list,cx){for(const c of list||[])await cmd(c,cx)}
-async function cmd(c,cx){
+let pendCard=null;
+async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;
   switch(c.t){
     case'text':await showText(c);break;
     case'choice':{const op=c.options.filter(o=>(!o.cond||evalCond(o.cond,cx))&&(!o.cond2||evalCond(o.cond2,cx)));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
@@ -453,7 +472,7 @@ async function cmd(c,cx){
     case'shop':hideMsg();await openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,sell:c.sellOnly?(c.sell||[]):null,tutorial:c.tutorial===true?'buy':(c.tutorial||'')});break;
     case'shopview':if(c.show===false)closeShopView();else{hideMsg();clearPics();}if(c.show!==false)openShop({fixed:c.fixed&&c.fixed.length?c.fixed:null,sell:c.sellOnly?(c.sell||[]):null,view:true});break;
     case'nameinput':hideMsg();tapEl.style.display='none';await nameInput(c);tapEl.style.display='block';break;
-    case'item':S.it[c.id]=Math.max(0,(S.it[c.id]||0)+(+c.n||0));refresh();break;
+    case'item':S.it[c.id]=Math.max(0,(S.it[c.id]||0)+(+c.n||0));if(+c.n>0&&c.card!==false)pendCard=c.id;refresh();break;
     case'move':hideMsg();clearPics();closeShopView();if(c.fade===false&&+c.map===map.id){const ts=G.tileSize;clearPath();P.x=P.tx=c.x;P.y=P.ty=c.y;P.px=c.x*ts;P.py=c.y*ts;P.moving=false;if(c.dir!=null&&c.dir>=0)P.dir=c.dir}
       else if(c.fade===false)await loadMap(c.map,c.x,c.y,c.dir);else{await fade(1);await loadMap(c.map,c.x,c.y,c.dir);await fade(0)}break;
     case'route':{const t=routeTarget(c.target,cx);if(!t)break;const job=runRoute(t,c.route||[],c);if(c.wait!==false)await job;break}
@@ -527,7 +546,12 @@ async function showStill(id,fade){const box=$('#still'),img=box.querySelector('i
   const im=await loadImg(st.image);if(!im)return;
   if(box.classList.contains('show')&&fade){box.classList.remove('show');await sleep(400)}
   img.src=im.src;box.style.transition=fade?'':'none';void box.offsetWidth;box.classList.add('show');if(fade)await sleep(400);box.style.transition=''}
-async function showText(c){
+// アイテムを手に入れた直後の、その名前が入った文章ではカードを出す
+async function showText(c){const gc=pendCard!=null&&G.items.find(i=>i.id===pendCard);pendCard=null;
+  if(gc&&(c.text||'').includes(gc.name)){const g=$('#getcard');const im=g.querySelector('.im');im.innerHTML='';itemIcon(gc,im);g.querySelector('b').textContent=gc.name;g.querySelector('small').textContent=gc.desc||'';g.classList.add('show');
+    try{await showText0(c)}finally{g.classList.remove('show')}return}
+  return showText0(c)}
+async function showText0(c){
   if(c.pic==='-')setPic(c.picPos||'C',null);
   else if(c.pic){await setPic(c.picPos||'C',c.pic);setActive(c.picPos||'C')}
   msgEl.classList.remove('shake');msgEl.classList.toggle('onblack',+getComputedStyle($('#fade')).opacity>=.99);msgEl.classList.add('show');
@@ -660,30 +684,52 @@ function memoOn(){const M=G.system&&G.system.memo;return !!(M&&S&&(M.sw==null||M
 function fillEndings(it){const EL=(G.system&&G.system.endings)||[];const got=gotEnds();it.innerHTML='';const hd=document.createElement('div');hd.textContent=`エンディング（${EL.filter(x=>got.includes(x.id)).length}/${EL.length}）`;hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd);
   if(!EL.length){it.append('（エンディングはまだありません）');return}
   for(const x of EL){const d=document.createElement('div');d.style.margin='4px 0';const ok=got.includes(x.id);d.textContent=ok?`★ ${x.name}`+(x.desc?`　${x.desc}`:''):'☆ ？？？';if(!ok)d.style.opacity=.5;it.append(d)}}
-function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';$('#items').style.display='none';$('#menu [data-m=memo]').style.display=memoOn()?'':'none';if(menuOpen){$('#menu').querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));navMove($('#menu'),0)}}
-$('#menuBtn').addEventListener('click',()=>toggleMenu(true));
-$('#menu').addEventListener('click',e=>{
-  const m=e.target.dataset&&e.target.dataset.m;if(!m)return;
-  if(m==='close')toggleMenu(false);
-  if(m==='items'){const it=$('#items');const own=G.items.filter(i=>(S.it[i.id]||0)>0);it.innerHTML='';
-    it.textContent='';const hd=document.createElement('div');hd.textContent=hudText();if(!hd.textContent)hd.style.display='none';hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd);
-    if(!own.length)it.append('なにも持っていない');
-    for(const i of own){const d=document.createElement('div');d.textContent=`${i.name} ×${S.it[i.id]}`+(i.desc?`　${i.desc}`:'');it.append(d)}
-    it.style.display='block'}
-  if(m==='save'){S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));e.target.textContent='セーブしました';setTimeout(()=>e.target.textContent='セーブ',1200)}
-  if(m==='memo'){const M=G.system.memo,it=$('#items');it.innerHTML='';const hd=document.createElement('div');hd.textContent=M.title||'メモ';hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd);
+let mView='main',mDet=false;
+function itemIcon(it,box){const ic=it.icon&&(G.icons||[]).find(x=>x.id===it.icon);if(ic)loadImg(ic.image).then(i=>{if(i){const e=document.createElement('img');e.src=i.src;box.append(e)}})}
+function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';if(menuOpen)menuShow('main')}
+function menuFocus(){const m=$('#menu');m.querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));if(navBtns(m).length>1)navMove(m,1);else navMove(m,0)}
+function menuBack(){if(mDet){closeDetail();return}if(mView==='main')toggleMenu(false);else menuShow('main')}
+function closeDetail(){mDet=false;$('#mDetail').style.display='none';$('#mDetail').innerHTML='';menuFocus()}
+$('#mBack').addEventListener('click',()=>menuBack());
+$('#mDetail').addEventListener('click',e=>{if(e.target.id==='mDetail')closeDetail()});
+function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const body=$('#mBody');body.innerHTML='';body.scrollTop=0;
+  $('#mHud').textContent=hudText();
+  const T={main:'メニュー',items:'アイテム',memo:'メモ',end:'エンディング',opt:'設定'};$('#mTitle').textContent=T[v]||'';
+  $('#mBack').textContent=v==='main'?'✕ 閉じる':'◀ 戻る';
+  const btn=(t,f)=>{const b=document.createElement('button');b.className='ui-btn';b.textContent=t;b.onclick=f;return b};
+  if(v==='main'){const g=document.createElement('div');g.className='mgrid';
+    g.append(btn('アイテム',()=>menuShow('items')));if(memoOn())g.append(btn('メモ',()=>menuShow('memo')));
+    g.append(btn('エンディング',()=>menuShow('end')),btn('設定',()=>menuShow('opt')));
+    const sv=btn('セーブ',()=>{S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));sv.textContent='セーブしました';setTimeout(()=>sv.textContent='セーブ',1200)});
+    g.append(sv,btn('ロード',()=>loadGame()));body.append(g)}
+  if(v==='items'){const own=G.items.filter(i=>(S.it[i.id]||0)>0);
+    if(!own.length){const p=document.createElement('div');p.className='empty';p.textContent='なにも持っていない';body.append(p)}
+    else{const g=document.createElement('div');g.className='igrid';
+      for(const it of own){const c=document.createElement('button');c.className='ui-btn icard';const b=document.createElement('b');b.textContent=it.name;const im=document.createElement('div');im.className='im';itemIcon(it,im);
+        const n=document.createElement('div');n.className='cnt';n.textContent=S.it[it.id]>1?`×${S.it[it.id]}`:'';c.append(b,im,n);c.onclick=()=>itemDetail(it);g.append(c)}
+      body.append(g)}}
+  if(v==='memo'){const M=G.system.memo,it=document.createElement('div');it.className='panel';if(M.title){const hd=document.createElement('div');hd.textContent=M.title;hd.style.cssText='border-bottom:1px solid #fff;margin-bottom:4px';it.append(hd)}
     for(const L of M.lines||[]){const d=document.createElement('div');const done=L.sw!=null&&L.sw>=0&&S.sw[L.sw];d.textContent=(done?'☑ ':'☐ ')+L.text+(done&&L.doneText?`　${L.doneText}`:'');if(done)d.style.opacity=.6;it.append(d)}
-    it.style.display='block'}
-  if(m==='load')loadGame();
-  if(m==='end'){const it=$('#items');fillEndings(it);it.style.display='block'}
-  if(m==='opt'){const it=$('#items');it.innerHTML='';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
+    body.append(it)}
+  if(v==='end'){const it=document.createElement('div');it.className='panel';fillEndings(it);body.append(it)}
+  if(v==='opt'){const it=document.createElement('div');it.className='panel';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
       const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';
       const show=()=>v.textContent=+s.value?s.value:'オフ';show();s.oninput=()=>{OPT[k]=+s.value;show();saveOpt()};const l=document.createElement('span');l.textContent=lab;l.style.width='3em';d.append(l,s,v);return d};
     const cyc=(lab,k,vals)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';const l=document.createElement('span');l.textContent=lab;l.style.flex='1';
       const b=document.createElement('button');b.className='ui-btn';b.style.cssText='min-width:96px;padding:4px 10px';const show=()=>b.textContent=vals[OPT[k]??0];show();b.onclick=ev=>{ev.stopPropagation();OPT[k]=((OPT[k]??0)+1)%vals.length;show();saveOpt()};d.append(l,b);return d};
     it.append(cyc('常時ダッシュ','dash',['オフ','オン']),cyc('文字の速さ','tspd',['遅い','普通','速い','瞬間']),row('BGM','bgm'),row('効果音','se'));if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
-    it.style.display='block'}
-});
+    body.append(it)}
+  menuFocus()}
+function itemDetail(it){mDet=true;const d=$('#mDetail');d.innerHTML='';const sh=document.createElement('div');sh.className='sheet';
+  const top=document.createElement('div');top.className='top';const im=document.createElement('div');im.className='im';itemIcon(it,im);
+  const tx=document.createElement('div');const b=document.createElement('b');b.textContent=it.name+((S.it[it.id]||0)>1?`　×${S.it[it.id]}`:'');const ds=document.createElement('div');ds.className='ds';ds.textContent=it.desc||'';tx.append(b,ds);
+  if(S.sw[0]&&+it.value){const vl=document.createElement('div');vl.className='vl';vl.textContent=`価値 ${it.value}`;tx.append(vl)}
+  top.append(im,tx);const bar=document.createElement('div');bar.className='bar';
+  if(Array.isArray(it.use)&&it.use.length){const u=document.createElement('button');u.className='ui-btn';u.textContent='使う';u.onclick=()=>useItem(it);bar.append(u)}
+  const cl=document.createElement('button');cl.className='ui-btn';cl.textContent='閉じる';cl.onclick=()=>closeDetail();bar.append(cl);
+  sh.append(top,bar);d.append(sh);d.style.display='flex';const m=$('#menu');m.querySelectorAll('.kf').forEach(x=>x.classList.remove('kf'));bar.firstChild.classList.add('kf')}
+// 「使う」：アイテムに use（コマンドの列）がある時だけ。メニューを閉じて実行する
+async function useItem(it){toggleMenu(false);if(busy)return;await runEvent({page:{cmds:it.use}})}
 // 真エンドなどの解放：指定したエンディングを全部見ていれば、そのスイッチをONにする（周回をまたいで残る）
 function applyUnlock(){const U=G.system&&G.system.unlock;if(!U||!(U.sw>=0)||!S)return;const L=U.endings||[],got=gotEnds();S.sw[U.sw]=L.length>0&&L.every(id=>got.includes(id))}
 async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('セーブデータがありません');return}S=JSON.parse(s);S=Object.assign({once:{},day:1,slot:0,money:0,buys:0,buyLimit:+G.shop.limit||1},S);if(!S.shop)S.shop=drawShop();applyUnlock();toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
