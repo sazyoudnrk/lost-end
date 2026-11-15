@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-16a';
+const APP_VER='2026-11-16b';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -793,14 +793,20 @@ function imageField(pg,rr,m){
   return out;
 }
 function lastTextBefore(arr,idx){for(let i=idx-1;i>=0;i--)if(arr[i].t==='text')return arr[i];return null}
-const COLL=new WeakSet();// 閉じている分岐（中身の配列）。エディタを開いている間だけ覚える
+const COLL=new WeakSet();// 閉じている分岐（中身の配列）
+// 閉じた分岐は端末に覚えておき、再読み込みしても閉じたままにする（イベント・ページごとに位置で記録）
+const FOLD_DONE=new WeakSet();
+function foldKey(root){for(const m of G.maps||[])for(const ev of m.events||[])(ev.pages||[]).forEach((p,i)=>{if(p.cmds===root)foldKey.r=`m${m.id}e${ev.id}p${i}`});const r=foldKey.r;foldKey.r=null;return r}
 function cmdTree(root,rr){
   const wrap=h('div',{class:'cmds'});
   const row=(depth,cls,content,onclick)=>h('div',{class:'cmd '+cls,style:`padding-left:${8+depth*14}px`,onclick},content);
   const label=c=>{const ct=CT[c.t]||{n:c.t,c:'#666'};return[h('span',{class:'tg',style:'background:'+ct.c},ct.n),h('span',{class:'sm'},cmdSummary(c))]};
   const count=a=>{let n=0;(function w(x){for(const c of x){n++;for(const k of subs(c))w(k)}})(a);return n};
   const subs=c=>c.t==='choice'||c.t==='random'?(c.options||[]).map(o=>o.cmds):c.t==='vcase'?[...(c.cases||[]).map(k=>k.cmds),...(c.hasElse?[c.else]:[])]:c.t==='if'?[c.then,...(c.hasElse?[c.else]:[])]:[];
-  const all=[];(function w(a){for(const c of a)for(const k of subs(c)){all.push(k);w(k)}})(root);
+  const all=[],pth=new Map();(function w(a,pre){a.forEach((c,i)=>subs(c).forEach((k,j)=>{const p=pre+i+'.'+j;all.push(k);pth.set(k,p);w(k,p+'/')}))})(root,'');
+  const fk=foldKey(root);
+  if(fk){const st=lsGet('fold',{});if(!FOLD_DONE.has(root)){FOLD_DONE.add(root);const s=new Set(st[fk]||[]);all.forEach(a=>{if(s.has(pth.get(a)))COLL.add(a)})}
+    const now=all.filter(a=>COLL.has(a)).map(a=>pth.get(a));if(now.length)st[fk]=now;else delete st[fk];lsSet('fold',st)}
   if(all.length)wrap.append(h('div',{class:'row',style:'gap:6px;margin:0 0 6px'},btn('▸ 分岐を全部閉じる',()=>{all.forEach(a=>COLL.add(a));rr()},'sm'),btn('▾ 全部開く',()=>{all.forEach(a=>COLL.delete(a));rr()},'sm')));
   const br=(depth,text,arr,list)=>{const shut=COLL.has(arr);
     wrap.append(row(depth+1,'br fold',(shut?'▸ ':'▾ ')+text+(shut?`（${count(arr)}件・タップで開く）`:''),()=>{shut?COLL.delete(arr):COLL.add(arr);rr()}));
