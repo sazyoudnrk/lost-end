@@ -445,6 +445,20 @@
    "desc": "ピヲラが砂糖を溶かして作ってくれたべっこう飴。",
    "value": 100,
    "gift": true
+  },
+  {
+   "id": 52,
+   "name": "白紙のノート",
+   "desc": "何も書かれていないノート。",
+   "value": 5,
+   "gift": true
+  },
+  {
+   "id": 53,
+   "name": "ロストエンドの歴史",
+   "desc": "ムロが書いてくれた、ロストエンドの歴史。",
+   "value": 300,
+   "gift": true
   }
  ],
  "switches": [
@@ -16667,6 +16681,72 @@
                      "val": 5
                     }
                    ]
+                  },
+                  {
+                   "val": 52,
+                   "cmds": [
+                    {
+                     "t": "comment",
+                     "text": "白紙のノートを渡すとロストエンドの歴史（価値300）を書いてくれる"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "これは、ノートですか。ありがとうございます。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "…………",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "ネイサさんの植物図鑑には価値がついたんですよね？\n[p]\n価値があるかはわからないですが、ロストエンドの歴史でも書いてみましょうか。",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "ペンで文字を書くなんて随分久しいですが……",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "item",
+                     "id": 53,
+                     "n": 1
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "",
+                     "text": "ムロはロストエンドの歴史を書いてくれた。",
+                     "pic": "-",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "var",
+                     "id": 8,
+                     "op": "add",
+                     "val": 10
+                    },
+                    {
+                     "t": "var",
+                     "id": 17,
+                     "op": "add",
+                     "val": 5
+                    }
+                   ]
                   }
                  ],
                  "else": [
@@ -18850,6 +18930,17 @@
     "price": 10,
     "weight": 1,
     "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 52,
+    "price": 10,
+    "weight": 1,
+    "from": 4,
     "to": "",
     "sw": -1,
     "once": true,
