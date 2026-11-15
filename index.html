@@ -142,7 +142,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-15h';
+const GAME_VER='2026-11-15i';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -735,7 +735,7 @@ function itemDetail(it){mDet=true;const d=$('#mDetail');d.innerHTML='';const sh=
   const tx=document.createElement('div');const b=document.createElement('b');b.textContent=it.name+((S.it[it.id]||0)>1?`　×${S.it[it.id]}`:'');const ds=document.createElement('div');ds.className='ds';ds.textContent=it.desc||'';tx.append(b,ds);
   if(S.sw[0]&&+it.value){const vl=document.createElement('div');vl.className='vl';vl.textContent=`価値 ${it.value}`;tx.append(vl)}
   top.append(im,tx);const bar=document.createElement('div');bar.className='bar';
-  if(Array.isArray(it.use)&&it.use.length){const u=document.createElement('button');u.className='ui-btn';u.textContent='使う';u.onclick=()=>useItem(it);bar.append(u)}
+  if(Array.isArray(it.use)&&it.use.length){const u=document.createElement('button');u.className='ui-btn';u.textContent=it.useLabel||'使う';u.onclick=()=>useItem(it);bar.append(u)}
   const cl=document.createElement('button');cl.className='ui-btn';cl.textContent='閉じる';cl.onclick=()=>closeDetail();bar.append(cl);
   sh.append(top,bar);d.append(sh);d.style.display='flex';const m=$('#menu');m.querySelectorAll('.kf').forEach(x=>x.classList.remove('kf'));bar.firstChild.classList.add('kf')}
 // アイテムをカードで並べて1つ選ぶ（祈る＝番号／祈らない＝-1／やめる＝'cancel'）
