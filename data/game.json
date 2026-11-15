@@ -1657,7 +1657,7 @@
                 "type": "var",
                 "id": 10,
                 "op": ">=",
-                "val": 26
+                "val": 41
                },
                "hasElse": true,
                "then": [
@@ -1672,12 +1672,78 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ニノマエ",
-                 "pic": "ninomae_normal",
-                 "picPos": "C",
-                 "text": "描かないと、なにか、恐ろしい考えばかりで狂いそうだ"
+                 "t": "if",
+                 "cond": {
+                  "type": "var",
+                  "id": 10,
+                  "op": ">=",
+                  "val": 31
+                 },
+                 "hasElse": true,
+                 "then": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "（正気度31〜40のニノマエの挨拶）",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 10,
+                    "op": ">=",
+                    "val": 21
+                   },
+                   "hasElse": true,
+                   "then": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（正気度21〜30のニノマエの挨拶）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ],
+                   "else": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "var",
+                      "id": 10,
+                      "op": ">=",
+                      "val": 11
+                     },
+                     "hasElse": true,
+                     "then": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ニノマエ",
+                       "text": "（正気度11〜20のニノマエの挨拶）",
+                       "pic": "ninomae_normal",
+                       "picPos": "C"
+                      }
+                     ],
+                     "else": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ニノマエ",
+                       "pic": "ninomae_normal",
+                       "picPos": "C",
+                       "text": "描かないと、なにか、恐ろしい考えばかりで狂いそうだ"
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
@@ -1838,122 +1904,6 @@
               }
              ],
              "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 10,
-              "op": "<=",
-              "val": 50
-             },
-             "hasElse": false,
-             "else": [],
-             "then": [
-              {
-               "t": "comment",
-               "text": "正気度50以下は段階ごとのセリフ（日ごとの会話の代わり）"
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 10,
-                "op": "<=",
-                "val": 10
-               },
-               "hasElse": true,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ニノマエ",
-                 "text": "（正気度10以下のニノマエの会話）",
-                 "pic": "ninomae_normal",
-                 "picPos": "C"
-                }
-               ],
-               "else": [
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 10,
-                  "op": "<=",
-                  "val": 20
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ニノマエ",
-                   "text": "（正気度11〜20のニノマエの会話）",
-                   "pic": "ninomae_normal",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "if",
-                   "cond": {
-                    "type": "var",
-                    "id": 10,
-                    "op": "<=",
-                    "val": 30
-                   },
-                   "hasElse": true,
-                   "then": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ニノマエ",
-                     "text": "（正気度21〜30のニノマエの会話）",
-                     "pic": "ninomae_normal",
-                     "picPos": "C"
-                    }
-                   ],
-                   "else": [
-                    {
-                     "t": "if",
-                     "cond": {
-                      "type": "var",
-                      "id": 10,
-                      "op": "<=",
-                      "val": 40
-                     },
-                     "hasElse": true,
-                     "then": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ニノマエ",
-                       "text": "（正気度31〜40のニノマエの会話）",
-                       "pic": "ninomae_normal",
-                       "picPos": "C"
-                      }
-                     ],
-                     "else": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ニノマエ",
-                       "text": "（正気度41〜50のニノマエの会話）",
-                       "pic": "ninomae_normal",
-                       "picPos": "C"
-                      }
-                     ]
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "t": "end"
-              }
-             ]
             },
             {
              "t": "vcase",
@@ -3607,7 +3557,7 @@
                 "type": "var",
                 "id": 9,
                 "op": ">=",
-                "val": 26
+                "val": 41
                },
                "hasElse": true,
                "then": [
@@ -3622,12 +3572,78 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ネイサ",
-                 "pic": "neisa_normal",
-                 "picPos": "C",
-                 "text": "俺は役立たずだ、役立たず、役立たず……"
+                 "t": "if",
+                 "cond": {
+                  "type": "var",
+                  "id": 9,
+                  "op": ">=",
+                  "val": 31
+                 },
+                 "hasElse": true,
+                 "then": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ネイサ",
+                   "text": "（正気度31〜40のネイサの挨拶）",
+                   "pic": "neisa_normal",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 9,
+                    "op": ">=",
+                    "val": 21
+                   },
+                   "hasElse": true,
+                   "then": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（正気度21〜30のネイサの挨拶）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ],
+                   "else": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "var",
+                      "id": 9,
+                      "op": ">=",
+                      "val": 11
+                     },
+                     "hasElse": true,
+                     "then": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ネイサ",
+                       "text": "（正気度11〜20のネイサの挨拶）",
+                       "pic": "neisa_normal",
+                       "picPos": "C"
+                      }
+                     ],
+                     "else": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ネイサ",
+                       "pic": "neisa_normal",
+                       "picPos": "C",
+                       "text": "俺は役立たずだ、役立たず、役立たず……"
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
@@ -3812,122 +3828,6 @@
               }
              ],
              "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 9,
-              "op": "<=",
-              "val": 50
-             },
-             "hasElse": false,
-             "else": [],
-             "then": [
-              {
-               "t": "comment",
-               "text": "正気度50以下は段階ごとのセリフ（日ごとの会話の代わり）"
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 9,
-                "op": "<=",
-                "val": 10
-               },
-               "hasElse": true,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ネイサ",
-                 "text": "（正気度10以下のネイサの会話）",
-                 "pic": "neisa_normal",
-                 "picPos": "C"
-                }
-               ],
-               "else": [
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 9,
-                  "op": "<=",
-                  "val": 20
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ネイサ",
-                   "text": "（正気度11〜20のネイサの会話）",
-                   "pic": "neisa_normal",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "if",
-                   "cond": {
-                    "type": "var",
-                    "id": 9,
-                    "op": "<=",
-                    "val": 30
-                   },
-                   "hasElse": true,
-                   "then": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ネイサ",
-                     "text": "（正気度21〜30のネイサの会話）",
-                     "pic": "neisa_normal",
-                     "picPos": "C"
-                    }
-                   ],
-                   "else": [
-                    {
-                     "t": "if",
-                     "cond": {
-                      "type": "var",
-                      "id": 9,
-                      "op": "<=",
-                      "val": 40
-                     },
-                     "hasElse": true,
-                     "then": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ネイサ",
-                       "text": "（正気度31〜40のネイサの会話）",
-                       "pic": "neisa_normal",
-                       "picPos": "C"
-                      }
-                     ],
-                     "else": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ネイサ",
-                       "text": "（正気度41〜50のネイサの会話）",
-                       "pic": "neisa_normal",
-                       "picPos": "C"
-                      }
-                     ]
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "t": "end"
-              }
-             ]
             },
             {
              "t": "vcase",
@@ -8637,7 +8537,7 @@
                 "type": "var",
                 "id": 11,
                 "op": ">=",
-                "val": 26
+                "val": 41
                },
                "hasElse": true,
                "then": [
@@ -8652,12 +8552,78 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ピヲラ",
-                 "pic": "piwora_normal",
-                 "picPos": "C",
-                 "text": "ツイてない、ツイてない、ツイてない\n私って昔からずっとそうだった"
+                 "t": "if",
+                 "cond": {
+                  "type": "var",
+                  "id": 11,
+                  "op": ">=",
+                  "val": 31
+                 },
+                 "hasElse": true,
+                 "then": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（正気度31〜40のピヲラの挨拶）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 11,
+                    "op": ">=",
+                    "val": 21
+                   },
+                   "hasElse": true,
+                   "then": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（正気度21〜30のピヲラの挨拶）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ],
+                   "else": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "var",
+                      "id": 11,
+                      "op": ">=",
+                      "val": 11
+                     },
+                     "hasElse": true,
+                     "then": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ピヲラ",
+                       "text": "（正気度11〜20のピヲラの挨拶）",
+                       "pic": "piwora_normal",
+                       "picPos": "C"
+                      }
+                     ],
+                     "else": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ピヲラ",
+                       "pic": "piwora_normal",
+                       "picPos": "C",
+                       "text": "ツイてない、ツイてない、ツイてない\n私って昔からずっとそうだった"
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
@@ -8850,122 +8816,6 @@
               }
              ],
              "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 11,
-              "op": "<=",
-              "val": 50
-             },
-             "hasElse": false,
-             "else": [],
-             "then": [
-              {
-               "t": "comment",
-               "text": "正気度50以下は段階ごとのセリフ（日ごとの会話の代わり）"
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 11,
-                "op": "<=",
-                "val": 10
-               },
-               "hasElse": true,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ピヲラ",
-                 "text": "（正気度10以下のピヲラの会話）",
-                 "pic": "piwora_normal",
-                 "picPos": "C"
-                }
-               ],
-               "else": [
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 11,
-                  "op": "<=",
-                  "val": 20
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ピヲラ",
-                   "text": "（正気度11〜20のピヲラの会話）",
-                   "pic": "piwora_normal",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "if",
-                   "cond": {
-                    "type": "var",
-                    "id": 11,
-                    "op": "<=",
-                    "val": 30
-                   },
-                   "hasElse": true,
-                   "then": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ピヲラ",
-                     "text": "（正気度21〜30のピヲラの会話）",
-                     "pic": "piwora_normal",
-                     "picPos": "C"
-                    }
-                   ],
-                   "else": [
-                    {
-                     "t": "if",
-                     "cond": {
-                      "type": "var",
-                      "id": 11,
-                      "op": "<=",
-                      "val": 40
-                     },
-                     "hasElse": true,
-                     "then": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ピヲラ",
-                       "text": "（正気度31〜40のピヲラの会話）",
-                       "pic": "piwora_normal",
-                       "picPos": "C"
-                      }
-                     ],
-                     "else": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ピヲラ",
-                       "text": "（正気度41〜50のピヲラの会話）",
-                       "pic": "piwora_normal",
-                       "picPos": "C"
-                      }
-                     ]
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "t": "end"
-              }
-             ]
             },
             {
              "t": "vcase",
@@ -15103,7 +14953,7 @@
                 "type": "var",
                 "id": 8,
                 "op": ">=",
-                "val": 26
+                "val": 41
                },
                "hasElse": true,
                "then": [
@@ -15118,12 +14968,78 @@
                ],
                "else": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "pic": "muro_normal",
-                 "picPos": "C",
-                 "text": "[pname]さん？ああ、幻聴じゃなかったんですね……"
+                 "t": "if",
+                 "cond": {
+                  "type": "var",
+                  "id": 8,
+                  "op": ">=",
+                  "val": 31
+                 },
+                 "hasElse": true,
+                 "then": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ムロ",
+                   "text": "（正気度31〜40のムロの挨拶）",
+                   "pic": "muro_normal",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": [
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 8,
+                    "op": ">=",
+                    "val": 21
+                   },
+                   "hasElse": true,
+                   "then": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（正気度21〜30のムロの挨拶）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ],
+                   "else": [
+                    {
+                     "t": "if",
+                     "cond": {
+                      "type": "var",
+                      "id": 8,
+                      "op": ">=",
+                      "val": 11
+                     },
+                     "hasElse": true,
+                     "then": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ムロ",
+                       "text": "（正気度11〜20のムロの挨拶）",
+                       "pic": "muro_normal",
+                       "picPos": "C"
+                      }
+                     ],
+                     "else": [
+                      {
+                       "t": "text",
+                       "face": "",
+                       "name": "ムロ",
+                       "pic": "muro_normal",
+                       "picPos": "C",
+                       "text": "[pname]さん？ああ、幻聴じゃなかったんですね……"
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
@@ -15182,122 +15098,6 @@
               }
              ],
              "else": []
-            },
-            {
-             "t": "if",
-             "cond": {
-              "type": "var",
-              "id": 8,
-              "op": "<=",
-              "val": 50
-             },
-             "hasElse": false,
-             "else": [],
-             "then": [
-              {
-               "t": "comment",
-               "text": "正気度50以下は段階ごとのセリフ（日ごとの会話の代わり）"
-              },
-              {
-               "t": "if",
-               "cond": {
-                "type": "var",
-                "id": 8,
-                "op": "<=",
-                "val": 10
-               },
-               "hasElse": true,
-               "then": [
-                {
-                 "t": "text",
-                 "face": "",
-                 "name": "ムロ",
-                 "text": "（正気度10以下のムロの会話）",
-                 "pic": "muro_normal",
-                 "picPos": "C"
-                }
-               ],
-               "else": [
-                {
-                 "t": "if",
-                 "cond": {
-                  "type": "var",
-                  "id": 8,
-                  "op": "<=",
-                  "val": 20
-                 },
-                 "hasElse": true,
-                 "then": [
-                  {
-                   "t": "text",
-                   "face": "",
-                   "name": "ムロ",
-                   "text": "（正気度11〜20のムロの会話）",
-                   "pic": "muro_normal",
-                   "picPos": "C"
-                  }
-                 ],
-                 "else": [
-                  {
-                   "t": "if",
-                   "cond": {
-                    "type": "var",
-                    "id": 8,
-                    "op": "<=",
-                    "val": 30
-                   },
-                   "hasElse": true,
-                   "then": [
-                    {
-                     "t": "text",
-                     "face": "",
-                     "name": "ムロ",
-                     "text": "（正気度21〜30のムロの会話）",
-                     "pic": "muro_normal",
-                     "picPos": "C"
-                    }
-                   ],
-                   "else": [
-                    {
-                     "t": "if",
-                     "cond": {
-                      "type": "var",
-                      "id": 8,
-                      "op": "<=",
-                      "val": 40
-                     },
-                     "hasElse": true,
-                     "then": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "（正気度31〜40のムロの会話）",
-                       "pic": "muro_normal",
-                       "picPos": "C"
-                      }
-                     ],
-                     "else": [
-                      {
-                       "t": "text",
-                       "face": "",
-                       "name": "ムロ",
-                       "text": "（正気度41〜50のムロの会話）",
-                       "pic": "muro_normal",
-                       "picPos": "C"
-                      }
-                     ]
-                    }
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              {
-               "t": "end"
-              }
-             ]
             },
             {
              "t": "vcase",
