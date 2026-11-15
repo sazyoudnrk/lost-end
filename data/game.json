@@ -529,7 +529,9 @@
   "",
   "ニノマエを刺した日",
   "今日の日付（一時用）",
-  "缶詰をもらった回数"
+  "缶詰をもらった回数",
+  "今日オセロをした",
+  "オセロの結果（1勝ち2負け3分け）"
  ],
  "player": {
   "charset": "sample1",
@@ -10035,12 +10037,154 @@
        "through": false,
        "cmds": [
         {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "もう深夜だ。話しかけるのはやめておこう。",
-         "pic": "-",
-         "picPos": "C"
+         "t": "if",
+         "cond": {
+          "type": "day",
+          "op": ">=",
+          "val": 4
+         },
+         "hasElse": true,
+         "then": [
+          {
+           "t": "if",
+           "cond": {
+            "type": "var",
+            "id": 40,
+            "op": "==",
+            "val": 0
+           },
+           "hasElse": true,
+           "then": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "（仮）あれ、眠れないの？……ねえ、オセロでもしない？",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            },
+            {
+             "t": "choice",
+             "options": [
+              {
+               "label": "オセロをする",
+               "cmds": [
+                {
+                 "t": "othello",
+                 "name": "ピヲラ",
+                 "var": 41
+                },
+                {
+                 "t": "vcase",
+                 "id": 41,
+                 "cases": [
+                  {
+                   "val": 1,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（仮）えー！負けちゃった！もう一回……は、また明日ね。",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 2,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（仮）やったー！ピヲラの勝ち！",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "val": 3,
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（仮）引き分け！？すごい偶然だね。",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
+                },
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "",
+                 "text": "ピヲラと遊んで、少し気が紛れた。",
+                 "pic": "-",
+                 "picPos": "C"
+                },
+                {
+                 "t": "var",
+                 "id": 11,
+                 "op": "add",
+                 "val": 10
+                },
+                {
+                 "t": "var",
+                 "id": 17,
+                 "op": "add",
+                 "val": 5
+                },
+                {
+                 "t": "var",
+                 "id": 40,
+                 "op": "set",
+                 "val": 1
+                }
+               ]
+              },
+              {
+               "label": "やめておく",
+               "cmds": [
+                {
+                 "t": "text",
+                 "face": "",
+                 "name": "ピヲラ",
+                 "text": "（仮）そっか。おやすみ！",
+                 "pic": "piwora_normal",
+                 "picPos": "C"
+                }
+               ]
+              }
+             ]
+            }
+           ],
+           "else": [
+            {
+             "t": "text",
+             "face": "",
+             "name": "ピヲラ",
+             "text": "（仮）ふわぁ……今日はもう眠いや。また明日遊ぼうね。",
+             "pic": "piwora_normal",
+             "picPos": "C"
+            }
+           ]
+          }
+         ],
+         "else": [
+          {
+           "t": "text",
+           "face": "",
+           "name": "",
+           "text": "もう深夜だ。話しかけるのはやめておこう。",
+           "pic": "-",
+           "picPos": "C"
+          }
+         ]
         }
        ]
       },
@@ -13006,6 +13150,12 @@
              "t": "sw",
              "id": 4,
              "val": false
+            },
+            {
+             "t": "var",
+             "id": 40,
+             "op": "set",
+             "val": 0
             },
             {
              "t": "sleep"

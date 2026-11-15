@@ -74,6 +74,14 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #pick .igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:480px;margin:0 auto}
 #pick .pdesc{min-height:3.2em;font-size:14px;line-height:1.6;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 10px;max-width:480px;width:100%;margin:0 auto;box-sizing:border-box}
 #pick .bar{display:flex;gap:8px;max-width:480px;width:100%;margin:0 auto}#pick .bar .ui-btn{flex:1;min-width:0;text-align:center;padding:12px 6px}#pick .bar .ui-btn.pri{flex:1.4}
+#oth{position:absolute;inset:0;z-index:12;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 10px calc(12px + env(safe-area-inset-bottom));background:rgba(4,5,16,.92)}
+#oth .oh{display:flex;justify-content:space-between;align-items:center;width:min(92vw,420px);font-size:15px}#oth .oh span{display:flex;align-items:center;gap:6px}
+#oth .dot{width:16px;height:16px;border-radius:50%;display:inline-block;border:1px solid #888}#oth .dot.b{background:#111}#oth .dot.w{background:#f4f4f4}
+#oth .ob{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;width:min(92vw,420px,calc(100vh - 220px));aspect-ratio:1;background:#14301e;padding:4px;border:2px solid #fff;border-radius:6px;box-sizing:border-box}
+#oth .oc{background:#2e7a4a;border-radius:2px;display:flex;align-items:center;justify-content:center;position:relative;padding:0;border:0;cursor:pointer}
+#oth .oc i{width:80%;height:80%;border-radius:50%;display:block;transition:background .25s}#oth .oc i.b{background:#111;box-shadow:inset 0 -2px 0 #333}#oth .oc i.w{background:#f4f4f4;box-shadow:inset 0 -2px 0 #bbb}
+#oth .oc.can::after{content:'';width:24%;height:24%;border-radius:50%;background:rgba(255,255,255,.35)}#oth .oc.last{outline:2px solid #e44;outline-offset:-2px}
+#oth .om{min-height:1.6em;font-size:15px;text-align:center}#oth .ui-btn{min-width:0;padding:8px 18px}
 #getcard{position:absolute;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translate(-50%,10px) scale(.96);width:min(220px,62vw);background:rgba(12,14,34,.96);border:2px solid #fff;border-radius:10px;padding:10px;z-index:6;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
 #getcard.show{opacity:1;transform:translate(-50%,0) scale(1)}#getcard .im{aspect-ratio:1;width:60%;margin:0 auto;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}#getcard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 #getcard b{text-align:center;font-size:15px}#getcard small{font-size:12px;line-height:1.5;color:#ccd}
@@ -133,6 +141,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
 <div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><span id="mTitle">メニュー</span><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div>
 <div id="pick"><div class="mhd"><b></b><small></small></div><div class="pbody"><div class="igrid"></div></div><div class="pdesc"></div><div class="bar"><button class="ui-btn pri" data-k="ok" disabled>祈る</button><button class="ui-btn" data-k="no">祈らない</button><button class="ui-btn" data-k="cancel">やめる</button></div></div>
+<div id="oth"><div class="oh"><span><i class="dot b"></i><b class="pb">あなた 2</b></span><span><b class="pw">2</b><i class="dot w"></i></span></div><div class="ob"></div><div class="om"></div><button class="ui-btn" data-k="give">投了する</button></div>
 <div id="getcard"><div class="im"></div><b></b><small></small></div>
 <div id="title"><canvas id="tStars"></canvas><img id="tImg" alt=""><h1 id="ttl"></h1><div id="tSub"></div><div id="tGap"></div><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button><button class="ui-btn" id="tEnd">エンディング</button><div id="tEndList"></div><div id="tFoot"></div></div><div id="credits"></div>
 <div id="hud"></div>
@@ -142,7 +151,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-15l';
+const GAME_VER='2026-11-16a';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -451,6 +460,7 @@ async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;
   switch(c.t){
     case'text':await showText(c);break;
     case'choice':{const op=c.options.filter(o=>(!o.cond||evalCond(o.cond,cx))&&(!o.cond2||evalCond(o.cond2,cx)));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
+    case'othello':{hideMsg();const r=await playOthello(c.name||'ピヲラ');if(c.var!=null&&+c.var>=0)S.vr[+c.var]=r;break}
     case'wish':{const L=G.shop.pool.map((r,i)=>({r,i,it:G.items.find(x=>x.id===r.item)})).filter(o=>o.it&&!(o.r.once&&S.once[o.i])&&(o.r.sw==null||o.r.sw<0||S.sw[o.r.sw])&&(c.parts?o.it.gift===false:true));
       const seen=new Set(),pick=L.filter(o=>!seen.has(o.it.name)&&seen.add(o.it.name));
       hideMsg();const k=await pickItem(pick.map(o=>o.it),c.title||'幸運のお守り',c.sub||'明日、等価交換機に並んでほしい物を選んで祈ろう');
@@ -746,6 +756,25 @@ function pickItem(list,title,sub){return new Promise(res=>{const box=$('#pick'),
   const done=v=>{box.style.display='none';box.querySelectorAll('.bar .ui-btn').forEach(b=>b.onclick=null);res(v)};
   box.querySelector('[data-k=ok]').onclick=()=>{if(sel>=0)done(sel)};box.querySelector('[data-k=no]').onclick=()=>done(-1);box.querySelector('[data-k=cancel]').onclick=()=>done('cancel');
   box.style.display='flex';box.querySelector('.pbody').scrollTop=0;box.querySelectorAll('.kf').forEach(x=>x.classList.remove('kf'));navMove(box,0)})}
+// オセロ：あなた＝黒（先手）。結果 1＝勝ち 2＝負け 3＝引き分け
+function playOthello(foe){return new Promise(res=>{const box=$('#oth'),ob=box.querySelector('.ob'),om=box.querySelector('.om');
+  const B=Array(64).fill(0);B[27]=B[36]=2;B[28]=B[35]=1;let turn=1,last=-1,lock=false;
+  const W=[100,-20,10,5,5,10,-20,100,-20,-50,-2,-2,-2,-2,-50,-20,10,-2,-1,-1,-1,-1,-2,10,5,-2,-1,-1,-1,-1,-2,5,5,-2,-1,-1,-1,-1,-2,5,10,-2,-1,-1,-1,-1,-2,10,-20,-50,-2,-2,-2,-2,-50,-20,100,-20,10,5,5,10,-20,100];
+  const flips=(i,p)=>{if(B[i])return[];const x=i%8,y=i>>3,o=3-p,out=[];for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]){let cx=x+dx,cy=y+dy;const t=[];while(cx>=0&&cx<8&&cy>=0&&cy<8&&B[cy*8+cx]===o){t.push(cy*8+cx);cx+=dx;cy+=dy}if(t.length&&cx>=0&&cx<8&&cy>=0&&cy<8&&B[cy*8+cx]===p)out.push(...t)}return out};
+  const moves=p=>{const m=[];for(let i=0;i<64;i++)if(flips(i,p).length)m.push(i);return m};
+  const cells=[];ob.innerHTML='';for(let i=0;i<64;i++){const c=document.createElement('button');c.className='oc';c.append(document.createElement('i'));c.onclick=()=>tap(i);ob.append(c);cells.push(c)}
+  const draw=()=>{const mv=turn===1&&!lock?moves(1):[];let nb=0,nw=0;B.forEach((v,i)=>{if(v===1)nb++;if(v===2)nw++;cells[i].firstChild.className=v===1?'b':v===2?'w':'';cells[i].classList.toggle('can',mv.includes(i));cells[i].classList.toggle('last',i===last)});
+    box.querySelector('.pb').textContent=`${S.pname||'あなた'} ${nb}`;box.querySelector('.pw').textContent=`${foe} ${nw}`;return[nb,nw]};
+  const put=(i,p)=>{const f=flips(i,p);B[i]=p;f.forEach(j=>B[j]=p);last=i};
+  const finish=()=>{const[nb,nw]=draw();const r=nb>nw?1:nb<nw?2:3;om.textContent=r===1?'あなたの勝ち！':r===2?`${foe}の勝ち`:'引き分け';lock=true;box.querySelector('[data-k=give]').textContent='終わる';box.querySelector('[data-k=give]').onclick=()=>done(r)};
+  const done=r=>{box.style.display='none';res(r)};
+  const next=()=>{if(!moves(1).length&&!moves(2).length){finish();return}
+    if(turn===1){if(!moves(1).length){om.textContent='置ける場所がない……パス';turn=2;setTimeout(next,900);return}om.textContent='あなたの番';lock=false;draw()}
+    else{if(!moves(2).length){om.textContent=`${foe}はパスした`;turn=1;setTimeout(next,900);return}
+      om.textContent=`${foe}が考えている……`;lock=true;draw();setTimeout(()=>{let best=-1e9,bi=-1;for(const i of moves(2)){const s=W[i]+flips(i,2).length+Math.random()*3;if(s>best){best=s;bi=i}}put(bi,2);turn=1;next()},650)}};
+  const tap=i=>{if(lock||turn!==1||!flips(i,1).length)return;put(i,1);turn=2;next()};
+  const gv=box.querySelector('[data-k=give]');gv.textContent='投了する';gv.onclick=()=>{if(lock&&turn===2)return;done(2)};
+  box.style.display='flex';om.textContent='';next()})}
 // 「使う」：アイテムに use（コマンドの列）がある時だけ。メニューを閉じて実行する
 async function useItem(it){toggleMenu(false);if(busy)return;await runEvent({page:{cmds:it.use}})}
 // 真エンドなどの解放：指定したエンディングを全部見ていれば、そのスイッチをONにする（周回をまたいで残る）
