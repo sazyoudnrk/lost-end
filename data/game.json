@@ -431,6 +431,34 @@
     }
    ],
    "useLabel": "食べる"
+  },
+  {
+   "id": 48,
+   "name": "練乳缶",
+   "desc": "甘い練乳の缶詰。",
+   "value": 8,
+   "gift": true
+  },
+  {
+   "id": 49,
+   "name": "キャラメル",
+   "desc": "ピヲラが練乳缶を煮て作ってくれたキャラメル。",
+   "value": 100,
+   "gift": true
+  },
+  {
+   "id": 50,
+   "name": "砂糖",
+   "desc": "袋に入った砂糖。",
+   "value": 5,
+   "gift": true
+  },
+  {
+   "id": 51,
+   "name": "べっこう飴",
+   "desc": "ピヲラが砂糖を溶かして作ってくれたべっこう飴。",
+   "value": 100,
+   "gift": true
   }
  ],
  "switches": [
@@ -9695,6 +9723,106 @@
                    "val": 5
                   }
                  ]
+                },
+                {
+                 "val": 48,
+                 "cmds": [
+                  {
+                   "t": "comment",
+                   "text": "仮：練乳缶を渡すとキャラメル（価値100）になって返ってくる"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（練乳缶をもらったときのピヲラの反応）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "（ピヲラが練乳缶を煮てキャラメルにしてくれた）",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "item",
+                   "id": 49,
+                   "n": 1
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "キャラメルを受け取った。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 11,
+                   "op": "add",
+                   "val": 10
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
+                  }
+                 ]
+                },
+                {
+                 "val": 50,
+                 "cmds": [
+                  {
+                   "t": "comment",
+                   "text": "仮：砂糖を渡すとべっこう飴（価値100）になって返ってくる"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ピヲラ",
+                   "text": "（砂糖をもらったときのピヲラの反応）",
+                   "pic": "piwora_normal",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "（ピヲラが砂糖を溶かしてべっこう飴にしてくれた）",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "item",
+                   "id": 51,
+                   "n": 1
+                  },
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "",
+                   "text": "べっこう飴を受け取った。",
+                   "pic": "-",
+                   "picPos": "C"
+                  },
+                  {
+                   "t": "var",
+                   "id": 11,
+                   "op": "add",
+                   "val": 10
+                  },
+                  {
+                   "t": "var",
+                   "id": 17,
+                   "op": "add",
+                   "val": 5
+                  }
+                 ]
                 }
                ],
                "else": [
@@ -18197,6 +18325,28 @@
     "sw": 32,
     "once": true,
     "showOnce": false,
+    "limitUp": 0
+   },
+   {
+    "item": 48,
+    "price": 10,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
+    "limitUp": 0
+   },
+   {
+    "item": 50,
+    "price": 10,
+    "weight": 1,
+    "from": 1,
+    "to": "",
+    "sw": -1,
+    "once": true,
+    "showOnce": true,
     "limitUp": 0
    }
   ],
