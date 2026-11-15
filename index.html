@@ -68,6 +68,12 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #mDetail .top{display:flex;gap:12px;align-items:flex-start}#mDetail .im{width:104px;height:104px;flex:none;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}#mDetail .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 #mDetail b{font-size:17px;display:block;margin-bottom:4px}#mDetail .ds{font-size:14px;line-height:1.6;color:#dde;white-space:pre-line}#mDetail .vl{font-size:13px;color:#aab;margin-top:4px}
 #mDetail .bar{display:flex;gap:8px}#mDetail .bar .ui-btn{flex:1;min-width:0;text-align:center;padding:10px}
+#pick{position:absolute;inset:0;z-index:12;display:none;flex-direction:column;padding:calc(10px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));background:rgba(4,5,16,.92);gap:8px}
+#pick .mhd{padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.4)}#pick .mhd b{display:block;font-size:17px;letter-spacing:.1em}#pick .mhd small{display:block;font-size:13px;color:#bbc;margin-top:4px}
+#pick .pbody{flex:1;overflow:auto;min-height:0;padding:4px 2px}
+#pick .igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:480px;margin:0 auto}
+#pick .pdesc{min-height:3.2em;font-size:14px;line-height:1.6;background:rgba(12,14,34,.92);border:2px solid #fff;border-radius:8px;padding:8px 10px;max-width:480px;width:100%;margin:0 auto;box-sizing:border-box}
+#pick .bar{display:flex;gap:8px;max-width:480px;width:100%;margin:0 auto}#pick .bar .ui-btn{flex:1;min-width:0;text-align:center;padding:12px 6px}#pick .bar .ui-btn.pri{flex:1.4}
 #getcard{position:absolute;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translate(-50%,10px) scale(.96);width:min(220px,62vw);background:rgba(12,14,34,.96);border:2px solid #fff;border-radius:10px;padding:10px;z-index:6;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
 #getcard.show{opacity:1;transform:translate(-50%,0) scale(1)}#getcard .im{aspect-ratio:1;width:60%;margin:0 auto;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}#getcard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 #getcard b{text-align:center;font-size:15px}#getcard small{font-size:12px;line-height:1.5;color:#ccd}
@@ -90,15 +96,15 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #shop .frame{flex:1;min-height:0;border:2px solid #fff;border-radius:10px;padding:8px;background:rgba(12,14,34,.92);overflow:auto;-webkit-overflow-scrolling:touch}
 #shop .list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:start}
 #shop .list>p{grid-column:1/-1;text-align:center;color:#bbb;margin:24px 0}
-#shop .icard,#menu .icard{display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:6px;border-radius:8px;text-align:left;min-width:0;font-size:14px}
-#shop .icard b,#menu .icard b{font-size:13px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-all;min-height:2.6em}
-#shop .icard .im,#menu .icard .im{aspect-ratio:1;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-#shop .icard .im img,#menu .icard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
-#shop .icard small,#menu .icard small{color:#bbb;font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3.9em}
-#shop .icard .pr,#menu .icard .pr{font-size:13px;text-align:right}
-#shop .icard.sel,#menu .icard.sel{background:#fff;color:#000}#shop .icard.sel small,#menu .icard.sel small{color:#333}#shop .icard.sel .im,#menu .icard.sel .im{outline:2px solid #000}
-#shop .icard.sold,#menu .icard.sold{opacity:.35}
-#shop .icard.kf:not(.sel),#menu .icard.kf:not(.sel){background:rgba(12,14,34,.92);color:#fff;outline:3px dashed #fff;outline-offset:1px}#shop .icard.kf:not(.sel) small,#menu .icard.kf:not(.sel) small{color:#bbb}
+#shop .icard,#menu .icard,#pick .icard{display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:6px;border-radius:8px;text-align:left;min-width:0;font-size:14px}
+#shop .icard b,#menu .icard b,#pick .icard b{font-size:13px;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-all;min-height:2.6em}
+#shop .icard .im,#menu .icard .im,#pick .icard .im{aspect-ratio:1;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#shop .icard .im img,#menu .icard .im img,#pick .icard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#shop .icard small,#menu .icard small,#pick .icard small{color:#bbb;font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:3.9em}
+#shop .icard .pr,#menu .icard .pr,#pick .icard .pr{font-size:13px;text-align:right}
+#shop .icard.sel,#menu .icard.sel,#pick .icard.sel{background:#fff;color:#000}#shop .icard.sel small,#menu .icard.sel small,#pick .icard.sel small{color:#333}#shop .icard.sel .im,#menu .icard.sel .im,#pick .icard.sel .im{outline:2px solid #000}
+#shop .icard.sold,#menu .icard.sold,#pick .icard.sold{opacity:.35}
+#shop .icard.kf:not(.sel),#menu .icard.kf:not(.sel),#pick .icard.kf:not(.sel){background:rgba(12,14,34,.92);color:#fff;outline:3px dashed #fff;outline-offset:1px}#shop .icard.kf:not(.sel) small,#menu .icard.kf:not(.sel) small,#pick .icard.kf:not(.sel) small{color:#bbb}
 #shop .st{display:flex;justify-content:space-between;font-size:14px;color:#ccc;margin:8px 4px 0}
 #shop .msg{min-height:22px;text-align:center;font-size:14px;margin:4px 0}
 #shop.lock{z-index:2;pointer-events:none}
@@ -126,6 +132,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
 <div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><span id="mTitle">メニュー</span><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div>
+<div id="pick"><div class="mhd"><b></b><small></small></div><div class="pbody"><div class="igrid"></div></div><div class="pdesc"></div><div class="bar"><button class="ui-btn pri" data-k="ok" disabled>祈る</button><button class="ui-btn" data-k="no">祈らない</button><button class="ui-btn" data-k="cancel">やめる</button></div></div>
 <div id="getcard"><div class="im"></div><b></b><small></small></div>
 <div id="title"><canvas id="tStars"></canvas><img id="tImg" alt=""><h1 id="ttl"></h1><div id="tSub"></div><div id="tGap"></div><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button><button class="ui-btn" id="tEnd">エンディング</button><div id="tEndList"></div><div id="tFoot"></div></div><div id="credits"></div>
 <div id="hud"></div>
@@ -135,7 +142,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-15e';
+const GAME_VER='2026-11-15f';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -234,6 +241,7 @@ const OK_KEYS=['Enter',' ','z','Z'],CANCEL_KEYS=['Escape','x','X','Backspace'];
 function navBox(){
   if($('#shop').classList.contains('show')&&!$('#shop').classList.contains('lock'))return $('#shop');
   if($('#title').style.display==='flex')return $('#title');
+  if($('#pick').style.display==='flex')return $('#pick');
   if(menuOpen)return $('#menu');
   if(chEl.style.display==='flex')return chEl;
   return null}
@@ -251,7 +259,7 @@ addEventListener('keydown',e=>{
     if(e.key==='ArrowDown'||e.key==='s'){e.preventDefault();navMove(box,1);return}
     if(box.id==='shop'&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();const t=box.querySelector('[data-tab]:not(.on)');if(t){t.click();navMove(box,0)}return}
     if(OK_KEYS.includes(e.key)){e.preventDefault();if(!e.repeat)navOk(box);return}
-    if(CANCEL_KEYS.includes(e.key)){e.preventDefault();if(box.id==='shop')$('#shopClose').click();else if(box.id==='menu')menuBack();return}
+    if(CANCEL_KEYS.includes(e.key)){e.preventDefault();if(box.id==='shop')$('#shopClose').click();else if(box.id==='menu')menuBack();else if(box.id==='pick')box.querySelector('[data-k=cancel]').click();return}
     return}
   if(e.key in KEY){press(KEY[e.key]);e.preventDefault()}
   else if(OK_KEYS.includes(e.key)){e.preventDefault();if(e.repeat)return;if(busy)advance();else aPressed=true}
@@ -444,8 +452,10 @@ async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;
     case'text':await showText(c);break;
     case'choice':{const op=c.options.filter(o=>(!o.cond||evalCond(o.cond,cx))&&(!o.cond2||evalCond(o.cond2,cx)));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
     case'wish':{const L=G.shop.pool.map((r,i)=>({r,i,it:G.items.find(x=>x.id===r.item)})).filter(o=>o.it&&!(o.r.once&&S.once[o.i])&&(o.r.sw==null||o.r.sw<0||S.sw[o.r.sw])&&(c.parts?o.it.gift===false:true));
-      const names=[...new Set(L.map(o=>o.it.name))],pick=names.map(n=>L.find(o=>o.it.name===n));
-      hideMsg();const k=await showChoice([...names,'やめる']);if(k<names.length){S.wish={p:pick[k].i,mult:+c.mult||10};await showText({name:'',text:(c.text||'「{item}」が明日並ぶように祈った。').replace('{item}',names[k]),pic:'-'})}break}
+      const seen=new Set(),pick=L.filter(o=>!seen.has(o.it.name)&&seen.add(o.it.name));
+      hideMsg();const k=await pickItem(pick.map(o=>o.it),c.title||'幸運のお守り',c.sub||'明日、等価交換機に並んでほしい物を選んで祈ろう');
+      if(k==='cancel')throw END;
+      if(k>=0){S.wish={p:pick[k].i,mult:+c.mult||10};await showText({name:'',text:(c.text||'「{item}」が明日並ぶように祈った。').replace('{item}',pick[k].it.name),pic:'-'})}break}
     case'gift':{const L=G.items.filter(it=>it.gift!==false&&(S.it[it.id]||0)>0);let got=0;
       if(!L.length){await showText({name:'',text:c.none||'渡せる物を持っていない。'})}
       else{hideMsg();const i=await showChoice([...L.map(it=>`${it.name}（${S.it[it.id]}）`),'やめる']);if(i<L.length){got=L[i].id;if(c.take!==false)S.it[got]--}}
@@ -728,6 +738,14 @@ function itemDetail(it){mDet=true;const d=$('#mDetail');d.innerHTML='';const sh=
   if(Array.isArray(it.use)&&it.use.length){const u=document.createElement('button');u.className='ui-btn';u.textContent='使う';u.onclick=()=>useItem(it);bar.append(u)}
   const cl=document.createElement('button');cl.className='ui-btn';cl.textContent='閉じる';cl.onclick=()=>closeDetail();bar.append(cl);
   sh.append(top,bar);d.append(sh);d.style.display='flex';const m=$('#menu');m.querySelectorAll('.kf').forEach(x=>x.classList.remove('kf'));bar.firstChild.classList.add('kf')}
+// アイテムをカードで並べて1つ選ぶ（祈る＝番号／祈らない＝-1／やめる＝'cancel'）
+function pickItem(list,title,sub){return new Promise(res=>{const box=$('#pick'),gr=box.querySelector('.igrid'),ds=box.querySelector('.pdesc'),ok=box.querySelector('[data-k=ok]');
+  box.querySelector('.mhd b').textContent=title;box.querySelector('.mhd small').textContent=sub||'';gr.innerHTML='';ds.textContent='カードを押して選ぼう';ok.disabled=true;let sel=-1;
+  list.forEach((it,i)=>{const c=document.createElement('button');c.className='ui-btn icard';const b=document.createElement('b');b.textContent=it.name;const im=document.createElement('div');im.className='im';itemIcon(it,im);c.append(b,im);
+    c.onclick=()=>{sel=i;gr.querySelectorAll('.icard').forEach((x,j)=>x.classList.toggle('sel',j===i));ds.textContent=it.desc||it.name;ok.disabled=false};gr.append(c)});
+  const done=v=>{box.style.display='none';box.querySelectorAll('.bar .ui-btn').forEach(b=>b.onclick=null);res(v)};
+  box.querySelector('[data-k=ok]').onclick=()=>{if(sel>=0)done(sel)};box.querySelector('[data-k=no]').onclick=()=>done(-1);box.querySelector('[data-k=cancel]').onclick=()=>done('cancel');
+  box.style.display='flex';box.querySelector('.pbody').scrollTop=0;box.querySelectorAll('.kf').forEach(x=>x.classList.remove('kf'));navMove(box,0)})}
 // 「使う」：アイテムに use（コマンドの列）がある時だけ。メニューを閉じて実行する
 async function useItem(it){toggleMenu(false);if(busy)return;await runEvent({page:{cmds:it.use}})}
 // 真エンドなどの解放：指定したエンディングを全部見ていれば、そのスイッチをONにする（周回をまたいで残る）

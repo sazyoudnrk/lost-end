@@ -12836,11 +12836,6 @@
              "else": []
             },
             {
-             "t": "sw",
-             "id": 4,
-             "val": false
-            },
-            {
              "t": "if",
              "cond": {
               "type": "item",
@@ -12851,34 +12846,17 @@
              "else": [],
              "then": [
               {
-               "t": "text",
-               "face": "",
-               "name": "",
-               "text": "幸運のお守りがある。眠る前に祈りますか？",
-               "pic": "-",
-               "picPos": "C"
-              },
-              {
-               "t": "choice",
-               "options": [
-                {
-                 "label": "祈る",
-                 "cmds": [
-                  {
-                   "t": "wish",
-                   "mult": 10,
-                   "parts": false,
-                   "text": "「{item}」が明日並ぶように祈った。"
-                  }
-                 ]
-                },
-                {
-                 "label": "祈らない",
-                 "cmds": []
-                }
-               ]
+               "t": "wish",
+               "mult": 10,
+               "parts": false,
+               "text": "「{item}」が明日並ぶように祈った。"
               }
              ]
+            },
+            {
+             "t": "sw",
+             "id": 4,
+             "val": false
             },
             {
              "t": "sleep"
