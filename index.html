@@ -166,7 +166,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-17f';
+const GAME_VER='2026-11-17g';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -397,10 +397,10 @@ function openShop(opt={}){return new Promise(res=>{
   function buy(o,r,it){
     if(!opt.fixed&&S.buys>=S.buyLimit){msg.textContent='オーバーヒート中…今日はもう取り出せない';return}
     if(S.money<(+r.price||0)){msg.textContent='価値が足りない';return}
-    S.money-=(+r.price||0);S.it[it.id]=(S.it[it.id]||0)+1;
+    S.money-=(+r.price||0);if(!r.limitUp)S.it[it.id]=(S.it[it.id]||0)+1;// 取り出し回数を増やす品（ヒートシンク）は交換機に取り付けるので持ち物に入れない
     if(o.sl){S.buys++;o.sl.sold=true;if(r.once)S.once[o.sl.p]=true}else o.sold=true;
     if(r.limitUp)S.buyLimit+=+r.limitUp;
-    sel=null;if(tut)step='done';msg.textContent=`${it.name}を手に入れた`;render();updHud();navMove(box,0)}
+    sel=null;if(tut)step='done';msg.textContent=r.limitUp?`${it.name}を等価交換機に取り付けた（取り出せる回数+${r.limitUp}）`:`${it.name}を手に入れた`;render();updHud();navMove(box,0)}
   function sell(it){S.it[it.id]--;S.money+=(+it.value||0);sel=null;if(tut)step='done';msg.textContent=`価値 ${it.value} になった`;render();updHud();navMove(box,0)}
   ok.onclick=()=>{if(!sel)return;if(tab==='buy')buy(sel.o,sel.r,sel.it);else sell(sel.it)};
   tabs.forEach(b=>b.onclick=()=>{tab=b.dataset.tab;sel=null;msg.textContent='';if(step==='tab'&&tab==='sell')step='pick';render();navMove(box,0)});
