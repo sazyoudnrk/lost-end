@@ -20061,8 +20061,28 @@
  "pictures": [
   {
    "id": "muro_normal",
-   "name": "ムロ_通常",
+   "name": "ムロ_通常（口開き）",
    "image": "assets/pictures/muro_normal.png"
+  },
+  {
+   "id": "muro_closed",
+   "name": "ムロ_口閉じ",
+   "image": "assets/pictures/muro_closed.png"
+  },
+  {
+   "id": "muro_away",
+   "name": "ムロ_目逸らし",
+   "image": "assets/pictures/muro_away.png"
+  },
+  {
+   "id": "muro_tired1",
+   "name": "ムロ_疲弊1",
+   "image": "assets/pictures/muro_tired1.png"
+  },
+  {
+   "id": "muro_tired2",
+   "name": "ムロ_疲弊2",
+   "image": "assets/pictures/muro_tired2.png"
   },
   {
    "id": "ninomae_normal",
