@@ -2467,12 +2467,48 @@
                "val": 10,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "主人公",
-                 "text": "今日で最後だ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
@@ -4541,7 +4577,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（9日目のどうでもいい会話A）",
+                     "text": "今日がパーツ集め最後の日だな。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -4554,7 +4590,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（9日目のどうでもいい会話B）",
+                     "text": "君がいなければ、墜落を待つだけの時間だった。希望を抱いてここにいられるのは、とても奇跡的だと思うよ。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -4567,7 +4603,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ネイサ",
-                     "text": "（9日目のどうでもいい会話C）",
+                     "text": "考えないようにしてたけど、今まで関わってきた人のことを嫌でも思い出してしまう。",
                      "pic": "neisa_normal",
                      "picPos": "C"
                     }
@@ -4581,12 +4617,48 @@
                "val": 10,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "主人公",
-                 "text": "今日で最後だ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ネイサ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "neisa_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
@@ -9809,12 +9881,48 @@
                "val": 10,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "主人公",
-                 "text": "今日で最後だ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ピヲラ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "piwora_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
@@ -16097,12 +16205,48 @@
                "val": 10,
                "cmds": [
                 {
-                 "t": "text",
-                 "face": "",
-                 "name": "主人公",
-                 "text": "今日で最後だ。",
-                 "pic": "-",
-                 "picPos": "C"
+                 "t": "random",
+                 "options": [
+                  {
+                   "label": "A",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話A）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "B",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話B）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  },
+                  {
+                   "label": "C",
+                   "cmds": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ムロ",
+                     "text": "（10日目のどうでもいい会話C）",
+                     "pic": "muro_normal",
+                     "picPos": "C"
+                    }
+                   ]
+                  }
+                 ]
                 }
                ]
               }
