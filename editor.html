@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-16d';
+const APP_VER='2026-11-17a';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1109,8 +1109,20 @@ function renderDB(){
   for(const it of G.items){const n=h('input',{type:'text',value:it.name,oninput:()=>{it.name=n.value;changed()}}),ds=h('input',{type:'text',value:it.desc||'',placeholder:'説明',oninput:()=>{it.desc=ds.value;changed()}}),vl=h('input',{type:'number',inputmode:'numeric',value:it.value||0,style:'width:90px',oninput:()=>{it.value=Math.max(0,parseInt(vl.value,10)||0);changed()}});
     const icn=G.icons.find(x=>x.id===it.icon);ic.append(h('div',{class:'list-row'},h('div',{style:'display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:48px'},h('span',{style:'color:var(--mut);font-size:13px'},pad3(it.id)),icn?thumb(icn.image):null),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,fSel('画像',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:()=>renderDB()}),h('input',{type:'text',value:it.emoji||'',placeholder:'絵文字（画像がない時）',oninput:ev=>{it.emoji=ev.target.value;changed()}}),fChk('プレゼントできる',it,'gift'),h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
   ic.append(h('div',{style:'margin-top:6px'},btn('＋ アイテム追加',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'アイテム'+id,desc:'',gift:true});changed();renderDB()},'sm')));
-  T.append(ic);T.scrollTop=sc;
+  T.append(ic);
+  // 検索（名前・番号）
+  {const q=h('input',{type:'search',placeholder:'🔍 アイテムを名前や番号で探す',style:'width:100%;margin-bottom:6px',value:DBQ,oninput:()=>{DBQ=q.value;flt()}});
+    const flt=()=>{const s=DBQ.trim();ic.querySelectorAll(':scope > .list-row').forEach(r=>{const t=[...r.querySelectorAll('input[type=text],span')].map(x=>x.value||x.textContent).join(' ');r.style.display=!s||t.includes(s)?'':'none'})};
+    ic.insertBefore(q,ic.children[1]||null);flt()}
+  // タブ分け（よく触るアイテムと等価交換機を先頭に）
+  const GR=[['items','アイテム',['アイテム']],['shop','等価交換機',['等価交換機']],['story','物語',['登場人物','メモ帳','解放','エンディング','タイトル画面']],['sys','システム',['システム','画面の暗さ','日付と時間帯','BGM']],['vars','スイッチ・変数',['スイッチ','変数']]];
+  const cards=[...T.children],grp=c=>{const t=(c.querySelector(':scope > .card-t')||{}).textContent||'';const g=GR.find(g=>g[2].some(k=>t.startsWith(k)));return g?g[0]:'sys'};
+  let cur=lsGet('dbTab','items');if(!GR.some(g=>g[0]===cur))cur='items';
+  const bar=h('div',{class:'ptabs',style:'position:sticky;top:0;z-index:5;flex:none;background:var(--bg);padding:8px 10px;border-bottom:1px solid var(--bd)'},...GR.map(([k,l])=>h('button',{class:'btn sm'+(k===cur?' on':''),onclick:()=>{lsSet('dbTab',k);renderDB();$('#tab-db').scrollTop=0}},l)));
+  cards.forEach(c=>{if(grp(c)!==cur)c.style.display='none'});T.prepend(bar);
+  T.scrollTop=sc;
 }
+let DBQ='';
 
 /* ===== 素材タブ ===== */
 const AK={tilesets:{n:'タイルセット',dir:'tilesets'},charsets:{n:'歩行キャラ',dir:'characters'},faces:{n:'顔グラフィック',dir:'faces'},pictures:{n:'立ち絵',dir:'pictures'},stills:{n:'スチル',dir:'stills'},icons:{n:'アイテム画像',dir:'icons'},parallaxes:{n:'遠景',dir:'parallaxes'}};
