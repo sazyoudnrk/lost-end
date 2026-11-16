@@ -165,7 +165,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16x';
+const GAME_VER='2026-11-16y';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -711,6 +711,8 @@ function draw(){
   if(parImg&&parImg.width){const pp=map.parallax,r=(pp.rate??20)/100,iw=parImg.width,ih=parImg.height,t=performance.now()/1000;
     const ox=cx*(1-r)+(pp.sx||0)*t,oy=cy*(1-r)+(pp.sy||0)*t,sx0=ox+Math.floor((cx-ox)/iw)*iw,sy0=oy+Math.floor((cy-oy)/ih)*ih;
     for(let y=sy0;y<cy+vh;y+=ih)for(let x=sx0;x<cx+vw;x+=iw)ctx.drawImage(parImg,Math.round(x*scale)/scale,Math.round(y*scale)/scale)}
+  // マップより画面が横に広い時、マップの縦の範囲の左右は黒で埋める（星空はマップの上下だけに見える）
+  if(mw<vw){ctx.fillStyle='#000';const top=Math.max(0,cy),bot=Math.min(mh,cy+vh);ctx.fillRect(cx-1,top,-cx+1,bot-top);ctx.fillRect(mw,top,cx+vw-mw+1,bot-top)}
   layer(0,x0,y0,x1,y1);layer(1,x0,y0,x1,y1);layer(2,x0,y0,x1,y1);
   const list=[];
   for(const e of events){if(e.erased||!e.page||!e.page.image)continue;list.push({z:e.page.priority==='below'?0:1,y:e.py??e.y*ts,f:()=>drawEv(e)})}
