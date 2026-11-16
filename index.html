@@ -84,6 +84,17 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #oth .om{min-height:1.6em;font-size:15px;text-align:center}#oth .ui-btn{min-width:0;padding:8px 18px}
 #bgmAsk{position:absolute;inset:0;z-index:30;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#05060f;padding:20px}
 #bgmAsk p{margin:0;font-size:17px;letter-spacing:.08em}#bgmAsk small{color:#99a;font-size:12px}#bgmAsk .bar{display:flex;gap:12px}#bgmAsk .ui-btn{min-width:120px;text-align:center}
+#mBody .people{display:flex;flex-direction:column;gap:10px;max-width:480px;margin:0 auto}
+#mBody .pcard{margin:0;padding:10px 12px;line-height:1.5}
+#mBody .phd{display:flex;align-items:center;gap:10px}#mBody .phd b{display:block;font-size:16px}#mBody .phd small{color:#ccd;font-size:13px}
+#mBody .pc{width:40px;height:40px;flex:none;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}#mBody .pc canvas{height:100%;image-rendering:pixelated}
+#mBody .pc.sm{width:28px;height:28px}
+#mBody .pcap{font-size:12px;color:#aab;margin:8px 0 2px;border-top:1px solid rgba(255,255,255,.25);padding-top:6px}
+#mBody .prow{display:flex;align-items:center;gap:4px;margin:4px 0;flex-wrap:wrap}#mBody .prow small{flex-basis:100%;font-size:12px;color:#ccd;padding-left:2px}#mBody .prow.unk small{color:#778}
+#mBody .pi{width:28px;height:28px;background:#fff;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#556;font-weight:bold}#mBody .pi img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#mBody .op{color:#ccd;font-size:14px}
+#mBody .punk{display:grid;grid-template-columns:1fr 1fr;column-gap:10px}#mBody .punk .prow{opacity:.55}
+.emo{font-size:min(2em,60cqw);line-height:1;color:#334;font-weight:bold}.im,.pi{container-type:inline-size}
 #getcard{position:absolute;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translate(-50%,10px) scale(.96);width:min(220px,62vw);background:rgba(12,14,34,.96);border:2px solid #fff;border-radius:10px;padding:10px;z-index:6;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
 #getcard.show{opacity:1;transform:translate(-50%,0) scale(1)}#getcard .im{aspect-ratio:1;width:60%;margin:0 auto;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}#getcard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 #getcard b{text-align:center;font-size:15px}#getcard small{font-size:12px;line-height:1.5;color:#ccd}
@@ -154,7 +165,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16r';
+const GAME_VER='2026-11-16t';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -480,7 +491,9 @@ async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;
       else{hideMsg();const i=await showChoice([...L.map(it=>`${it.name}（${S.it[it.id]}）`),'やめる']);if(i<L.length){got=L[i].id;if(c.take!==false)S.it[got]--}}
       S.vr[c.var??12]=got;break}
     case'if':await exec(evalCond(c.cond,cx)?c.then:(c.hasElse?c.else:[]),cx);break;
-    case'vcase':{const v=c.src==='day'?S.day:c.src==='slot'?S.slot:(S.vr[c.id]||0),k=(c.cases||[]).find(x=>+x.val===v);await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
+    case'vcase':{const v=c.src==='day'?S.day:c.src==='slot'?S.slot:(S.vr[c.id]||0),k=(c.cases||[]).find(x=>+x.val===v);
+      if(k&&(c.src==null||c.src==='var')&&+c.id===12&&cx&&cx.ev&&cx.ev.d){S.rec=S.rec||{};S.rec[cx.ev.d.name+'|'+k.val]=1}// プレゼントで何に変わったかを覚える（全員の情報）
+await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
     case'random':{const o=c.options||[];if(o.length)await exec(o[Math.floor(Math.random()*o.length)].cmds,cx);break}
     case'sw':S.sw[c.id]=!!c.val;placeScheduled();break;
     case'var':{let v=S.vr[c.id]||0;const n=+c.val||0;if(c.op==='game'||c.op==='gameAdd'){const gv=gameVal(c);v=c.op==='game'?gv:v+gv}else v=c.op==='set'?n:c.op==='add'?v+n:c.op==='sub'?v-n:c.op==='rand'?Math.floor(Math.random()*(n+1)):v;const vc=((G.system&&G.system.varCfg)||{})[c.id];if(vc){if(vc.min!=null&&vc.min!=='')v=Math.max(+vc.min,v);if(vc.max!=null&&vc.max!=='')v=Math.min(+vc.max,v)}S.vr[c.id]=v;updDim();updDbgHud();placeScheduled();break}
@@ -714,7 +727,9 @@ function fillEndings(it){const EL=(G.system&&G.system.endings)||[];const got=got
   if(!EL.length){it.append('（エンディングはまだありません）');return}
   for(const x of EL){const d=document.createElement('div');d.style.margin='4px 0';const ok=got.includes(x.id);d.textContent=ok?`★ ${x.name}`+(x.desc?`　${x.desc}`:''):'☆ ？？？';if(!ok)d.style.opacity=.5;it.append(d)}}
 let mView='main',mDet=false;
-function itemIcon(it,box){const ic=it.icon&&(G.icons||[]).find(x=>x.id===it.icon);if(ic)loadImg(ic.image).then(i=>{if(i){const e=document.createElement('img');e.src=i.src;box.append(e)}})}
+function itemIcon(it,box){const ic=it.icon&&(G.icons||[]).find(x=>x.id===it.icon);if(ic){loadImg(ic.image).then(i=>{if(i){const e=document.createElement('img');e.src=i.src;box.append(e)}});return}
+  // 画像がない時は絵文字（なければ名前の1文字目）
+  const s=document.createElement('span');s.className='emo';s.textContent=it.emoji||(it.name||'?').slice(0,1);box.append(s)}
 function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';if(menuOpen)menuShow('main')}
 function menuFocus(){const m=$('#menu');m.querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));if(navBtns(m).length>1)navMove(m,1);else navMove(m,0)}
 function menuBack(){if(mDet){closeDetail();return}if(mView==='main')toggleMenu(false);else menuShow('main')}
@@ -724,12 +739,12 @@ $('#mBack').addEventListener('click',()=>menuBack());
 $('#mDetail').addEventListener('click',e=>{if(e.target.id==='mDetail')closeDetail()});
 function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const body=$('#mBody');body.innerHTML='';body.scrollTop=0;
   $('#mHud').textContent=hudText();
-  const T={main:'メニュー',items:'アイテム',memo:'メモ',end:'エンディング',opt:'設定'};$('#mTitle').textContent=T[v]||'';
+  const T={people:'全員の情報',main:'メニュー',items:'アイテム',memo:'メモ',end:'エンディング',opt:'設定'};$('#mTitle').textContent=T[v]||'';
   $('#mBack').textContent=v==='main'?'✕ 閉じる':'◀ 戻る';
   const btn=(t,f)=>{const b=document.createElement('button');b.className='ui-btn';b.textContent=t;b.onclick=f;return b};
   if(v==='main'){const g=document.createElement('div');g.className='mgrid';
     g.append(btn('アイテム',()=>menuShow('items')));if(memoOn())g.append(btn('メモ',()=>menuShow('memo')));
-    g.append(btn('エンディング',()=>menuShow('end')),btn('設定',()=>menuShow('opt')));
+    g.append(btn('全員の情報',()=>menuShow('people')),btn('エンディング',()=>menuShow('end')),btn('設定',()=>menuShow('opt')));
     const sv=btn('セーブ',()=>{S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));sv.textContent='セーブしました';setTimeout(()=>sv.textContent='セーブ',1200)});
     g.append(sv,btn('ロード',()=>loadGame()));body.append(g)}
   if(v==='items'){const own=G.items.filter(i=>(S.it[i.id]||0)>0);
@@ -742,6 +757,7 @@ function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const
     for(const L of M.lines||[]){const d=document.createElement('div');const done=L.sw!=null&&L.sw>=0&&S.sw[L.sw];d.textContent=(done?'☑ ':'☐ ')+L.text+(done&&L.doneText?`　${L.doneText}`:'');if(done)d.style.opacity=.6;it.append(d)}
     body.append(it)}
   if(v==='end'){const it=document.createElement('div');it.className='panel';fillEndings(it);body.append(it)}
+  if(v==='people')body.append(peopleView());
   if(v==='opt'){const it=document.createElement('div');it.className='panel';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
       const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';
       const tg=document.createElement('button');tg.className='ui-btn';tg.style.cssText='min-width:0;width:58px;padding:4px 0;text-align:center';
@@ -789,6 +805,27 @@ function playOthello(foe){return new Promise(res=>{const box=$('#oth'),ob=box.qu
   const tap=i=>{if(lock||turn!==1||!flips(i,1).length)return;put(i,1);turn=2;next()};
   const gv=box.querySelector('[data-k=give]');gv.textContent='投了する';gv.onclick=()=>{if(lock&&turn===2)return;done(2)};
   box.style.display='flex';om.textContent='';next()})}
+// ===== 全員の情報：一緒に過ごした回数と、プレゼントで変えてもらった品 =====
+function peopleList(){const out=[];(G.variables||[]).forEach((n,vi)=>{const m=/^(.+)と過ごした回数$/.exec(n||'');if(!m)return;const name=m[1];let ev=null;
+    for(const mp of G.maps)for(const e of mp.events)if(e.name===name&&e.schedule&&!ev)ev=e;if(!ev)return;
+    const pg=ev.pages.find(p=>p.image&&p.image.charset)||{};const rec=[];
+    const walk=o=>{if(Array.isArray(o))return o.forEach(walk);if(!o||typeof o!=='object')return;
+      if(o.t==='vcase'&&+o.id===12&&(o.src==null||o.src==='var'))for(const k of o.cases||[]){const ad=(function f(a){for(const x of a||[]){if(x.t==='item'&&+x.n>0)return x.id;for(const s of[x.then,x.else,x.cmds])if(Array.isArray(s)){const r=f(s);if(r!=null)return r}}return null})(k.cmds);if(ad!=null&&ad!==+k.val)rec.push({from:+k.val,to:ad})}
+      for(const k in o)if(k!=='cases'||o.t!=='vcase')walk(o[k])};
+    walk(ev.pages);out.push({name,vi,cs:pg.image&&pg.image.charset,rec})});return out}
+function charIcon(csId,box){const cs=(G.charsets||[]).find(c=>c.id===csId);if(!cs)return;loadImg(cs.image).then(im=>{if(!im)return;const[sx,sy,fw,fh]=charRect(im,cs.index,0,1);const c=document.createElement('canvas');c.width=fw;c.height=fh;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(im,sx,sy,fw,fh,0,0,fw,fh);box.append(c)})}
+function peopleView(){const wrap=document.createElement('div');wrap.className='people';const R=S.rec||{};
+  const icon=(it,cls)=>{const d=document.createElement('div');d.className='pi '+(cls||'');if(it)itemIcon(it,d);else d.textContent='？';return d};
+  for(const p of peopleList()){const card=document.createElement('div');card.className='panel pcard';
+    const hd=document.createElement('div');hd.className='phd';const ci=document.createElement('div');ci.className='pc';charIcon(p.cs,ci);
+    const nm=document.createElement('div');nm.innerHTML=`<b></b><small></small>`;nm.querySelector('b').textContent=p.name;nm.querySelector('small').textContent=`一緒に過ごした回数　${S.vr[p.vi]||0}回`;hd.append(ci,nm);card.append(hd);
+    if(p.rec.length){const found=p.rec.filter(r=>R[p.name+'|'+r.from]);const cap=document.createElement('div');cap.className='pcap';cap.textContent=`変えてもらった品　${found.length}／${p.rec.length}`;card.append(cap);
+      for(const r of p.rec){const ok=R[p.name+'|'+r.from],a=G.items.find(i=>i.id===r.from),b=G.items.find(i=>i.id===r.to);const row=document.createElement('div');row.className='prow'+(ok?'':' unk');
+        const pc=document.createElement('div');pc.className='pc sm';charIcon(p.cs,pc);
+        const eq=t=>{const s=document.createElement('span');s.className='op';s.textContent=t;return s};
+        row.append(icon(ok?a:null),eq('＋'),pc,eq('＝'),icon(ok?b:null));if(ok){const tx=document.createElement('small');tx.textContent=`${a.name} → ${b.name}（価値 ${b.value||0}）`;row.append(tx)}(ok?card:(card._u||(card._u=Object.assign(document.createElement('div'),{className:'punk'})))).append(row)}if(card._u)card.append(card._u)}
+    wrap.append(card)}
+  return wrap}
 // 「使う」：アイテムに use（コマンドの列）がある時だけ。メニューを閉じて実行する
 async function useItem(it){toggleMenu(false);if(busy)return;await runEvent({page:{cmds:it.use}})}
 // 真エンドなどの解放：指定したエンディングを全部見ていれば、そのスイッチをONにする（周回をまたいで残る）

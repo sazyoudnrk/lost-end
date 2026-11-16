@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-16b';
+const APP_VER='2026-11-16c';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1036,7 +1036,7 @@ function editPool(r,onSave){const d=clone(r);d.to=d.to||0;
       btn('＋ 新しいアイテムを作る',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'新しいアイテム',desc:'',value:0,gift:true});d.item=id;changed();drawItem();setTimeout(()=>{const i=itemBox.querySelector('input[type=text]');if(i){i.focus();i.select()}},50)},'sm'),
       it?h('div',{style:'margin-top:8px;display:flex;flex-direction:column;gap:6px'},
         h('div',{class:'hint'},'このアイテムの中身（アイテム一覧と共通）'),
-        fText('名前',it,'name',{on:()=>{const o=itemBox.querySelector('select option:checked');if(o)o.textContent=pad3(it.id)+' '+it.name}}),fText('説明',it,'desc'),
+        fText('名前',it,'name',{on:()=>{const o=itemBox.querySelector('select option:checked');if(o)o.textContent=pad3(it.id)+' '+it.name}}),fText('説明',it,'desc'),fText('絵文字（画像がない時に表示）',it,'emoji'),
         fNum('入れたときの価値',it,'value',{min:0,hint:'等価交換機に「いれる」と得られる価値。0なら入れられない'}),fChk('プレゼントできる',it,'gift'),
         h('div',{class:'row',style:'align-items:end'},fSel('絵',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:drawItem}),(()=>{const ic=G.icons.find(x=>x.id===it.icon);return ic?thumb(ic.image):h('span')})())):null))};
   drawItem();
@@ -1106,7 +1106,7 @@ function renderDB(){
       h('div',{class:'hint'},'ゲーム開始時の値、「変数の操作」で超えない下限・上限、日が変わるたびの増減（正気度など）'));T.append(c)}
   const ic=card('アイテム');
   for(const it of G.items){const n=h('input',{type:'text',value:it.name,oninput:()=>{it.name=n.value;changed()}}),ds=h('input',{type:'text',value:it.desc||'',placeholder:'説明',oninput:()=>{it.desc=ds.value;changed()}}),vl=h('input',{type:'number',inputmode:'numeric',value:it.value||0,style:'width:90px',oninput:()=>{it.value=Math.max(0,parseInt(vl.value,10)||0);changed()}});
-    const icn=G.icons.find(x=>x.id===it.icon);ic.append(h('div',{class:'list-row'},h('div',{style:'display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:48px'},h('span',{style:'color:var(--mut);font-size:13px'},pad3(it.id)),icn?thumb(icn.image):null),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,fSel('画像',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:()=>renderDB()}),fChk('プレゼントできる',it,'gift'),h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
+    const icn=G.icons.find(x=>x.id===it.icon);ic.append(h('div',{class:'list-row'},h('div',{style:'display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:48px'},h('span',{style:'color:var(--mut);font-size:13px'},pad3(it.id)),icn?thumb(icn.image):null),h('div',{style:'flex:1;display:flex;flex-direction:column;gap:4px'},n,ds,fSel('画像',it,'icon',[['','なし'],...G.icons.map(x=>[x.id,x.name])],{on:()=>renderDB()}),h('input',{type:'text',value:it.emoji||'',placeholder:'絵文字（画像がない時）',oninput:ev=>{it.emoji=ev.target.value;changed()}}),fChk('プレゼントできる',it,'gift'),h('label',{class:'row',style:'align-items:center;font-size:12px;color:var(--mut)'},'交換機に入れたときの価値',vl)),btn('✕',()=>{if(confirm(`「${it.name}」を削除しますか？`)){G.items.splice(G.items.indexOf(it),1);changed();renderDB()}},'sm dg')))}
   ic.append(h('div',{style:'margin-top:6px'},btn('＋ アイテム追加',()=>{const id=Math.max(0,...G.items.map(i=>i.id))+1;G.items.push({id,name:'アイテム'+id,desc:'',gift:true});changed();renderDB()},'sm')));
   T.append(ic);T.scrollTop=sc;
 }

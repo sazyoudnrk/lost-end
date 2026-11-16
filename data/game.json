@@ -90,49 +90,56 @@
    "name": "スノードーム",
    "desc": "ロストエンドの街並みが精巧につくられている。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "🔮"
   },
   {
    "id": 2,
    "name": "工具セット",
    "desc": "古い機械の手入れに使える。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "🧰"
   },
   {
    "id": 3,
    "name": "水彩絵の具",
    "desc": "誰かが絵を描けるかもしれない",
    "value": 4,
-   "gift": true
+   "gift": true,
+   "emoji": "🎨"
   },
   {
    "id": 4,
    "name": "綺麗な石",
    "desc": "ただの石……？",
    "value": 1,
-   "gift": true
+   "gift": true,
+   "emoji": "🪨"
   },
   {
    "id": 5,
    "name": "宝石の原石",
    "desc": "目利きによれば本物",
    "value": 40,
-   "gift": true
+   "gift": true,
+   "emoji": "💠"
   },
   {
    "id": 6,
    "name": "謎のパーツ",
    "desc": "何かの装置の部品らしい",
    "value": 15,
-   "gift": true
+   "gift": true,
+   "emoji": "⚙️"
   },
   {
    "id": 8,
    "name": "ぬいぐるみ",
    "desc": "意味はない。でも心が落ち着く",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "🧸"
   },
   {
    "id": 9,
@@ -140,7 +147,8 @@
    "desc": "長持ちする保存食",
    "value": 50,
    "icon": "ic_food",
-   "gift": true
+   "gift": true,
+   "emoji": "🥫"
   },
   {
    "id": 10,
@@ -148,245 +156,280 @@
    "desc": "ムロのポケットに入っていた薬",
    "value": 60,
    "icon": "ic_med",
-   "gift": true
+   "gift": true,
+   "emoji": "💊"
   },
   {
    "id": 11,
    "name": "星間ワープ装置-E04 C02",
    "desc": "星間ワープ装置の部品",
    "value": 0,
-   "gift": false
+   "gift": false,
+   "emoji": "🔩"
   },
   {
    "id": 12,
    "name": "星間ワープ装置-E04 C15",
    "desc": "星間ワープ装置の部品",
    "value": 0,
-   "gift": false
+   "gift": false,
+   "emoji": "🔩"
   },
   {
    "id": 13,
    "name": "星間ワープ装置-E04 C33",
    "desc": "星間ワープ装置の部品",
    "value": 0,
-   "gift": false
+   "gift": false,
+   "emoji": "🔩"
   },
   {
    "id": 14,
    "name": "星間ワープ装置-E04 C05",
    "desc": "星間ワープ装置の部品",
    "value": 0,
-   "gift": false
+   "gift": false,
+   "emoji": "🔩"
   },
   {
    "id": 15,
    "name": "鉛筆",
    "desc": "ふつうの鉛筆",
    "value": 1,
-   "gift": true
+   "gift": true,
+   "emoji": "✏️"
   },
   {
    "id": 16,
    "name": "ニノマエの鉛筆画",
    "desc": "ニノマエが鉛筆で描いた絵",
    "value": 300,
-   "gift": false
+   "gift": false,
+   "emoji": "🖼️"
   },
   {
    "id": 17,
    "name": "無限ポテチ",
    "desc": "無限にポテトチップスが出てくるお菓子。子供の肥満防止条例によって廃盤",
    "value": 100,
-   "gift": true
+   "gift": true,
+   "emoji": "🍟"
   },
   {
    "id": 18,
    "name": "ダクトテープバナナ:レプリカ",
    "desc": "大昔の芸術のレプリカ。金属製",
    "value": 100,
-   "gift": true
+   "gift": true,
+   "emoji": "🍌"
   },
   {
    "id": 19,
    "name": "植物図鑑",
    "desc": "ロストエンドには存在しない植物の載った図鑑",
    "value": 100,
-   "gift": true
+   "gift": true,
+   "emoji": "📗"
   },
   {
    "id": 20,
    "name": "ヒートシンク",
    "desc": "等価交換機の冷却部品。1日に取り出せる回数が2回になる",
    "value": 0,
-   "gift": false
+   "gift": false,
+   "emoji": "🔧"
   },
   {
    "id": 21,
    "name": "幸運のお守り",
    "desc": "欲しい物を思って祈ると、次の日それが等価交換機に並びやすくなる",
    "value": 0,
-   "gift": false
+   "gift": false,
+   "emoji": "🧿"
   },
   {
    "id": 22,
    "name": "ぼろぼろの石",
    "desc": "崩れかけた石。何かの形が残っているような……",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "🪨"
   },
   {
    "id": 23,
    "name": "古い硬貨",
    "desc": "見たことのない硬貨。",
    "value": 12,
-   "gift": true
+   "gift": true,
+   "emoji": "🪙"
   },
   {
    "id": 24,
    "name": "誰かの写真",
    "desc": "知らない誰かが笑っている写真。裏に日付だけが書いてある。",
    "value": 15,
-   "gift": true
+   "gift": true,
+   "emoji": "📷"
   },
   {
    "id": 25,
    "name": "貝殻",
    "desc": "白くてもろい、どこかの海の貝殻。",
    "value": 6,
-   "gift": true
+   "gift": true,
+   "emoji": "🐚"
   },
   {
    "id": 26,
    "name": "普通の時計",
    "desc": "普通の時計。made in lostendと書いてある。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "⌚"
   },
   {
    "id": 27,
    "name": "止まった懐中時計",
    "desc": "ゼンマイ式の懐中時計。もう動かない。",
    "value": 18,
-   "gift": true
+   "gift": true,
+   "emoji": "⏱️"
   },
   {
    "id": 28,
    "name": "読めない楽譜",
    "desc": "知らない記号で書かれた楽譜。",
    "value": 15,
-   "gift": true
+   "gift": true,
+   "emoji": "🎼"
   },
   {
    "id": 30,
    "name": "古いレコード",
    "desc": "針で音を鳴らす円盤",
    "value": 20,
-   "gift": true
+   "gift": true,
+   "emoji": "💿"
   },
   {
    "id": 31,
    "name": "お気に入りのN-CD",
    "desc": "古代のCDの形を模した、ロストエンド製の永遠に残る音楽データN-CD お気に入りのアルバム。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "📀"
   },
   {
    "id": 32,
    "name": "今際の際の絵画",
    "desc": "ニノマエが自分の血で描いた海の絵",
    "value": 7500,
-   "gift": false
+   "gift": false,
+   "emoji": "🖼️"
   },
   {
    "id": 33,
    "name": "綺麗な宝石",
    "desc": "ネイサが磨いてくれた石。きらきら光っている。",
    "value": 300,
-   "gift": false
+   "gift": false,
+   "emoji": "💎"
   },
   {
    "id": 34,
    "name": "小さなロケット",
    "desc": "首から下げる小さなロケット。開かないが、誰かが大切にしていたらしい。",
    "value": 8,
-   "gift": true
+   "gift": true,
+   "emoji": "🚀"
   },
   {
    "id": 35,
    "name": "ドッグタグ",
    "desc": "名前が刻まれた金属の札。擦り切れて読めない。",
    "value": 6,
-   "gift": true
+   "gift": true,
+   "emoji": "🏷️"
   },
   {
    "id": 36,
    "name": "古い切手",
    "desc": "知らない星の切手。",
    "value": 12,
-   "gift": true
+   "gift": true,
+   "emoji": "✉️"
   },
   {
    "id": 37,
    "name": "毛糸玉",
    "desc": "やわらかい。",
    "value": 7,
-   "gift": true
+   "gift": true,
+   "emoji": "🧶"
   },
   {
    "id": 38,
    "name": "ピヲラの編みぐるみ",
    "desc": "ピヲラが編んでくれた小さな人形。",
    "value": 250,
-   "gift": false
+   "gift": false,
+   "emoji": "🧸"
   },
   {
    "id": 39,
    "name": "直したレコード",
    "desc": "ムロが傷を直してくれたレコード。また音が鳴る。",
    "value": 200,
-   "gift": false
+   "gift": false,
+   "emoji": "💿"
   },
   {
    "id": 40,
    "name": "ニノマエの水彩画",
    "desc": "ニノマエが水彩絵の具で描いた絵。",
    "value": 300,
-   "gift": false
+   "gift": false,
+   "emoji": "🖼️"
   },
   {
    "id": 41,
    "name": "鑑定済みの切手",
    "desc": "ネイサが調べてくれた珍しい切手。メモ付き。",
    "value": 200,
-   "gift": false
+   "gift": false,
+   "emoji": "📮"
   },
   {
    "id": 43,
    "name": "手編みのひざ掛け",
    "desc": "あたたかい。年を重ねた人にやさしい。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "🧣"
   },
   {
    "id": 44,
    "name": "未知の鉱石標本",
    "desc": "どの図鑑にも載っていない鉱石。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "💠"
   },
   {
    "id": 45,
    "name": "上質なスケッチブック",
    "desc": "どこまでも描けそうな、白くて厚い紙。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "📓"
   },
   {
    "id": 46,
    "name": "食玩の新シリーズ",
    "desc": "まだ誰も開けていない、新しいシリーズの食玩。",
    "value": 10,
-   "gift": true
+   "gift": true,
+   "emoji": "🎁"
   },
   {
    "id": 47,
@@ -416,147 +459,168 @@
      "val": 5
     }
    ],
-   "useLabel": "食べる"
+   "useLabel": "食べる",
+   "emoji": "🥫"
   },
   {
    "id": 48,
    "name": "練乳缶",
    "desc": "甘い練乳の缶詰。",
    "value": 8,
-   "gift": true
+   "gift": true,
+   "emoji": "🥛"
   },
   {
    "id": 49,
    "name": "キャラメル",
    "desc": "ピヲラが練乳缶を煮て作ってくれたキャラメル。",
    "value": 100,
-   "gift": false
+   "gift": false,
+   "emoji": "🍬"
   },
   {
    "id": 50,
    "name": "砂糖",
    "desc": "袋に入った砂糖。",
    "value": 5,
-   "gift": true
+   "gift": true,
+   "emoji": "🧂"
   },
   {
    "id": 51,
    "name": "べっこう飴",
    "desc": "ピヲラが砂糖を溶かして作ってくれたべっこう飴。",
    "value": 100,
-   "gift": false
+   "gift": false,
+   "emoji": "🍭"
   },
   {
    "id": 52,
    "name": "白紙のノート",
    "desc": "何も書かれていないノート。",
    "value": 5,
-   "gift": true
+   "gift": true,
+   "emoji": "📒"
   },
   {
    "id": 53,
    "name": "ロストエンドの歴史",
    "desc": "ムロが書いてくれた、ロストエンドの歴史。",
    "value": 300,
-   "gift": false
+   "gift": false,
+   "emoji": "📜"
   },
   {
    "id": 54,
    "name": "小さな絵",
    "desc": "ニノマエが描いてくれた小さな絵。",
    "value": 50,
-   "gift": false
+   "gift": false,
+   "emoji": "🖼️"
   },
   {
    "id": 55,
    "name": "毛糸の絵画",
    "desc": "ニノマエが毛糸を使って描いてくれた絵。",
    "value": 150,
-   "gift": false
+   "gift": false,
+   "emoji": "🖼️"
   },
   {
    "id": 56,
    "name": "鑑定済みの石",
    "desc": "ムロが鑑定してくれた石。",
    "value": 100,
-   "gift": false
+   "gift": false,
+   "emoji": "🪨"
   },
   {
    "id": 57,
    "name": "異星のレシピ帳",
    "desc": "ピヲラが書いてくれた、異星のお菓子のレシピ帳。",
    "value": 100,
-   "gift": false
+   "gift": false,
+   "emoji": "📔"
   },
   {
    "id": 58,
    "name": "鑑定済みのレコード",
    "desc": "ネイサが鑑定してくれたレコード。",
    "value": 100,
-   "gift": false
+   "gift": false,
+   "emoji": "💿"
   },
   {
    "id": 59,
    "name": "淡い色の絵画",
    "desc": "ニノマエが貝殻を砕いた顔料で描いた、淡い色の絵。",
    "value": 150,
-   "gift": false
+   "gift": false,
+   "emoji": "🖼️"
   },
   {
    "id": 60,
    "name": "化石",
    "desc": "ネイサが鑑定してくれた化石。年代のメモ付き。",
    "value": 200,
-   "gift": false
+   "gift": false,
+   "emoji": "🦴"
   },
   {
    "id": 61,
    "name": "旧ロストエンド硬貨",
    "desc": "南方の大陸で使われていたもの。ムロが教えてくれた。",
    "value": 150,
-   "gift": false
+   "gift": false,
+   "emoji": "🪙"
   },
   {
    "id": 62,
    "name": "ロストエンドの楽譜",
    "desc": "ムロが読み解いてくれた、昔のロストエンドの楽譜。",
    "value": 200,
-   "gift": false
+   "gift": false,
+   "emoji": "🎶"
   },
   {
    "id": 63,
    "name": "磨かれた止まった懐中時計",
    "desc": "ネイサが磨いてくれた懐中時計。きれいだが、まだ動かない。",
    "value": 50,
-   "gift": true
+   "gift": true,
+   "emoji": "⏱️"
   },
   {
    "id": 64,
    "name": "懐中時計",
    "desc": "ムロが直してくれた懐中時計。動くが、くすんでいる。",
    "value": 100,
-   "gift": true
+   "gift": true,
+   "emoji": "🕰️"
   },
   {
    "id": 65,
    "name": "磨かれた懐中時計",
    "desc": "ムロとネイサが手を入れた懐中時計。きれいに時を刻む。",
    "value": 300,
-   "gift": false
+   "gift": false,
+   "emoji": "🕰️"
   },
   {
    "id": 66,
    "name": "ラピスラズリの絵画",
    "desc": "ニノマエが綺麗な石を砕いた青い顔料で描いた絵。",
    "value": 300,
-   "gift": false
+   "gift": false,
+   "emoji": "🖼️"
   },
   {
    "id": 67,
    "name": "オルゴール",
    "desc": "ムロが工具セットと謎のパーツで組み立ててくれたオルゴール。",
    "value": 250,
-   "gift": false
+   "gift": false,
+   "emoji": "🎵"
   }
  ],
  "switches": [
