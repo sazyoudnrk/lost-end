@@ -550,7 +550,7 @@
    "name": "鑑定済みのレコード",
    "desc": "ネイサが鑑定してくれたレコード。",
    "value": 100,
-   "gift": false,
+   "gift": true,
    "emoji": "💿",
    "icon": "khb4m11"
   },
