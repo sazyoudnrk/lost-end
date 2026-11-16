@@ -82,6 +82,8 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 #oth .oc i{width:80%;height:80%;border-radius:50%;display:block;transition:background .25s}#oth .oc i.b{background:#111;box-shadow:inset 0 -2px 0 #333}#oth .oc i.w{background:#f4f4f4;box-shadow:inset 0 -2px 0 #bbb}
 #oth .oc.can::after{content:'';width:24%;height:24%;border-radius:50%;background:rgba(255,255,255,.35)}#oth .oc.last{outline:2px solid #e44;outline-offset:-2px}
 #oth .om{min-height:1.6em;font-size:15px;text-align:center}#oth .ui-btn{min-width:0;padding:8px 18px}
+#bgmAsk{position:absolute;inset:0;z-index:30;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#05060f;padding:20px}
+#bgmAsk p{margin:0;font-size:17px;letter-spacing:.08em}#bgmAsk small{color:#99a;font-size:12px}#bgmAsk .bar{display:flex;gap:12px}#bgmAsk .ui-btn{min-width:120px;text-align:center}
 #getcard{position:absolute;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translate(-50%,10px) scale(.96);width:min(220px,62vw);background:rgba(12,14,34,.96);border:2px solid #fff;border-radius:10px;padding:10px;z-index:6;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
 #getcard.show{opacity:1;transform:translate(-50%,0) scale(1)}#getcard .im{aspect-ratio:1;width:60%;margin:0 auto;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}#getcard .im img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
 #getcard b{text-align:center;font-size:15px}#getcard small{font-size:12px;line-height:1.5;color:#ccd}
@@ -142,6 +144,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 <div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><span id="mTitle">メニュー</span><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div>
 <div id="pick"><div class="mhd"><b></b><small></small></div><div class="pbody"><div class="igrid"></div></div><div class="pdesc"></div><div class="bar"><button class="ui-btn pri" data-k="ok" disabled>祈る</button><button class="ui-btn" data-k="no">祈らない</button><button class="ui-btn" data-k="cancel">やめる</button></div></div>
 <div id="oth"><div class="oh"><span><i class="dot b"></i><b class="pb">あなた 2</b></span><span><b class="pw">2</b><i class="dot w"></i></span></div><div class="ob"></div><div class="om"></div><button class="ui-btn" data-k="give">投了する</button></div>
+<div id="bgmAsk"><p>BGMをオンにしますか？</p><div class="bar"><button class="ui-btn" data-k="on">オンにする</button><button class="ui-btn" data-k="off">オフにする</button></div><small>あとで設定から変えられます</small></div>
 <div id="getcard"><div class="im"></div><b></b><small></small></div>
 <div id="title"><canvas id="tStars"></canvas><img id="tImg" alt=""><h1 id="ttl"></h1><div id="tSub"></div><div id="tGap"></div><button class="ui-btn" id="tNew">はじめから</button><button class="ui-btn" id="tCont">つづきから</button><button class="ui-btn" id="tEnd">エンディング</button><div id="tEndList"></div><div id="tFoot"></div></div><div id="credits"></div>
 <div id="hud"></div>
@@ -151,7 +154,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16g';
+const GAME_VER='2026-11-16h';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -250,6 +253,7 @@ const OK_KEYS=['Enter',' ','z','Z'],CANCEL_KEYS=['Escape','x','X','Backspace'];
 function navBox(){
   if($('#shop').classList.contains('show')&&!$('#shop').classList.contains('lock'))return $('#shop');
   if($('#title').style.display==='flex')return $('#title');
+  if($('#bgmAsk').style.display==='flex')return $('#bgmAsk');
   if($('#pick').style.display==='flex')return $('#pick');
   if(menuOpen)return $('#menu');
   if(chEl.style.display==='flex')return chEl;
@@ -813,6 +817,10 @@ async function playCredits(){const box=$('#credits');const txt=((G.system&&G.sys
     else d.innerHTML=`<div class="role">${b[0].replace(/[<&]/g,c=>c==='<'?'&lt;':'&amp;')}</div>`+b.slice(1).map(x=>`<div class="nm">${x.replace(/[<&]/g,c=>c==='<'?'&lt;':'&amp;')}</div>`).join('');
     box.innerHTML='';box.append(d);await sleep(60);d.classList.add('on');await hold(last?5000:2400);d.classList.remove('on');await sleep(750)}
   box.removeEventListener('pointerdown',tap);removeEventListener('keydown',key);box.style.display='none'}
+// 起動時に BGM のオン／オフを聞く（押した操作で音も鳴らせるようになる）
+function askBgm(){return new Promise(res=>{const b=$('#bgmAsk');b.style.display='flex';b.querySelectorAll('.kf').forEach(x=>x.classList.remove('kf'));navMove(b,0);
+  const go=on=>{audioCtx();if(on){if(!OPT.bgm)OPT.bgm=OPT.bgmLast||80}else{if(OPT.bgm)OPT.bgmLast=OPT.bgm;OPT.bgm=0}saveOpt();b.style.display='none';res()};
+  b.querySelector('[data-k=on]').onclick=()=>go(true);b.querySelector('[data-k=off]').onclick=()=>go(false)})}
 function showTitle(){stopBgm(300);
   const SY=G.system||{};$('#ttl').textContent=G.title||'';$('#tSub').textContent=SY.titleSub||'';$('#tFoot').textContent=SY.titleFoot??'';
   {const im=$('#tImg'),a=[...(G.stills||[]),...(G.pictures||[])].find(x=>x.id===SY.titleImage);if(a){loadImg(a.image).then(x=>{if(x){im.src=x.src;im.style.display='block'}})}else im.style.display='none'}
@@ -832,7 +840,7 @@ function showTitle(){stopBgm(300);
   // テストプレイ：エディタに戻るボタン（タブを閉じる。閉じられなければエディタを開く）
   if(PREVIEW){const b=$('#pvBack');b.classList.remove('hide');b.onclick=()=>{window.close();setTimeout(()=>location.href='editor.html',300)}}
   if(PREVIEW){$('#dbgBtn').classList.remove('hide');$('#dbgBtn').onclick=openDbg}
-  if(PREVIEW)startNew();else showTitle();
+  if(PREVIEW)startNew();else{await askBgm();showTitle()}
 })();
 // ===== デバッグ（テストプレイ専用）=====
 const DBGKEY=NS+'dbgsnaps';
