@@ -151,7 +151,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16f';
+const GAME_VER='2026-11-16g';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -783,7 +783,11 @@ async function loadGame(){const s=localStorage.getItem(SAVEKEY);if(!s){alert('�
   // 古いセーブ：依頼中（相談〜報告）のスイッチが無ければ補う
   if(S.sw[33]==null&&(+(S.vr[16]||0)>0||S.sw[30]))S.sw[33]=true;
   toggleMenu(false);$('#title').style.display='none';await fade(1);await loadMap(S.map,S.x,S.y,S.dir);await fade(0)}
-async function startNew(){
+// プレイ計測（画面には出さない）。「はじめから」を押した延べ回数と、初めて押した端末の数を数える
+// 見る時：https://abacus.jasoncameron.dev/get/sazyoudnrk-lost-end/starts と …/players
+function countPlay(){if(PREVIEW)return;const hit=k=>{const u=['https://abacus.jsn.cam','https://abacus.jasoncameron.dev'];(async()=>{for(const b of u){try{const c=new AbortController();setTimeout(()=>c.abort(),6000);const r=await fetch(`${b}/hit/sazyoudnrk-lost-end/${k}`,{signal:c.signal});if(r.ok)return}catch(e){}}})()};
+  hit('starts');let first=false;try{first=!localStorage.getItem(NS+'counted');if(first)localStorage.setItem(NS+'counted','1')}catch(e){}if(first)hit('players')}
+async function startNew(){countPlay();
   const p=G.player;S={map:p.map,x:p.x,y:p.y,dir:p.dir||0,sw:{},vr:{},it:{},ss:{},once:{},day:G.system.startDay||1,slot:0,money:+G.shop.startMoney||0,buys:0,buyLimit:+G.shop.limit||1};S.shop=drawShop();applyUnlock();
   for(const [k,v] of Object.entries((G.system&&G.system.varCfg)||{})){if(!v)continue;if(v.init!=null&&v.init!=='')S.vr[k]=+v.init;if(v.pick){const L=String(v.pick).split(/[,、\s]+/).filter(x=>x!=='').map(Number);if(L.length)S.vr[k]=L[Math.floor(Math.random()*L.length)]}}
   if(PREVIEW&&Q.has('map')){S.map=+Q.get('map');S.x=+Q.get('x')||0;S.y=+Q.get('y')||0}
