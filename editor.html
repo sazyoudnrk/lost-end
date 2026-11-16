@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-16c';
+const APP_VER='2026-11-16d';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -501,13 +501,14 @@ function startStroke(t){
     if(v>=0&&cols){ME.brush={x:v%cols,y:Math.floor(v/cols),w:1,h:1};ME.layer=l;ME.tool='pen';refreshTools();drawPalette()}return}
   pushUndo(m);stroke={tool,t0:t,t1:t};
   if(tool==='pen'||tool==='erase')stampTiles(m,t,t);
-  else if(tool==='fill'){flood(m,t);stroke=null;changed()}
+
   reqDraw();
 }
 function moveStroke(t){if(!stroke||(t.x===stroke.t1.x&&t.y===stroke.t1.y))return;stroke.t1=t;const m=curMap();if((stroke.tool==='pen'||stroke.tool==='erase')&&inMap(m,t))stampTiles(m,t,stroke.t0);reqDraw()}
 function cancelStroke(){const s=stroke;stroke=null;if(s&&s.tool!=='event'){const u=ME.undo.pop();if(u)restoreSnap(u,null)}reqDraw()}
 function endStroke(){
   const s=stroke;stroke=null;if(!s)return;const m=curMap();
+  if(s.tool==='fill')flood(m,s.t0);// 塗りつぶしは指を離した時（2本指の拡大縮小では塗らない）
   if(s.tool==='rect'){const cols=tsCols(m),r=rectOf(s.t0,s.t1),L=m.layers[ME.layer];
     if(cols)for(let y=Math.max(0,r.y);y<Math.min(m.h,r.y+r.h);y++)for(let x=Math.max(0,r.x);x<Math.min(m.w,r.x+r.w);x++)L[y*m.w+x]=brushVal(cols,x-r.x,y-r.y)}
   if(s.tool==='event'){
@@ -1400,14 +1401,14 @@ async function openPixelEditor(o){
   function snapPt(p,ceil){const[gw,gh]=gridWH();if(!st.snap||!gw)return p;return{x:Math.round((ceil?Math.ceil:Math.floor)(p.x/gw)*gw),y:Math.round((ceil?Math.ceil:Math.floor)(p.y/gh)*gh)}}
   function begin(p){
     const t=st.tool;
-    if(t==='pick'){if(p.x<0||p.y<0||p.x>=W||p.y>=H)return;const c=u2c(A[p.y*W+p.x]);st.tone=null;st.col=c[3]?c:[0,0,0,0];st.tool='pen';refreshUI();return}
+    // スポイトと塗りつぶしは指を離した時に行う（2本指で拡大縮小した時は何もしない）
+    if(t==='pick'||t==='fill'){stroke={t:'tap',k:t,p};return}
     if(t==='select'){
       const f=st.float;
       if(f&&inR(p,{x:f.x,y:f.y,w:f.d.width,h:f.d.height})){stroke={t:'move',p0:p,fx:f.x,fy:f.y};return}
       if(f)commitFloat();
       if(st.sel&&inR(p,st.sel)){const s=st.sel,before=snap(),d=selPixels(s);clearRect(s);st.dirty=true;st.sel=null;setFloat(d,s.x,s.y,before);stroke={t:'move',p0:p,fx:s.x,fy:s.y};return}
-      stroke={t:'sel',a:p};updSel(p);return}
-    if(t==='fill'){const b=snap();if(!flood(p.x,p.y,cmap())){if(st.sel)toast('選択範囲の中をタップしてください（解除は「解除」）');return}pushPatch(b);req();return}
+      stroke={t:'sel',a:p,prev:st.sel?{...st.sel}:null};updSel(p);return}
     const u=cmap();
     if(t==='line'){stroke={t:'line',b:snap(),u};st.line={a:p,b:p};req();return}
     if(t==='rect'||t==='ellipse'){stroke={t:'shape',b:snap(),u};st.shape={kind:t,a:p,b:p};req();return}
@@ -1426,6 +1427,10 @@ async function openPixelEditor(o){
   }
   function end(cancel){
     const s=stroke;stroke=null;if(!s)return;
+    if(s.t==='tap'){if(cancel)return;const p=s.p;
+      if(s.k==='pick'){if(p.x<0||p.y<0||p.x>=W||p.y>=H)return;const c=u2c(A[p.y*W+p.x]);st.tone=null;st.col=c[3]?c:[0,0,0,0];st.tool='pen';refreshUI();return}
+      const b=snap();if(!flood(p.x,p.y,cmap())){if(st.sel)toast('選択範囲の中をタップしてください（解除は「解除」）');return}pushPatch(b);req();return}
+    if(cancel&&s.t==='sel'){st.sel=s.prev||null;refreshUI();req();return}
     if(cancel&&(s.t==='pen'||s.t==='line'||s.t==='shape')){img.data.set(s.b);st.line=null;st.shape=null;st.dirty=true;req();return}
     if(s.t==='shape'){drawShape(st.shape,s.u);st.shape=null;pushPatch(s.b)}
     if(s.t==='pen')pushPatch(s.b);
