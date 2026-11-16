@@ -309,7 +309,8 @@
    "desc": "針で音を鳴らす円盤",
    "value": 20,
    "gift": true,
-   "emoji": "💿"
+   "emoji": "💿",
+   "icon": "khb4m11"
   },
   {
    "id": 31,
@@ -20662,6 +20663,16 @@
    "id": "ic_med",
    "name": "薬",
    "image": "assets/icons/medicine.png"
+  },
+  {
+   "id": "khb4m11",
+   "name": "レコード",
+   "image": "assets/icons/icon.png"
+  },
+  {
+   "id": "4q14r64",
+   "name": "星間ワープ装置-E04 C15",
+   "image": "assets/icons/icon_2.png"
   }
  ],
  "sounds": [
