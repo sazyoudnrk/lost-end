@@ -15966,7 +15966,7 @@
                    "face": "",
                    "name": "ムロ",
                    "text": "呼吸がうまく出来ない感覚があります、ス、ストレスのせいかも",
-                   "pic": "muro_normal",
+                   "pic": "muro_tired1",
                    "picPos": "C"
                   }
                  ],
@@ -15986,7 +15986,7 @@
                      "face": "",
                      "name": "ムロ",
                      "text": "……ごめんなさい、全然眠れていなくて",
-                     "pic": "muro_normal",
+                     "pic": "muro_tired1",
                      "picPos": "C"
                     }
                    ],
@@ -16006,7 +16006,7 @@
                        "face": "",
                        "name": "ムロ",
                        "text": "僕の人生は無意味です。長く生きてしまっただけ。",
-                       "pic": "muro_normal",
+                       "pic": "muro_tired2",
                        "picPos": "C"
                       }
                      ],
@@ -16015,7 +16015,7 @@
                        "t": "text",
                        "face": "",
                        "name": "ムロ",
-                       "pic": "muro_normal",
+                       "pic": "muro_tired2",
                        "picPos": "C",
                        "text": "[pname]さん？ああ、幻聴じゃなかったんですね……"
                       }
@@ -20642,27 +20642,7 @@
     "balance_ninomae",
     "balance_piwora"
    ]
-  },
-  "moodPics": [
-   {
-    "pics": [
-     "muro_normal",
-     "muro_closed",
-     "muro_away"
-    ],
-    "var": 8,
-    "rules": [
-     {
-      "max": 20,
-      "pic": "muro_tired2"
-     },
-     {
-      "max": 40,
-      "pic": "muro_tired1"
-     }
-    ]
-   }
-  ]
+  }
  },
  "icons": [
   {
