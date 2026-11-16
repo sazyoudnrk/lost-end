@@ -8338,6 +8338,39 @@
        ]
       }
      ]
+    },
+    {
+     "id": 44,
+     "name": "張り紙（エントランス）",
+     "x": 3,
+     "y": 2,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "張り紙がある。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "「6時間のエレガントな旅♡\nロストエンド星間旅行をご利用いただきありがとうございます。\n[p]\n離着陸時は部屋でお待ちいただき、アナウンスされ次第エントランスまでお越しください。」",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
+      }
+     ]
     }
    ]
   },
@@ -15229,6 +15262,22 @@
          "text": "机だ。",
          "pic": "-",
          "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "机の上に花が飾ってある。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "……造花だ。",
+         "pic": "-",
+         "picPos": "C"
         }
        ]
       },
@@ -15250,6 +15299,22 @@
          "face": "",
          "name": "",
          "text": "パーツの型番を書いたメモがある。（メニューの「メモ」で確認できる）",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "机の上に花が飾ってある。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "……造花だ。",
          "pic": "-",
          "picPos": "C"
         }
@@ -15287,6 +15352,39 @@
        "priority": "same",
        "through": true,
        "cmds": []
+      }
+     ]
+    },
+    {
+     "id": 40,
+     "name": "張り紙（主人公の部屋）",
+     "x": 3,
+     "y": 2,
+     "pages": [
+      {
+       "cond": [],
+       "image": null,
+       "trigger": "action",
+       "priority": "same",
+       "through": false,
+       "cmds": [
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "張り紙がある。",
+         "pic": "-",
+         "picPos": "C"
+        },
+        {
+         "t": "text",
+         "face": "",
+         "name": "",
+         "text": "「当宇宙船は、重力装置による制御がされています。就寝時の固定ベルトの着用は不要です。\n[p]\n家具は固定されているため、意図的に破壊するような行為はご遠慮ください。」",
+         "pic": "-",
+         "picPos": "C"
+        }
+       ]
       }
      ]
     }
