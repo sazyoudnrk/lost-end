@@ -154,7 +154,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16h';
+const GAME_VER='2026-11-16i';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -180,8 +180,7 @@ const imgP={},imgR={};
 let AC=null;const sndP={};
 function audioCtx(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}if(AC&&AC.state==='suspended')AC.resume();return AC}
 // iPhoneはタップ(touchend/click)の中でないと音を出せないので、止まっている間は毎回起こしに行く
-try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
-['pointerdown','pointerup','touchend','click','keydown'].forEach(t=>addEventListener(t,()=>{const a=audioCtx();if(!a||a.state==='running')return;try{a.resume();const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0)}catch(e){}},{capture:true}));
+['pointerdown','pointerup','touchend','click','keydown'].forEach(t=>addEventListener(t,()=>{if(!OPT.bgm&&!OPT.se)return;const a=audioCtx();if(!a||a.state==='running')return;try{a.resume();const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0)}catch(e){}},{capture:true}));
 function loadSnd(path){if(!path)return Promise.resolve(null);if(sndP[path])return sndP[path];
   return sndP[path]=(async()=>{try{const a=audioCtx();if(!a)return null;let buf=null;
     if(PREVIEW){const f=await idbGet(path);if(f)buf=f.buf.slice(0)}
@@ -191,10 +190,15 @@ const BGM={id:null,src:null,gain:null,base:1};
 // 音量の設定（テストプレイは別に保存。テストプレイのBGMは最初オフ）
 const OPTKEY=()=>NS+(PREVIEW?'optPv':'opt');
 let OPT=(()=>{const d=PREVIEW?{bgm:0,se:80,dash:0,tspd:1}:{bgm:80,se:80,dash:0,tspd:1};try{return Object.assign(d,JSON.parse(localStorage.getItem(OPTKEY())||'{}'))}catch(e){return d}})();
-function saveOpt(){try{localStorage.setItem(OPTKEY(),JSON.stringify(OPT))}catch(e){}if(BGM.gain&&AC)BGM.gain.gain.setValueAtTime(BGM.base*OPT.bgm/100,AC.currentTime)}
+// BGMオフの時は、YouTubeなど他のアプリの音を止めない（iPhone：ambient＝他の音と混ぜる）
+function setSess(){try{if(navigator.audioSession)navigator.audioSession.type=OPT.bgm?'playback':'ambient'}catch(e){}}
+setSess();
+function saveOpt(){try{localStorage.setItem(OPTKEY(),JSON.stringify(OPT))}catch(e){}setSess();if(BGM.gain&&AC)BGM.gain.gain.setValueAtTime(BGM.base*OPT.bgm/100,AC.currentTime);
+  if(!OPT.bgm&&BGM.src)stopBgm(200);else if(OPT.bgm&&!BGM.src&&BGM.want&&BGM.want.id)playBgm(BGM.want.id,BGM.want.vol,300)}
 function stopBgm(ms=600){const b=BGM;if(!b.src)return;const a=audioCtx(),s=b.src,g=b.gain;BGM.id=null;BGM.src=null;BGM.gain=null;
   try{const t=a.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+ms/1000);s.stop(t+ms/1000+.05)}catch(e){try{s.stop()}catch(_){}}}
 async function playBgm(id,vol,ms=600){
+  BGM.want={id,vol};if(!OPT.bgm){stopBgm(ms);return}
   if(!id){stopBgm(ms);return}if(BGM.id===id)return;
   const s=(G.bgms||[]).find(x=>x.id===id);if(!s){stopBgm(ms);return}
   stopBgm(ms);BGM.id=id;const buf=await loadSnd(s.file);const a=audioCtx();if(!buf||!a||BGM.id!==id)return;
@@ -211,7 +215,7 @@ async function shakeScreen(c){
   await new Promise(r=>{const step=()=>{const t=performance.now()-t0;if(t>=ms){el.style.transform='';r();return}const k=pw*(1-t/ms);el.style.transform=`translate(${Math.round((Math.random()*2-1)*k)}px,${Math.round((Math.random()*2-1)*k*.5)}px)`;requestAnimationFrame(step)};step()})}
 function mapBgm(m){const v=m&&m.bgm;if(v==='-')return null;return v||(G.system&&G.system.bgm)||null}
 document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden)AC.suspend();else AC.resume()});
-async function playSe(id,vol){const s=(G.sounds||[]).find(x=>x.id===id);if(!s)return;const b=await loadSnd(s.file);const a=audioCtx();if(!b||!a)return;
+async function playSe(id,vol){if(!OPT.se)return;const s=(G.sounds||[]).find(x=>x.id===id);if(!s)return;const b=await loadSnd(s.file);const a=audioCtx();if(!b||!a)return;
   const src=a.createBufferSource(),g=a.createGain();g.gain.value=(vol==null?100:+vol)/100*OPT.se/100;src.buffer=b;src.connect(g).connect(a.destination);src.start()}
 function loadImg(path){
   if(!path)return Promise.resolve(null);
@@ -819,7 +823,7 @@ async function playCredits(){const box=$('#credits');const txt=((G.system&&G.sys
   box.removeEventListener('pointerdown',tap);removeEventListener('keydown',key);box.style.display='none'}
 // 起動時に BGM のオン／オフを聞く（押した操作で音も鳴らせるようになる）
 function askBgm(){return new Promise(res=>{const b=$('#bgmAsk');b.style.display='flex';b.querySelectorAll('.kf').forEach(x=>x.classList.remove('kf'));navMove(b,0);
-  const go=on=>{audioCtx();if(on){if(!OPT.bgm)OPT.bgm=OPT.bgmLast||80}else{if(OPT.bgm)OPT.bgmLast=OPT.bgm;OPT.bgm=0}saveOpt();b.style.display='none';res()};
+  const go=on=>{if(on){if(!OPT.bgm)OPT.bgm=OPT.bgmLast||80}else{if(OPT.bgm)OPT.bgmLast=OPT.bgm;OPT.bgm=0}saveOpt();if(on)audioCtx();b.style.display='none';res()};
   b.querySelector('[data-k=on]').onclick=()=>go(true);b.querySelector('[data-k=off]').onclick=()=>go(false)})}
 function showTitle(){stopBgm(300);
   const SY=G.system||{};$('#ttl').textContent=G.title||'';$('#tSub').textContent=SY.titleSub||'';$('#tFoot').textContent=SY.titleFoot??'';
