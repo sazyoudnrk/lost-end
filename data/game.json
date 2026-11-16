@@ -15280,45 +15280,6 @@
          "picPos": "C"
         }
        ]
-      },
-      {
-       "cond": [
-        {
-         "type": "sw",
-         "id": 19,
-         "val": true
-        }
-       ],
-       "image": null,
-       "trigger": "action",
-       "priority": "same",
-       "through": false,
-       "cmds": [
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "パーツの型番を書いたメモがある。（メニューの「メモ」で確認できる）",
-         "pic": "-",
-         "picPos": "C"
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "机の上に花が飾ってある。",
-         "pic": "-",
-         "picPos": "C"
-        },
-        {
-         "t": "text",
-         "face": "",
-         "name": "",
-         "text": "……造花だ。",
-         "pic": "-",
-         "picPos": "C"
-        }
-       ]
       }
      ]
     },
