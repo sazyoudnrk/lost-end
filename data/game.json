@@ -469,7 +469,8 @@
    "desc": "甘い練乳の缶詰。",
    "value": 8,
    "gift": true,
-   "emoji": "🥛"
+   "emoji": "🥛",
+   "icon": "n0a0sji"
   },
   {
    "id": 49,
@@ -20673,6 +20674,11 @@
    "id": "4q14r64",
    "name": "星間ワープ装置-E04 C15",
    "image": "assets/icons/icon_2.png"
+  },
+  {
+   "id": "n0a0sji",
+   "name": "練乳缶",
+   "image": "assets/icons/icon_3.png"
   }
  ],
  "sounds": [
