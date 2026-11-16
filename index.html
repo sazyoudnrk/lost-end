@@ -154,7 +154,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16k';
+const GAME_VER='2026-11-16l';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -718,6 +718,7 @@ function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=men
 function menuFocus(){const m=$('#menu');m.querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));if(navBtns(m).length>1)navMove(m,1);else navMove(m,0)}
 function menuBack(){if(mDet){closeDetail();return}if(mView==='main')toggleMenu(false);else menuShow('main')}
 function closeDetail(){mDet=false;$('#mDetail').style.display='none';$('#mDetail').innerHTML='';menuFocus()}
+$('#menuBtn').addEventListener('click',()=>{if(!busy)toggleMenu(true)});
 $('#mBack').addEventListener('click',()=>menuBack());
 $('#mDetail').addEventListener('click',e=>{if(e.target.id==='mDetail')closeDetail()});
 function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const body=$('#mBody');body.innerHTML='';body.scrollTop=0;
