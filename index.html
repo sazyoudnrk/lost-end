@@ -154,7 +154,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16l';
+const GAME_VER='2026-11-16m';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -743,7 +743,11 @@ function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const
   if(v==='end'){const it=document.createElement('div');it.className='panel';fillEndings(it);body.append(it)}
   if(v==='opt'){const it=document.createElement('div');it.className='panel';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
       const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';
-      const show=()=>v.textContent=+s.value?s.value:'オフ';show();s.oninput=()=>{OPT[k]=+s.value;show();saveOpt()};const l=document.createElement('span');l.textContent=lab;l.style.width='3em';d.append(l,s,v);return d};
+      const tg=document.createElement('button');tg.className='ui-btn';tg.style.cssText='min-width:0;width:58px;padding:4px 0;text-align:center';
+      const show=()=>{v.textContent=+s.value?s.value:'オフ';tg.textContent=+s.value?'オン':'オフ';tg.style.opacity=+s.value?1:.6};show();
+      s.oninput=()=>{OPT[k]=+s.value;if(OPT[k])OPT[k+'Last']=OPT[k];show();saveOpt()};
+      tg.onclick=ev=>{ev.stopPropagation();if(OPT[k]){OPT[k+'Last']=OPT[k];OPT[k]=0}else OPT[k]=OPT[k+'Last']||80;s.value=OPT[k];show();saveOpt();if(OPT[k])audioCtx()};
+      const l=document.createElement('span');l.textContent=lab;l.style.cssText='width:3.6em;flex:none';d.append(l,tg,s,v);return d};
     const cyc=(lab,k,vals)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';const l=document.createElement('span');l.textContent=lab;l.style.flex='1';
       const b=document.createElement('button');b.className='ui-btn';b.style.cssText='min-width:96px;padding:4px 10px';const show=()=>b.textContent=vals[OPT[k]??0];show();b.onclick=ev=>{ev.stopPropagation();OPT[k]=((OPT[k]??0)+1)%vals.length;show();saveOpt()};d.append(l,b);return d};
     it.append(cyc('常時ダッシュ','dash',['オフ','オン']),cyc('文字の速さ','tspd',['遅い','普通','速い','瞬間']),row('BGM','bgm'),row('効果音','se'));if(PREVIEW){const n=document.createElement('div');n.style.cssText='font-size:12px;color:#aab';n.textContent='テストプレイの設定は、ふつうに遊ぶときとは別に保存されます';it.append(n)}
