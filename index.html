@@ -165,7 +165,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-17a';
+const GAME_VER='2026-11-17b';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -588,6 +588,9 @@ async function showStill(id,fade){const box=$('#still'),img=box.querySelector('i
   const im=await loadImg(st.image);if(!im)return;
   if(box.classList.contains('show')&&fade){box.classList.remove('show');await sleep(400)}
   img.src=im.src;box.style.transition=fade?'':'none';void box.offsetWidth;box.classList.add('show');if(fade)await sleep(400);box.style.transition=''}
+// 正気度で立ち絵を差し替える（system.moodPics：{pics:[元の立ち絵], var:正気度の変数, rules:[{max, pic}]}、max の小さい順）
+function moodPic(id){for(const m of (G.system&&G.system.moodPics)||[]){if(!(m.pics||[]).includes(id))continue;const v=+(S.vr[m.var]||0);
+    for(const r of [...(m.rules||[])].sort((a,b)=>a.max-b.max))if(v<=r.max)return r.pic}return id}
 // アイテムを手に入れた直後の、その名前が入った文章ではカードを出す
 async function showText(c){const gc=pendCard!=null&&G.items.find(i=>i.id===pendCard);pendCard=null;
   if(gc&&(c.text||'').includes(gc.name)){const g=$('#getcard');const im=g.querySelector('.im');im.innerHTML='';itemIcon(gc,im);g.querySelector('b').textContent=gc.name;g.querySelector('small').textContent=gc.desc||'';g.classList.add('show');
@@ -595,7 +598,7 @@ async function showText(c){const gc=pendCard!=null&&G.items.find(i=>i.id===pendC
   return showText0(c)}
 async function showText0(c){
   if(c.pic==='-')setPic(c.picPos||'C',null);
-  else if(c.pic){await setPic(c.picPos||'C',c.pic);setActive(c.picPos||'C')}
+  else if(c.pic){await setPic(c.picPos||'C',moodPic(c.pic));setActive(c.picPos||'C')}
   msgEl.classList.remove('shake');msgEl.classList.toggle('onblack',+getComputedStyle($('#fade')).opacity>=.99);msgEl.classList.add('show');
   const f=G.faces.find(x=>x.id===c.face);
   const fim=f?await loadImg(f.image):null;

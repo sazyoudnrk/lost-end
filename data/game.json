@@ -20642,7 +20642,27 @@
     "balance_ninomae",
     "balance_piwora"
    ]
-  }
+  },
+  "moodPics": [
+   {
+    "pics": [
+     "muro_normal",
+     "muro_closed",
+     "muro_away"
+    ],
+    "var": 8,
+    "rules": [
+     {
+      "max": 20,
+      "pic": "muro_tired2"
+     },
+     {
+      "max": 40,
+      "pic": "muro_tired1"
+     }
+    ]
+   }
+  ]
  },
  "icons": [
   {
