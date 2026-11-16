@@ -154,7 +154,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16q';
+const GAME_VER='2026-11-16r';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -469,7 +469,8 @@ async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;
     case'text':await showText(c);break;
     case'choice':{const op=c.options.filter(o=>(!o.cond||evalCond(o.cond,cx))&&(!o.cond2||evalCond(o.cond2,cx)));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
     case'othello':{hideMsg();const r=await playOthello(c.name||'ピヲラ');if(c.var!=null&&+c.var>=0)S.vr[+c.var]=r;break}
-    case'wish':{const L=G.shop.pool.map((r,i)=>({r,i,it:G.items.find(x=>x.id===r.item)})).filter(o=>o.it&&!(o.r.once&&S.once[o.i])&&(o.r.sw==null||o.r.sw<0||S.sw[o.r.sw])&&(c.parts?o.it.gift===false:true));
+    case'wish':{const L=G.shop.pool.map((r,i)=>({r,i,it:G.items.find(x=>x.id===r.item)})).filter(o=>{const r=o.r,d=S.day+1;return o.it&&!(r.once&&S.once[o.i])&&!(r.showOnce&&S.shown&&S.shown[o.i])&&d>=(r.from||1)&&(r.to==null||r.to===''||d<=r.to)&&(r.sw==null||r.sw<0||S.sw[r.sw])&&(c.parts?o.it.gift===false:true)});
+      // 明日並ぶ可能性がある物だけ（取得済み・もう出ない一度きりの物・期間外は出さない）
       const seen=new Set(),pick=L.filter(o=>!seen.has(o.it.name)&&seen.add(o.it.name));
       hideMsg();const k=await pickItem(pick.map(o=>o.it),c.title||'幸運のお守り',c.sub||'明日、等価交換機に並んでほしい物を選んで祈ろう');
       if(k==='cancel')throw END;
