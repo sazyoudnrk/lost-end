@@ -154,7 +154,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-16j';
+const GAME_VER='2026-11-16k';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -844,7 +844,7 @@ function showTitle(){stopBgm(300);
   // テストプレイ：エディタに戻るボタン（タブを閉じる。閉じられなければエディタを開く）
   if(PREVIEW){const b=$('#pvBack');b.classList.remove('hide');b.onclick=()=>{window.close();setTimeout(()=>location.href='editor.html',300)}}
   if(PREVIEW){$('#dbgBtn').classList.remove('hide');$('#dbgBtn').onclick=openDbg}
-  await askBgm();if(PREVIEW)startNew();else showTitle()
+  if(PREVIEW)startNew();else{await askBgm();showTitle()}
 })();
 // ===== デバッグ（テストプレイ専用）=====
 const DBGKEY=NS+'dbgsnaps';
