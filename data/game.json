@@ -551,7 +551,8 @@
    "desc": "ネイサが鑑定してくれたレコード。",
    "value": 100,
    "gift": false,
-   "emoji": "💿"
+   "emoji": "💿",
+   "icon": "khb4m11"
   },
   {
    "id": 59,
