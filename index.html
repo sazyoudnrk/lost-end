@@ -171,7 +171,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-17j';
+const GAME_VER='2026-11-17k';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -498,7 +498,7 @@ async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;
       S.vr[c.var??12]=got;break}
     case'if':await exec(evalCond(c.cond,cx)?c.then:(c.hasElse?c.else:[]),cx);break;
     case'vcase':{const v=c.src==='day'?S.day:c.src==='slot'?S.slot:(S.vr[c.id]||0),k=(c.cases||[]).find(x=>+x.val===v);
-      if(k&&(c.src==null||c.src==='var')&&+c.id===12&&cx&&cx.ev&&cx.ev.d){S.rec=S.rec||{};S.rec[cx.ev.d.name+'|'+k.val]=1}// プレゼントで何に変わったかを覚える（全員の情報）
+      if(k&&(c.src==null||c.src==='var')&&+c.id===12&&cx&&cx.ev&&cx.ev.d){S.rec=S.rec||{};S.rec[cx.ev.d.name+'|'+k.val]=1}// プレゼントで何に変わったかを覚える（乗客情報）
 await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
     case'random':{const o=c.options||[];if(o.length)await exec(o[Math.floor(Math.random()*o.length)].cmds,cx);break}
     case'sw':S.sw[c.id]=!!c.val;placeScheduled();break;
@@ -750,12 +750,12 @@ $('#mBack').addEventListener('click',()=>menuBack());
 $('#mDetail').addEventListener('click',e=>{if(e.target.id==='mDetail')closeDetail()});
 function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const body=$('#mBody');body.innerHTML='';body.scrollTop=0;
   $('#mHud').textContent=hudText();
-  const T={people:'全員の情報',main:'メニュー',items:'アイテム',memo:'メモ',end:'エンディング',opt:'設定'};$('#mTitle').textContent=T[v]||'';
+  const T={people:'乗客情報',main:'メニュー',items:'アイテム',memo:'メモ',end:'エンディング',opt:'設定'};$('#mTitle').textContent=T[v]||'';
   $('#mBack').textContent=v==='main'?'✕ 閉じる':'◀ 戻る';
   const btn=(t,f)=>{const b=document.createElement('button');b.className='ui-btn';b.textContent=t;b.onclick=f;return b};
   if(v==='main'){const g=document.createElement('div');g.className='mgrid';
     g.append(btn('アイテム',()=>menuShow('items')));if(memoOn())g.append(btn('メモ',()=>menuShow('memo')));
-    g.append(btn('全員の情報',()=>menuShow('people')),btn('エンディング',()=>menuShow('end')),btn('設定',()=>menuShow('opt')));
+    g.append(btn('乗客情報',()=>menuShow('people')),btn('エンディング',()=>menuShow('end')),btn('設定',()=>menuShow('opt')));
     const sv=btn('セーブ',()=>{S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));sv.textContent='セーブしました';setTimeout(()=>sv.textContent='セーブ',1200)});
     g.append(sv,btn('ロード',()=>loadGame()));body.append(g)}
   if(v==='items'){const own=G.items.filter(i=>(S.it[i.id]||0)>0);
@@ -816,7 +816,7 @@ function playOthello(foe){return new Promise(res=>{const box=$('#oth'),ob=box.qu
   const tap=i=>{if(lock||turn!==1||!flips(i,1).length)return;put(i,1);turn=2;next()};
   const gv=box.querySelector('[data-k=give]');gv.textContent='投了する';gv.onclick=()=>{if(lock&&turn===2)return;done(2)};
   box.style.display='flex';om.textContent='';next()})}
-// ===== 全員の情報：一緒に過ごした回数と、プレゼントで変えてもらった品 =====
+// ===== 乗客情報：一緒に過ごした回数と、プレゼントで変えてもらった品 =====
 function peopleList(){const out=[];(G.variables||[]).forEach((n,vi)=>{const m=/^(.+)と過ごした回数$/.exec(n||'');if(!m)return;const name=m[1];let ev=null;
     for(const mp of G.maps)for(const e of mp.events)if(e.name===name&&e.schedule&&!ev)ev=e;if(!ev)return;
     const pg=ev.pages.find(p=>p.image&&p.image.charset)||{};const rec=[];
