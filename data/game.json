@@ -7543,6 +7543,11 @@
          "t": "fade",
          "mode": "in",
          "ms": 400
+        },
+        {
+         "t": "text",
+         "name": "",
+         "text": "誰かと時間を過ごすか、部屋で寝て時間をつぶそう。"
         }
        ]
       }
@@ -18925,6 +18930,25 @@
          "picPos": "C"
         },
         {
+         "t": "if",
+         "cond": {
+          "type": "stock",
+          "id": 30,
+          "val": true
+         },
+         "then": [
+          {
+           "t": "text",
+           "name": "ムロ",
+           "pic": "muro_normal",
+           "picPos": "C",
+           "text": "今日のラインナップのレコード、ネイサさんなら真価をしっているかもですね。"
+          }
+         ],
+         "else": [],
+         "hasElse": false
+        },
+        {
          "t": "text",
          "face": "",
          "name": "ムロ",
@@ -20551,12 +20575,13 @@
     "item": 30,
     "price": 35,
     "weight": 1,
-    "from": 1,
+    "from": 4,
     "to": "",
     "sw": -1,
     "once": true,
     "showOnce": true,
-    "limitUp": 0
+    "limitUp": 0,
+    "forceDay": 4
    },
    {
     "item": 34,
