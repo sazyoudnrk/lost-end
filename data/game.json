@@ -8674,6 +8674,150 @@
              ]
             },
             {
+             "t": "if",
+             "cond": {
+              "type": "sw",
+              "id": 25,
+              "val": false
+             },
+             "hasElse": false,
+             "else": [],
+             "then": [
+              {
+               "t": "if",
+               "cond": {
+                "type": "sw",
+                "id": 15,
+                "val": false
+               },
+               "hasElse": false,
+               "else": [],
+               "then": [
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "sw",
+                  "id": 13,
+                  "val": false
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 8,
+                    "op": "<=",
+                    "val": 20
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "ムロ、お前最近大丈夫か？[p]大丈夫なら別にいいんだけどさ",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ],
+                   "else": []
+                  }
+                 ],
+                 "else": []
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "sw",
+                  "id": 16,
+                  "val": false
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 9,
+                    "op": "<=",
+                    "val": 20
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "ネイサ、お前最近大丈夫か？[p]大丈夫なら別にいいんだけどさ",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ],
+                   "else": []
+                  }
+                 ],
+                 "else": []
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "sw",
+                  "id": 14,
+                  "val": false
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "if",
+                   "cond": {
+                    "type": "var",
+                    "id": 11,
+                    "op": "<=",
+                    "val": 20
+                   },
+                   "hasElse": false,
+                   "then": [
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "ピヲラ、お前最近大丈夫か？[p]大丈夫なら別にいいんだけどさ",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    }
+                   ],
+                   "else": []
+                  }
+                 ],
+                 "else": []
+                },
+                {
+                 "t": "if",
+                 "cond": {
+                  "type": "var",
+                  "id": 17,
+                  "op": "<=",
+                  "val": 20
+                 },
+                 "hasElse": false,
+                 "then": [
+                  {
+                   "t": "text",
+                   "face": "",
+                   "name": "ニノマエ",
+                   "text": "[pname]、お前最近大丈夫か？[p]大丈夫なら別にいいんだけどさ",
+                   "pic": "ninomae_normal",
+                   "picPos": "C"
+                  }
+                 ],
+                 "else": []
+                }
+               ]
+              }
+             ]
+            },
+            {
              "t": "text",
              "name": "主人公",
              "text": "誰かと過ごすか、部屋で眠って時間をつぶそうかな。"
@@ -11382,7 +11526,7 @@
                  "t": "var",
                  "id": 11,
                  "op": "add",
-                 "val": 10
+                 "val": 15
                 },
                 {
                  "t": "var",
