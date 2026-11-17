@@ -3729,6 +3729,10 @@
            },
            "cmds": [
             {
+             "t": "comment",
+             "text": "一緒に過ごした回数が9以上なら、ニノマエが主人公を慰める（主人公の正気度+25、ニノマエの正気度は下がらない）"
+            },
+            {
              "t": "text",
              "face": "",
              "name": "",
@@ -3737,18 +3741,54 @@
              "picPos": "C"
             },
             {
-             "t": "text",
-             "face": "",
-             "name": "ニノマエ",
-             "text": "（泣かれたときのニノマエの反応）",
-             "pic": "ninomae_normal",
-             "picPos": "C"
-            },
-            {
-             "t": "var",
-             "id": 10,
-             "op": "sub",
-             "val": 10
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 2,
+              "op": ">=",
+              "val": 9
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ニノマエ",
+               "text": "（泣いている主人公を慰めるニノマエ）",
+               "pic": "ninomae_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 17,
+               "op": "add",
+               "val": 25
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "少しだけ、気持ちが落ち着いた。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ニノマエ",
+               "text": "（泣かれたときのニノマエの反応）",
+               "pic": "ninomae_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 10,
+               "op": "sub",
+               "val": 10
+              }
+             ]
             }
            ]
           },
@@ -5897,6 +5937,10 @@
            },
            "cmds": [
             {
+             "t": "comment",
+             "text": "一緒に過ごした回数が9以上なら、ネイサが主人公を慰める（主人公の正気度+25、ネイサの正気度は下がらない）"
+            },
+            {
              "t": "text",
              "face": "",
              "name": "",
@@ -5905,18 +5949,54 @@
              "picPos": "C"
             },
             {
-             "t": "text",
-             "face": "",
-             "name": "ネイサ",
-             "text": "（泣かれたときのネイサの反応）",
-             "pic": "neisa_normal",
-             "picPos": "C"
-            },
-            {
-             "t": "var",
-             "id": 9,
-             "op": "sub",
-             "val": 10
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 1,
+              "op": ">=",
+              "val": 9
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "（泣いている主人公を慰めるネイサ）",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 17,
+               "op": "add",
+               "val": 25
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "少しだけ、気持ちが落ち着いた。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ネイサ",
+               "text": "（泣かれたときのネイサの反応）",
+               "pic": "neisa_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 9,
+               "op": "sub",
+               "val": 10
+              }
+             ]
             }
            ]
           },
@@ -11271,6 +11351,10 @@
            },
            "cmds": [
             {
+             "t": "comment",
+             "text": "一緒に過ごした回数が9以上なら、ピヲラが主人公を慰める（主人公の正気度+25、ピヲラの正気度は下がらない）"
+            },
+            {
              "t": "text",
              "face": "",
              "name": "",
@@ -11279,18 +11363,54 @@
              "picPos": "C"
             },
             {
-             "t": "text",
-             "face": "",
-             "name": "ピヲラ",
-             "text": "（泣かれたときのピヲラの反応）",
-             "pic": "piwora_normal",
-             "picPos": "C"
-            },
-            {
-             "t": "var",
-             "id": 11,
-             "op": "sub",
-             "val": 10
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 3,
+              "op": ">=",
+              "val": 9
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ピヲラ",
+               "text": "（泣いている主人公を慰めるピヲラ）",
+               "pic": "piwora_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 17,
+               "op": "add",
+               "val": 25
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "少しだけ、気持ちが落ち着いた。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ピヲラ",
+               "text": "（泣かれたときのピヲラの反応）",
+               "pic": "piwora_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 11,
+               "op": "sub",
+               "val": 10
+              }
+             ]
             }
            ]
           },
@@ -18729,6 +18849,10 @@
            },
            "cmds": [
             {
+             "t": "comment",
+             "text": "一緒に過ごした回数が9以上なら、ムロが主人公を慰める（主人公の正気度+25、ムロの正気度は下がらない）"
+            },
+            {
              "t": "text",
              "face": "",
              "name": "",
@@ -18737,18 +18861,54 @@
              "picPos": "C"
             },
             {
-             "t": "text",
-             "face": "",
-             "name": "ムロ",
-             "text": "（泣かれたときのムロの反応）",
-             "pic": "muro_normal",
-             "picPos": "C"
-            },
-            {
-             "t": "var",
-             "id": 8,
-             "op": "sub",
-             "val": 10
+             "t": "if",
+             "cond": {
+              "type": "var",
+              "id": 0,
+              "op": ">=",
+              "val": 9
+             },
+             "hasElse": true,
+             "then": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ムロ",
+               "text": "（泣いている主人公を慰めるムロ）",
+               "pic": "muro_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 17,
+               "op": "add",
+               "val": 25
+              },
+              {
+               "t": "text",
+               "face": "",
+               "name": "",
+               "text": "少しだけ、気持ちが落ち着いた。",
+               "pic": "-",
+               "picPos": "C"
+              }
+             ],
+             "else": [
+              {
+               "t": "text",
+               "face": "",
+               "name": "ムロ",
+               "text": "（泣かれたときのムロの反応）",
+               "pic": "muro_normal",
+               "picPos": "C"
+              },
+              {
+               "t": "var",
+               "id": 8,
+               "op": "sub",
+               "val": 10
+              }
+             ]
             }
            ]
           },
