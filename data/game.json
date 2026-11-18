@@ -20700,8 +20700,13 @@
   },
   {
    "id": "neisa_normal",
-   "name": "ネイサ_通常（つまらなさげ）",
+   "name": "ネイサ_通常",
    "image": "assets/pictures/neisa_normal.png"
+  },
+  {
+   "id": "neisa_bored",
+   "name": "ネイサ_つまらなさげ",
+   "image": "assets/pictures/neisa_bored.png"
   },
   {
    "id": "neisa_away",
