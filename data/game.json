@@ -20700,8 +20700,18 @@
   },
   {
    "id": "neisa_normal",
-   "name": "ネイサ_通常",
+   "name": "ネイサ_通常（つまらなさげ）",
    "image": "assets/pictures/neisa_normal.png"
+  },
+  {
+   "id": "neisa_away",
+   "name": "ネイサ_目逸らし",
+   "image": "assets/pictures/neisa_away.png"
+  },
+  {
+   "id": "neisa_front",
+   "name": "ネイサ_正面",
+   "image": "assets/pictures/neisa_front.png"
   },
   {
    "id": "piwora_normal",
