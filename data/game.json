@@ -2822,7 +2822,7 @@
                    "t": "text",
                    "face": "",
                    "name": "ニノマエ",
-                   "text": "（どうでもいい会話A：3日の航海の話題）",
+                   "text": "退屈",
                    "pic": "ninomae_normal",
                    "picPos": "C"
                   }
@@ -2835,7 +2835,7 @@
                    "t": "text",
                    "face": "",
                    "name": "ニノマエ",
-                   "text": "（どうでもいい会話B：3日の航海の話題）",
+                   "text": "終わりのことなんて考えたことなかった",
                    "pic": "ninomae_normal",
                    "picPos": "C"
                   }
@@ -2848,7 +2848,7 @@
                    "t": "text",
                    "face": "",
                    "name": "ニノマエ",
-                   "text": "（どうでもいい会話C：3日の航海の話題）",
+                   "text": "俺が帰れなくても、描いてきた絵はロストエンドに残るのかな",
                    "pic": "ninomae_normal",
                    "picPos": "C"
                   }
@@ -2910,9 +2910,72 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（1回目：3日の旅：「チキュウには、色が褪せる絵の具があるらしい」と目的を一言だけ話す）",
+                     "text": "…………",
                      "pic": "ninomae_normal",
                      "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "何か期待されても、話せることあんまないよ。",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "…………",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "俺は時間と共に朽ちる絵を描きたくて、顔料を探しにきた。\n[p]\n俺は絵を描くだけ、それだけの人間なんだ。\n[p]\n芸術を作るためにいる……\n",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "choice",
+                     "options": [
+                      {
+                       "label": "芸術って何？",
+                       "cmds": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ニノマエ",
+                         "text": "何かを人に伝えるためのもの、だと思う。\n[p]\n芸術の意味は、その人の人生を通して生まれるもの……だとおもうから\n[p]\nあんたにとっては馬鹿馬鹿しいものかもしれない。\n",
+                         "pic": "ninomae_normal",
+                         "picPos": "C"
+                        }
+                       ]
+                      },
+                      {
+                       "label": "芸術は好き",
+                       "cmds": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ニノマエ",
+                         "text": "俺も好き。",
+                         "pic": "ninomae_normal",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ニノマエ",
+                         "text": "芸術は人の内面を知る方法だと思う。\n言葉がいらないコミュニケーション、かも\n[p]\n……俺話すの苦手だから、大事なことなんだ。",
+                         "pic": "ninomae_normal",
+                         "picPos": "C"
+                        }
+                       ]
+                      }
+                     ]
                     }
                    ]
                   },
@@ -2923,9 +2986,56 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（2回目：腹減った：備蓄食品を一緒に食べるだけ。会話は少ないが居心地は悪くない）",
+                     "text": "備蓄用食品、うまい",
                      "pic": "ninomae_normal",
                      "picPos": "C"
+                    },
+                    {
+                     "t": "text",
+                     "face": "",
+                     "name": "ニノマエ",
+                     "text": "ピヲラが言っていた、腐る食べ物のことが気になる。\n[p]\n俺にとっては備蓄用食品もうまい\n[p]\n目で見る芸術は絵、だとしたら、舌で味わう芸術は食、だと思う\n[p]\nチキュウには、どんな食べ物があるんだろう",
+                     "pic": "ninomae_normal",
+                     "picPos": "C"
+                    },
+                    {
+                     "t": "choice",
+                     "options": [
+                      {
+                       "label": "食事が好きなの？",
+                       "cmds": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ニノマエ",
+                         "text": "食事は好き\n[p]\nご飯が食べれて嬉しい\n一緒に食べる人のことも知れる\n\n[p]\n腹がすいているのは、苦痛",
+                         "pic": "ninomae_normal",
+                         "picPos": "C"
+                        }
+                       ]
+                      },
+                      {
+                       "label": "食べ物が好きなの？",
+                       "cmds": [
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ニノマエ",
+                         "text": "モチーフとしてはそんなに……",
+                         "pic": "ninomae_normal",
+                         "picPos": "C"
+                        },
+                        {
+                         "t": "text",
+                         "face": "",
+                         "name": "ニノマエ",
+                         "text": "食べるのは好き\n[p]\n甘いものは元気が出る",
+                         "pic": "ninomae_normal",
+                         "picPos": "C"
+                        }
+                       ]
+                      }
+                     ]
                     }
                    ]
                   },
@@ -2936,7 +3046,7 @@
                      "t": "text",
                      "face": "",
                      "name": "ニノマエ",
-                     "text": "（3回目：スケッチ：主人公を勝手に描いていた。見せてと言うと「まだ下手だから」と隠す）",
+                     "text": "スケッチブック、星の落書きで埋め尽くしてしまった。\n",
                      "pic": "ninomae_normal",
                      "picPos": "C"
                     }
