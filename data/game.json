@@ -21762,6 +21762,16 @@
   },
   "passengers": [
    {
+    "name": "主人公",
+    "hero": true,
+    "pic": "",
+    "charset": "sample1",
+    "crop": [0,0,220],
+    "cabin": "客室D",
+    "spendVar": -1,
+    "profile": "年齢：？\n出身：？\n（主人公のプロフィールをここに）"
+   },
+   {
     "name": "ムロ",
     "pic": "muro_normal",
     "crop": [140,90,220],

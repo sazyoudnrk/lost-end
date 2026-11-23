@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-24a';
+const APP_VER='2026-11-24b';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1081,8 +1081,9 @@ function renderDB(){
       const upd=()=>{ps.crop=[cr.x,cr.y,cr.w];draw()};
       c.append(h('div',{style:'border-top:1px solid var(--line,#444);margin-top:10px;padding-top:10px'},
         h('div',{class:'row',style:'align-items:flex-start;gap:10px'},cv,h('div',{style:'flex:1;min-width:0'},
-          fText('名前',ps,'name'),fText('客室',ps,'cabin'),fSel('立ち絵',ps,'pic',[['','なし'],...G.pictures.map(x=>[x.id,x.name])],{on:draw}),
-          fSel('一緒に過ごした回数の変数',ps,'spendVar',varOpts(),{num:true}))),
+          fText('名前',ps,'name'),fText('客室',ps,'cabin'),fSel('立ち絵',ps,'pic',[['','なし（歩行キャラを使う）'],...G.pictures.map(x=>[x.id,x.name])],{on:draw}),
+          fSel('立ち絵がない時の歩行キャラ',ps,'charset',[['','なし'],...G.charsets.map(x=>[x.id,x.name])]),fChk('主人公（名前はプレイヤーが付けた名前、回数は出さない）',ps,'hero',{on:()=>renderDB()}),
+          ps.hero?null:fSel('一緒に過ごした回数の変数',ps,'spendVar',varOpts(),{num:true}))),
         h('div',{class:'row'},fNum('切り抜き 左',cr,'x',{min:0,max:4000,on:upd}),fNum('上',cr,'y',{min:0,max:4000,on:upd}),fNum('幅',cr,'w',{min:8,max:4000,on:upd})),
         fArea('プロフィール',ps,'profile',{rows:5}),
         h('div',{class:'row',style:'gap:6px'},btn('↑',()=>{if(i>0){SY.passengers.splice(i-1,0,SY.passengers.splice(i,1)[0]);changed();renderDB()}},'sm'),btn('↓',()=>{if(i<SY.passengers.length-1){SY.passengers.splice(i+1,0,SY.passengers.splice(i,1)[0]);changed();renderDB()}},'sm'),

@@ -231,7 +231,7 @@ body.replay #replayTag{display:block}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-24b';
+const GAME_VER='2026-11-24c';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -925,14 +925,16 @@ function peopleView(){const wrap=document.createElement('div');wrap.className='p
   return wrap}
 // ===== 乗客情報（チケット）とプロフィール =====
 function passengers(){const L=(G.system&&G.system.passengers)||[];return L.filter(p=>p&&p.name)}
-function pDisp(name){const ns=(G.system&&G.system.nameSw)||{};return ns[name]!=null&&ns[name]>=0&&!S.sw[ns[name]]?'？？？':name}
+function pDisp(name){if(name==='主人公')return pName();const ns=(G.system&&G.system.nameSw)||{};return ns[name]!=null&&ns[name]>=0&&!S.sw[ns[name]]?'？？？':name}
 // 立ち絵から顔を切り抜いて二値化して描く
-function faceCanvas(p,w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const pic=(G.pictures||[]).find(x=>x.id===p.pic);if(!pic)return c;
+function faceCanvas(p,w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const pic=(G.pictures||[]).find(x=>x.id===p.pic);
+  if(!pic){const cs=(G.charsets||[]).find(x=>x.id===p.charset);if(cs)loadImg(cs.image).then(im=>{if(!im)return;const[sx,sy,fw,fh]=charRect(im,cs.index,0,1),x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.imageSmoothingEnabled=false;
+    const cw=fw*.6,ch=cw*h/w;x.drawImage(im,sx+(fw-cw)/2,sy+fh*.14,cw,ch,0,0,w,h)});c.style.imageRendering='pixelated';return c}
   loadImg(pic.image).then(im=>{if(!im)return;const[cx,cy,cw]=p.crop||[0,0,im.width],ch=cw*h/w,x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.imageSmoothingEnabled=true;x.drawImage(im,cx,cy,cw,ch,0,0,w,h);
     const d=x.getImageData(0,0,w,h),a=d.data;for(let i=0;i<a.length;i+=4){const v=(a[i]+a[i+1]+a[i+2])/3<170?0:255;a[i]=a[i+1]=a[i+2]=v;a[i+3]=255}x.putImageData(d,0,0)});return c}
 // 一緒に過ごす会話（その人のイベントの「一緒に過ごす」の中の、過ごした回数で分かれる場合分け）
 let _talkVc=null;function talkVcs(){if(_talkVc)return _talkVc;_talkVc=new Map();
-  for(const p of passengers()){let ev=null;for(const mp of G.maps)for(const e of mp.events)if(e&&e.name===p.name&&e.schedule&&!ev)ev=e;if(!ev)continue;
+  for(const p of passengers()){if(p.hero)continue;let ev=null;for(const mp of G.maps)for(const e of mp.events)if(e&&e.name===p.name&&e.schedule&&!ev)ev=e;if(!ev)continue;
     const find=o=>{if(Array.isArray(o)){for(const x of o){const r=find(x);if(r)return r}return null}if(!o||typeof o!=='object')return null;
       if(o.t==='vcase'&&+o.id===+p.spendVar&&(o.src==null||o.src==='var'))return o;for(const k in o){const r=find(o[k]);if(r)return r}return null};
     let vc=null;const walk=o=>{if(vc)return;if(Array.isArray(o))return o.forEach(walk);if(!o||typeof o!=='object')return;if(o.t==='choice')for(const op of o.options||[])if(/一緒に過ごす/.test(op.label||'')&&!vc)vc=find(op.cmds);for(const k in o)walk(o[k])};
@@ -950,12 +952,12 @@ function ticketsView(){const w=document.createElement('div');w.className='tks';c
     const fc=document.createElement('div');fc.className='fc';fc.append(faceCanvas(p,84,100));
     const tm=document.createElement('div');tm.className='tm';const n=+(S.vr[p.spendVar]||0),tv=talkOf(p.name),max=tv?tv.vc.cases.length:15;
     tm.innerHTML=`<small></small><b></b><small></small><div class="ct"></div><div class="dots"></div>`;const sm=tm.querySelectorAll('small');sm[0].textContent=`PASSENGER No.${String(i+1).padStart(2,'0')}`;sm[1].textContent=p.cabin||'';
-    tm.querySelector('b').textContent=pDisp(p.name);tm.querySelector('.ct').textContent=`一緒に過ごした　${n}回`;const ds=tm.querySelector('.dots');for(let k=0;k<max;k++){const d=document.createElement('i');if(k<n)d.className='f';ds.append(d)}
+    tm.querySelector('b').textContent=pDisp(p.name);tm.querySelector('.ct').textContent=p.hero?'あなた':`一緒に過ごした　${n}回`;const ds=tm.querySelector('.dots');if(!p.hero)for(let k=0;k<max;k++){const d=document.createElement('i');if(k<n)d.className='f';ds.append(d)}
     const st=document.createElement('div');st.className='stub';st.textContent='BOARDING';b.append(fc,tm,st);b.onclick=()=>menuShow('person',p.name);w.append(b)});
   if(!passengers().length){const e=document.createElement('div');e.className='empty';e.textContent='乗客情報がありません';w.append(e)}return w}
 function personView(name){const p=passengers().find(x=>x.name===name)||{name};const w=document.createElement('div');w.className='pf';
   const top=document.createElement('div');top.className='ptop';const fc=document.createElement('div');fc.className='fc';fc.append(faceCanvas(p,120,144));
-  const nm=document.createElement('div');nm.innerHTML='<small></small><b></b><small></small>';const sm=nm.querySelectorAll('small');sm[0].textContent=p.cabin||'';nm.querySelector('b').textContent=pDisp(p.name);sm[1].textContent=`一緒に過ごした　${+(S.vr[p.spendVar]||0)}回`;top.append(fc,nm);w.append(top);
+  const nm=document.createElement('div');nm.innerHTML='<small></small><b></b><small></small>';const sm=nm.querySelectorAll('small');sm[0].textContent=p.cabin||'';nm.querySelector('b').textContent=pDisp(p.name);sm[1].textContent=p.hero?'あなた':`一緒に過ごした　${+(S.vr[p.spendVar]||0)}回`;top.append(fc,nm);w.append(top);
   const sec=t=>{const d=document.createElement('div');d.className='sec';d.textContent=t;w.append(d)};
   sec('PROFILE');const tx=document.createElement('div');tx.className='ptx';tx.textContent=p.profile||'';w.append(tx);
   // 変えてもらった品（これまでの乗客情報の中身）
