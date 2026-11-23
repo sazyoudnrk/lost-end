@@ -241,7 +241,7 @@ body.replay #replayTag{display:block}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-24d';
+const GAME_VER='2026-11-24e';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -961,7 +961,7 @@ function profSeen(name,v){const o=pbGet(),k='seen:'+name;if(v==null)return o[k]=
 let tkAnim=false;async function openPerson(b,name){if(tkAnim)return;tkAnim=true;try{const w=b.parentElement;
   [...w.children].forEach(x=>{if(x!==b)x.classList.add('away')});b.classList.add('chosen');b.style.transform='none';
   const st=b.querySelector('.stub'),h=document.createElement('i');h.className='punch';st.append(h);await sleep(240);
-  const sp=document.createElement('div');sp.className='stampx';sp.textContent='CHECKED';b.append(sp);await sleep(380);
+  await sleep(120);
   st.classList.add('tear');await sleep(360);b.classList.add('flip');b.style.transform='';await sleep(270);
   menuShow('person',name);const pf=$('#mBody .pf');if(pf)pf.classList.add('flipin')}finally{tkAnim=false}}
 function calView(){const w=document.createElement('div');w.className='mcal';const crash=memoOn(),N=crash?9:3,g=document.createElement('div');g.className='cg';
