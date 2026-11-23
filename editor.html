@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-24b';
+const APP_VER='2026-11-24c';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1085,7 +1085,12 @@ function renderDB(){
           fSel('立ち絵がない時の歩行キャラ',ps,'charset',[['','なし'],...G.charsets.map(x=>[x.id,x.name])]),fChk('主人公（名前はプレイヤーが付けた名前、回数は出さない）',ps,'hero',{on:()=>renderDB()}),
           ps.hero?null:fSel('一緒に過ごした回数の変数',ps,'spendVar',varOpts(),{num:true}))),
         h('div',{class:'row'},fNum('切り抜き 左',cr,'x',{min:0,max:4000,on:upd}),fNum('上',cr,'y',{min:0,max:4000,on:upd}),fNum('幅',cr,'w',{min:8,max:4000,on:upd})),
-        fArea('プロフィール',ps,'profile',{rows:5}),
+        (()=>{if(!Array.isArray(ps.profile))ps.profile=String(ps.profile||'').split('\n').filter(s=>s.trim()).map(s=>({need:0,text:s}));const box=h('div',{style:'margin-top:6px'},h('div',{class:'card-t'},'プロフィール（行ごと）'),
+          h('div',{class:'hint'},ps.hero?'主人公は全部の行が最初から出ます':'左の数字＝この行が見えるのに必要な「一緒に過ごした回数」（0なら最初から）'));
+          ps.profile.forEach((l,j)=>{const ti=h('input',{type:'text',value:l.text||'',style:'flex:1;min-width:0',oninput:()=>{l.text=ti.value;changed()}});
+            const ni=h('input',{type:'number',inputmode:'numeric',value:l.need||0,style:'width:56px;flex:none',oninput:()=>{const v=parseInt(ni.value,10);if(!isNaN(v)){l.need=Math.max(0,v);changed()}}});
+            box.append(h('div',{class:'row',style:'gap:6px;align-items:center;margin:4px 0'},ps.hero?null:ni,ti,btn('✕',()=>{ps.profile.splice(j,1);changed();renderDB()},'sm dg')))});
+          box.append(btn('＋ 行を追加',()=>{ps.profile.push({need:(ps.profile.length?ps.profile[ps.profile.length-1].need||0:0),text:''});changed();renderDB()},'sm'));return box})(),
         h('div',{class:'row',style:'gap:6px'},btn('↑',()=>{if(i>0){SY.passengers.splice(i-1,0,SY.passengers.splice(i,1)[0]);changed();renderDB()}},'sm'),btn('↓',()=>{if(i<SY.passengers.length-1){SY.passengers.splice(i+1,0,SY.passengers.splice(i,1)[0]);changed();renderDB()}},'sm'),
           btn('削除',()=>{if(confirm(`「${ps.name}」を乗客から外しますか？`)){SY.passengers.splice(i,1);changed();renderDB()}},'sm dg'))));draw()});
     c.append(btn('＋ 乗客を追加',()=>{SY.passengers.push({name:'',pic:'',crop:[0,0,220],cabin:'',spendVar:0,profile:''});changed();renderDB()},'sm'));T.append(c)}

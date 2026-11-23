@@ -163,16 +163,11 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 #mBody .mcal i.dl{border-style:double;border-width:4px}
 #mBody .mcal i small{position:absolute;top:-1px;right:2px;font-size:9px}
 #mBody .mcal .cs{display:flex;justify-content:space-between;margin-top:6px;font-size:14px}
-#mBody .mlist{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
-#menu #mBody .mlist .tkb{all:unset;box-sizing:border-box;position:relative;display:flex;background:#fff;color:#111;min-height:62px;cursor:pointer}
-#menu #mBody .mlist .tkb .m{flex:1;padding:8px 12px;border-right:3px dashed #111;display:flex;flex-direction:column;justify-content:center}
-#menu #mBody .mlist .tkb .m small{font-size:10px;letter-spacing:.15em;opacity:.55}
-#menu #mBody .mlist .tkb .m span{font-size:19px;letter-spacing:.08em}
-#menu #mBody .mlist .tkb .s{width:72px;display:flex;align-items:center;justify-content:center;font-size:16px;letter-spacing:.05em}
-#menu #mBody .mlist .tkb::before,#menu #mBody .mlist .tkb::after{content:'';position:absolute;right:63px;width:16px;height:16px;border-radius:50%;background:#2a2a2a}
-#menu #mBody .mlist .tkb::before{top:-8px}#menu #mBody .mlist .tkb::after{bottom:-8px}
-#menu #mBody .mlist .tkb.kf,#menu #mBody .mlist .tkb:active{background:#111;color:#fff}#menu #mBody .mlist .tkb.kf .m,#menu #mBody .mlist .tkb:active .m{border-color:#fff}
-#menu #mBody .mlist .tkb.kf::before,#menu #mBody .mlist .tkb.kf::after{box-shadow:0 0 0 2px #fff}
+#mBody .mlist{max-width:480px;margin:0 auto;display:flex;flex-direction:column;border-top:1px solid #fff5}
+#menu #mBody .mlist .tkb{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #fff5;cursor:pointer;color:#fff}
+#menu #mBody .mlist .tkb .m small{display:none}#menu #mBody .mlist .tkb .m span{font-size:19px;letter-spacing:.08em}
+#menu #mBody .mlist .tkb .s{font-size:14px;opacity:.75}
+#menu #mBody .mlist .tkb.kf,#menu #mBody .mlist .tkb:active{background:#fff;color:#111}
 #mBody .mfoot{max-width:480px;margin:14px auto 0;border-top:2px solid #fff;padding-top:6px;font-size:12px;opacity:.7;line-height:1.7}
 /* 乗客チケット */
 #mBody .tks{display:flex;flex-direction:column;max-width:440px;margin:6px auto 0;padding-bottom:10px}
@@ -194,6 +189,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 #mBody .pf{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
 #mBody .pf .ptop{display:flex;gap:12px;align-items:flex-end}
 #mBody .pf .ptop .fc{width:120px;height:144px;border:2px solid #fff;background:#fff;flex:none}#mBody .pf .ptop .fc canvas{width:100%;height:100%;display:block}
+#mBody .pf .ptop .dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}#mBody .pf .ptop .dots i{width:11px;height:11px;border:2px solid #fff}#mBody .pf .ptop .dots i.f{background:#fff}
 #mBody .pf .ptop b{font-size:24px;font-weight:normal;letter-spacing:.1em;display:block}#mBody .pf .ptop small{display:block;font-size:13px;opacity:.75}
 #mBody .pf .sec{font-size:11px;letter-spacing:.15em;opacity:.65;border-bottom:1px solid #fff8;margin-top:4px}
 #mBody .pf .ptx{white-space:pre-line;line-height:1.8;font-size:14px}
@@ -201,6 +197,20 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 #menu #mBody .pf .tl .ui-btn{min-width:0;font-size:13px;text-align:left;padding:8px 10px;line-height:1.4}
 #mBody .pf .tl .ui-btn small{display:block;font-size:11px;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #mBody .pf .tl .ui-btn:disabled{opacity:.35}
+#mBody .tk.away{animation:none;transition:transform .35s ease-in,opacity .35s;transform:translateX(120%) rotate(6deg);opacity:0}
+#mBody .tk.chosen{animation:none;z-index:2;transition:transform .26s ease-in}
+#mBody .tk .stub{position:relative;transition:transform .4s cubic-bezier(.5,0,.9,.6),opacity .4s;transform-origin:top left}
+#mBody .tk .stub.tear{transform:translate(26px,140px) rotate(38deg);opacity:0}
+#mBody .tk .punch{position:absolute;left:50%;top:22%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#2a2a2a;animation:pn .22s ease-out both}
+@keyframes pn{0%{transform:scale(0)}70%{transform:scale(1.35)}100%{transform:scale(1)}}
+#mBody .tk .stampx{position:absolute;right:64px;top:34px;border:3px solid #111;color:#111;padding:2px 8px;font-size:17px;letter-spacing:.2em;transform:rotate(-14deg);animation:sx .3s cubic-bezier(.3,1.6,.5,1) both;pointer-events:none;background:#fff8}
+@keyframes sx{0%{transform:rotate(-14deg) scale(2.4);opacity:0}100%{transform:rotate(-14deg) scale(1);opacity:.9}}
+#mBody .tk.flip{transform:perspective(700px) rotateY(90deg) scale(1.06)}
+#mBody .pf.flipin{animation:pfin .42s ease-out both;transform-origin:50% 0}
+@keyframes pfin{0%{transform:perspective(700px) rotateY(-90deg);opacity:.4}100%{transform:none;opacity:1}}
+#mBody .pf .ptx div.new{animation:nl .9s steps(12) .45s both}
+#mBody .pf .ptx div.new::after{content:' NEW';font-size:10px;letter-spacing:.1em;vertical-align:super}
+@keyframes nl{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
 #replayTag{position:absolute;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:7;display:none;font-size:13px;letter-spacing:.3em;background:#000;border:2px solid #fff;padding:2px 12px}
 body.replay #replayTag{display:block}
 </style>
@@ -231,7 +241,7 @@ body.replay #replayTag{display:block}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-24c';
+const GAME_VER='2026-11-24d';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -942,6 +952,18 @@ let _talkVc=null;function talkVcs(){if(_talkVc)return _talkVc;_talkVc=new Map();
 function talkOf(name){for(const[vc,v]of talkVcs())if(v.name===name)return{vc,ev:v.ev};return null}
 const TALKKEY=NS+(PREVIEW?'talkPv':'talk');function talkGet(){try{return JSON.parse(localStorage.getItem(TALKKEY)||'{}')}catch(e){return{}}}
 function talkMark(name,val){const T=talkGet();T[name]=T[name]||[];if(!T[name].includes(+val)){T[name].push(+val);try{localStorage.setItem(TALKKEY,JSON.stringify(T))}catch(e){}}}
+// プロフィール：行ごとに「一緒に過ごした回数が○回以上」で見える（周回をまたいで、これまでの最大の回数で判定）
+function profLines(p){const v=p.profile;if(Array.isArray(v))return v.filter(l=>l&&l.text!=null);return String(v||'').split('\n').filter(s=>s.trim()).map(s=>({need:0,text:s}))}
+const PBKEY=NS+(PREVIEW?'pbestPv':'pbest');function pbGet(){try{return JSON.parse(localStorage.getItem(PBKEY)||'{}')}catch(e){return{}}}
+function profBest(p){const o=pbGet(),cur=+(S.vr[p.spendVar]||0),b=Math.max(+(o[p.name]||0),cur);if(b!==+(o[p.name]||0)){o[p.name]=b;try{localStorage.setItem(PBKEY,JSON.stringify(o))}catch(e){}}return b}
+function profSeen(name,v){const o=pbGet(),k='seen:'+name;if(v==null)return o[k]==null?-1:+o[k];o[k]=v;try{localStorage.setItem(PBKEY,JSON.stringify(o))}catch(e){}}
+// チケットを選ぶ：入鋏→判子→半券をもぎる→裏返ってプロフィール
+let tkAnim=false;async function openPerson(b,name){if(tkAnim)return;tkAnim=true;try{const w=b.parentElement;
+  [...w.children].forEach(x=>{if(x!==b)x.classList.add('away')});b.classList.add('chosen');b.style.transform='none';
+  const st=b.querySelector('.stub'),h=document.createElement('i');h.className='punch';st.append(h);await sleep(240);
+  const sp=document.createElement('div');sp.className='stampx';sp.textContent='CHECKED';b.append(sp);await sleep(380);
+  st.classList.add('tear');await sleep(360);b.classList.add('flip');b.style.transform='';await sleep(270);
+  menuShow('person',name);const pf=$('#mBody .pf');if(pf)pf.classList.add('flipin')}finally{tkAnim=false}}
 function calView(){const w=document.createElement('div');w.className='mcal';const crash=memoOn(),N=crash?9:3,g=document.createElement('div');g.className='cg';
   for(let d=1;d<=N;d++){const i=document.createElement('i');i.textContent=d;if(d<S.day)i.className='x';else if(d===S.day)i.className='t';if(d===N){i.classList.add('dl');const s=document.createElement('small');s.textContent=crash?'期限':'着';i.append(s)}g.append(i)}
   const s=document.createElement('div');s.className='cs';const l=document.createElement('span');l.textContent=`${S.day}日目　${slotName(S.slot)}`;const r=document.createElement('span');
@@ -951,15 +973,18 @@ function ticketsView(){const w=document.createElement('div');w.className='tks';c
   passengers().forEach((p,i)=>{const b=document.createElement('button');b.className='tk';b.style.setProperty('--dx',DX[i%5]+'px');b.style.setProperty('--r',R[i%5]+'deg');b.style.setProperty('--d',(i*90)+'ms');
     const fc=document.createElement('div');fc.className='fc';fc.append(faceCanvas(p,84,100));
     const tm=document.createElement('div');tm.className='tm';const n=+(S.vr[p.spendVar]||0),tv=talkOf(p.name),max=tv?tv.vc.cases.length:15;
-    tm.innerHTML=`<small></small><b></b><small></small><div class="ct"></div><div class="dots"></div>`;const sm=tm.querySelectorAll('small');sm[0].textContent=`PASSENGER No.${String(i+1).padStart(2,'0')}`;sm[1].textContent=p.cabin||'';
-    tm.querySelector('b').textContent=pDisp(p.name);tm.querySelector('.ct').textContent=p.hero?'あなた':`一緒に過ごした　${n}回`;const ds=tm.querySelector('.dots');if(!p.hero)for(let k=0;k<max;k++){const d=document.createElement('i');if(k<n)d.className='f';ds.append(d)}
-    const st=document.createElement('div');st.className='stub';st.textContent='BOARDING';b.append(fc,tm,st);b.onclick=()=>menuShow('person',p.name);w.append(b)});
+    tm.innerHTML=`<small></small><b></b><small></small><div class="ct"></div><div class="dots"></div>`;const sm=tm.querySelectorAll('small');sm[0].textContent=`PASSENGER No.${String(i+1).padStart(2,'0')}`;sm[1].remove();tm.querySelector('.ct').remove();
+    tm.querySelector('b').textContent=pDisp(p.name);const ds=tm.querySelector('.dots');if(!p.hero)for(let k=0;k<max;k++){const d=document.createElement('i');if(k<n)d.className='f';ds.append(d)}
+    const st=document.createElement('div');st.className='stub';st.textContent='BOARDING';b.append(fc,tm,st);b.onclick=()=>openPerson(b,p.name);w.append(b)});
   if(!passengers().length){const e=document.createElement('div');e.className='empty';e.textContent='乗客情報がありません';w.append(e)}return w}
 function personView(name){const p=passengers().find(x=>x.name===name)||{name};const w=document.createElement('div');w.className='pf';
   const top=document.createElement('div');top.className='ptop';const fc=document.createElement('div');fc.className='fc';fc.append(faceCanvas(p,120,144));
-  const nm=document.createElement('div');nm.innerHTML='<small></small><b></b><small></small>';const sm=nm.querySelectorAll('small');sm[0].textContent=p.cabin||'';nm.querySelector('b').textContent=pDisp(p.name);sm[1].textContent=p.hero?'あなた':`一緒に過ごした　${+(S.vr[p.spendVar]||0)}回`;top.append(fc,nm);w.append(top);
+  const nm=document.createElement('div');nm.innerHTML='<b></b><div class="dots"></div>';nm.querySelector('b').textContent=pDisp(p.name);
+  const n=+(S.vr[p.spendVar]||0),tv0=talkOf(p.name);if(!p.hero&&tv0){const ds=nm.querySelector('.dots');for(let k=0;k<tv0.vc.cases.length;k++){const d=document.createElement('i');if(k<n)d.className='f';ds.append(d)}}top.append(fc,nm);w.append(top);
   const sec=t=>{const d=document.createElement('div');d.className='sec';d.textContent=t;w.append(d)};
-  sec('PROFILE');const tx=document.createElement('div');tx.className='ptx';tx.textContent=p.profile||'';w.append(tx);
+  sec('PROFILE');const tx=document.createElement('div');tx.className='ptx';const lines=profLines(p),best=profBest(p),seen=profSeen(p.name);let shownN=0;
+  lines.forEach((l,i)=>{if(!p.hero&&+l.need>best)return;const d=document.createElement('div');d.textContent=l.text;if(i>=seen&&!p.hero&&seen>=0)d.className='new';tx.append(d);shownN=i+1});
+  profSeen(p.name,Math.max(seen,shownN));w.append(tx);
   // 変えてもらった品（これまでの乗客情報の中身）
   const pv=peopleView(),card=[...pv.children].find(c=>c.querySelector('.phd b')&&c.querySelector('.phd b').textContent===p.name);
   if(card&&card.querySelector('.pcap')){sec('EXCHANGE');card.querySelector('.phd').remove();w.append(card)}
