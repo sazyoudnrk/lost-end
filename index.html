@@ -149,10 +149,9 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 #title .ui-btn{border-image:none}
 
 /* ===== メニュー：船内端末風 ===== */
-#menu{background:#000;backdrop-filter:none}
-#menu::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(#0000 0 2px,#0005 2px 3px);pointer-events:none;z-index:3}
+#menu{background-color:#2a2a2a;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect width='1' height='1' fill='%23ffffff2e'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ffffff2e'/%3E%3C/svg%3E");backdrop-filter:none}
 #menu .mhd{border-bottom:2px solid #fff;align-items:flex-end}
-#menu .mtt{flex:1;display:flex;flex-direction:column;min-width:0}#menu .mtt small{font-size:10px;letter-spacing:.12em;opacity:.65;white-space:nowrap;overflow:hidden}
+#menu .mtt{flex:1;display:flex;flex-direction:column;min-width:0}#menu .mtt small{font-size:11px;letter-spacing:.15em;opacity:.75;white-space:nowrap;overflow:hidden}
 #menu .mhd #mTitle{font-size:20px;letter-spacing:.12em}
 #mBody .mcal{max-width:480px;margin:4px auto 10px}
 #mBody .mcal .cg{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
@@ -164,18 +163,23 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 #mBody .mcal i.dl{border-style:double;border-width:4px}
 #mBody .mcal i small{position:absolute;top:-1px;right:2px;font-size:9px}
 #mBody .mcal .cs{display:flex;justify-content:space-between;margin-top:6px;font-size:14px}
-#mBody .mlist{max-width:480px;margin:0 auto;border-top:2px dashed #fff;padding-top:6px;display:flex;flex-direction:column}
-#menu #mBody .mlist .ui-btn{border:0;border-image:none;background:none!important;min-width:0;text-align:left;font-size:19px;padding:9px 12px 9px 28px;display:flex;justify-content:space-between;align-items:center;letter-spacing:.08em;position:relative;color:#fff}
-#menu #mBody .mlist .ui-btn small{font-size:13px;opacity:.7}
-#menu #mBody .mlist .ui-btn.kf,#menu #mBody .mlist .ui-btn:active{background:#fff!important;color:#000}
-#menu #mBody .mlist .ui-btn.kf::before,#menu #mBody .mlist .ui-btn:active::before{content:'▶';position:absolute;left:8px;font-size:13px}
+#mBody .mlist{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+#menu #mBody .mlist .tkb{all:unset;box-sizing:border-box;position:relative;display:flex;background:#fff;color:#111;min-height:62px;cursor:pointer}
+#menu #mBody .mlist .tkb .m{flex:1;padding:8px 12px;border-right:3px dashed #111;display:flex;flex-direction:column;justify-content:center}
+#menu #mBody .mlist .tkb .m small{font-size:10px;letter-spacing:.15em;opacity:.55}
+#menu #mBody .mlist .tkb .m span{font-size:19px;letter-spacing:.08em}
+#menu #mBody .mlist .tkb .s{width:72px;display:flex;align-items:center;justify-content:center;font-size:16px;letter-spacing:.05em}
+#menu #mBody .mlist .tkb::before,#menu #mBody .mlist .tkb::after{content:'';position:absolute;right:63px;width:16px;height:16px;border-radius:50%;background:#2a2a2a}
+#menu #mBody .mlist .tkb::before{top:-8px}#menu #mBody .mlist .tkb::after{bottom:-8px}
+#menu #mBody .mlist .tkb.kf,#menu #mBody .mlist .tkb:active{background:#111;color:#fff}#menu #mBody .mlist .tkb.kf .m,#menu #mBody .mlist .tkb:active .m{border-color:#fff}
+#menu #mBody .mlist .tkb.kf::before,#menu #mBody .mlist .tkb.kf::after{box-shadow:0 0 0 2px #fff}
 #mBody .mfoot{max-width:480px;margin:14px auto 0;border-top:2px solid #fff;padding-top:6px;font-size:12px;opacity:.7;line-height:1.7}
 /* 乗客チケット */
 #mBody .tks{display:flex;flex-direction:column;max-width:440px;margin:6px auto 0;padding-bottom:10px}
-#mBody .tk{all:unset;box-sizing:border-box;display:flex;background:#f4f1e8;color:#111;height:116px;margin-top:-4px;box-shadow:0 3px 0 #000,0 0 0 2px #000;position:relative;cursor:pointer;
-  transform:translateX(var(--dx)) rotate(var(--r));animation:tkIn .55s cubic-bezier(.2,.9,.3,1.15) both;animation-delay:var(--d)}
-@keyframes tkIn{from{transform:translateX(-130%) rotate(-12deg)}to{transform:translateX(var(--dx)) rotate(var(--r))}}
-#mBody .tk.kf{outline:3px dashed #fff;outline-offset:3px}
+#mBody .tk{all:unset;box-sizing:border-box;display:flex;background:#fff;color:#111;height:116px;margin-top:10px;position:relative;cursor:pointer;
+  transform:none;animation:tkIn .55s cubic-bezier(.2,.9,.3,1.15) both;animation-delay:var(--d)}
+@keyframes tkIn{0%{transform:translateX(-130%) rotate(-10deg)}70%{transform:translateX(var(--dx)) rotate(var(--r))}100%{transform:none}}
+#mBody .tk.kf,#mBody .tk:active{background:#111;color:#fff}#mBody .tk.kf .stub,#mBody .tk.kf .dots i{border-color:#fff}#mBody .tk.kf .dots i.f{background:#fff}#mBody .tk.kf .fc{border-color:#fff}
 #mBody .tk .fc{width:84px;height:100px;margin:8px;border:2px solid #111;flex:none;background:#fff}
 #mBody .tk .fc canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
 #mBody .tk .tm{flex:1;min-width:0;padding:8px 4px;display:flex;flex-direction:column;gap:2px}
@@ -184,7 +188,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 #mBody .tk .tm .ct{font-size:12px}
 #mBody .tk .dots{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px}#mBody .tk .dots i{width:9px;height:9px;border:1.5px solid #111}#mBody .tk .dots i.f{background:#111}
 #mBody .tk .stub{width:46px;border-left:3px dashed #111;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font-size:11px;letter-spacing:.2em}
-#mBody .tk::before,#mBody .tk::after{content:'';position:absolute;right:38px;width:14px;height:14px;border-radius:50%;background:#000}
+#mBody .tk::before,#mBody .tk::after{content:'';position:absolute;right:38px;width:14px;height:14px;border-radius:50%;background:#2a2a2a}
 #mBody .tk::before{top:-7px}#mBody .tk::after{bottom:-7px}
 /* 乗客プロフィール */
 #mBody .pf{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
@@ -214,7 +218,7 @@ body.replay #replayTag{display:block}
 <button id="menuBtn" class="ui-btn">☰</button>
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
-<div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><div class="mtt"><small>LOST END // PASSENGER TERMINAL</small><span id="mTitle">メニュー</span></div><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div><div id="replayTag">― 回想 ―</div>
+<div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><div class="mtt"><small>BOARDING ── LOST END → EARTH</small><span id="mTitle">メニュー</span></div><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div><div id="replayTag">― 回想 ―</div>
 <div id="pick"><div class="mhd"><b></b><small></small></div><div class="pbody"><div class="igrid"></div></div><div class="pdesc"></div><div class="bar"><button class="ui-btn pri" data-k="ok" disabled>祈る</button><button class="ui-btn" data-k="no">祈らない</button><button class="ui-btn" data-k="cancel">やめる</button></div></div>
 <div id="oth"><div class="oh"><span><i class="dot b"></i><b class="pb">あなた 2</b></span><span><b class="pw">2</b><i class="dot w"></i></span></div><div class="ob"></div><div class="om"></div><button class="ui-btn" data-k="give">投了する</button></div>
 <div id="bgmAsk"><p>BGMをオンにしますか？</p><div class="bar"><button class="ui-btn" data-k="on">オンにする</button><button class="ui-btn" data-k="off">オフにする</button></div><small>あとで設定から変えられます</small></div>
@@ -227,7 +231,7 @@ body.replay #replayTag{display:block}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-24a';
+const GAME_VER='2026-11-24b';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -826,12 +830,13 @@ function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const
   $('#mBack').textContent=v==='main'?'✕ 閉じる':'◀ 戻る';
   const btn=(t,f)=>{const b=document.createElement('button');b.className='ui-btn';b.textContent=t;b.onclick=f;return b};
   if(v==='main'){body.append(calView());const g=document.createElement('div');g.className='mlist';
-    const row=(t,n,f)=>{const b=btn(t,f);if(n!=null){const s=document.createElement('small');s.textContent=n;b.append(s)}return b};
+    const EL={アイテム:'ITEMS',メモ:'MEMO',乗客情報:'PASSENGERS',エンディング:'ENDINGS',設定:'SETTINGS',セーブ:'SAVE',ロード:'LOAD'};
+    const row=(t,n,f)=>{const b=document.createElement('button');b.className='tkb';b.onclick=f;b.innerHTML='<div class="m"><small></small><span></span></div><div class="s"></div>';b.querySelector('small').textContent=EL[t]||'';b.querySelector('span').textContent=t;b.querySelector('.s').textContent=n??'›';return b};
     const nIt=G.items.filter(i=>(S.it[i.id]||0)>0).length,M=G.system.memo||{},nM=(M.lines||[]).length,dM=(M.lines||[]).filter(L=>L.sw!=null&&L.sw>=0&&S.sw[L.sw]).length;
     const EN=(G.system.endings||[]),gE=gotEnds().filter(id=>EN.some(e=>e.id===id)).length;
     g.append(row('アイテム',String(nIt).padStart(2,'0'),()=>menuShow('items')));if(memoOn())g.append(row('メモ',`${dM}/${nM}`,()=>menuShow('memo')));
     g.append(row('乗客情報',String(passengers().length).padStart(2,'0'),()=>menuShow('people')),row('エンディング',`${gE}/${EN.length}`,()=>menuShow('end')),row('設定',null,()=>menuShow('opt')));
-    const sv=row('セーブ',null,()=>{S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));sv.firstChild.textContent='セーブしました';setTimeout(()=>sv.firstChild.textContent='セーブ',1200)});
+    const sv=row('セーブ',null,()=>{S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));sv.querySelector('span').textContent='セーブしました';setTimeout(()=>sv.querySelector('span').textContent='セーブ',1200)});
     g.append(sv,row('ロード',null,()=>loadGame()));body.append(g);
     const ft=document.createElement('div');ft.className='mfoot';ft.textContent=memoOn()?'> 船体ステータス：異常あり\n> 星間ワープ装置：停止中':'> 船体ステータス：正常\n> 目的地：チキュウ';ft.style.whiteSpace='pre-line';body.append(ft)}
   if(v==='items'){const own=G.items.filter(i=>(S.it[i.id]||0)>0);
