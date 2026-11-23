@@ -21759,7 +21759,41 @@
     "balance_ninomae",
     "balance_piwora"
    ]
-  }
+  },
+  "passengers": [
+   {
+    "name": "ムロ",
+    "pic": "muro_normal",
+    "crop": [140,90,220],
+    "cabin": "客室B",
+    "spendVar": 0,
+    "profile": "年齢：？\n出身：ロストエンド\n（ムロのプロフィールをここに）"
+   },
+   {
+    "name": "ネイサ",
+    "pic": "neisa_normal",
+    "crop": [150,90,220],
+    "cabin": "客室A",
+    "spendVar": 1,
+    "profile": "年齢：？\n出身：ロストエンド\n（ネイサのプロフィールをここに）"
+   },
+   {
+    "name": "ピヲラ",
+    "pic": "piwora_normal",
+    "crop": [160,90,220],
+    "cabin": "客室E",
+    "spendVar": 3,
+    "profile": "年齢：？\n出身：ロストエンド\n（ピヲラのプロフィールをここに）"
+   },
+   {
+    "name": "ニノマエ",
+    "pic": "ninomae_normal",
+    "crop": [140,80,220],
+    "cabin": "客室C",
+    "spendVar": 2,
+    "profile": "年齢：？\n出身：ロストエンド\n（ニノマエのプロフィールをここに）"
+   }
+  ]
  },
  "icons": [
   {

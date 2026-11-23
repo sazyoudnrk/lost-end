@@ -92,7 +92,7 @@ canvas{image-rendering:pixelated}
 <body>
 <script>
 'use strict';
-const APP_VER='2026-11-18a';
+const APP_VER='2026-11-24a';
 // 新しい版が公開されていたら知らせる（ブラウザのキャッシュ対策）
 async function checkUpdate(){try{const r=await fetch('editor.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/APP_VER='([^']+)'/);
   if(!m||m[1]===APP_VER)return;saveDraft();const b=h('div',{style:'position:fixed;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top));z-index:300;background:#5b8cff;color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;text-align:center',
@@ -1074,6 +1074,20 @@ function renderDB(){
     h('div',{class:'hint'},'文章の名前をこの人にすると、この立ち絵が自動で選ばれます（あとで表情を変えられます）'),
     h('div',{class:'card-t',style:'margin-top:6px'},'名前の公開'),...(SY.names||[]).map(n=>{if(SY.nameSw[n]==null)SY.nameSw[n]=-1;return fSel(n,SY.nameSw,n,[[-1,'最初から表示'],...swOpts()],{num:true})}),
     h('div',{class:'hint'},'スイッチを選ぶと、そのスイッチがONになるまで名前欄が「？」になります（自己紹介の会話の後で「スイッチ」コマンドでONにする）')));
+  {SY.passengers=SY.passengers||[];const c=card('乗客（メニューの「乗客情報」）');c.append(h('div',{class:'hint'},'チケットの並び順は上から。顔写真は立ち絵から切り抜きます（左上の位置と幅を立ち絵のピクセルで指定。高さは幅の1.2倍）'));
+    SY.passengers.forEach((ps,i)=>{ps.crop=ps.crop||[0,0,220];const cr={x:ps.crop[0],y:ps.crop[1],w:ps.crop[2]};
+      const cv=h('canvas',{width:100,height:120,style:'width:100px;height:120px;border:1px solid var(--mut);background:#fff;flex:none'});
+      const draw=()=>{const pic=G.pictures.find(x=>x.id===ps.pic),x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,100,120);if(!pic)return;imgAsync(pic.image).then(im=>{if(!im)return;x.fillRect(0,0,100,120);x.drawImage(im,cr.x,cr.y,cr.w,cr.w*1.2,0,0,100,120)})};
+      const upd=()=>{ps.crop=[cr.x,cr.y,cr.w];draw()};
+      c.append(h('div',{style:'border-top:1px solid var(--line,#444);margin-top:10px;padding-top:10px'},
+        h('div',{class:'row',style:'align-items:flex-start;gap:10px'},cv,h('div',{style:'flex:1;min-width:0'},
+          fText('名前',ps,'name'),fText('客室',ps,'cabin'),fSel('立ち絵',ps,'pic',[['','なし'],...G.pictures.map(x=>[x.id,x.name])],{on:draw}),
+          fSel('一緒に過ごした回数の変数',ps,'spendVar',varOpts(),{num:true}))),
+        h('div',{class:'row'},fNum('切り抜き 左',cr,'x',{min:0,max:4000,on:upd}),fNum('上',cr,'y',{min:0,max:4000,on:upd}),fNum('幅',cr,'w',{min:8,max:4000,on:upd})),
+        fArea('プロフィール',ps,'profile',{rows:5}),
+        h('div',{class:'row',style:'gap:6px'},btn('↑',()=>{if(i>0){SY.passengers.splice(i-1,0,SY.passengers.splice(i,1)[0]);changed();renderDB()}},'sm'),btn('↓',()=>{if(i<SY.passengers.length-1){SY.passengers.splice(i+1,0,SY.passengers.splice(i,1)[0]);changed();renderDB()}},'sm'),
+          btn('削除',()=>{if(confirm(`「${ps.name}」を乗客から外しますか？`)){SY.passengers.splice(i,1);changed();renderDB()}},'sm dg'))));draw()});
+    c.append(btn('＋ 乗客を追加',()=>{SY.passengers.push({name:'',pic:'',crop:[0,0,220],cabin:'',spendVar:0,profile:''});changed();renderDB()},'sm'));T.append(c)}
   {SY.memo=SY.memo||{sw:-1,title:'メモ',lines:[]};const M=SY.memo,c=card('メモ帳（メニューの「メモ」）');
     c.append(fSel('メニューに出す条件（スイッチ）',M,'sw',[[-1,'いつも出す'],...swOpts()],{num:true}),fText('見出し',M,'title'));
     M.lines.forEach((L,i)=>c.append(h('div',{class:'list-row'},h('div',{style:'flex:1'},fText('書いてあること',L,'text'),fSel('チェックが付く条件（スイッチ）',L,'sw',[[-1,'なし'],...swOpts()],{num:true}),fText('チェック後に添える文（任意）',L,'doneText')),btn('✕',()=>{M.lines.splice(i,1);changed();renderDB()},'sm dg'))));
@@ -1115,7 +1129,7 @@ function renderDB(){
     const flt=()=>{const s=DBQ.trim();ic.querySelectorAll(':scope > .list-row').forEach(r=>{const t=[...r.querySelectorAll('input[type=text],span')].map(x=>x.value||x.textContent).join(' ');r.style.display=!s||t.includes(s)?'':'none'})};
     ic.insertBefore(q,ic.children[1]||null);flt()}
   // タブ分け（よく触るアイテムと等価交換機を先頭に）
-  const GR=[['items','アイテム',['アイテム']],['shop','等価交換機',['等価交換機']],['story','物語',['登場人物','メモ帳','解放','エンディング','タイトル画面']],['sys','システム',['システム','画面の暗さ','日付と時間帯','BGM']],['vars','スイッチ・変数',['スイッチ','変数']]];
+  const GR=[['items','アイテム',['アイテム']],['shop','等価交換機',['等価交換機']],['story','物語',['登場人物','乗客','メモ帳','解放','エンディング','タイトル画面']],['sys','システム',['システム','画面の暗さ','日付と時間帯','BGM']],['vars','スイッチ・変数',['スイッチ','変数']]];
   const cards=[...T.children],grp=c=>{const t=(c.querySelector(':scope > .card-t')||{}).textContent||'';const g=GR.find(g=>g[2].some(k=>t.startsWith(k)));return g?g[0]:'sys'};
   let cur=lsGet('dbTab','items');if(!GR.some(g=>g[0]===cur))cur='items';
   const bar=h('div',{class:'ptabs',style:'position:sticky;top:0;z-index:5;flex:none;background:var(--bg);padding:8px 10px;border-bottom:1px solid var(--bd)'},...GR.map(([k,l])=>h('button',{class:'btn sm'+(k===cur?' on':''),onclick:()=>{lsSet('dbTab',k);renderDB();$('#tab-db').scrollTop=0}},l)));

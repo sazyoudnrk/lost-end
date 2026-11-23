@@ -147,6 +147,58 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 #skipBtn.on{border-image-source:var(--pxw)}
 #shop .tabs .ui-btn.on,#shop .icard.sel,#menu .icard.sel,#pick .icard.sel{border-image-source:var(--pxw)}
 #title .ui-btn{border-image:none}
+
+/* ===== メニュー：船内端末風 ===== */
+#menu{background:#000;backdrop-filter:none}
+#menu::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(#0000 0 2px,#0005 2px 3px);pointer-events:none;z-index:3}
+#menu .mhd{border-bottom:2px solid #fff;align-items:flex-end}
+#menu .mtt{flex:1;display:flex;flex-direction:column;min-width:0}#menu .mtt small{font-size:10px;letter-spacing:.12em;opacity:.65;white-space:nowrap;overflow:hidden}
+#menu .mhd #mTitle{font-size:20px;letter-spacing:.12em}
+#mBody .mcal{max-width:480px;margin:4px auto 10px}
+#mBody .mcal .cg{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+#mBody .mcal i{font-style:normal;border:2px solid #fff;height:34px;display:flex;align-items:center;justify-content:center;position:relative;font-size:13px}
+#mBody .mcal i.x::after{content:'';position:absolute;inset:5px;background:linear-gradient(45deg,#0000 45%,#fff 45% 55%,#0000 55%),linear-gradient(-45deg,#0000 45%,#fff 45% 55%,#0000 55%)}
+#mBody .mcal i.x{color:#0000}
+#mBody .mcal i.t{background:#fff;color:#000;animation:mcb 1.2s steps(1) infinite}
+@keyframes mcb{50%{background:#000;color:#fff}}
+#mBody .mcal i.dl{border-style:double;border-width:4px}
+#mBody .mcal i small{position:absolute;top:-1px;right:2px;font-size:9px}
+#mBody .mcal .cs{display:flex;justify-content:space-between;margin-top:6px;font-size:14px}
+#mBody .mlist{max-width:480px;margin:0 auto;border-top:2px dashed #fff;padding-top:6px;display:flex;flex-direction:column}
+#menu #mBody .mlist .ui-btn{border:0;border-image:none;background:none!important;min-width:0;text-align:left;font-size:19px;padding:9px 12px 9px 28px;display:flex;justify-content:space-between;align-items:center;letter-spacing:.08em;position:relative;color:#fff}
+#menu #mBody .mlist .ui-btn small{font-size:13px;opacity:.7}
+#menu #mBody .mlist .ui-btn.kf,#menu #mBody .mlist .ui-btn:active{background:#fff!important;color:#000}
+#menu #mBody .mlist .ui-btn.kf::before,#menu #mBody .mlist .ui-btn:active::before{content:'▶';position:absolute;left:8px;font-size:13px}
+#mBody .mfoot{max-width:480px;margin:14px auto 0;border-top:2px solid #fff;padding-top:6px;font-size:12px;opacity:.7;line-height:1.7}
+/* 乗客チケット */
+#mBody .tks{display:flex;flex-direction:column;max-width:440px;margin:6px auto 0;padding-bottom:10px}
+#mBody .tk{all:unset;box-sizing:border-box;display:flex;background:#f4f1e8;color:#111;height:116px;margin-top:-4px;box-shadow:0 3px 0 #000,0 0 0 2px #000;position:relative;cursor:pointer;
+  transform:translateX(var(--dx)) rotate(var(--r));animation:tkIn .55s cubic-bezier(.2,.9,.3,1.15) both;animation-delay:var(--d)}
+@keyframes tkIn{from{transform:translateX(-130%) rotate(-12deg)}to{transform:translateX(var(--dx)) rotate(var(--r))}}
+#mBody .tk.kf{outline:3px dashed #fff;outline-offset:3px}
+#mBody .tk .fc{width:84px;height:100px;margin:8px;border:2px solid #111;flex:none;background:#fff}
+#mBody .tk .fc canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+#mBody .tk .tm{flex:1;min-width:0;padding:8px 4px;display:flex;flex-direction:column;gap:2px}
+#mBody .tk .tm small{font-size:10px;letter-spacing:.12em;opacity:.6}
+#mBody .tk .tm b{font-size:22px;font-weight:normal;letter-spacing:.1em}
+#mBody .tk .tm .ct{font-size:12px}
+#mBody .tk .dots{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px}#mBody .tk .dots i{width:9px;height:9px;border:1.5px solid #111}#mBody .tk .dots i.f{background:#111}
+#mBody .tk .stub{width:46px;border-left:3px dashed #111;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;font-size:11px;letter-spacing:.2em}
+#mBody .tk::before,#mBody .tk::after{content:'';position:absolute;right:38px;width:14px;height:14px;border-radius:50%;background:#000}
+#mBody .tk::before{top:-7px}#mBody .tk::after{bottom:-7px}
+/* 乗客プロフィール */
+#mBody .pf{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+#mBody .pf .ptop{display:flex;gap:12px;align-items:flex-end}
+#mBody .pf .ptop .fc{width:120px;height:144px;border:2px solid #fff;background:#fff;flex:none}#mBody .pf .ptop .fc canvas{width:100%;height:100%;display:block}
+#mBody .pf .ptop b{font-size:24px;font-weight:normal;letter-spacing:.1em;display:block}#mBody .pf .ptop small{display:block;font-size:13px;opacity:.75}
+#mBody .pf .sec{font-size:11px;letter-spacing:.15em;opacity:.65;border-bottom:1px solid #fff8;margin-top:4px}
+#mBody .pf .ptx{white-space:pre-line;line-height:1.8;font-size:14px}
+#mBody .pf .tl{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#menu #mBody .pf .tl .ui-btn{min-width:0;font-size:13px;text-align:left;padding:8px 10px;line-height:1.4}
+#mBody .pf .tl .ui-btn small{display:block;font-size:11px;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#mBody .pf .tl .ui-btn:disabled{opacity:.35}
+#replayTag{position:absolute;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:7;display:none;font-size:13px;letter-spacing:.3em;background:#000;border:2px solid #fff;padding:2px 12px}
+body.replay #replayTag{display:block}
 </style>
 </head>
 <body>
@@ -162,7 +214,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 <button id="menuBtn" class="ui-btn">☰</button>
 <button id="pvBack" class="ui-btn hide">✕ テスト終了</button><button id="dbgBtn" class="ui-btn hide">🐞</button>
 <div id="dbg" class="hide"></div><div id="dbgHud" class="hide"></div>
-<div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><span id="mTitle">メニュー</span><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div>
+<div id="menu"><div class="mhd"><button class="ui-btn" id="mBack">◀ 戻る</button><div class="mtt"><small>LOST END // PASSENGER TERMINAL</small><span id="mTitle">メニュー</span></div><span id="mHud"></span></div><div id="mBody"></div><div id="mDetail"></div><div id="items"></div></div><div id="replayTag">― 回想 ―</div>
 <div id="pick"><div class="mhd"><b></b><small></small></div><div class="pbody"><div class="igrid"></div></div><div class="pdesc"></div><div class="bar"><button class="ui-btn pri" data-k="ok" disabled>祈る</button><button class="ui-btn" data-k="no">祈らない</button><button class="ui-btn" data-k="cancel">やめる</button></div></div>
 <div id="oth"><div class="oh"><span><i class="dot b"></i><b class="pb">あなた 2</b></span><span><b class="pw">2</b><i class="dot w"></i></span></div><div class="ob"></div><div class="om"></div><button class="ui-btn" data-k="give">投了する</button></div>
 <div id="bgmAsk"><p>BGMをオンにしますか？</p><div class="bar"><button class="ui-btn" data-k="on">オンにする</button><button class="ui-btn" data-k="off">オフにする</button></div><small>あとで設定から変えられます</small></div>
@@ -175,7 +227,7 @@ body.notouch #pad,body.notouch #abtn,body.notouch #bbtn{display:none}
 </div>
 <script>
 'use strict';
-const GAME_VER='2026-11-23b';
+const GAME_VER='2026-11-24a';
 // 公開中の版と違えば、新しい版で開き直す（ブラウザのキャッシュ対策）
 (async()=>{try{const r=await fetch('index.html?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const m=(await r.text()).match(/GAME_VER='([^']+)'/);
   if(m&&m[1]!==GAME_VER&&new URLSearchParams(location.search).get('v')!==m[1]){const q=new URLSearchParams(location.search);q.set('v',m[1]);location.replace('index.html?'+q)}}catch(e){}})();
@@ -486,7 +538,7 @@ async function runEvent(ev){
 async function exec(list,cx){for(const c of list||[])await cmd(c,cx)}
 let pendCard=null;
 const SKIPSTOP=new Set(['choice','othello','wish','gift','shop','shopview','nameinput','ending','gameover']);
-async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;if(SKIPSTOP.has(c.t))stopSkip();
+async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;if(SKIPSTOP.has(c.t))stopSkip();if(REPLAY&&REPLAYSKIP.has(c.t))return;
   switch(c.t){
     case'text':await showText(c);break;
     case'choice':{const op=c.options.filter(o=>(!o.cond||evalCond(o.cond,cx))&&(!o.cond2||evalCond(o.cond2,cx)));if(!op.length)break;const i=await showChoice(op.map(o=>o.label));await exec(op[i].cmds,cx);break}
@@ -503,6 +555,7 @@ async function cmd(c,cx){if(c.t!=='text'&&c.t!=='item')pendCard=null;if(SKIPSTOP
       S.vr[c.var??12]=got;break}
     case'if':await exec(evalCond(c.cond,cx)?c.then:(c.hasElse?c.else:[]),cx);break;
     case'vcase':{const v=c.src==='day'?S.day:c.src==='slot'?S.slot:(S.vr[c.id]||0),k=(c.cases||[]).find(x=>+x.val===v);
+      if(k){const tv=talkVcs().get(c);if(tv)talkMark(tv.name,k.val)}
       if(k&&(c.src==null||c.src==='var')&&+c.id===12&&cx&&cx.ev&&cx.ev.d){S.rec=S.rec||{};S.rec[cx.ev.d.name+'|'+k.val]=1}// プレゼントで何に変わったかを覚える（乗客情報）
 await exec(k?k.cmds:(c.hasElse?c.else:[]),cx);break}
     case'random':{const o=c.options||[];if(o.length)await exec(o[Math.floor(Math.random()*o.length)].cmds,cx);break}
@@ -762,21 +815,25 @@ function itemIcon(it,box){const ic=it.icon&&(G.icons||[]).find(x=>x.id===it.icon
   const s=document.createElement('span');s.className='emo';s.textContent=it.emoji||(it.name||'?').slice(0,1);box.append(s)}
 function toggleMenu(v){menuOpen=v==null?!menuOpen:v;$('#menu').style.display=menuOpen?'flex':'none';if(menuOpen)menuShow('main')}
 function menuFocus(){const m=$('#menu');m.querySelectorAll('.kf').forEach(b=>b.classList.remove('kf'));if(navBtns(m).length>1)navMove(m,1);else navMove(m,0)}
-function menuBack(){if(mDet){closeDetail();return}if(mView==='main')toggleMenu(false);else menuShow('main')}
+function menuBack(){if(mDet){closeDetail();return}if(mView==='main')toggleMenu(false);else if(mView==='person')menuShow('people');else menuShow('main')}
 function closeDetail(){mDet=false;$('#mDetail').style.display='none';$('#mDetail').innerHTML='';menuFocus()}
 $('#menuBtn').addEventListener('click',()=>{if(!busy)toggleMenu(true)});
 $('#mBack').addEventListener('click',()=>menuBack());
 $('#mDetail').addEventListener('click',e=>{if(e.target.id==='mDetail')closeDetail()});
 function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const body=$('#mBody');body.innerHTML='';body.scrollTop=0;
-  $('#mHud').textContent=hudText();
-  const T={people:'乗客情報',main:'メニュー',items:'アイテム',memo:'メモ',end:'エンディング',opt:'設定'};$('#mTitle').textContent=T[v]||'';
+  $('#mHud').textContent=v==='main'?'':hudText();
+  const T={person:(arguments[1]?pDisp(arguments[1]):''),people:'乗客情報',main:'メニュー',items:'アイテム',memo:'メモ',end:'エンディング',opt:'設定'};$('#mTitle').textContent=T[v]||'';
   $('#mBack').textContent=v==='main'?'✕ 閉じる':'◀ 戻る';
   const btn=(t,f)=>{const b=document.createElement('button');b.className='ui-btn';b.textContent=t;b.onclick=f;return b};
-  if(v==='main'){const g=document.createElement('div');g.className='mgrid';
-    g.append(btn('アイテム',()=>menuShow('items')));if(memoOn())g.append(btn('メモ',()=>menuShow('memo')));
-    g.append(btn('乗客情報',()=>menuShow('people')),btn('エンディング',()=>menuShow('end')),btn('設定',()=>menuShow('opt')));
-    const sv=btn('セーブ',()=>{S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));sv.textContent='セーブしました';setTimeout(()=>sv.textContent='セーブ',1200)});
-    g.append(sv,btn('ロード',()=>loadGame()));body.append(g)}
+  if(v==='main'){body.append(calView());const g=document.createElement('div');g.className='mlist';
+    const row=(t,n,f)=>{const b=btn(t,f);if(n!=null){const s=document.createElement('small');s.textContent=n;b.append(s)}return b};
+    const nIt=G.items.filter(i=>(S.it[i.id]||0)>0).length,M=G.system.memo||{},nM=(M.lines||[]).length,dM=(M.lines||[]).filter(L=>L.sw!=null&&L.sw>=0&&S.sw[L.sw]).length;
+    const EN=(G.system.endings||[]),gE=gotEnds().filter(id=>EN.some(e=>e.id===id)).length;
+    g.append(row('アイテム',String(nIt).padStart(2,'0'),()=>menuShow('items')));if(memoOn())g.append(row('メモ',`${dM}/${nM}`,()=>menuShow('memo')));
+    g.append(row('乗客情報',String(passengers().length).padStart(2,'0'),()=>menuShow('people')),row('エンディング',`${gE}/${EN.length}`,()=>menuShow('end')),row('設定',null,()=>menuShow('opt')));
+    const sv=row('セーブ',null,()=>{S.x=P.x;S.y=P.y;S.dir=P.dir;localStorage.setItem(SAVEKEY,JSON.stringify(S));sv.firstChild.textContent='セーブしました';setTimeout(()=>sv.firstChild.textContent='セーブ',1200)});
+    g.append(sv,row('ロード',null,()=>loadGame()));body.append(g);
+    const ft=document.createElement('div');ft.className='mfoot';ft.textContent=memoOn()?'> 船体ステータス：異常あり\n> 星間ワープ装置：停止中':'> 船体ステータス：正常\n> 目的地：チキュウ';ft.style.whiteSpace='pre-line';body.append(ft)}
   if(v==='items'){const own=G.items.filter(i=>(S.it[i.id]||0)>0);
     if(!own.length){const p=document.createElement('div');p.className='empty';p.textContent='なにも持っていない';body.append(p)}
     else{const g=document.createElement('div');g.className='igrid';
@@ -787,7 +844,8 @@ function menuShow(v){mView=v;mDet=false;$('#mDetail').style.display='none';const
     for(const L of M.lines||[]){const d=document.createElement('div');const done=L.sw!=null&&L.sw>=0&&S.sw[L.sw];d.textContent=(done?'☑ ':'☐ ')+L.text+(done&&L.doneText?`　${L.doneText}`:'');if(done)d.style.opacity=.6;it.append(d)}
     body.append(it)}
   if(v==='end'){const it=document.createElement('div');it.className='panel';fillEndings(it);body.append(it)}
-  if(v==='people')body.append(peopleView());
+  if(v==='people')body.append(ticketsView());
+  if(v==='person')body.append(personView(arguments[1]));
   if(v==='opt'){const it=document.createElement('div');it.className='panel';const row=(lab,k)=>{const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;gap:10px;margin:6px 0';
       const s=document.createElement('input');s.type='range';s.min=0;s.max=100;s.step=10;s.value=OPT[k];s.style.flex='1';const v=document.createElement('span');v.style.cssText='width:44px;text-align:right';
       const tg=document.createElement('button');tg.className='ui-btn';tg.style.cssText='min-width:0;width:58px;padding:4px 0;text-align:center';
@@ -860,6 +918,55 @@ function peopleView(){const wrap=document.createElement('div');wrap.className='p
         row.append(icon(ok?a:null),eq('＋'),pc,eq('＝'),icon(ok?b:null));if(ok){const tx=document.createElement('small');tx.textContent=`${a.name} → ${b.name}（価値 ${b.value||0}）`;row.append(tx)}(ok?card:(card._u||(card._u=Object.assign(document.createElement('div'),{className:'punk'})))).append(row)}if(card._u)card.append(card._u)}
     wrap.append(card)}
   return wrap}
+// ===== 乗客情報（チケット）とプロフィール =====
+function passengers(){const L=(G.system&&G.system.passengers)||[];return L.filter(p=>p&&p.name)}
+function pDisp(name){const ns=(G.system&&G.system.nameSw)||{};return ns[name]!=null&&ns[name]>=0&&!S.sw[ns[name]]?'？？？':name}
+// 立ち絵から顔を切り抜いて二値化して描く
+function faceCanvas(p,w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const pic=(G.pictures||[]).find(x=>x.id===p.pic);if(!pic)return c;
+  loadImg(pic.image).then(im=>{if(!im)return;const[cx,cy,cw]=p.crop||[0,0,im.width],ch=cw*h/w,x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.imageSmoothingEnabled=true;x.drawImage(im,cx,cy,cw,ch,0,0,w,h);
+    const d=x.getImageData(0,0,w,h),a=d.data;for(let i=0;i<a.length;i+=4){const v=(a[i]+a[i+1]+a[i+2])/3<170?0:255;a[i]=a[i+1]=a[i+2]=v;a[i+3]=255}x.putImageData(d,0,0)});return c}
+// 一緒に過ごす会話（その人のイベントの「一緒に過ごす」の中の、過ごした回数で分かれる場合分け）
+let _talkVc=null;function talkVcs(){if(_talkVc)return _talkVc;_talkVc=new Map();
+  for(const p of passengers()){let ev=null;for(const mp of G.maps)for(const e of mp.events)if(e&&e.name===p.name&&e.schedule&&!ev)ev=e;if(!ev)continue;
+    const find=o=>{if(Array.isArray(o)){for(const x of o){const r=find(x);if(r)return r}return null}if(!o||typeof o!=='object')return null;
+      if(o.t==='vcase'&&+o.id===+p.spendVar&&(o.src==null||o.src==='var'))return o;for(const k in o){const r=find(o[k]);if(r)return r}return null};
+    let vc=null;const walk=o=>{if(vc)return;if(Array.isArray(o))return o.forEach(walk);if(!o||typeof o!=='object')return;if(o.t==='choice')for(const op of o.options||[])if(/一緒に過ごす/.test(op.label||'')&&!vc)vc=find(op.cmds);for(const k in o)walk(o[k])};
+    walk(ev.pages);if(vc)_talkVc.set(vc,{name:p.name,ev})}return _talkVc}
+function talkOf(name){for(const[vc,v]of talkVcs())if(v.name===name)return{vc,ev:v.ev};return null}
+const TALKKEY=NS+(PREVIEW?'talkPv':'talk');function talkGet(){try{return JSON.parse(localStorage.getItem(TALKKEY)||'{}')}catch(e){return{}}}
+function talkMark(name,val){const T=talkGet();T[name]=T[name]||[];if(!T[name].includes(+val)){T[name].push(+val);try{localStorage.setItem(TALKKEY,JSON.stringify(T))}catch(e){}}}
+function calView(){const w=document.createElement('div');w.className='mcal';const crash=memoOn(),N=crash?9:3,g=document.createElement('div');g.className='cg';
+  for(let d=1;d<=N;d++){const i=document.createElement('i');i.textContent=d;if(d<S.day)i.className='x';else if(d===S.day)i.className='t';if(d===N){i.classList.add('dl');const s=document.createElement('small');s.textContent=crash?'期限':'着';i.append(s)}g.append(i)}
+  const s=document.createElement('div');s.className='cs';const l=document.createElement('span');l.textContent=`${S.day}日目　${slotName(S.slot)}`;const r=document.createElement('span');
+  r.textContent=crash?(S.day>=N?'今夜が期限':`期限まであと${N-S.day}日`):(S.day>=N?'まもなく到着':`到着まであと${N-S.day}日`);
+  const m=document.createElement('span');m.textContent=shown(G.system.hudMoney)?`価値 ${S.money}`:'';s.append(l,m,r);w.append(g,s);return w}
+function ticketsView(){const w=document.createElement('div');w.className='tks';const DX=[-4,16,2,22,8],R=[-2.2,1.6,-1.1,2.4,-.6];
+  passengers().forEach((p,i)=>{const b=document.createElement('button');b.className='tk';b.style.setProperty('--dx',DX[i%5]+'px');b.style.setProperty('--r',R[i%5]+'deg');b.style.setProperty('--d',(i*90)+'ms');
+    const fc=document.createElement('div');fc.className='fc';fc.append(faceCanvas(p,84,100));
+    const tm=document.createElement('div');tm.className='tm';const n=+(S.vr[p.spendVar]||0),tv=talkOf(p.name),max=tv?tv.vc.cases.length:15;
+    tm.innerHTML=`<small></small><b></b><small></small><div class="ct"></div><div class="dots"></div>`;const sm=tm.querySelectorAll('small');sm[0].textContent=`PASSENGER No.${String(i+1).padStart(2,'0')}`;sm[1].textContent=p.cabin||'';
+    tm.querySelector('b').textContent=pDisp(p.name);tm.querySelector('.ct').textContent=`一緒に過ごした　${n}回`;const ds=tm.querySelector('.dots');for(let k=0;k<max;k++){const d=document.createElement('i');if(k<n)d.className='f';ds.append(d)}
+    const st=document.createElement('div');st.className='stub';st.textContent='BOARDING';b.append(fc,tm,st);b.onclick=()=>menuShow('person',p.name);w.append(b)});
+  if(!passengers().length){const e=document.createElement('div');e.className='empty';e.textContent='乗客情報がありません';w.append(e)}return w}
+function personView(name){const p=passengers().find(x=>x.name===name)||{name};const w=document.createElement('div');w.className='pf';
+  const top=document.createElement('div');top.className='ptop';const fc=document.createElement('div');fc.className='fc';fc.append(faceCanvas(p,120,144));
+  const nm=document.createElement('div');nm.innerHTML='<small></small><b></b><small></small>';const sm=nm.querySelectorAll('small');sm[0].textContent=p.cabin||'';nm.querySelector('b').textContent=pDisp(p.name);sm[1].textContent=`一緒に過ごした　${+(S.vr[p.spendVar]||0)}回`;top.append(fc,nm);w.append(top);
+  const sec=t=>{const d=document.createElement('div');d.className='sec';d.textContent=t;w.append(d)};
+  sec('PROFILE');const tx=document.createElement('div');tx.className='ptx';tx.textContent=p.profile||'';w.append(tx);
+  // 変えてもらった品（これまでの乗客情報の中身）
+  const pv=peopleView(),card=[...pv.children].find(c=>c.querySelector('.phd b')&&c.querySelector('.phd b').textContent===p.name);
+  if(card&&card.querySelector('.pcap')){sec('EXCHANGE');card.querySelector('.phd').remove();w.append(card)}
+  const tv=talkOf(p.name);if(tv){sec('MEMORIES');const T=(talkGet()[p.name]||[]),g=document.createElement('div');g.className='tl';
+    for(const k of [...tv.vc.cases].sort((a,b)=>+a.val-+b.val)){const ok=T.includes(+k.val),b=document.createElement('button');b.className='ui-btn';b.disabled=!ok;
+      const first=(function f(a){for(const x of a||[]){if(x.t==='text'&&x.text&&x.name&&x.name!=='主人公')return x.text;for(const s of[x.then,x.else,x.cmds])if(Array.isArray(s)){const r=f(s);if(r)return r}}return''})(k.cmds).replace(/\[p\]|\n|\\[a-z]+\[[^\]]*\]|\[pname\]/g,' ').trim();
+      b.textContent=`${+k.val+1}回目`;const s=document.createElement('small');s.textContent=ok?(first||'……'):'？？？';b.append(s);if(ok)b.onclick=()=>replayTalk(p.name,+k.val);g.append(b)}
+    w.append(g)}
+  return w}
+// 回想：状態を保存してから会話を流し、終わったら元に戻す
+let REPLAY=false;const REPLAYSKIP=new Set(['move','sleep','time','ending','gameover','shop','shopview','othello','wish','gift','nameinput','buylimit']);
+async function replayTalk(name,val){const tv=talkOf(name);if(!tv||busy)return;const k=tv.vc.cases.find(x=>+x.val===+val);if(!k)return;
+  toggleMenu(false);const snap=JSON.stringify(S);REPLAY=true;document.body.classList.add('replay');
+  try{await runEvent({page:{cmds:k.cmds},d:tv.ev})}finally{REPLAY=false;document.body.classList.remove('replay');S=JSON.parse(snap);placeScheduled();updDim();updDbgHud();refresh();toggleMenu(true);menuShow('person',name)}}
 // 「使う」：アイテムに use（コマンドの列）がある時だけ。メニューを閉じて実行する
 async function useItem(it){toggleMenu(false);if(busy)return;await runEvent({page:{cmds:it.use}})}
 // 真エンドなどの解放：指定したエンディングを全部見ていれば、そのスイッチをONにする（周回をまたいで残る）
